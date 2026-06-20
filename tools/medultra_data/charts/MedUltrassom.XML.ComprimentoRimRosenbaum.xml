@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCriancaRimRosenbaum xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<CriancaRimRosenbaum>
+		<IdadeStr>0 meses</IdadeStr>
+		<Idade>0-1_s</Idade>
+		<Comprimento>4.48</Comprimento>
+		<Variacao>3.98 - 5.1</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>2 meses</IdadeStr>
+		<Idade>1-4_sm</Idade>
+		<Comprimento>5.28</Comprimento>
+		<Variacao>3.96 - 6.6</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>6 meses</IdadeStr>
+		<Idade>4-8_m</Idade>
+		<Comprimento>6.15</Comprimento>
+		<Variacao>4.81 - 7.49</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>10 meses</IdadeStr>
+		<Idade>8-1_ma</Idade>
+		<Comprimento>6.23</Comprimento>
+		<Variacao>4.97 - 7.49</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>1 ano e meio</IdadeStr>
+		<Idade>1-2_a</Idade>
+		<Comprimento>6.65</Comprimento>
+		<Variacao>5.57 - 7.73</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>2 anos e meio</IdadeStr>
+		<Idade>2-3_a</Idade>
+		<Comprimento>7.36</Comprimento>
+		<Variacao>6.28 - 8.44</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>3 anos e meio</IdadeStr>
+		<Idade>3-4_a</Idade>
+		<Comprimento>7.36</Comprimento>
+		<Variacao>6.08 - 8.64</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>4 anos e meio</IdadeStr>
+		<Idade>4-5_a</Idade>
+		<Comprimento>7.87</Comprimento>
+		<Variacao>6.87 - 8.87</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>5 anos e meio</IdadeStr>
+		<Idade>5-6_a</Idade>
+		<Comprimento>8.09</Comprimento>
+		<Variacao>7.01 - 9.17</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>6 anos e meio</IdadeStr>
+		<Idade>6-7_a</Idade>
+		<Comprimento>7.83</Comprimento>
+		<Variacao>6.39 - 9.27</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>7 anos e meio</IdadeStr>
+		<Idade>7-8_a</Idade>
+		<Comprimento>8.33</Comprimento>
+		<Variacao>7.31 - 9.35</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>8 anos e meio</IdadeStr>
+		<Idade>8-9_a</Idade>
+		<Comprimento>8.9</Comprimento>
+		<Variacao>7.14 - 10.66</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>9 anos e meio</IdadeStr>
+		<Idade>9-10_a</Idade>
+		<Comprimento>9.2</Comprimento>
+		<Variacao>7.4 - 11</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>10 anos e meio</IdadeStr>
+		<Idade>10-11_a</Idade>
+		<Comprimento>9.17</Comprimento>
+		<Variacao>7.53 - 10.8</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>11 anos e meio</IdadeStr>
+		<Idade>11-12_a</Idade>
+		<Comprimento>9.6</Comprimento>
+		<Variacao>8.32 - 10.8</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>12 anos e meio</IdadeStr>
+		<Idade>12-13_a</Idade>
+		<Comprimento>10.4</Comprimento>
+		<Variacao>8.66 - 12.1</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>13 anos e meio</IdadeStr>
+		<Idade>13-14_a</Idade>
+		<Comprimento>9.79</Comprimento>
+		<Variacao>8.29 - 11.3</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>14 anos e meio</IdadeStr>
+		<Idade>14-15_a</Idade>
+		<Comprimento>10.05</Comprimento>
+		<Variacao>8.81 - 11.3</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>15 anos e meio</IdadeStr>
+		<Idade>15-16_a</Idade>
+		<Comprimento>10.93</Comprimento>
+		<Variacao>9.41 - 12.4</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>16 anos e meio</IdadeStr>
+		<Idade>16-17_a</Idade>
+		<Comprimento>10.04</Comprimento>
+		<Variacao>8.32 - 11.76</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>17 anos e meio</IdadeStr>
+		<Idade>17-18_a</Idade>
+		<Comprimento>10.53</Comprimento>
+		<Variacao>9.95 - 11.1</Variacao>
+	</CriancaRimRosenbaum>
+	<CriancaRimRosenbaum>
+		<IdadeStr>18 anos e meio</IdadeStr>
+		<Idade>18-19_a</Idade>
+		<Comprimento>10.81</Comprimento>
+		<Variacao>8.55 - 13.0</Variacao>
+	</CriancaRimRosenbaum>
+</ArrayOfCriancaRimRosenbaum>

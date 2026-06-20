@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCriancaBexiga xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<CriancaBexiga>
+		<Idade>0</Idade>
+		<BVI>65</BVI>
+    <Variacao>47 - 83</Variacao>
+	</CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>1</Idade>
+    <BVI>154</BVI>
+    <Variacao>114 - 194</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>2</Idade>
+    <BVI>211</BVI>
+    <Variacao>150 - 272</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>3</Idade>
+    <BVI>260</BVI>
+    <Variacao>177 - 343</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>4</Idade>
+    <BVI>331</BVI>
+    <Variacao>248 - 414</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>5</Idade>
+    <BVI>391</BVI>
+    <Variacao>298 - 484</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>6</Idade>
+    <BVI>450</BVI>
+    <Variacao>355 - 545</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>7</Idade>
+    <BVI>522</BVI>
+    <Variacao>429 - 615</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>8</Idade>
+    <BVI>571</BVI>
+    <Variacao>500 - 642</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>9</Idade>
+    <BVI>638</BVI>
+    <Variacao>557 - 719</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>10</Idade>
+    <BVI>694</BVI>
+    <Variacao>640 - 748</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>11</Idade>
+    <BVI>758</BVI>
+    <Variacao>708 - 808</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>12</Idade>
+    <BVI>828</BVI>
+    <Variacao>757 - 899</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>13</Idade>
+    <BVI>889</BVI>
+    <Variacao>799 - 979</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>14</Idade>
+    <BVI>951</BVI>
+    <Variacao>884 - 1018</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>15</Idade>
+    <BVI>1002</BVI>
+    <Variacao>922 - 1082</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>16</Idade>
+    <BVI>1053</BVI>
+    <Variacao>981 - 1125</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>17</Idade>
+    <BVI>1132</BVI>
+    <Variacao>1065 - 1199</Variacao>
+  </CriancaBexiga>  
+</ArrayOfCriancaBexiga>

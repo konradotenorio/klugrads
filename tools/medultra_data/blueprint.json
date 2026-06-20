@@ -1,0 +1,104 @@
+{
+  "_comment": "Estrutura COMPLETA extraída do app MedUltra (código + telas). Seções e ordem exatas por população. itemToken = base usada nas chaves de recurso/classe; chart = nome do XML de percentil (se houver).",
+  "Fetal": {
+    "1º Trimestre": [
+      {"name": "Saco Gestacional", "sigla": "SG", "token": "SG", "chart": "MedidaSacoGestacionalFetal"},
+      {"name": "Vesícula Vitelínica", "sigla": "VV", "token": "VV", "chart": "MedidaVesiculaVitelinicaFetal"},
+      {"name": "Comprimento Cabeça-Nádega", "sigla": "CCN", "token": "CCN", "chart": "MedidaCCNFetal"},
+      {"name": "Frequência Cardíaca Embrionária", "sigla": "FCE", "token": "FCE", "chart": "MedidaFCEFetal"},
+      {"name": "Translucência Nucal", "sigla": "TN", "token": "TN", "chart": "MedidaTNFetal"}
+    ],
+    "2º e 3º Trimestres": [
+      {"name": "Diâmetro Biparietal e Circunferência Cefálica", "sigla": "DBP e CC", "token": "DBP", "chart": "MedidaDBPFetal"},
+      {"name": "Circunferência Abdominal", "sigla": "CA", "token": "CA", "chart": "MedidaCAFetal"},
+      {"name": "Comprimento do Fêmur", "sigla": "CF", "token": "CF", "chart": "MedidaCFFetal"},
+      {"name": "Índice de Líquido Amniótico", "sigla": "ILA", "token": "ILA", "chart": "MedidaILAFetal"},
+      {"name": "Peso Fetal", "sigla": "Peso", "token": "Peso", "chart": "MedidaPesoFetal"},
+      {"name": "Artéria Cerebral Média", "sigla": "ACM", "token": "ACM", "chart": "MedidaACMFetal"},
+      {"name": "Artéria Umbilical", "sigla": "AU", "token": "AU", "chart": "MedidaAUFetal"}
+    ],
+    "Ossos Longos": [
+      {"name": "Comprimento do Úmero", "sigla": "Úmero", "token": "Umero", "chart": "MedidaUmeroFetal"},
+      {"name": "Comprimento do Rádio", "sigla": "Rádio", "token": "Radio", "chart": "MedidaRadioFetal"},
+      {"name": "Comprimento da Ulna", "sigla": "Ulna", "token": "Ulna", "chart": "MedidaUlnaFetal"},
+      {"name": "Comprimento da Tíbia", "sigla": "Tíbia", "token": "Tibia", "chart": "MedidaTibiaFetal"},
+      {"name": "Comprimento da Fíbula", "sigla": "Fíbula", "token": "Fibula", "chart": "MedidaFibulaFetal"}
+    ],
+    "Cabeça e Pescoço": [
+      {"name": "Diâmetro dos Ventrículos Laterais", "sigla": "VL", "token": "VL", "chart": "MedidaVLFetal"},
+      {"name": "Diâmetro Transcerebelar", "sigla": "DTC", "token": "DTC", "chart": "MedidaDTCFetal"},
+      {"name": "Distância Binocular", "sigla": "DB", "token": "DB", "chart": "MedidaDBFetal"},
+      {"name": "Osso Nasal", "sigla": "ON", "token": "ON", "chart": "MedidaONFetal"},
+      {"name": "Prega Nucal", "sigla": "PN", "token": "PN", "chart": "MedidaPNFetal"}
+    ]
+  },
+  "Pediatria": {
+    "Abdome superior": [
+      {"name": "Baço", "token": "BacoPediatrico"},
+      {"name": "Fígado", "token": "FigadoPediatrico"},
+      {"name": "Pâncreas", "token": "PancreasPediatrico"},
+      {"name": "Piloro (estenose hipertrófica)", "token": "PiloroPediatrico"},
+      {"name": "Suprarrenal", "token": "SuprarrenalPediatrico"},
+      {"name": "Trato Biliar", "token": "TratoPediatrico"},
+      {"name": "Veia Porta", "token": "VeiaPortaPediatrico"},
+      {"name": "Vesícula Biliar", "token": "VBTBPediatrico"}
+    ],
+    "Trato Urinário": [
+      {"name": "Bexiga", "token": "BexigaPediatrico"},
+      {"name": "Rim", "token": "RimPediatrico"}
+    ],
+    "Trato Genital - Feminino": [
+      {"name": "Ovários", "token": "OvariosPediatrico"},
+      {"name": "Útero", "token": "UteroPediatrico"}
+    ],
+    "Trato Genital - Masculino": [
+      {"name": "Testículos", "token": "TesticulosPediatrico"}
+    ],
+    "Trato Gastrintestinal": [
+      {"name": "Alças Intestinais", "token": "AlcasIntestinaisPediatrico"},
+      {"name": "Apêndice Cecal", "token": "ApendicePediatrico"}
+    ],
+    "Pequenas Partes": [
+      {"name": "Tireóide", "token": "TireoidePediatrico"},
+      {"name": "Transfontanela", "token": "TransfontanelaPediatrico"}
+    ]
+  },
+  "Adultos": {
+    "Abdome superior": [
+      {"name": "Baço", "token": "BacoAdulto"},
+      {"name": "Fígado", "token": "FigadoAdulto"},
+      {"name": "Pâncreas", "token": "PancreasAdulto"},
+      {"name": "Trato Biliar", "token": "TratoAdulto"},
+      {"name": "Veia Porta", "token": "VeiaPortaAdulto"},
+      {"name": "Vesícula Biliar", "token": "VBTBAdulto"}
+    ],
+    "Retroperitônio": [
+      {"name": "Aorta e Ilíacas", "token": "AortaIliacasAdulto"},
+      {"name": "VCI e veias hepáticas", "token": "VCIAdulto"}
+    ],
+    "Trato Urinário": [
+      {"name": "Bexiga", "token": "BexigaAdulto"},
+      {"name": "Rim", "token": "RimAdulto"}
+    ],
+    "Trato Genital - Feminino": [
+      {"name": "Endométrio", "token": "EndometrioAdulto"},
+      {"name": "Ovários", "token": "OvariosAdulto"},
+      {"name": "Útero", "token": "UteroAdulto"}
+    ],
+    "Trato Genital - Masculino": [
+      {"name": "Epidídimos", "token": "EpididimosAdulto"},
+      {"name": "Próstata", "token": "Prostata"},
+      {"name": "Testículos", "token": "TesticulosAdulto"},
+      {"name": "Varicocele", "token": "VaricoceleAdulto"}
+    ],
+    "Trato Gastrintestinal": [
+      {"name": "Alças Intestinais", "token": "AlcasIntestinaisAdulto"},
+      {"name": "Apêndice Cecal", "token": "ApendiceAdulto"}
+    ],
+    "Pequenas Partes": [
+      {"name": "Derrame Pleural", "token": "ToraxAdulto"},
+      {"name": "Paratireóides", "token": "ParatireoideAdulto"},
+      {"name": "Tireóide", "token": "TireoideAdulto"}
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCriancaOvarios xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<CriancaOvarios>
+		<Idade>1</Idade>
+		<Volume>1.05</Volume>
+		<DP>0.35 - 1.75</DP>
+	</CriancaOvarios>
+	<CriancaOvarios>
+		<Idade>2</Idade>
+		<Volume>0.67</Volume>
+		<DP>0.32 - 1.02</DP>
+	</CriancaOvarios>
+	<CriancaOvarios>
+		<Idade>3</Idade>
+		<Volume>0.7</Volume>
+		<DP>0.5 - 0.9</DP>
+	</CriancaOvarios>
+	<CriancaOvarios>
+		<Idade>4</Idade>
+		<Volume>0.8</Volume>
+		<DP>0.4 - 1.2</DP>
+	</CriancaOvarios>
+	<CriancaOvarios>
+		<Idade>5</Idade>
+		<Volume>0.9</Volume>
+		<DP>0.88 - 0.92</DP>
+	</CriancaOvarios>
+	<CriancaOvarios>
+		<Idade>6</Idade>
+		<Volume>1.2</Volume>
+		<DP>0.8 - 1.6</DP>
+	</CriancaOvarios>
+	<CriancaOvarios>
+		<Idade>7</Idade>
+		<Volume>1.3</Volume>
+		<DP>0.7 - 1.9</DP>
+	</CriancaOvarios>
+	<CriancaOvarios>
+		<Idade>8</Idade>
+		<Volume>1.1</Volume>
+		<DP>0.6 - 1.6</DP>
+	</CriancaOvarios>
+	<CriancaOvarios>
+		<Idade>9</Idade>
+		<Volume>2.0</Volume>
+		<DP>1.2 - 2.8</DP>
+	</CriancaOvarios>
+	<CriancaOvarios>
+		<Idade>10</Idade>
+		<Volume>2.2</Volume>
+		<DP>1.5 - 2.9</DP>
+	</CriancaOvarios>
+	<CriancaOvarios>
+		<Idade>11</Idade>
+		<Volume>2.5</Volume>
+		<DP>1.2 - 3.8</DP>
+	</CriancaOvarios>
+	<CriancaOvarios>
+		<Idade>12</Idade>
+		<Volume>3.8</Volume>
+		<DP>2.4 - 5.2</DP>
+	</CriancaOvarios>
+	<CriancaOvarios>
+		<Idade>13</Idade>
+		<Volume>4.2</Volume>
+		<DP>1.9 - 6.5</DP>
+	</CriancaOvarios>
+</ArrayOfCriancaOvarios>

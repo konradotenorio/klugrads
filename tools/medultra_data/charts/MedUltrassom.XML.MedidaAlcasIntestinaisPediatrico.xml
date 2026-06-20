@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCriancaAlcas xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CriancaAlcas>
+    <Idade>0 - 4</Idade>
+    <Jejuno>0.6 - 0.8</Jejuno>
+    <ILEO>0.6 - 1.0</ILEO>
+    <CECO>0.7 - 1.3</CECO>
+    <ColonA>0.7 - 1.3</ColonA>
+    <ColonT>0.6 - 1.2</ColonT>
+    <ColonD>0.7 - 1.5</ColonD>
+  </CriancaAlcas>
+  <CriancaAlcas>
+    <Idade>5 - 9</Idade>
+    <Jejuno>0.5 - 1.0</Jejuno>
+    <ILEO>0.7 - 1.1</ILEO>
+    <CECO>1.0 - 1.5</CECO>
+    <ColonA>0.8 - 1.6</ColonA>
+    <ColonT>0.8 - 1.5</ColonT>
+    <ColonD>0.8 - 1.4</ColonD>
+  </CriancaAlcas>
+  <CriancaAlcas>
+    <Idade>10 - 14</Idade>
+    <Jejuno>0.6 - 1.1</Jejuno>
+    <ILEO>0.7 - 1.5</ILEO>
+    <CECO>1.0 - 1.9</CECO>
+    <ColonA>0.6 - 1.8</ColonA>
+    <ColonT>0.7 - 1.7</ColonT>
+    <ColonD>0.8 - 1.9</ColonD>
+  </CriancaAlcas>
+  <CriancaAlcas>
+    <Idade>15 - 19</Idade>
+    <Jejuno>0.6 - 1.0</Jejuno>
+    <ILEO>1.0 - 1.4</ILEO>
+    <CECO>1.3 - 1.8</CECO>
+    <ColonA>1.1 - 1.9</ColonA>
+    <ColonT>0.9 - 1.6</ColonT>
+    <ColonD>1.1 - 1.7</ColonD>
+  </CriancaAlcas>
+</ArrayOfCriancaAlcas>

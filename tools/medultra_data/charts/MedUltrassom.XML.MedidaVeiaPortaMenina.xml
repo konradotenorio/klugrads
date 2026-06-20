@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCriancaVeiaPorta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<CriancaVeiaPorta>
+    <Idade>0-1</Idade>
+    <IdadeStr>0 - 1</IdadeStr>
+		<Media>4.4</Media>
+		<DP>3.7 - 5.3</DP>
+		<Percentis>3.0 - 5.8</Percentis>
+	</CriancaVeiaPorta>
+	<CriancaVeiaPorta>
+    <Idade>1-5</Idade>
+    <IdadeStr>1 - 5</IdadeStr>
+		<Media>6.2</Media>
+		<DP>4.9 - 7.5</DP>
+		<Percentis>4.0 - 8.0</Percentis>
+	</CriancaVeiaPorta>
+	<CriancaVeiaPorta>
+    <Idade>5-10</Idade>
+    <IdadeStr>5 - 10</IdadeStr>
+		<Media>7.8</Media>
+		<DP>6.6 - 9.0</DP>
+		<Percentis>5.5 - 9.9</Percentis>
+	</CriancaVeiaPorta>
+	<CriancaVeiaPorta>
+    <Idade>10-15</Idade>
+    <IdadeStr>10 - 15</IdadeStr>
+		<Media>8.4</Media>
+		<DP>7.0 - 9.8</DP>
+		<Percentis>6.0 - 11.2</Percentis>
+	</CriancaVeiaPorta>
+</ArrayOfCriancaVeiaPorta>

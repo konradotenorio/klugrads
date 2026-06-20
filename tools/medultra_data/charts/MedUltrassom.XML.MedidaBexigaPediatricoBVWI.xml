@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCriancaBexiga xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<CriancaBexiga>
+		<Idade>0</Idade>
+		<BVWI>210</BVWI>
+    <Variacao>122 - 298</Variacao>
+	</CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>1</Idade>
+    <BVWI>524</BVWI>
+    <Variacao>370 - 678</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>2</Idade>
+    <BVWI>650</BVWI>
+    <Variacao>400 - 900</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>3</Idade>
+    <BVWI>850</BVWI>
+    <Variacao>558 - 1142</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>4</Idade>
+    <BVWI>1045</BVWI>
+    <Variacao>658 - 1432</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>5</Idade>
+    <BVWI>1212</BVWI>
+    <Variacao>813 - 1611</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>6</Idade>
+    <BVWI>1410</BVWI>
+    <Variacao>1008 - 1812</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>7</Idade>
+    <BVWI>1594</BVWI>
+    <Variacao>1197 - 1991</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>8</Idade>
+    <BVWI>1774</BVWI>
+    <Variacao>1366 - 2182</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>9</Idade>
+    <BVWI>1923</BVWI>
+    <Variacao>1487 - 2359</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>10</Idade>
+    <BVWI>2106</BVWI>
+    <Variacao>1687 - 2525</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>11</Idade>
+    <BVWI>2315</BVWI>
+    <Variacao>1855 - 2775</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>12</Idade>
+    <BVWI>2492</BVWI>
+    <Variacao>1915 - 3069</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>13</Idade>
+    <BVWI>2713</BVWI>
+    <Variacao>2172 - 3254</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>14</Idade>
+    <BVWI>2958</BVWI>
+    <Variacao>2421 - 3495</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>15</Idade>
+    <BVWI>3104</BVWI>
+    <Variacao>2669 - 3539</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>16</Idade>
+    <BVWI>3322</BVWI>
+    <Variacao>2801 - 3843</Variacao>
+  </CriancaBexiga>
+  <CriancaBexiga>
+    <Idade>17</Idade>
+    <BVWI>3495</BVWI>
+    <Variacao>2992 - 3998</Variacao>
+  </CriancaBexiga>  
+</ArrayOfCriancaBexiga>

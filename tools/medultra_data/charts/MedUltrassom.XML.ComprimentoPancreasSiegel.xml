@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCriancaPancreasSiegel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<CriancaPancreasSiegel>
+		<Idade>0-1</Idade>
+		<IdadeStr>&lt; 1 MÊS</IdadeStr>
+    <IdadeStrEn>&lt; 1 MONTH</IdadeStrEn>
+    <IdadeStrEs>&lt; 1 MES</IdadeStrEs>
+		<Cabeca>1.0 ± 0.4</Cabeca>
+		<Corpo>0.6 ± 0.2</Corpo>
+		<Cauda>1.0 ± 0.4</Cauda>
+	</CriancaPancreasSiegel>
+	<CriancaPancreasSiegel>
+		<Idade>1-12</Idade>
+		<IdadeStr>1 MÊS - 1 ANO</IdadeStr>
+    <IdadeStrEn>1 MONTH - 1 YEAR</IdadeStrEn>
+    <IdadeStrEs>1 MÊS - 1 AÑO</IdadeStrEs>
+		<Cabeca>1.5 ± 0.5</Cabeca>
+		<Corpo>0.8 ± 0.3</Corpo>
+		<Cauda>1.2 ± 0.4</Cauda>
+	</CriancaPancreasSiegel>
+	<CriancaPancreasSiegel>
+		<Idade>12-60</Idade>
+		<IdadeStr>1-5 ANOS</IdadeStr>
+    <IdadeStrEn>1-5 YEARS</IdadeStrEn>
+    <IdadeStrEs>1-5 AÑOS</IdadeStrEs>
+		<Cabeca>1.7 ± 0.3</Cabeca>
+		<Corpo>1.0 ± 0.2</Corpo>
+		<Cauda>1.8 ± 0.4</Cauda>
+	</CriancaPancreasSiegel>
+	<CriancaPancreasSiegel>
+		<Idade>60-120</Idade>
+		<IdadeStr>5-10 ANOS</IdadeStr>
+    <IdadeStrEn>5-10 YEARS</IdadeStrEn>
+    <IdadeStrEs>5-10 AÑOS</IdadeStrEs>
+		<Cabeca>1.6 ± 0.4</Cabeca>
+		<Corpo>1.0 ± 0.3</Corpo>
+		<Cauda>1.8 ± 0.4</Cauda>
+	</CriancaPancreasSiegel>
+	<CriancaPancreasSiegel>
+		<Idade>120-228</Idade>
+		<IdadeStr>10-19 ANOS</IdadeStr>
+    <IdadeStrEn>10-19 YEARS</IdadeStrEn>
+    <IdadeStrEs>10-19 AÑOS</IdadeStrEs>
+		<Cabeca>2.0 ± 0.5</Cabeca>
+		<Corpo>1.1 ± 0.3</Corpo>
+		<Cauda>2.0 ± 0.4</Cauda>
+	</CriancaPancreasSiegel>
+</ArrayOfCriancaPancreasSiegel>

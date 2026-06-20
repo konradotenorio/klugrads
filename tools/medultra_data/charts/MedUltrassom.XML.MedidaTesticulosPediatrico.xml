@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCriancaTesticulos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<CriancaTesticulos>
+		<Idade>1</Idade>
+		<Volume>0.48</Volume>
+		<DP>0.34 - 0.62</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>2</Idade>
+		<Volume>0.47</Volume>
+		<DP>0.38 - 0.56</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>3</Idade>
+		<Volume>0.52</Volume>
+		<DP>0.34 - 0.7</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>4</Idade>
+		<Volume>0.52</Volume>
+		<DP>0.34 - 0.7</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>5</Idade>
+		<Volume>0.59</Volume>
+		<DP>0.44 - 0.74</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>6</Idade>
+		<Volume>0.63</Volume>
+		<DP>0.38 - 0.88</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>7</Idade>
+		<Volume>0.64</Volume>
+		<DP>0.46 - 0.82</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>8</Idade>
+		<Volume>0.64</Volume>
+		<DP>0.44 - 0.84</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>9</Idade>
+		<Volume>0.78</Volume>
+		<DP>0.32 - 1.24</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>10</Idade>
+		<Volume>0.95</Volume>
+		<DP>0.44 - 1.46</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>11</Idade>
+		<Volume>1.31</Volume>
+		<DP>0.36 - 2.26</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>12</Idade>
+		<Volume>2.31</Volume>
+		<DP>0.51 - 4.11</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>13</Idade>
+		<Volume>4.21</Volume>
+		<DP>1.77 - 6.65</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>14</Idade>
+		<Volume>7.2</Volume>
+		<DP>3.07 - 11.33</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>15</Idade>
+		<Volume>8.69</Volume>
+		<DP>5.63 - 11.75</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>16</Idade>
+		<Volume>11.48</Volume>
+		<DP>8.49 - 14.47</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>17</Idade>
+		<Volume>12.14</Volume>
+		<DP>9.27 - 15.01</DP>
+	</CriancaTesticulos>
+	<CriancaTesticulos>
+		<Idade>18</Idade>
+		<Volume>13.67</Volume>
+		<DP>10.18 - 17.16</DP>
+	</CriancaTesticulos>
+</ArrayOfCriancaTesticulos>
