@@ -35,22 +35,33 @@ def grid_from_cells(cells):
     maxr = max(r for r, c in cells); maxc = max(c for r, c in cells)
     return [[cells.get((r, c), '') for c in range(1, maxc + 1)] for r in range(1, maxr + 1)]
 
+# Stems de tabela extras por token (corrige descasamento nome-item x nome-chave
+# e sub-tabelas: ex. Alças usa "Alcas"; Varizes Pélvicas é sub-tabela do Útero).
+EXTRA_STEMS = {
+    'AlcasIntestinaisAdulto': ['tabelaAlcasAdulto'],
+    'AlcasIntestinaisPediatrico': ['tabelaAlcasPediatrico'],
+    'UteroAdulto': ['tabelaVarizesPelvicas'],
+}
+
 def collect_tables(token, pop):
     """Todas as tabelas do item: qualquer chave tabela...L#C# que contenha o core
-    do órgão, agrupadas por prefixo (= uma tabela cada), filtrando por população."""
+    do órgão (ou listada em EXTRA_STEMS), agrupadas por prefixo, filtrando por população."""
     core = core_of(token)
+    extra = set(EXTRA_STEMS.get(token, []))
     groups = {}
     for k, v in pt.items():
         m = re.match(r'^(tabela.*?)L(\d+)C(\d+)$', k)
         if not m:
             continue
         prefix = m.group(1)
-        if core not in prefix:
-            continue
         if 'Pratico' in prefix:           # tabela "Apenas medidas" (modo rápido) — pula
             continue
-        if not pop_ok(pop, prefix):
-            continue
+        is_extra = prefix in extra
+        if not is_extra:
+            if core not in prefix:
+                continue
+            if not pop_ok(pop, prefix):
+                continue
         groups.setdefault(prefix, {})[(int(m.group(2)), int(m.group(3)))] = v
     tables = []
     for prefix in sorted(groups):
@@ -198,6 +209,7 @@ def parse_chart(chart_name):
 
 # charts pediátricos (idade-dependentes) por token de item
 CHART_MAP = {
+    'DBP': ['MedidaCCFetal'],   # item "DBP e CC" mostra também a tabela/cálculo de CC
     'BacoPediatrico': ['MedidaBacoPediatrico'],
     'FigadoPediatrico': ['MedidaFigadoLoboDireito'],
     'PancreasPediatrico': ['ComprimentoPancreasSiegel'],
@@ -246,6 +258,28 @@ for pop, sections in blueprint.items():
             entry['tables'] = tbls
             entry['chart'] = {'header': parsed[0][1]['header'], 'rows': parsed[0][1]['rows']}
             chart_attached += 1
+
+# ---- override: o recurso VBTB (Vesícula Biliar e Trato Biliar) é compartilhado;
+#      no app é dividido entre dois itens. Reproduz a divisão exata. ----
+def _cell(stem, r, c):
+    return pt.get('%sL%dC%d' % (stem, r, c), '')
+_ves = by_id.get('adultos-vbtbadulto')
+_trato = by_id.get('adultos-tratoadulto')
+if _ves:
+    _ves['tables'] = [{'title': pt.get('headerTabela1AdultoVBTB'),
+        'rows': [[_cell('tabela1VBTBAdulto', r, 1), _cell('tabela1VBTBAdulto', r, 2)] for r in (1, 2, 3)]}]
+    _ves.pop('footnotes', None)
+    _ves['refs'] = [pt[k] for k in ('refTabela1VBTBAdulto',) if k in pt]
+if _trato:
+    _trato['tables'] = [
+        {'title': pt.get('headerTabelaMedidaAdultoTrato'),
+         'rows': [[_cell('tabela1VBTBAdulto', 4, 1), _cell('tabela1VBTBAdulto', 4, 2)]]},
+        {'title': pt.get('headerTabela2AdultoVBTB'),
+         'rows': [[_cell('tabela2VBTBAdulto', 1, 1)], [_cell('tabela2VBTBAdulto', 2, 1)]]},
+    ]
+    _note = pt.get('tabela1VBTBAdultoL5C1')
+    _trato['footnotes'] = [_note] if _note else []
+    _trato['refs'] = [pt[k] for k in ('refTabela1VBTBAdulto', 'refTabela2VBTBAdulto') if k in pt]
 
 json.dump(items, open(os.path.join(BASE, 'items.generated.json'), 'w'), ensure_ascii=False, indent=1)
 

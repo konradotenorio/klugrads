@@ -3834,6 +3834,389 @@
       "23"
      ]
     ]
+   },
+   {
+    "title": "CC",
+    "rows": [
+     [
+      "CC",
+      "IG (sem)",
+      "IG (dias)",
+      "DP (dias)"
+     ],
+     [
+      "55",
+      "12",
+      "0",
+      "9"
+     ],
+     [
+      "60",
+      "12",
+      "2",
+      "9"
+     ],
+     [
+      "65",
+      "12",
+      "4",
+      "9"
+     ],
+     [
+      "70",
+      "12",
+      "5",
+      "9"
+     ],
+     [
+      "75",
+      "13",
+      "1",
+      "9"
+     ],
+     [
+      "80",
+      "13",
+      "3",
+      "9"
+     ],
+     [
+      "85",
+      "13",
+      "5",
+      "9"
+     ],
+     [
+      "90",
+      "14",
+      "0",
+      "9"
+     ],
+     [
+      "95",
+      "14",
+      "2",
+      "9"
+     ],
+     [
+      "100",
+      "14",
+      "5",
+      "9"
+     ],
+     [
+      "105",
+      "15",
+      "0",
+      "9"
+     ],
+     [
+      "110",
+      "15",
+      "2",
+      "9"
+     ],
+     [
+      "115",
+      "15",
+      "4",
+      "9"
+     ],
+     [
+      "120",
+      "16",
+      "0",
+      "9"
+     ],
+     [
+      "125",
+      "16",
+      "2",
+      "9"
+     ],
+     [
+      "130",
+      "16",
+      "5",
+      "9"
+     ],
+     [
+      "135",
+      "17",
+      "0",
+      "9"
+     ],
+     [
+      "140",
+      "17",
+      "2",
+      "9"
+     ],
+     [
+      "145",
+      "17",
+      "5",
+      "9"
+     ],
+     [
+      "150",
+      "18",
+      "0",
+      "9"
+     ],
+     [
+      "155",
+      "18",
+      "3",
+      "10"
+     ],
+     [
+      "160",
+      "18",
+      "5",
+      "10"
+     ],
+     [
+      "165",
+      "19",
+      "1",
+      "10"
+     ],
+     [
+      "170",
+      "19",
+      "4",
+      "10"
+     ],
+     [
+      "175",
+      "20",
+      "0",
+      "10"
+     ],
+     [
+      "180",
+      "20",
+      "3",
+      "10"
+     ],
+     [
+      "185",
+      "20",
+      "5",
+      "10"
+     ],
+     [
+      "190",
+      "21",
+      "2",
+      "10"
+     ],
+     [
+      "195",
+      "21",
+      "5",
+      "10"
+     ],
+     [
+      "200",
+      "22",
+      "1",
+      "10"
+     ],
+     [
+      "205",
+      "22",
+      "4",
+      "10"
+     ],
+     [
+      "210",
+      "23",
+      "1",
+      "10"
+     ],
+     [
+      "215",
+      "23",
+      "4",
+      "10"
+     ],
+     [
+      "220",
+      "24",
+      "0",
+      "15"
+     ],
+     [
+      "225",
+      "24",
+      "3",
+      "15"
+     ],
+     [
+      "230",
+      "25",
+      "0",
+      "15"
+     ],
+     [
+      "235",
+      "25",
+      "3",
+      "15"
+     ],
+     [
+      "240",
+      "26",
+      "1",
+      "15"
+     ],
+     [
+      "245",
+      "26",
+      "4",
+      "15"
+     ],
+     [
+      "250",
+      "27",
+      "1",
+      "15"
+     ],
+     [
+      "255",
+      "27",
+      "5",
+      "15"
+     ],
+     [
+      "260",
+      "28",
+      "2",
+      "15"
+     ],
+     [
+      "265",
+      "28",
+      "6",
+      "15"
+     ],
+     [
+      "270",
+      "29",
+      "3",
+      "15"
+     ],
+     [
+      "275",
+      "30",
+      "0",
+      "21"
+     ],
+     [
+      "280",
+      "30",
+      "5",
+      "21"
+     ],
+     [
+      "285",
+      "31",
+      "2",
+      "21"
+     ],
+     [
+      "290",
+      "31",
+      "6",
+      "21"
+     ],
+     [
+      "295",
+      "32",
+      "4",
+      "21"
+     ],
+     [
+      "300",
+      "33",
+      "2",
+      "21"
+     ],
+     [
+      "305",
+      "33",
+      "6",
+      "21"
+     ],
+     [
+      "310",
+      "34",
+      "4",
+      "21"
+     ],
+     [
+      "315",
+      "35",
+      "2",
+      "21"
+     ],
+     [
+      "320",
+      "35",
+      "6",
+      "21"
+     ],
+     [
+      "325",
+      "36",
+      "5",
+      "21"
+     ],
+     [
+      "330",
+      "37",
+      "4",
+      "21"
+     ],
+     [
+      "335",
+      "38",
+      "2",
+      "21"
+     ],
+     [
+      "340",
+      "39",
+      "1",
+      "21"
+     ],
+     [
+      "345",
+      "39",
+      "6",
+      "21"
+     ],
+     [
+      "350",
+      "40",
+      "5",
+      "21"
+     ],
+     [
+      "355",
+      "41",
+      "4",
+      "21"
+     ],
+     [
+      "360",
+      "42",
+      "3",
+      "21"
+     ]
+    ]
    }
   ],
   "chart": {
@@ -29287,7 +29670,36 @@
    "prep": "Jejum 6-8 horas antes do exame",
    "position": "Paciente em decúbito dorsal e oblíquo anterior direito.",
    "technique": "Em decúbito dorsal ou oblíquo anterior direito, utilizando-se um transdutor convexo multifrequencial (2-5 MHz), realizamos uma abordagem intercostal direita estendida com o paciente em pausa inspiratória . O marco anatômico principal para a caracterização do ducto biliar comum (DBC) é a veia porta (VP), pois devido seu maior calibre e posição facilita a caracterização do DBC. O DBC deve ser caracterizado e medido em sua porção que passa anteriormente à VP, geralmente sendo visível também em uma mesma incidência a artéria hepática em um corte axial. O diâmetro do DBC deve ser realizado medindo-se a distância entre suas paredes internas."
-  }
+  },
+  "tables": [
+   {
+    "title": "Medidas Gerais de Normalidade do Trato Biliar em Adultos",
+    "rows": [
+     [
+      "ESPESSURA DUCTO BILIAR COMUM (DBC)",
+      "< 7.0 mm"
+     ]
+    ]
+   },
+   {
+    "title": "Diâmetro Normal dos Ductos Intra-hepáticos",
+    "rows": [
+     [
+      "Menor que 2 mm"
+     ],
+     [
+      "Inferior a 40% do diâmetro do ramo portal adjacente"
+     ]
+    ]
+   }
+  ],
+  "footnotes": [
+   "Pacientes colecistectomizados podem ter um aumento de até 1 mm no diâmetro médio do DBC em relação àqueles não colecistectomizados. Existe uma associação linear, ainda que discreta, de aumento na idade e aumento no calibre do DBC, admitindo-se um valor de até 10 mm em pacientes idosos.\r\n    "
+  ],
+  "refs": [
+   "Matcuk GR, Grant EG, Ralls PW. Ultrasound measurements of the bile ducts and gallbladder: Normal ranges and effects of age, sex, cholecystectomy, and pathologic states. Ultrasound Quarterly. 2014; 30:41–48.",
+   "Bressler, E. L., J. M. Rubin, and S. McCracken. \"Sonographic parallel channel sign: a reappraisal.\" Radiology 164.2 (1987): 343-346."
+  ]
  },
  {
   "id": "adultos-veiaportaadulto",
@@ -29329,7 +29741,7 @@
   "iconKey": "organ",
   "tables": [
    {
-    "title": null,
+    "title": "Medidas Gerais de Normalidade da Vesícula Biliar em Adultos",
     "rows": [
      [
       "COMPRIMENTO DA VESÍCULA BILIAR",
@@ -29342,25 +29754,6 @@
      [
       "ESPESSURA DA PAREDE VESICULAR",
       "< 3.0 mm"
-     ],
-     [
-      "ESPESSURA DUCTO BILIAR COMUM (DBC)",
-      "< 7.0 mm"
-     ],
-     [
-      "Pacientes colecistectomizados podem ter um aumento de até 1 mm no diâmetro médio do DBC em relação àqueles não colecistectomizados. Existe uma associação linear, ainda que discreta, de aumento na idade e aumento no calibre do DBC, admitindo-se um valor de até 10 mm em pacientes idosos.\r\n    ",
-      ""
-     ]
-    ]
-   },
-   {
-    "title": null,
-    "rows": [
-     [
-      "Menor que 2 mm"
-     ],
-     [
-      "Inferior a 40% do diâmetro do ramo portal adjacente"
      ]
     ]
    }
@@ -29368,7 +29761,10 @@
   "exam": {
    "prep": "Jejum 6-8 horas antes do exame",
    "position": "Paciente em decúbito dorsal e oblíquo anterior direito"
-  }
+  },
+  "refs": [
+   "Matcuk GR, Grant EG, Ralls PW. Ultrasound measurements of the bile ducts and gallbladder: Normal ranges and effects of age, sex, cholecystectomy, and pathologic states. Ultrasound Quarterly. 2014; 30:41–48."
+  ]
  },
  {
   "id": "adultos-aortailiacasadulto",
@@ -29761,6 +30157,14 @@
       "VARIAÇÃO*"
      ]
     ]
+   },
+   {
+    "title": "Características Ecográficas",
+    "rows": [
+     [
+      "VASOS TORTUOSOS EM REGIÃO PARA-UTERINA COM REFLUXO ÀS MANOBRAS DE VALSALVA COM DIÂMETRO ≥ 6 mm"
+     ]
+    ]
    }
   ],
   "exam": {
@@ -29928,6 +30332,21 @@
   "name": "Alças Intestinais",
   "abbr": "",
   "iconKey": "organ",
+  "tables": [
+   {
+    "title": null,
+    "rows": [
+     [
+      "INTESTINO DELGADO",
+      "< 3 mm"
+     ],
+     [
+      "COLON",
+      "< 5mm"
+     ]
+    ]
+   }
+  ],
   "exam": {
    "prep": "Dor aguda: sem preparo\r\nSem sintomas agudos: 8 horas de jejum",
    "position": "Paciente em decúbito dorsal",
