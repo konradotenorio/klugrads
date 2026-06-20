@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gera os itens do UltraRef a partir dos recursos exatos extraídos do MedUltra.
+"""Gera os itens do RadRef a partir dos recursos exatos extraídos do MedUltra.
 Lê: tools/medultra_data/{pt.json, blueprint.json, charts/*.xml}
 Monta cada item no modelo do PWA (group/region/name/abbr/table|meas/note/exam/refs/calc).
 Saída: tools/medultra_data/items.generated.json  (para inspeção antes de virar seed.js)
@@ -253,7 +253,7 @@ json.dump(items, open(os.path.join(BASE, 'items.generated.json'), 'w'), ensure_a
 SEED_PATH = os.path.join(os.path.dirname(__file__), '..', 'js', 'seed.js')
 header_comment = (
 "/* =========================================================================\n"
-"   UltraRef — SEED de dados (fonte da verdade + fallback OFFLINE)\n"
+"   RadRef — SEED de dados (fonte da verdade + fallback OFFLINE)\n"
 "   GERADO automaticamente por tools/gen_seed.py a partir do conteúdo exato\n"
 "   do app MedUltra (propriedade do usuário). NÃO editar à mão: editar os\n"
 "   recursos/gerador e rodar `python3 tools/gen_seed.py`.\n"

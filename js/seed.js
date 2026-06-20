@@ -1,5 +1,5 @@
 /* =========================================================================
-   UltraRef — SEED de dados (fonte da verdade + fallback OFFLINE)
+   RadRef — SEED de dados (fonte da verdade + fallback OFFLINE)
    GERADO automaticamente por tools/gen_seed.py a partir do conteúdo exato
    do app MedUltra (propriedade do usuário). NÃO editar à mão: editar os
    recursos/gerador e rodar `python3 tools/gen_seed.py`.

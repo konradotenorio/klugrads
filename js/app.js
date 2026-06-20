@@ -1,5 +1,5 @@
 /* =========================================================================
-   UltraRef — app de referência em ultrassonografia (PT-BR).
+   RadRef — app de referência em ultrassonografia (PT-BR).
    Conteúdo reconstruído a partir do app MedUltra (propriedade do usuário).
    FERRAMENTA EDUCACIONAL — não substitui o julgamento clínico.
    Modelo de item: {id,group,region,name,abbr,iconKey,tables[],footnotes[],
@@ -70,7 +70,7 @@ function renderHeader(){
        <div class="brand">${esc(state.item.name)}${state.item.abbr?` <span style="color:var(--txt-dim)">(${esc(state.item.abbr)})</span>`:''}</div>`;
   }else{
     $('hdr').innerHTML =
-      `<div class="brand">Ultra<b>Ref</b></div>
+      `<div class="brand">Rad<b>Ref</b></div>
        <div class="subtitle">Referências em Ultrassonografia</div>`;
   }
 }

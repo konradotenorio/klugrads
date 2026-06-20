@@ -1,4 +1,4 @@
-# UltraRef — Referências em Ultrassonografia
+# RadRef — Referências em Ultrassonografia
 
 App de **referência rápida em ultrassonografia** (medidas normais, técnica de exame,
 calculadoras e referências bibliográficas). PWA instalável no celular e no desktop,
