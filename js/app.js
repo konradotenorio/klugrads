@@ -24,7 +24,7 @@ const CALC_FNS = {
   'fetal-ccn': (ccn)=>{
     if(ccn<2||ccn>84) return null;
     const days = 8.052*Math.sqrt(ccn*1.037)+23.73; // Robinson & Fleming
-    const w=Math.floor(days/7), d=Math.round(days%7);
+    const t = Math.round(days), w = Math.floor(t/7), d = t%7; // normaliza p/ 0–6 dias
     return {big:`${w}s ${d}d`, lab:`Idade gestacional estimada (Robinson)`};
   },
   'adulto-prostata': (v)=>{ if(!v) return null; return {big:`${v.toFixed(1)} cm³`, lab:`Volume (elipsoide: L × A × T × 0,52) ≈ ${v.toFixed(1)} g`}; },
@@ -101,6 +101,11 @@ const AGES = ['Fetal','Pediatria','Adultos'];
 /* ---- RENDER ---- */
 const $ = id=>document.getElementById(id);
 
+// Escapa HTML antes de interpolar em innerHTML (defesa contra XSS via conteúdo
+// do banco ou da busca). NÃO usar em `refs`, que contém <i> intencional.
+const ESC_MAP = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>ESC_MAP[c]); }
+
 function render(){
   document.getElementById('app').classList.toggle('has-subtabs', state.view==='detail');
   renderHeader(); renderSeg(); renderSearch(); renderBody(); renderSubtabs(); renderBotnav();
@@ -110,7 +115,7 @@ function renderHeader(){
   if(state.view==='detail'){
     $('hdr').innerHTML =
       `<div class="back" onclick="goHome()">‹ Voltar</div>
-       <div class="brand">${state.item.name}${state.item.abbr?` <span style="color:var(--txt-dim)">(${state.item.abbr})</span>`:''}</div>
+       <div class="brand">${esc(state.item.name)}${state.item.abbr?` <span style="color:var(--txt-dim)">(${esc(state.item.abbr)})</span>`:''}</div>
        <div class="home" onclick="goHome()">⌂</div>`;
   }else{
     $('hdr').innerHTML =
@@ -128,7 +133,7 @@ function renderSeg(){
 function renderSearch(){
   if(state.view!=='home'){ $('search').innerHTML=''; return; }
   $('search').innerHTML =
-    `<div class="search"><input id="q" placeholder="Pesquisar órgão ou medida…" value="${state.query}" oninput="onSearch(this.value)"></div>`;
+    `<div class="search"><input id="q" placeholder="Pesquisar órgão ou medida…" value="${esc(state.query)}" oninput="onSearch(this.value)"></div>`;
 }
 
 function renderBody(){
@@ -141,14 +146,14 @@ function renderBody(){
   const q=state.query.trim().toLowerCase();
   let items = DATA.filter(d=>d.group===state.tab);
   if(q) items = items.filter(d=>(d.name+' '+(d.abbr||'')+' '+d.region).toLowerCase().includes(q));
-  if(!items.length){ s.innerHTML=`<div class="empty">Nenhum resultado para “${state.query}”.</div>`; s.className='scroll'; return; }
+  if(!items.length){ s.innerHTML=`<div class="empty">Nenhum resultado para “${esc(state.query)}”.</div>`; s.className='scroll'; return; }
   let html=''; let lastRegion=null;
   items.forEach(d=>{
-    if(d.region!==lastRegion){ html+=`<div class="group-title">${d.region}</div>`; lastRegion=d.region; }
+    if(d.region!==lastRegion){ html+=`<div class="group-title">${esc(d.region)}</div>`; lastRegion=d.region; }
     html+=
-      `<div class="row" onclick="openItem('${d.id}')">
+      `<div class="row" onclick="openItem('${esc(d.id)}')">
          <div class="ic">${d.icon||ICONS.organ}</div>
-         <div class="txt"><div class="nm">${d.name}</div>${d.abbr?`<div class="ab">${d.abbr}</div>`:''}</div>
+         <div class="txt"><div class="nm">${esc(d.name)}</div>${d.abbr?`<div class="ab">${esc(d.abbr)}</div>`:''}</div>
          <div class="chev">›</div>
        </div>`;
   });
@@ -157,7 +162,7 @@ function renderBody(){
 
 function detailHTML(){
   const d=state.item;
-  let h=`<div class="d-section-label">Faixa Etária</div><div class="d-age">${d.age}</div>`;
+  let h=`<div class="d-section-label">Faixa Etária</div><div class="d-age">${esc(d.age)}</div>`;
   if(state.sub==='tabela'){
     h+=`<div class="d-section-label">Medidas</div>`;
     if(d.tnTable){
@@ -165,13 +170,13 @@ function detailHTML(){
       tnRows().forEach(r=>{ h+=`<tr><td class="lbl" style="text-align:center">${r[0]}</td><td class="hl">${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`; });
       h+=`</tbody></table>`;
     } else if(d.table){
-      h+=`<table class="meas-table"><thead><tr>`+d.table.cols.map(c=>`<th>${c}</th>`).join('')+`</tr></thead><tbody>`;
-      d.table.rows.forEach(r=>{ h+=`<tr>`+r.map((c,i)=>`<td class="${i===0?'lbl':''}">${c}</td>`).join('')+`</tr>`; });
+      h+=`<table class="meas-table"><thead><tr>`+d.table.cols.map(c=>`<th>${esc(c)}</th>`).join('')+`</tr></thead><tbody>`;
+      d.table.rows.forEach(r=>{ h+=`<tr>`+r.map((c,i)=>`<td class="${i===0?'lbl':''}">${esc(c)}</td>`).join('')+`</tr>`; });
       h+=`</tbody></table>`;
     } else if(d.meas){
-      d.meas.forEach(m=>{ h+=`<div class="kv"><span class="k">${m[0]}</span><span class="v">${m[1]}</span></div>`; });
+      d.meas.forEach(m=>{ h+=`<div class="kv"><span class="k">${esc(m[0])}</span><span class="v">${esc(m[1])}</span></div>`; });
     }
-    if(d.note) h+=`<div class="note">${d.note}</div>`;
+    if(d.note) h+=`<div class="note">${esc(d.note)}</div>`;
     h+=refsHTML(d);
   }
   else if(state.sub==='calc'){
@@ -179,14 +184,14 @@ function detailHTML(){
   }
   else if(state.sub==='exame'){
     if(d.exam){
-      if(d.exam.prep&&d.exam.prep!=='—'){h+=`<div class="d-section-label">Preparo</div><div class="note">${d.exam.prep}</div>`;}
-      if(d.exam.position&&d.exam.position!=='—'){h+=`<div class="d-section-label">Posicionamento</div><div class="note">${d.exam.position}</div>`;}
-      if(d.exam.points){h+=`<div class="d-section-label">Pontos-chave</div><ul class="pts">`+d.exam.points.map(p=>`<li>${p}</li>`).join('')+`</ul>`;}
+      if(d.exam.prep&&d.exam.prep!=='—'){h+=`<div class="d-section-label">Preparo</div><div class="note">${esc(d.exam.prep)}</div>`;}
+      if(d.exam.position&&d.exam.position!=='—'){h+=`<div class="d-section-label">Posicionamento</div><div class="note">${esc(d.exam.position)}</div>`;}
+      if(d.exam.points){h+=`<div class="d-section-label">Pontos-chave</div><ul class="pts">`+d.exam.points.map(p=>`<li>${esc(p)}</li>`).join('')+`</ul>`;}
     } else { h+=`<div class="empty">Sem dados de exame para este item.</div>`; }
   }
   else if(state.sub==='tecnica'){
     if(d.exam&&d.exam.technique){
-      h+=`<div class="d-section-label">Técnica</div><div class="note">${d.exam.technique}</div>`;
+      h+=`<div class="d-section-label">Técnica</div><div class="note">${esc(d.exam.technique)}</div>`;
       h+=`<div class="tech-fig">${probeFig()}<div class="tech-cap">Posicionamento do transdutor (esquemático)</div></div>`;
       h+=`<div class="d-section-label">Ultrassom</div><div class="us-img">${usFig()}</div>`;
     } else { h+=`<div class="empty">Sem dados de técnica para este item.</div>`; }
@@ -206,7 +211,7 @@ function calcHTML(d){
         <div class="calc-row"><label>Altura</label><input id="ci2" type="number" inputmode="decimal"><span class="unit">cm</span></div>
         <div class="calc-row"><label>Transv.</label><input id="ci3" type="number" inputmode="decimal"><span class="unit">cm</span></div>`;
   } else {
-    h+=`<div class="calc-row"><label>${c?c.label:'CCN'}</label><input id="ci1" type="number" inputmode="decimal"><span class="unit">${c?c.unit:'mm'}</span></div>`;
+    h+=`<div class="calc-row"><label>${esc(c?c.label:'CCN')}</label><input id="ci1" type="number" inputmode="decimal"><span class="unit">${esc(c?c.unit:'mm')}</span></div>`;
   }
   h+=`<button class="calc-btn" onclick="doCalc()">CALCULAR</button>
       <div class="calc-out" id="calcout"></div></div>`;

@@ -7,7 +7,7 @@
    - API do Supabase (/rest/v1): network-first; em falha, último bom cache.
    Suba a versão do CACHE ao publicar mudanças para forçar atualização.
    ========================================================================= */
-const VERSION = 'v0.2.0';
+const VERSION = 'v0.3.0';
 const APP_CACHE = `ultraref-app-${VERSION}`;
 const DATA_CACHE = `ultraref-data-${VERSION}`;
 
@@ -51,8 +51,10 @@ self.addEventListener('fetch', (event) => {
   if (url.pathname.startsWith('/rest/v1/') || url.hostname.endsWith('supabase.co')) {
     event.respondWith(
       fetch(req).then((res) => {
-        const copy = res.clone();
-        caches.open(DATA_CACHE).then((c) => c.put(req, copy)).catch(() => {});
+        if (res && res.ok) {
+          const copy = res.clone();
+          caches.open(DATA_CACHE).then((c) => c.put(req, copy)).catch(() => {});
+        }
         return res;
       }).catch(() => caches.match(req))
     );
@@ -66,8 +68,10 @@ self.addEventListener('fetch', (event) => {
   if (req.mode === 'navigate') {
     event.respondWith(
       fetch(req).then((res) => {
-        const copy = res.clone();
-        caches.open(APP_CACHE).then((c) => c.put('/index.html', copy)).catch(() => {});
+        if (res && res.ok) {
+          const copy = res.clone();
+          caches.open(APP_CACHE).then((c) => c.put('/index.html', copy)).catch(() => {});
+        }
         return res;
       }).catch(() => caches.match(req).then((r) => r || caches.match('/index.html')))
     );
