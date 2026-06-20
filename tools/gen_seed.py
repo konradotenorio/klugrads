@@ -28,7 +28,7 @@ def pop_ok(pop, k):
     if pop == 'Adultos':
         return 'Pediatrico' not in k and 'Fetal' not in k
     if pop == 'Pediatria':
-        return 'Pediatrico' in k
+        return 'Adulto' not in k and 'Fetal' not in k   # aceita 'Pediatrico' OU neutro (ex.: Piloro)
     return True
 
 def grid_from_cells(cells):
@@ -196,21 +196,56 @@ def parse_chart(chart_name):
     body = [[r.get(f, '') for f in fields] for r in rows]
     return {'fields': fields, 'header': header, 'rows': body}
 
-# anexa charts aos itens conforme blueprint
+# charts pediátricos (idade-dependentes) por token de item
+CHART_MAP = {
+    'BacoPediatrico': ['MedidaBacoPediatrico'],
+    'FigadoPediatrico': ['MedidaFigadoLoboDireito'],
+    'PancreasPediatrico': ['ComprimentoPancreasSiegel'],
+    'RimPediatrico': ['ComprimentoRimRosenbaum'],
+    'TireoidePediatrico': ['MedidaTireoidePediatrico'],
+    'BexigaPediatrico': ['MedidaBexigaPediatricoBVI', 'MedidaBexigaPediatricoBVWI'],
+    'VeiaPortaPediatrico': ['MedidaVeiaPortaMenina', 'MedidaVeiaPortaMenino'],
+    'VBTBPediatrico': ['MedidaVBPediatrico'],
+    'OvariosPediatrico': ['MedidaOvariosPediatrico'],
+    'UteroPediatrico': ['DiametroUteroPediatrico', 'VolumeUteroPediatrico'],
+    'TesticulosPediatrico': ['MedidaTesticulosPediatrico'],
+    'AlcasIntestinaisPediatrico': ['MedidaAlcasIntestinaisPediatrico'],
+}
+def humanize(name):
+    n = re.sub(r'^Medida', '', name)
+    n = re.sub(r'(Pediatrico|Fetal)$', '', n)
+    n = re.sub(r'([a-z])([A-Z])', r'\1 \2', n)
+    return n.strip()
+
 by_id = {it['id']: it for it in items}
 chart_attached = 0
 for pop, sections in blueprint.items():
     if pop.startswith('_'): continue
     for region, lst in sections.items():
         for it in lst:
-            if not it.get('chart'): continue
-            iid = slug(pop + '-' + it['token'])
-            entry = by_id.get(iid)
-            if not entry: continue
-            ch = parse_chart(it['chart'])
-            if ch:
-                entry['chart'] = ch        # dados numéricos exatos (para tabela/calculadora)
-                chart_attached += 1
+            names = ([it['chart']] if it.get('chart') else []) + CHART_MAP.get(it['token'], [])
+            if not names:
+                continue
+            entry = by_id.get(slug(pop + '-' + it['token']))
+            if not entry:
+                continue
+            parsed = [(nm, parse_chart(nm)) for nm in names]
+            parsed = [(nm, ch) for nm, ch in parsed if ch]
+            if not parsed:
+                continue
+            # remove tabelas-stub (só cabeçalho) antes de anexar os charts
+            if entry.get('tables'):
+                kept = [t for t in entry['tables'] if len(t.get('rows', [])) > 1]
+                if kept:
+                    entry['tables'] = kept
+                else:
+                    entry.pop('tables', None)
+            tbls = entry.get('tables', [])
+            for nm, ch in parsed:
+                tbls.append({'title': humanize(nm), 'rows': [ch['header']] + ch['rows']})
+            entry['tables'] = tbls
+            entry['chart'] = {'header': parsed[0][1]['header'], 'rows': parsed[0][1]['rows']}
+            chart_attached += 1
 
 json.dump(items, open(os.path.join(BASE, 'items.generated.json'), 'w'), ensure_ascii=False, indent=1)
 
