@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build / tooling
+.vercel/
+.cache/
+dist/
+
+# Env / secrets (Supabase service keys, etc. — nunca commitar)
+.env
+.env.*
+!.env.example
+*.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*

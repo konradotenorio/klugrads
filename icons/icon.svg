@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1014"/>
+      <stop offset="1" stop-color="#10302e"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#33b3a6"/>
+      <stop offset="1" stop-color="#5aa9e6"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <!-- cone de varredura (scan cone) -->
+  <path d="M256 92 L398 400 L114 400 Z" fill="#33b3a6" opacity="0.12"/>
+  <!-- forma de onda ultrassonográfica, dentro da zona segura (~120..392) -->
+  <path d="M150 300 C188 192 224 188 256 286 C282 362 318 210 362 210"
+        fill="none" stroke="url(#wave)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- marcas de caliper (+) nas extremidades -->
+  <g stroke="#e8edf3" stroke-width="11" stroke-linecap="round">
+    <path d="M136 300 l28 0 M150 286 l0 28"/>
+    <path d="M348 210 l28 0 M362 196 l0 28"/>
+  </g>
+</svg>
