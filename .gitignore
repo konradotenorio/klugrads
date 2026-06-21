@@ -5,6 +5,7 @@ node_modules/
 .vercel/
 .cache/
 dist/
+.claude/
 
 # Env / secrets (Supabase service keys, etc. — nunca commitar)
 .env
