@@ -561,7 +561,7 @@ const TIRADS_CATS = {
   shape: {label:'Formato',       opts:[['Mais largo que alto',0],['Mais alto que largo',3]]},
   margin:{label:'Margens',       opts:[['Regular / lisa',0],['Mal definida',0],['Lobulada / irregular',2],['Ext. extratireoidiana',3]]},
 };
-const TIRADS_FOCI = [['Nenhum / cauda de cometa',0],['Macrocalcificações',1],['Calcificação periférica',2],['Focos puntiformes',3]];
+const TIRADS_FOCI = [['Nenhum / cauda de cometa',0,'Nenhum'],['Macrocalcificações',1,'Macrocalc.'],['Calcificação periférica',2,'Calc. perif.'],['Focos puntiformes',3,'Puntiformes']];
 const TIRADS_TRC = {
   1:{c:'#138a5b',bg:'#138a5b22',name:'Benigno'},
   2:{c:'#3f8c1f',bg:'#3f8c1f22',name:'Não suspeito'},
@@ -576,7 +576,7 @@ const TIRADS_REFS = [
 ];
 
 function tiradsNewNodule(){ return {comp:null,echo:null,shape:null,margin:null,foci:[0],size:'',name:''}; }
-function tiradsState(){ if(!state.tirads) state.tirads={nodules:[tiradsNewNodule()],openFoci:null}; return state.tirads; }
+function tiradsState(){ if(!state.tirads) state.tirads={nodules:[tiradsNewNodule()]}; return state.tirads; }
 function tiradsTrLevel(p){ if(p<=0)return 1; if(p<=2)return 2; if(p===3)return 3; if(p<=6)return 4; return 5; }
 function tiradsFociPts(arr){ return (arr||[]).reduce((a,i)=>a+TIRADS_FOCI[i][1],0); }
 function tiradsEval(n){
@@ -595,12 +595,6 @@ function tiradsRec(tr,size,auto){
   if(s>=t.fu)  return {a:'Seguimento ecográfico', b:`abaixo do limiar de PAAF (${tiradsCm(t.fna)})`};
   return {a:'Sem conduta adicional', b:`abaixo do limiar de seguimento (${tiradsCm(t.fu)})`};
 }
-function tiradsFociSummary(arr){
-  const sel=(arr||[]).filter(i=>i!==0);
-  if(!sel.length) return 'Nenhum';
-  return sel.map(i=>TIRADS_FOCI[i][0].replace(' / cauda de cometa','')).join(' + ');
-}
-
 function calcTiradsHTML(){
   const ts=tiradsState(); const ns=ts.nodules;
   let rail = `<div class="ti-rail">`;
@@ -651,22 +645,14 @@ function tiradsCardHTML(n,i){
       <div class="ti-fp">${ptv}</div>
     </div>`;
   });
-  const open = ts.openFoci===i;
-  const fsum = tiradsFociSummary(n.foci); const fpts = tiradsFociPts(n.foci);
-  let fociPanel='';
-  if(open){
-    fociPanel = `<div class="ti-foci-panel">`+ TIRADS_FOCI.map((o,oi)=>{
-      const on=(n.foci||[]).indexOf(oi)>=0;
-      return `<div class="ti-foci-opt ${on?'on':''}" onclick="event.stopPropagation();tiradsToggleFoci(${i},${oi})">`
-        + `<span class="ck">${on?'✓':''}</span><span class="fl">${esc(o[0])}</span><span class="fpt">${o[1]} pt</span></div>`;
-    }).join('') +`</div>`;
-  }
-  const fociField = `<div class="ti-field">
+  const fpts = tiradsFociPts(n.foci);
+  const fociChips = TIRADS_FOCI.map((o,oi)=>{
+    const on=(n.foci||[]).indexOf(oi)>=0;
+    return `<div class="ti-ftog ${on?'on':''}" onclick="tiradsToggleFoci(${i},${oi})">${esc(o[2])}<span class="n">${o[1]}</span></div>`;
+  }).join('');
+  const fociField = `<div class="ti-field ti-field-foci">
     <label>Focos<br>ecogênicos</label>
-    <div class="ti-selwrap">
-      <div class="ti-foci-trigger ${open?'open':''}" onclick="tiradsToggleFociPanel(${i})"><span class="${fsum==='Nenhum'?'empty':''}">${esc(fsum)}</span></div>
-      ${fociPanel}
-    </div>
+    <div class="ti-foci">${fociChips}</div>
     <div class="ti-fp">${fpts}</div>
   </div>`;
   const sizeField = `<div class="ti-field">
@@ -694,8 +680,7 @@ function tiradsCardHTML(n,i){
 }
 
 function tiradsRerender(){ const s=$('scroll'); if(!s) return; const top=s.scrollTop; s.innerHTML=calcTiradsHTML(); s.scrollTop=top; }
-function tiradsSetSel(i,key,val){ const ts=tiradsState(); ts.nodules[i][key]= val===''?null:parseInt(val,10); ts.openFoci=null; tiradsRerender(); }
-function tiradsToggleFociPanel(i){ const ts=tiradsState(); ts.openFoci = ts.openFoci===i ? null : i; tiradsRerender(); }
+function tiradsSetSel(i,key,val){ const ts=tiradsState(); ts.nodules[i][key]= val===''?null:parseInt(val,10); tiradsRerender(); }
 function tiradsToggleFoci(i,oi){
   const ts=tiradsState(); const n=ts.nodules[i]; let f=(n.foci||[]).slice();
   if(oi===0){ f=[0]; }
@@ -709,9 +694,9 @@ function tiradsSetSize(i,val){
   const res=card.querySelector('.ti-res'); if(res){ const a=res.querySelector('.a'),b=res.querySelector('.b'); if(a)a.textContent=r.a; if(b)b.textContent=r.b; }
 }
 function tiradsSetName(i,val){ const ts=tiradsState(); ts.nodules[i].name=val; const rn=$('ti-rn-'+i); if(rn) rn.textContent=val||('N'+(i+1)); }
-function tiradsAdd(){ const ts=tiradsState(); ts.nodules.push(tiradsNewNodule()); ts.openFoci=null; tiradsRerender();
+function tiradsAdd(){ const ts=tiradsState(); ts.nodules.push(tiradsNewNodule()); tiradsRerender();
   setTimeout(()=>{ const c=$('ti-card-'+(ts.nodules.length-1)); if(c) c.scrollIntoView({behavior:'smooth',block:'center'}); },30); }
-function tiradsDel(i){ const ts=tiradsState(); ts.nodules.splice(i,1); if(!ts.nodules.length) ts.nodules.push(tiradsNewNodule()); ts.openFoci=null; tiradsRerender(); }
+function tiradsDel(i){ const ts=tiradsState(); ts.nodules.splice(i,1); if(!ts.nodules.length) ts.nodules.push(tiradsNewNodule()); tiradsRerender(); }
 function tiradsScrollTo(i){ const c=$('ti-card-'+i); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); }
 
 /* ---- 5. FAVORITOS ---- */
