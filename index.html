@@ -84,7 +84,7 @@
   }
   .hbtn:active{opacity:.5;}
   .htitle-wrap{flex:1;text-align:center;min-width:0;padding:0 2px;}
-  .htitle{font-size:17px;font-weight:730;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .htitle{font-size:22px;font-weight:750;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .hsub{font-size:11.5px;color:var(--dim);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .hact{flex:none;display:flex;align-items:center;gap:2px;justify-content:flex-end;min-width:42px;}
   .iconbtn{
@@ -106,9 +106,9 @@
   .lc{position:relative;padding-top:calc(env(safe-area-inset-top) + 16px);padding-bottom:30px;}
   .lc-toggle{position:absolute;top:calc(env(safe-area-inset-top) + 8px);right:12px;z-index:2;}
   .lc-head{padding:10px 24px 2px;}
-  .lc-brand{font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:800;color:var(--accent);}
+  .lc-brand{font-size:34px;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:var(--accent);text-align:center;display:block;margin-bottom:4px;}
   .lc-brand span{color:var(--dim);}
-  .lc-greet{font-size:27px;font-weight:750;margin-top:10px;letter-spacing:-.025em;line-height:1.05;}
+  .lc-greet{font-size:22px;font-weight:750;margin-top:8px;letter-spacing:-.02em;line-height:1.1;}
   .lc-sub{color:var(--dim);font-size:15px;margin-top:5px;}
   .lc-b{padding:20px 18px 0;display:flex;flex-direction:column;gap:13px;}
   .lc-top{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
@@ -151,7 +151,9 @@
   .rsearch input:focus{border-color:var(--accent);}
 
   /* ---------- Faixa etária (chips roláveis) ---------- */
-  .sec-label{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);font-weight:700;padding:8px 18px 2px;}
+  .sec-label{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);font-weight:700;padding:8px 18px 2px;text-align:center;}
+  .subbandrow{display:flex;gap:10px;padding:6px 16px 12px;}
+  .subbandrow .chip{flex:1;text-align:center;}
   .bandzone{position:relative;}
   .bandrow{display:flex;gap:8px;overflow-x:auto;padding:8px 16px 14px;}
   .bandrow::-webkit-scrollbar{display:none;}
@@ -288,6 +290,100 @@
   .pick-row .nm{font-size:14.5px;font-weight:600;}
   .pick-row .meta{font-size:11.5px;color:var(--dim);}
   .compose-empty{text-align:center;padding:30px 30px 18px;color:var(--dim);font-size:14px;line-height:1.5;}
+
+  /* -------- Tela de Modalidades -------- */
+  .modal-screen{
+    position:relative;padding-top:calc(env(safe-area-inset-top) + 16px);
+    padding-bottom:24px;display:flex;flex-direction:column;min-height:100%;
+  }
+  .mod-themebtn{position:absolute;top:calc(env(safe-area-inset-top)+8px);right:12px;z-index:2;}
+  .modal-head{padding:14px 24px 20px;}
+  .modal-brand{
+    font-size:34px;letter-spacing:.18em;text-transform:uppercase;font-weight:800;
+    color:var(--accent);text-align:center;display:block;margin-bottom:2px;
+  }
+  .modal-brand span{color:var(--dim);}
+  .modal-slogan{font-size:13px;font-style:italic;color:var(--dim);text-align:center;margin-top:0;margin-bottom:18px;}
+  .modal-title{font-size:22px;font-weight:750;letter-spacing:-.02em;line-height:1.1;text-align:left;}
+  .modal-sub{color:var(--dim);font-size:14px;margin-top:5px;text-align:left;}
+  .modal-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 18px 14px;}
+  .mod-card{
+    background:var(--sf);border:1px solid var(--line);border-radius:18px;
+    padding:14px 8px 12px;display:flex;flex-direction:column;align-items:center;
+    cursor:pointer;text-align:center;box-shadow:var(--shadow);gap:6px;
+  }
+  .mod-card:active{opacity:.65;}
+  .mod-card.active{border-color:var(--accent);}
+  .mod-icon{
+    width:44px;height:44px;border-radius:13px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--accent);background:var(--accentSoft);
+  }
+  .mod-card.locked .mod-icon{color:var(--dim);background:var(--sf2);}
+  .mod-name{font-size:11px;font-weight:680;line-height:1.3;color:var(--tx);}
+  .mod-card.locked .mod-name{color:var(--dim);}
+  .mod-badge{font-size:9px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--dim);background:var(--sf2);padding:2px 6px;border-radius:5px;}
+  .modal-shortcuts{display:flex;flex-direction:column;gap:10px;padding:0 18px 18px;}
+
+  /* Tela em construção */
+  .constr-screen{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-height:55vh;text-align:center;padding:40px 30px;
+  }
+  .constr-icon{
+    width:80px;height:80px;border-radius:24px;background:var(--sf);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;color:var(--dim);margin-bottom:20px;
+  }
+  .constr-name{font-size:21px;font-weight:740;letter-spacing:-.02em;margin-bottom:8px;}
+  .constr-sub{font-size:14px;color:var(--dim);line-height:1.55;max-width:260px;}
+  .constr-badge{margin-top:20px;padding:9px 22px;border-radius:12px;background:var(--sf);border:1px solid var(--line);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+
+  /* Botão voltar na home (launcher) */
+  .lc-back{position:absolute;top:calc(env(safe-area-inset-top)+8px);left:12px;z-index:2;color:var(--accent);}
+
+  /* ---- TFG Calculator ---- */
+  .tfg-wrap{padding:16px 18px 36px;display:flex;flex-direction:column;gap:14px;}
+  .tfg-card{background:var(--sf);border:1px solid var(--line);border-radius:18px;padding:16px 18px;box-shadow:var(--shadow);}
+  .tfg-sec-lbl{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;}
+  .tfg-field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+  .tfg-field:last-child{margin-bottom:0;}
+  .tfg-field-lbl{font-size:13px;font-weight:650;color:var(--dim);}
+  .tfg-input{background:var(--bg);border:1.5px solid var(--line);border-radius:11px;padding:12px 14px;font-size:18px;font-weight:650;color:var(--tx);width:100%;box-sizing:border-box;outline:none;-webkit-appearance:none;}
+  .tfg-input:focus{border-color:var(--accent);}
+  .tfg-toggle{display:flex;gap:8px;}
+  .tfg-opt{flex:1;padding:12px 0;border-radius:11px;border:1.5px solid var(--line);background:var(--bg);color:var(--dim);font-size:15px;font-weight:650;cursor:pointer;text-align:center;transition:border-color .12s,background .12s,color .12s;}
+  .tfg-opt.on{border-color:var(--accent);background:var(--accentSoft);color:var(--accent);}
+  .tfg-btn{background:var(--accent);color:var(--accentInk);border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:750;cursor:pointer;width:100%;letter-spacing:.04em;}
+  .tfg-btn:active{opacity:.8;}
+  .tfg-result{text-align:center;padding:10px 4px 6px;}
+  .tfg-result-num{font-size:58px;font-weight:800;letter-spacing:-.04em;line-height:1;color:var(--tx);}
+  .tfg-result-unit{font-size:12px;color:var(--dim);margin-top:5px;letter-spacing:.04em;text-transform:uppercase;}
+  .tfg-stage-badge{display:inline-block;margin-top:16px;padding:7px 22px;border-radius:12px;font-size:14px;font-weight:750;letter-spacing:.06em;}
+  .tfg-stage-desc{font-size:13px;color:var(--dim);margin-top:10px;line-height:1.55;}
+  .tfg-formula{font-size:13px;color:var(--dim);line-height:1.7;font-family:ui-monospace,monospace;}
+  .tfg-formula small{font-size:11px;display:block;margin-top:4px;opacity:.75;}
+  .tfg-ref-list{display:flex;flex-direction:column;}
+  .tfg-ref-item{font-size:12px;color:var(--dim);line-height:1.6;padding:7px 0;border-bottom:1px solid var(--line);}
+  .tfg-ref-item:last-child{border-bottom:none;}
+  .tfg-empty{font-size:13px;color:var(--dim);text-align:center;padding:12px 0;}
+
+  /* ---- Drum / Wheel Picker (iOS-style) ---- */
+  .drum-row{display:flex;gap:12px;margin-bottom:14px;}
+  .drum-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .drum-label{font-size:12px;font-weight:650;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;}
+  .drum-shell{position:relative;height:220px;width:100%;overflow:hidden;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);}
+  .drum-scroller{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .drum-scroller::-webkit-scrollbar{display:none;}
+  .drum-pad{height:88px;flex-shrink:0;}
+  .drum-item{height:44px;display:flex;align-items:center;justify-content:center;scroll-snap-align:center;font-size:22px;font-weight:650;color:var(--tx);user-select:none;}
+  .drum-unit{font-size:12px;color:var(--dim);font-weight:600;letter-spacing:.04em;}
+  .drum-fade-top{position:absolute;top:0;left:0;right:0;height:96px;background:linear-gradient(to bottom,var(--bg) 10%,transparent);pointer-events:none;z-index:2;}
+  .drum-fade-bot{position:absolute;bottom:0;left:0;right:0;height:96px;background:linear-gradient(to top,var(--bg) 10%,transparent);pointer-events:none;z-index:2;}
+  .drum-sel{position:absolute;top:88px;left:10px;right:10px;height:44px;border-top:1.5px solid var(--accent);border-bottom:1.5px solid var(--accent);border-radius:8px;background:var(--accentSoft);pointer-events:none;z-index:1;}
+
+  /* Calc list */
+  .calc-list-wrap{padding:16px 18px;display:flex;flex-direction:column;gap:10px;}
+  .calc-intro-lbl{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px;padding:0 2px;}
 </style>
 </head>
 <body>

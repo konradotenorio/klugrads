@@ -1,4 +1,4 @@
-/* =========================================================================
+﻿/* =========================================================================
    RadRef — app de referência em ultrassonografia (PT-BR).
    Conteúdo reconstruído a partir do app MedUltra (propriedade do usuário).
    FERRAMENTA EDUCACIONAL — não substitui o julgamento clínico.
@@ -40,6 +40,7 @@ const P = {
   table:'<rect x="3" y="8" width="18" height="8" rx="1"/><path d="M7 8v3M11 8v4M15 8v3M19 8v4"/>',
   exam:'<circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/>',
   tech:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>',
+  tools:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
 };
 function svgIcon(inner, size, o){
   o = o || {};
@@ -55,21 +56,50 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>ESC_MAP[c]);
 function nl2br(s){ return esc(s).replace(/\r?\n/g,'<br>'); }
 const $ = id=>document.getElementById(id);
 
-/* ---- Calculadoras (estrutura; cálculo real é passo futuro) ---- */
-const CALCS = [
-  {k:'tirads', tag:'TR', n:'ACR TI-RADS', d:'Estratificação de nódulos tireoidianos', org:'Tireoide',
-    steps:['Pontue composição, ecogenicidade, forma, margens e focos ecogênicos','Some os pontos para obter o nível TR1–TR5','Receba a conduta: seguimento ou PAAF conforme tamanho']},
-  {k:'birads', tag:'BR', n:'BI-RADS', d:'Categorização de achados mamários', org:'Mama',
-    steps:['Selecione os descritores do achado','Defina a categoria 0–6','Veja a recomendação de conduta correspondente']},
-  {k:'orads', tag:'OR', n:'O-RADS US', d:'Risco de malignidade de lesão ovariana', org:'Ovário',
-    steps:['Classifique a lesão (cística, sólida, mista)','Some os descritores morfológicos','Obtenha a categoria O-RADS 1–5']},
-  {k:'pirads', tag:'PR', n:'PI-RADS v2.1', d:'Lesões prostáticas na RM', org:'Próstata',
-    steps:['Avalie T2 e difusão por zona','Defina o escore dominante','Calcule a categoria final 1–5']},
-  {k:'fleischner', tag:'FL', n:'Fleischner 2017', d:'Seguimento de nódulo pulmonar incidental', org:'Pulmão',
-    steps:['Informe tamanho e tipo do nódulo','Indique risco do paciente','Receba o intervalo de seguimento por TC']},
-  {k:'bosniak', tag:'BK', n:'Bosniak 2019', d:'Classificação de cistos renais complexos', org:'Rim',
-    steps:['Descreva septos, paredes e realce','Defina a categoria I–IV','Veja o risco de malignidade e a conduta']},
+/* ---- Modalidades de diagnóstico por imagem ---- */
+const MODALITIES = [
+  {id:'rx',   name:'Radiografia',                label:'Radiografia',                  active:false,
+   icon:'<rect x="5" y="2" width="14" height="20" rx="1.5"/><path d="M9 7h6M8 11h3M8 15h3M13 11h3M13 15h3"/>'},
+  {id:'mamo', name:'Mamografia',                 label:'Mamografia',                   active:false,
+   icon:'<path d="M6 19C6 12 9 5 12 5s6 7 6 14"/><line x1="3" y1="19" x2="21" y2="19"/><path d="M7.5 19c.8-3.5 2.5-5.5 4.5-5.5s3.7 2 4.5 5.5"/>'},
+  {id:'dxa',  name:'Densitometria Óssea',        label:'Densitometria<br>Óssea',       active:false,
+   icon:'<circle cx="9" cy="5" r="3"/><circle cx="15" cy="19" r="3"/><path d="M9 8l6 8"/>'},
+  {id:'us',   name:'Ultrassonografia',           label:'Ultrassonografia',             active:true,
+   icon:'<rect x="9" y="14" width="6" height="7" rx="3"/><path d="M7 12c1-2.5 2.5-4 5-4s4 1.5 5 4"/><path d="M4 10C5.5 5.5 8.5 4 12 4s6.5 1.5 8 6"/>'},
+  {id:'tc',   name:'Tomografia Computadorizada', label:'Tomografia<br>Computadorizada',active:false,
+   icon:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/>'},
+  {id:'rm',   name:'Ressonância Magnética',      label:'Ressonância<br>Magnética',     active:false,
+   icon:'<rect x="3" y="7" width="18" height="10" rx="5"/><ellipse cx="12" cy="12" rx="3.5" ry="4"/><path d="M8 7V5M16 7V5M8 17v2M16 17v2"/>'},
 ];
+
+/* ---- Especialidades de US ---- */
+const SPECIALTIES = [
+  {id:'neurocab',   name:'Neuro, Cabeça e Pescoço', regions:['Cabeça e Pescoço','Pequenas Partes'],                                                                           hasSub:true,  groups:['Pediatria','Adultos'], excludeNames:['Derrame Pleural']},
+  {id:'torax',      name:'Tórax',               regions:[],                                                                                                                    hasSub:true,  groups:['Pediatria','Adultos'], includeNames:['Derrame Pleural']},
+  {id:'abdome',     name:'Abdome',               regions:['Abdome superior','Retroperitônio','Trato Gastrintestinal','Trato Genital - Feminino','Trato Genital - Masculino','Trato Urinário'], hasSub:true,  groups:['Pediatria','Adultos']},
+  {id:'musculo',    name:'Musculoesquelético',   regions:['Ossos Longos'],                                                                                                      hasSub:true,  groups:['Pediatria','Adultos']},
+  {id:'obstetrico', name:'Obstétrico e Fetal',   regions:['1º Trimestre','2º e 3º Trimestres','Ossos Longos','Cabeça e Pescoço'],                                            hasSub:false, groups:['Fetal']},
+];
+
+/* ---- Taxa de Filtração Glomerular (MDRD) ---- */
+const TFG_STAGES = [
+  {stage:'I',    min:90,  max:Infinity, label:'Estágio I',    desc:'Função renal normal ou aumentada. Lesão renal com TFG preservada.',              clr:'#16a34a', bg:'#16a34a22'},
+  {stage:'II',   min:60,  max:89,       label:'Estágio II',   desc:'Lesão renal com leve redução da TFG.',                                            clr:'#0891b2', bg:'#0891b222'},
+  {stage:'IIIa', min:45,  max:59,       label:'Estágio IIIa', desc:'Redução leve a moderada da TFG.',                                                 clr:'#d97706', bg:'#d9770622'},
+  {stage:'IIIb', min:30,  max:44,       label:'Estágio IIIb', desc:'Redução moderada a grave da TFG.',                                                clr:'#ea580c', bg:'#ea580c22'},
+  {stage:'IV',   min:15,  max:29,       label:'Estágio IV',   desc:'Redução grave da TFG. Preparar para terapia renal substitutiva.',                 clr:'#dc2626', bg:'#dc262622'},
+  {stage:'V',    min:0,   max:14,       label:'Estágio V',    desc:'Falência renal. Necessidade de diálise ou transplante.',                          clr:'#ef4444', bg:'#7f1d1d55'},
+];
+const TFG_REFS = [
+  'Levey AS et al. A more accurate method to estimate glomerular filtration rate from serum creatinine: a new prediction equation. Ann Intern Med. 1999;130(6):461–70.',
+  'Levey AS et al. New equation to estimate glomerular filtration rate. Ann Intern Med. 2009;150:604–612.',
+  'Vyas DA, et al. Hidden in Plain Sight — Reconsidering the Use of Race Correction in Clinical Algorithms. N Engl J Med. 2020;383(9):874–882.',
+  'Rocha AD, et al. Validation of CKD-EPI and MDRD Formulas for Glomerular Filtration Rate Estimation in Brazilian Patients. Int J Nephrol. 2020;2020:2141038.',
+];
+
+/* Valores dos drums */
+const CR_VALUES = Array.from({length:200},(_,i)=>((i+1)*0.1).toFixed(1));  // '0.1'…'20.0'
+const AGE_VALUES = Array.from({length:120},(_,i)=>String(i+1));             // '1'…'120'
 
 /* ---- DADOS (seed offline; sync opcional com Supabase) ---- */
 function hydrate(items){
@@ -108,29 +138,42 @@ async function syncData(){
 
 /* ---- ESTADO ---- */
 let state = {
-  view:'home', theme:'dark', band:'Pediátrico', query:'',
+  view:'modality', theme:'dark', specialty:'abdome', subBand:'Adultos', query:'',
   item:null, sub:'tabela',
-  favs:[], favCalcs:[], lists:[],
-  newName:'', composingId:null, calcStub:null,
+  favs:[], lists:[],
+  newName:'', composingId:null, modalityId:null,
+  calcId:null,
+  tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
 };
 
 function persist(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(_){} }
 function loadState(){
   try{ const t=localStorage.getItem('radref_theme'); if(t==='dark'||t==='light') state.theme=t; }catch(_){}
   try{ const f=JSON.parse(localStorage.getItem('radref_favs')||'[]'); if(Array.isArray(f)) state.favs=f; }catch(_){}
-  try{ const c=JSON.parse(localStorage.getItem('radref_favcalcs')||'[]'); if(Array.isArray(c)) state.favCalcs=c; }catch(_){}
   try{ const l=JSON.parse(localStorage.getItem('radref_lists')||'[]'); if(Array.isArray(l)) state.lists=l; }catch(_){}
 }
 
 /* ---- HELPERS de dados ---- */
-const BAND_GROUP = {'Obstétrico':'Fetal','Pediátrico':'Pediatria','Adulto':'Adultos'};
 const GROUP_BAND = {'Fetal':'Obstétrico','Pediatria':'Pediátrico','Adultos':'Adulto'};
-const BANDS = ['Obstétrico','Pediátrico','Adulto','Fertilidade','Doppler'];
 
-function bandItems(band){
-  if(band==='Doppler') return DATA.filter(d=>/Art[eé]ria/i.test(d.name));
-  if(band==='Fertilidade') return [];
-  return DATA.filter(d=>d.group===BAND_GROUP[band]);
+function specialtyItems(){
+  const sp = SPECIALTIES.find(x=>x.id===state.specialty);
+  if(!sp) return [];
+  let items = sp.regions.length
+    ? DATA.filter(d=>sp.regions.includes(d.region) && sp.groups.includes(d.group))
+    : [];
+  if(sp.includeNames && sp.includeNames.length){
+    const extra = DATA.filter(d=>sp.includeNames.includes(d.name) && sp.groups.includes(d.group));
+    extra.forEach(e=>{ if(!items.find(i=>i.id===e.id)) items.push(e); });
+  }
+  if(sp.excludeNames && sp.excludeNames.length){
+    items = items.filter(d=>!sp.excludeNames.includes(d.name));
+  }
+  if(sp.hasSub){
+    const grp = state.subBand==='Pediátrico' ? 'Pediatria' : 'Adultos';
+    items = items.filter(d=>d.group===grp);
+  }
+  return items;
 }
 function metaOf(d){ return [d.region, d.abbr].filter(Boolean).join(' · '); }
 
@@ -144,7 +187,7 @@ function render(keep){
   const v = state.view;
   // header
   const hdr = $('hdr');
-  if(v==='home'){ hdr.className='hdr hide'; hdr.innerHTML=''; }
+  if(v==='home' || v==='modality'){ hdr.className='hdr hide'; hdr.innerHTML=''; }
   else { hdr.className='hdr'; hdr.innerHTML = headerHTML(); }
   // corpo
   const s = $('scroll');
@@ -152,6 +195,7 @@ function render(keep){
   s.innerHTML = viewHTML();
   s.className = keep ? 'scroll' : 'scroll fade';
   s.scrollTop = top;
+  if(v==='calc' && state.calcId==='tfg') setTimeout(initDrums, 0);
   // sub-abas
   const sub = $('subtabs');
   if(v==='detail'){ sub.className='subtabs'; sub.innerHTML = subtabsHTML(); }
@@ -163,25 +207,23 @@ function applyTheme(){
   if(m) m.setAttribute('content', state.theme==='light'?'#eceff3':'#0e1216');
 }
 function renderHeader(){ $('hdr').innerHTML = headerHTML(); }
-function themeIcon(){ return state.theme==='dark' ? svgIcon(P.sun,21,{sw:1.8}) : svgIcon(P.moon,21,{sw:1.8}); }
+function themeIcon(){ return `<span style="font-size:21px;line-height:1">${state.theme==='dark'?'☀️':'🌙'}</span>`; }
 
 function headerHTML(){
   const v = state.view;
   let title='', sub='';
   if(v==='refs'){ title='Referências'; }
   else if(v==='detail'){ title=state.item?state.item.name:''; sub=(state.item&&state.item.abbr)?state.item.abbr:''; }
-  else if(v==='calc'){ title=state.calcStub?state.calcStub.n:'Calculadoras'; sub=state.calcStub?state.calcStub.org:''; }
+  else if(v==='calc'){ title = state.calcId==='tfg' ? 'Taxa de Filtração Glomerular' : 'Calculadoras'; }
+  else if(v==='ferramentas'){ title='Outras Ferramentas'; }
   else if(v==='favoritos'){ title='Favoritos'; }
   else if(v==='novalista'){ const cl=state.lists.find(x=>x.id===state.composingId); title=cl?cl.name:'Minhas listas'; sub=cl?'Lista personalizada':''; }
+  else if(v==='construction'){ const m=MODALITIES.find(x=>x.id===state.modalityId)||{}; title=m.name||'Em Construção'; }
 
   let right='';
   if(v==='detail' && state.item){
     const isFav = state.favs.indexOf(state.item.id)>=0;
     right += `<button class="iconbtn" style="color:${isFav?'var(--star)':'var(--dim)'}" onclick="toggleFav('${esc(state.item.id)}')" aria-label="Favoritar">${svgIcon(P.star,22,{fill:isFav?'currentColor':'none'})}</button>`;
-  }
-  if(v==='calc' && state.calcStub){
-    const isFav = state.favCalcs.indexOf(state.calcStub.k)>=0;
-    right += `<button class="iconbtn" style="color:${isFav?'var(--star)':'var(--dim)'}" onclick="toggleFavCalc('${esc(state.calcStub.k)}')" aria-label="Favoritar">${svgIcon(P.star,22,{fill:isFav?'currentColor':'none'})}</button>`;
   }
   right += `<button class="iconbtn" onclick="toggleTheme()" aria-label="Alternar tema">${themeIcon()}</button>`;
 
@@ -192,35 +234,41 @@ function headerHTML(){
 
 function viewHTML(){
   switch(state.view){
+    case 'modality': return modalityHTML();
     case 'home': return homeHTML();
     case 'refs': return refsHTML();
     case 'detail': return detailHTML();
     case 'calc': return calcViewHTML();
     case 'favoritos': return favHTML();
     case 'novalista': return listsHTML();
-    default: return homeHTML();
+    case 'construction': return constructionHTML();
+    case 'ferramentas': return ferramentasHTML();
+    default: return modalityHTML();
   }
 }
 
-/* ---- 1. LAUNCHER (home) ---- */
-function homeHTML(){
-  return `<div class="lc">
-    <button class="iconbtn lc-toggle" id="lc-themebtn" onclick="toggleTheme()" aria-label="Alternar tema">${themeIcon()}</button>
-    <div class="lc-head">
-      <div class="lc-brand">RAD<span>REF</span></div>
-      <div class="lc-greet">Bom plantão.</div>
-      <div class="lc-sub">O que você precisa agora?</div>
+/* ---- 0. MODALIDADES (tela inicial) ---- */
+function modalityHTML(){
+  const cards = MODALITIES.map(m=>`
+    <div class="mod-card ${m.active?'active':'locked'}" onclick="openModality('${m.id}')">
+      <div class="mod-icon">${svgIcon(m.icon,22)}</div>
+      <div class="mod-name">${m.label}</div>
+      ${!m.active?'<div class="mod-badge">Em construção</div>':''}
+    </div>`).join('');
+  return `<div class="modal-screen">
+    <button class="iconbtn mod-themebtn" id="mod-themebtn" onclick="toggleTheme()" aria-label="Alternar tema">${themeIcon()}</button>
+    <div class="modal-head">
+      <div class="modal-brand">RAD<span>REF</span></div>
+      <div class="modal-slogan">Sua referência em radiologia</div>
+      <div class="modal-title">Métodos de Diagnóstico</div>
+      <div class="modal-sub">Selecione uma modalidade</div>
     </div>
-    <div class="lc-b">
-      <div class="lc-top">
-        <div class="lc-card" onclick="setView('calc')">
-          <div class="lc-chip">${svgIcon(P.calc,26)}</div>
-          <div><div class="t">Calculadoras</div><div class="d">TI-RADS, BI-RADS, escores e fórmulas</div></div>
-        </div>
-        <div class="lc-card fill" onclick="setView('refs')">
-          <div class="lc-chip">${svgIcon(P.book,26)}</div>
-          <div><div class="t">Referências</div><div class="d">Medidas normais por órgão e idade</div></div>
-        </div>
+    <div class="modal-grid">${cards}</div>
+    <div class="modal-shortcuts">
+      <div class="lc-short" onclick="setView('ferramentas')">
+        <div class="si acc">${svgIcon(P.tools,22)}</div>
+        <div class="st"><div class="t">Outras Ferramentas</div><div class="d">Calculadoras e referências por especialidade</div></div>
+        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
       </div>
       <div class="lc-short" onclick="setView('favoritos')">
         <div class="si star">${svgIcon(P.star,23,{fill:'currentColor',noStroke:true})}</div>
@@ -236,29 +284,82 @@ function homeHTML(){
   </div>`;
 }
 
+/* ---- 1a. OUTRAS FERRAMENTAS ---- */
+function ferramentasHTML(){
+  return `<div class="lc-b">
+    <div class="lc-top">
+      <div class="lc-card" onclick="state.modalityId='us';setView('calc')">
+        <div class="lc-chip">${svgIcon(P.calc,26)}</div>
+        <div><div class="t">Calculadoras</div><div class="d">TI-RADS, BI-RADS, escores e fórmulas</div></div>
+      </div>
+      <div class="lc-card fill" onclick="state.modalityId='us';setView('refs')">
+        <div class="lc-chip">${svgIcon(P.book,26)}</div>
+        <div><div class="t">Referências</div><div class="d">Medidas normais por órgão e idade</div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---- 1b. LAUNCHER (home) ---- */
+function homeHTML(){
+  return `<div class="lc">
+    <button class="iconbtn lc-back" onclick="setView('modality')" aria-label="Voltar">${svgIcon(P.back,22,{sw:2.2})}</button>
+    <button class="iconbtn lc-toggle" id="lc-themebtn" onclick="toggleTheme()" aria-label="Alternar tema">${themeIcon()}</button>
+    <div class="lc-head">
+      <div class="lc-brand">RAD<span>REF</span></div>
+      <div class="lc-greet">Ultrassonografia</div>
+    </div>
+    <div class="lc-b">
+      <div class="lc-top">
+        <div class="lc-card" onclick="setView('calc')">
+          <div class="lc-chip">${svgIcon(P.calc,26)}</div>
+          <div><div class="t">Calculadoras</div><div class="d">TI-RADS, BI-RADS, escores e fórmulas</div></div>
+        </div>
+        <div class="lc-card fill" onclick="setView('refs')">
+          <div class="lc-chip">${svgIcon(P.book,26)}</div>
+          <div><div class="t">Referências</div><div class="d">Medidas normais por órgão e idade</div></div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
 /* ---- 2. REFERÊNCIAS (lista) ---- */
 function refsHTML(){
-  const chips = BANDS.map(b=>`<div class="chip ${state.band===b?'on':''}" onclick="setBand('${b}')">${esc(b)}</div>`).join('');
+  const sp = SPECIALTIES.find(x=>x.id===state.specialty);
+  const specChips = SPECIALTIES.map(s=>
+    `<div class="chip ${state.specialty===s.id?'on':''}" onclick="setSpecialty('${s.id}')">${esc(s.name)}</div>`
+  ).join('');
+  let subRow = '';
+  if(sp && sp.hasSub){
+    subRow = `<div class="sec-label">Faixa Etária</div>
+      <div class="subbandrow">
+        <div class="chip subbandchip ${state.subBand==='Pediátrico'?'on':''}" onclick="setSubBand('Pediátrico')">Pediátrico</div>
+        <div class="chip subbandchip ${state.subBand==='Adultos'?'on':''}" onclick="setSubBand('Adultos')">Adultos</div>
+      </div>`;
+  }
   return `<div class="rsearch"><div class="rsearch-box">
       <div class="rsearch-ic">${svgIcon(P.search,18,{sw:2})}</div>
       <input id="q" value="${esc(state.query)}" oninput="onSearch(this.value)" placeholder="Pesquisar órgão ou medida…">
     </div></div>
-    <div class="sec-label">Faixa etária</div>
+    <div class="sec-label">Especialidades</div>
     <div class="bandzone">
-      <div class="bandrow" id="bandrow">${chips}</div>
+      <div class="bandrow" id="bandrow">${specChips}</div>
       <div class="band-fade"><div class="band-arrow" onclick="scrollBandMore()">»</div></div>
     </div>
+    ${subRow}
     <div id="reflist">${refsListHTML()}</div>`;
 }
 function refsListHTML(){
-  let items = bandItems(state.band);
+  const sp = SPECIALTIES.find(x=>x.id===state.specialty);
+  let items = specialtyItems();
   const q = state.query.trim().toLowerCase();
   if(q) items = items.filter(d=>(d.name+' '+(d.abbr||'')+' '+d.region).toLowerCase().includes(q));
   if(!items.length){
-    let icon='○', msg='Sem itens nesta faixa por enquanto.';
-    if(state.band==='Fertilidade'){ msg='Fertilidade chega em breve — útero, ovários e contagem de folículos antrais.'; }
-    else if(q){ icon='⌕'; msg='Nenhum resultado para “'+state.query+'”.'; }
-    return `<div class="empty"><div class="big">${icon}</div><div class="msg">${esc(msg)}</div></div>`;
+    const msg = (sp && !sp.regions.length)
+      ? `${sp.name} — referências em breve.`
+      : q ? `Nenhum resultado para "${state.query}".` : 'Sem itens para esta seleção.';
+    return `<div class="empty"><div class="big">○</div><div class="msg">${esc(msg)}</div></div>`;
   }
   let html='', last=null;
   items.forEach(d=>{
@@ -352,58 +453,117 @@ function subtabsHTML(){
   return tabs.map(t=>`<button class="${state.sub===t[0]?'on':''}" onclick="setSub('${t[0]}')">${svgIcon(t[2],22)}<span>${t[1]}</span></button>`).join('');
 }
 
-/* ---- 4. CALCULADORAS (lista + stub) ---- */
+/* ---- 4a. CALCULADORAS — lista ---- */
 function calcViewHTML(){
-  if(state.calcStub){
-    const c = state.calcStub;
-    const steps = c.steps.map((t,i)=>`<div class="step"><div class="n">${i+1}</div><div class="t">${esc(t)}</div></div>`).join('');
-    return `<div class="stub-head">
-        <div class="stub-tag">${esc(c.tag)}</div>
-        <div class="stub-name">${esc(c.n)}</div>
-        <div class="stub-desc">${esc(c.d)}</div>
+  return state.calcId === 'tfg' ? calcTFGHTML() : calcListHTML();
+}
+function calcListHTML(){
+  return `<div class="calc-list-wrap">
+    <div class="calc-intro-lbl">Calculadoras disponíveis</div>
+    <div class="lc-short" onclick="state.calcId='tfg';render()">
+      <div class="si acc">${svgIcon(P.calc,22)}</div>
+      <div class="st">
+        <div class="t">Taxa de Filtração Glomerular</div>
+        <div class="d">Fórmula MDRD — estimativa da função renal</div>
       </div>
-      <div class="stub-card"><div class="lbl">Vai funcionar assim</div>${steps}</div>
-      <div class="stub-foot">Em desenvolvimento</div>`;
+      <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
+    </div>
+  </div>`;
+}
+
+/* ---- 4b. TFG (MDRD) com drum picker ---- */
+function drumHTML(id, values, selected){
+  const items = values.map(v=>`<div class="drum-item">${esc(v)}</div>`).join('');
+  return `<div class="drum-shell">
+    <div class="drum-sel"></div>
+    <div class="drum-scroller" id="drum-${id}" onscroll="onDrumScroll('${id}',this)">
+      <div class="drum-pad"></div>
+      ${items}
+      <div class="drum-pad"></div>
+    </div>
+    <div class="drum-fade-top"></div>
+    <div class="drum-fade-bot"></div>
+  </div>`;
+}
+function calcTFGHTML(){
+  const sexo = state.tfgSexo;
+  let resultHTML = '';
+  if(state.tfgResult != null){
+    const r = state.tfgResult;
+    const st = TFG_STAGES.find(s=>r>=s.min && r<=s.max) || TFG_STAGES[TFG_STAGES.length-1];
+    resultHTML = `<div class="tfg-card">
+      <div class="tfg-result">
+        <div class="tfg-result-num">${r.toFixed(1)}</div>
+        <div class="tfg-result-unit">mL / min / 1,73 m²</div>
+        <div><span class="tfg-stage-badge" style="background:${st.bg};color:${st.clr}">${esc(st.label)}</span></div>
+        <div class="tfg-stage-desc">${esc(st.desc)}</div>
+      </div>
+    </div>`;
   }
-  const cards = CALCS.map(c=>`<div class="score-card" onclick="openCalc('${c.k}')">
-    <div class="tag">${esc(c.tag)}</div>
-    <div class="tx" style="flex:1;min-width:0"><div class="nm">${esc(c.n)}</div><div class="d">${esc(c.d)}</div></div>
-    <div class="chev" style="color:var(--dim);display:flex">${svgIcon(P.chev,18,{sw:2})}</div>
-  </div>`).join('');
-  return `<div class="calc-intro">Escores e classificações para laudo estruturado.</div>
-    <div class="calc-list">${cards}</div>
-    <div class="disc">As calculadoras estão em construção — esta é a estrutura de navegação.</div>`;
+  return `<div class="tfg-wrap">
+    <div class="tfg-card">
+      <div class="tfg-sec-lbl">Dados do Paciente</div>
+      <div class="drum-row">
+        <div class="drum-col">
+          <div class="drum-label">Creatinina</div>
+          ${drumHTML('cr', CR_VALUES, state.tfgCr)}
+          <div class="drum-unit">mg/dL</div>
+        </div>
+        <div class="drum-col">
+          <div class="drum-label">Idade</div>
+          ${drumHTML('age', AGE_VALUES, state.tfgAge)}
+          <div class="drum-unit">anos</div>
+        </div>
+      </div>
+      <div class="tfg-field">
+        <div class="tfg-field-lbl">Sexo</div>
+        <div class="tfg-toggle">
+          <div class="tfg-opt ${sexo==='M'?'on':''}" onclick="state.tfgSexo='M';state.tfgResult=null;render()">Masculino</div>
+          <div class="tfg-opt ${sexo==='F'?'on':''}" onclick="state.tfgSexo='F';state.tfgResult=null;render()">Feminino</div>
+        </div>
+      </div>
+    </div>
+    <button class="tfg-btn" onclick="calcTFG()">Calcular TFG</button>
+    ${resultHTML}
+    <div class="tfg-card">
+      <div class="tfg-sec-lbl">Fórmula MDRD</div>
+      <div class="tfg-formula">TFG = 175 × Cr⁻¹·¹⁵⁴ × Idade⁻⁰·²⁰³ × (0,742 se Feminino)
+        <small>Resultado em mL/min/1,73 m² — sem ajuste étnico (Vyas et al. 2020)</small>
+      </div>
+    </div>
+    <div class="tfg-card">
+      <div class="tfg-sec-lbl">Referências</div>
+      <div class="tfg-ref-list">${TFG_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
+    </div>
+  </div>`;
 }
 
 /* ---- 5. FAVORITOS ---- */
 function favHTML(){
   const refs = state.favs.map(id=>DATA.find(d=>d.id===id)).filter(Boolean);
-  const calcs = state.favCalcs.map(k=>CALCS.find(c=>c.k===k)).filter(Boolean);
-  if(!refs.length && !calcs.length){
+  if(!refs.length){
     return `<div class="empty">
       <div class="ico" style="color:var(--star)">${svgIcon(P.star,46,{sw:1.4})}</div>
       <div class="msg" style="font-size:16px;font-weight:650;color:var(--tx)">Nada favoritado ainda</div>
-      <div class="msg" style="margin-top:6px">Toque na estrela ★ de qualquer referência ou calculadora para guardá-la aqui.</div>
+      <div class="msg" style="margin-top:6px">Toque na estrela ★ de qualquer referência para guardá-la aqui.</div>
     </div>`;
   }
-  let h='';
-  if(refs.length){
-    h += `<div class="grp">Referências</div>`;
-    h += refs.map(d=>`<div class="row" onclick="openItem('${esc(d.id)}')">
-      <div class="ic star">${svgIcon(P.star,19,{fill:'currentColor',noStroke:true})}</div>
-      <div class="tx"><div class="nm">${esc(d.name)}</div><div class="meta">${esc(metaOf(d))}</div></div>
-      <div class="star-btn on" onclick="event.stopPropagation();toggleFav('${esc(d.id)}')">${svgIcon(P.star,20,{fill:'currentColor'})}</div>
-    </div>`).join('');
-  }
-  if(calcs.length){
-    h += `<div class="grp">Calculadoras</div>`;
-    h += calcs.map(c=>`<div class="row" onclick="openCalcFromFav('${c.k}')">
-      <div class="ic tag"><span>${esc(c.tag)}</span></div>
-      <div class="tx"><div class="nm">${esc(c.n)}</div><div class="meta">${esc(c.d)}</div></div>
-      <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-    </div>`).join('');
-  }
-  return h;
+  return refs.map(d=>`<div class="row" onclick="openItem('${esc(d.id)}')">
+    <div class="ic star">${svgIcon(P.star,19,{fill:'currentColor',noStroke:true})}</div>
+    <div class="tx"><div class="nm">${esc(d.name)}</div><div class="meta">${esc(metaOf(d))}</div></div>
+    <div class="star-btn on" onclick="event.stopPropagation();toggleFav('${esc(d.id)}')">${svgIcon(P.star,20,{fill:'currentColor'})}</div>
+  </div>`).join('');
+}
+
+/* ---- 6.5 EM CONSTRUÇÃO ---- */
+function constructionHTML(){
+  const m = MODALITIES.find(x=>x.id===state.modalityId)||{};
+  return `<div class="constr-screen">
+    <div class="constr-icon">${svgIcon(m.icon||'<circle cx="12" cy="12" r="8"/>',40)}</div>
+    <div class="constr-name">${esc(m.name||'')}</div>
+    <div class="constr-sub">Este módulo está em desenvolvimento e estará disponível em breve.</div>
+    <div class="constr-badge">Em construção</div>
+  </div>`;
 }
 
 /* ---- 6. NOVA LISTA ---- */
@@ -456,12 +616,16 @@ function listsHTML(){
 /* =========================================================================
    AÇÕES
    ========================================================================= */
-function setView(v){ state.view=v; state.calcStub=null; state.composingId=null; render(); }
+function setView(v){ state.view=v; state.composingId=null; if(v!=='calc') state.calcId=null; render(); }
 function goBack(){
   const v = state.view;
   if(v==='detail'){ state.view='refs'; render(); return; }
-  if(v==='calc' && state.calcStub){ state.calcStub=null; render(); return; }
   if(v==='novalista' && state.composingId){ state.composingId=null; render(); return; }
+  if(v==='construction'||v==='ferramentas'){ state.view='modality'; render(); return; }
+  if(v==='calc'){
+    if(state.calcId){ state.calcId=null; render(); return; }
+    state.view='ferramentas'; render(); return;
+  }
   state.view='home'; render();
 }
 function toggleTheme(){
@@ -470,10 +634,12 @@ function toggleTheme(){
   applyTheme();
   // só o ícone sol/lua muda; preserva scroll/estado da tela atual
   if(state.view==='home'){ const b=$('lc-themebtn'); if(b) b.innerHTML = themeIcon(); }
+  else if(state.view==='modality'){ const b=$('mod-themebtn'); if(b) b.innerHTML = themeIcon(); }
   else renderHeader();
 }
 
-function setBand(b){ state.band=b; render(); }
+function setSpecialty(id){ state.specialty=id; render(); }
+function setSubBand(b){ state.subBand=b; render(); }
 function onSearch(v){ state.query=v; const el=$('reflist'); if(el) el.innerHTML=refsListHTML(); }
 function scrollBandMore(){ const el=$('bandrow'); if(el) el.scrollBy({left:170, behavior:'smooth'}); }
 
@@ -487,21 +653,52 @@ function toggleAcc(bodyId, chevId){
   const open = b.classList.toggle('open');
   const c = $(chevId); if(c) c.textContent = open ? '⌃' : '⌄';
 }
-function doCalc(){
-  const ch = state.item.chart, out = $('calcout');
-  const v = parseFloat(($('ci1').value||'').replace(',','.'));
-  if(isNaN(v)){ out.innerHTML=`<div class="calc-card"><div class="match">Informe um valor.</div></div>`; return; }
-  let best=null, bd=Infinity;
-  ch.rows.forEach(r=>{ const x=parseFloat(String(r[0]).replace(',','.')); if(!isNaN(x)){ const dd=Math.abs(x-v); if(dd<bd){bd=dd;best=r;} } });
-  if(!best){ out.innerHTML=`<div class="calc-card"><div class="match">Sem correspondência.</div></div>`; return; }
-  const exact = parseFloat(String(best[0]).replace(',','.'))===v;
-  let rows='';
-  for(let i=1;i<ch.header.length;i++){ if(best[i]!=null&&best[i]!=='') rows+=`<div class="kv"><span class="k">${esc(ch.header[i])}</span><span class="v">${esc(best[i])}</span></div>`; }
-  out.innerHTML=`<div class="calc-card"><div class="match">${esc(ch.header[0])}: <b style="color:var(--tx)">${esc(best[0])}</b>${exact?'':' (mais próximo)'}</div>${rows}</div>`;
+function onDrumScroll(id, el){
+  const ITEM_H = 44;
+  const idx = Math.round(el.scrollTop / ITEM_H);
+  if(id==='cr'){ state.tfgCr = CR_VALUES[Math.max(0,Math.min(idx,CR_VALUES.length-1))]; }
+  else if(id==='age'){ state.tfgAge = AGE_VALUES[Math.max(0,Math.min(idx,AGE_VALUES.length-1))]; }
+  state.tfgResult = null;
 }
-
-function openCalc(k){ state.calcStub = CALCS.find(c=>c.k===k)||null; render(); }
-function openCalcFromFav(k){ state.view='calc'; state.calcStub=CALCS.find(c=>c.k===k)||null; render(); }
+function initDrums(){
+  const ITEM_H = 44;
+  const crEl = document.getElementById('drum-cr');
+  if(crEl){
+    const idx = CR_VALUES.indexOf(state.tfgCr);
+    crEl.scrollTop = Math.max(0,idx) * ITEM_H;
+  }
+  const ageEl = document.getElementById('drum-age');
+  if(ageEl){
+    const idx = AGE_VALUES.indexOf(state.tfgAge);
+    ageEl.scrollTop = Math.max(0,idx) * ITEM_H;
+  }
+}
+function calcTFG(){
+  const ITEM_H = 44;
+  const crEl = document.getElementById('drum-cr');
+  const ageEl = document.getElementById('drum-age');
+  let cr, age;
+  if(crEl){
+    const idx = Math.round(crEl.scrollTop/ITEM_H);
+    state.tfgCr = CR_VALUES[Math.max(0,Math.min(idx,CR_VALUES.length-1))];
+    cr = parseFloat(state.tfgCr);
+  } else { cr = parseFloat(String(state.tfgCr).replace(',','.')); }
+  if(ageEl){
+    const idx = Math.round(ageEl.scrollTop/ITEM_H);
+    state.tfgAge = AGE_VALUES[Math.max(0,Math.min(idx,AGE_VALUES.length-1))];
+    age = parseInt(state.tfgAge);
+  } else { age = parseInt(String(state.tfgAge)); }
+  if(isNaN(cr)||cr<=0||isNaN(age)||age<=0) return;
+  let tfg = 175 * Math.pow(cr,-1.154) * Math.pow(age,-0.203);
+  if(state.tfgSexo==='F') tfg *= 0.742;
+  state.tfgResult = tfg;
+  render();
+}
+function openModality(id){
+  const m = MODALITIES.find(x=>x.id===id); if(!m) return;
+  if(m.active){ state.view='home'; render(); return; }
+  state.modalityId=id; state.view='construction'; render();
+}
 
 function toggleFav(id){
   const i = state.favs.indexOf(id);
@@ -510,13 +707,6 @@ function toggleFav(id){
   if(state.view==='refs'){ const el=$('reflist'); if(el) el.innerHTML=refsListHTML(); }
   else if(state.view==='detail'){ renderHeader(); }
   else render(true);   // favoritos: item entra/sai da lista
-}
-function toggleFavCalc(k){
-  const i = state.favCalcs.indexOf(k);
-  if(i<0) state.favCalcs.push(k); else state.favCalcs.splice(i,1);
-  persist('radref_favcalcs', state.favCalcs);
-  if(state.view==='calc'){ renderHeader(); }
-  else render(true);
 }
 
 function onNewName(v){ state.newName=v; }   // sem render: preserva foco do input
