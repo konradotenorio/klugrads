@@ -100,6 +100,20 @@ const TFG_REFS = [
 /* Valores dos drums */
 const CR_VALUES = Array.from({length:200},(_,i)=>((i+1)*0.1).toFixed(1));  // '0.1'…'20.0'
 const AGE_VALUES = Array.from({length:120},(_,i)=>String(i+1));             // '1'…'120'
+let _tfgTimer = null;
+
+function tfgResultHTML(r){
+  if(r == null) return '';
+  const st = TFG_STAGES.find(s=>r>=s.min && r<=s.max) || TFG_STAGES[TFG_STAGES.length-1];
+  return `<div class="tfg-card">
+    <div class="tfg-result">
+      <div class="tfg-result-num">${r.toFixed(1)}</div>
+      <div class="tfg-result-unit">mL / min / 1,73 m²</div>
+      <div><span class="tfg-stage-badge" style="background:${st.bg};color:${st.clr}">${esc(st.label)}</span></div>
+      <div class="tfg-stage-desc">${esc(st.desc)}</div>
+    </div>
+  </div>`;
+}
 
 /* ---- DADOS (seed offline; sync opcional com Supabase) ---- */
 function hydrate(items){
@@ -487,19 +501,6 @@ function drumHTML(id, values, selected){
 }
 function calcTFGHTML(){
   const sexo = state.tfgSexo;
-  let resultHTML = '';
-  if(state.tfgResult != null){
-    const r = state.tfgResult;
-    const st = TFG_STAGES.find(s=>r>=s.min && r<=s.max) || TFG_STAGES[TFG_STAGES.length-1];
-    resultHTML = `<div class="tfg-card">
-      <div class="tfg-result">
-        <div class="tfg-result-num">${r.toFixed(1)}</div>
-        <div class="tfg-result-unit">mL / min / 1,73 m²</div>
-        <div><span class="tfg-stage-badge" style="background:${st.bg};color:${st.clr}">${esc(st.label)}</span></div>
-        <div class="tfg-stage-desc">${esc(st.desc)}</div>
-      </div>
-    </div>`;
-  }
   return `<div class="tfg-wrap">
     <div class="tfg-card">
       <div class="tfg-sec-lbl">Dados do Paciente</div>
@@ -518,13 +519,12 @@ function calcTFGHTML(){
       <div class="tfg-field">
         <div class="tfg-field-lbl">Sexo</div>
         <div class="tfg-toggle">
-          <div class="tfg-opt ${sexo==='M'?'on':''}" onclick="state.tfgSexo='M';state.tfgResult=null;render()">Masculino</div>
-          <div class="tfg-opt ${sexo==='F'?'on':''}" onclick="state.tfgSexo='F';state.tfgResult=null;render()">Feminino</div>
+          <div class="tfg-opt ${sexo==='M'?'on':''}" onclick="state.tfgSexo='M';render();setTimeout(autoCalcTFG,180)">Masculino</div>
+          <div class="tfg-opt ${sexo==='F'?'on':''}" onclick="state.tfgSexo='F';render();setTimeout(autoCalcTFG,180)">Feminino</div>
         </div>
       </div>
     </div>
-    <button class="tfg-btn" onclick="calcTFG()">Calcular TFG</button>
-    ${resultHTML}
+    <div id="tfg-result-area">${tfgResultHTML(state.tfgResult)}</div>
     <div class="tfg-card">
       <div class="tfg-sec-lbl">Fórmula MDRD</div>
       <div class="tfg-formula">TFG = 175 × Cr⁻¹·¹⁵⁴ × Idade⁻⁰·²⁰³ × (0,742 se Feminino)
@@ -658,42 +658,33 @@ function onDrumScroll(id, el){
   const idx = Math.round(el.scrollTop / ITEM_H);
   if(id==='cr'){ state.tfgCr = CR_VALUES[Math.max(0,Math.min(idx,CR_VALUES.length-1))]; }
   else if(id==='age'){ state.tfgAge = AGE_VALUES[Math.max(0,Math.min(idx,AGE_VALUES.length-1))]; }
-  state.tfgResult = null;
+  clearTimeout(_tfgTimer);
+  _tfgTimer = setTimeout(autoCalcTFG, 350);
 }
-function initDrums(){
-  const ITEM_H = 44;
-  const crEl = document.getElementById('drum-cr');
-  if(crEl){
-    const idx = CR_VALUES.indexOf(state.tfgCr);
-    crEl.scrollTop = Math.max(0,idx) * ITEM_H;
-  }
-  const ageEl = document.getElementById('drum-age');
-  if(ageEl){
-    const idx = AGE_VALUES.indexOf(state.tfgAge);
-    ageEl.scrollTop = Math.max(0,idx) * ITEM_H;
-  }
-}
-function calcTFG(){
+function autoCalcTFG(){
   const ITEM_H = 44;
   const crEl = document.getElementById('drum-cr');
   const ageEl = document.getElementById('drum-age');
-  let cr, age;
-  if(crEl){
-    const idx = Math.round(crEl.scrollTop/ITEM_H);
-    state.tfgCr = CR_VALUES[Math.max(0,Math.min(idx,CR_VALUES.length-1))];
-    cr = parseFloat(state.tfgCr);
-  } else { cr = parseFloat(String(state.tfgCr).replace(',','.')); }
-  if(ageEl){
-    const idx = Math.round(ageEl.scrollTop/ITEM_H);
-    state.tfgAge = AGE_VALUES[Math.max(0,Math.min(idx,AGE_VALUES.length-1))];
-    age = parseInt(state.tfgAge);
-  } else { age = parseInt(String(state.tfgAge)); }
+  if(crEl){ const i=Math.round(crEl.scrollTop/ITEM_H); state.tfgCr=CR_VALUES[Math.max(0,Math.min(i,CR_VALUES.length-1))]; }
+  if(ageEl){ const i=Math.round(ageEl.scrollTop/ITEM_H); state.tfgAge=AGE_VALUES[Math.max(0,Math.min(i,AGE_VALUES.length-1))]; }
+  const cr=parseFloat(state.tfgCr), age=parseInt(state.tfgAge);
   if(isNaN(cr)||cr<=0||isNaN(age)||age<=0) return;
   let tfg = 175 * Math.pow(cr,-1.154) * Math.pow(age,-0.203);
   if(state.tfgSexo==='F') tfg *= 0.742;
   state.tfgResult = tfg;
-  render();
+  const el = document.getElementById('tfg-result-area');
+  if(el) el.innerHTML = tfgResultHTML(tfg);
 }
+function initDrums(){
+  const ITEM_H = 44;
+  const crEl = document.getElementById('drum-cr');
+  if(crEl){ crEl.scrollTop = Math.max(0, CR_VALUES.indexOf(state.tfgCr)) * ITEM_H; }
+  const ageEl = document.getElementById('drum-age');
+  if(ageEl){ ageEl.scrollTop = Math.max(0, AGE_VALUES.indexOf(state.tfgAge)) * ITEM_H; }
+  clearTimeout(_tfgTimer);
+  _tfgTimer = setTimeout(autoCalcTFG, 400);
+}
+function calcTFG(){ autoCalcTFG(); }
 function openModality(id){
   const m = MODALITIES.find(x=>x.id===id); if(!m) return;
   if(m.active){ state.view='home'; render(); return; }
