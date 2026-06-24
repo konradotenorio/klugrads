@@ -158,6 +158,7 @@ let state = {
   newName:'', composingId:null, modalityId:null,
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
+  tirads:null,
 };
 
 function persist(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(_){} }
@@ -228,7 +229,7 @@ function headerHTML(){
   let title='', sub='';
   if(v==='refs'){ title='Referências'; }
   else if(v==='detail'){ title=state.item?state.item.name:''; sub=(state.item&&state.item.abbr)?state.item.abbr:''; }
-  else if(v==='calc'){ title = state.calcId==='tfg' ? 'Taxa de Filtração Glomerular' : 'Calculadoras'; }
+  else if(v==='calc'){ title = state.calcId==='tfg' ? 'Taxa de Filtração Glomerular' : state.calcId==='tirads' ? 'TI-RADS — Tireoide' : 'Calculadoras'; }
   else if(v==='ferramentas'){ title='Outras Ferramentas'; }
   else if(v==='favoritos'){ title='Favoritos'; }
   else if(v==='novalista'){ const cl=state.lists.find(x=>x.id===state.composingId); title=cl?cl.name:'Minhas listas'; sub=cl?'Lista personalizada':''; }
@@ -469,11 +470,21 @@ function subtabsHTML(){
 
 /* ---- 4a. CALCULADORAS — lista ---- */
 function calcViewHTML(){
-  return state.calcId === 'tfg' ? calcTFGHTML() : calcListHTML();
+  if(state.calcId === 'tfg') return calcTFGHTML();
+  if(state.calcId === 'tirads') return calcTiradsHTML();
+  return calcListHTML();
 }
 function calcListHTML(){
   return `<div class="calc-list-wrap">
     <div class="calc-intro-lbl">Calculadoras disponíveis</div>
+    <div class="lc-short" onclick="state.calcId='tirads';render()">
+      <div class="si acc" style="font-weight:800;font-size:13px;letter-spacing:-.01em">TR</div>
+      <div class="st">
+        <div class="t">TI-RADS — Tireoide</div>
+        <div class="d">Classificação de nódulos tireoidianos (ACR) — 1 ou vários</div>
+      </div>
+      <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
+    </div>
     <div class="lc-short" onclick="state.calcId='tfg';render()">
       <div class="si acc">${svgIcon(P.calc,22)}</div>
       <div class="st">
@@ -537,6 +548,171 @@ function calcTFGHTML(){
     </div>
   </div>`;
 }
+
+/* =========================================================================
+   TI-RADS — classificação de nódulos tireoidianos (ACR TI-RADS 2017).
+   Multi-nódulo numa sessão. Pontuação aditiva; os focos ecogênicos somam
+   todos os tipos presentes. Estado em state.tirads (sessão, sem persistência).
+   Ref.: Tessler FN et al. J Am Coll Radiol. 2017;14(5):587-595.
+   ========================================================================= */
+const TIRADS_CATS = {
+  comp:  {label:'Composição',    opts:[['Cístico',0],['Espongiforme',0],['Misto cístico-sólido',1],['Sólido',2]]},
+  echo:  {label:'Ecogenicidade', opts:[['Anecoico',0],['Hiper / isoecoico',1],['Hipoecoico',2],['Muito hipoecoico',3]]},
+  shape: {label:'Formato',       opts:[['Mais largo que alto',0],['Mais alto que largo',3]]},
+  margin:{label:'Margens',       opts:[['Regular / lisa',0],['Mal definida',0],['Lobulada / irregular',2],['Ext. extratireoidiana',3]]},
+};
+const TIRADS_FOCI = [['Nenhum / cauda de cometa',0],['Macrocalcificações',1],['Calcificação periférica',2],['Focos puntiformes',3]];
+const TIRADS_TRC = {
+  1:{c:'#138a5b',bg:'#138a5b22',name:'Benigno'},
+  2:{c:'#3f8c1f',bg:'#3f8c1f22',name:'Não suspeito'},
+  3:{c:'#a9790a',bg:'#a9790a22',name:'Levemente suspeito'},
+  4:{c:'#d9540a',bg:'#d9540a22',name:'Moderadamente suspeito'},
+  5:{c:'#cf2020',bg:'#cf202022',name:'Altamente suspeito'},
+};
+const TIRADS_THR = {1:null,2:null,3:{fna:2.5,fu:1.5},4:{fna:1.5,fu:1.0},5:{fna:1.0,fu:0.5}};
+const TIRADS_REFS = [
+  'Tessler FN, Middleton WD, Grant EG, et al. ACR Thyroid Imaging, Reporting and Data System (TI-RADS): White Paper of the ACR TI-RADS Committee. J Am Coll Radiol. 2017;14(5):587–595.',
+  'Grant EG, Tessler FN, Hoang JK, et al. Thyroid Ultrasound Reporting Lexicon: White Paper of the ACR TI-RADS Committee. J Am Coll Radiol. 2015;12(12 Pt A):1272–1279.',
+];
+
+function tiradsNewNodule(){ return {comp:null,echo:null,shape:null,margin:null,foci:[0],size:'',name:''}; }
+function tiradsState(){ if(!state.tirads) state.tirads={nodules:[tiradsNewNodule()],openFoci:null}; return state.tirads; }
+function tiradsTrLevel(p){ if(p<=0)return 1; if(p<=2)return 2; if(p===3)return 3; if(p<=6)return 4; return 5; }
+function tiradsFociPts(arr){ return (arr||[]).reduce((a,i)=>a+TIRADS_FOCI[i][1],0); }
+function tiradsEval(n){
+  let pts=0, filled=0;
+  ['comp','echo','shape','margin'].forEach(k=>{ if(n[k]!=null){ pts+=TIRADS_CATS[k].opts[n[k]][1]; filled++; } });
+  pts += tiradsFociPts(n.foci);
+  const auto = (n.comp===0 || n.comp===1);
+  return { pts, tr: auto?1:tiradsTrLevel(pts), auto, complete: filled===4 };
+}
+function tiradsCm(v){ return String(v).replace('.',',')+' cm'; }
+function tiradsRec(tr,size,auto){
+  const t=TIRADS_THR[tr]; const s=parseFloat(String(size).replace(',','.'));
+  if(!t) return {a:auto?'Cístico / espongiforme → TR1':'Conduta benigna', b:'Sem PAAF · sem seguimento'};
+  if(!s||isNaN(s)) return {a:'Informe o tamanho', b:`PAAF ≥ ${tiradsCm(t.fna)} · seguimento ≥ ${tiradsCm(t.fu)}`};
+  if(s>=t.fna) return {a:'PAAF recomendada', b:`${tiradsCm(s)} ≥ limiar de ${tiradsCm(t.fna)}`};
+  if(s>=t.fu)  return {a:'Seguimento ecográfico', b:`abaixo do limiar de PAAF (${tiradsCm(t.fna)})`};
+  return {a:'Sem conduta adicional', b:`abaixo do limiar de seguimento (${tiradsCm(t.fu)})`};
+}
+function tiradsFociSummary(arr){
+  const sel=(arr||[]).filter(i=>i!==0);
+  if(!sel.length) return 'Nenhum';
+  return sel.map(i=>TIRADS_FOCI[i][0].replace(' / cauda de cometa','')).join(' + ');
+}
+
+function calcTiradsHTML(){
+  const ts=tiradsState(); const ns=ts.nodules;
+  let rail = `<div class="ti-rail">`;
+  ns.forEach((n,i)=>{ const ev=tiradsEval(n); const done=ev.complete||ev.auto; const tc=TIRADS_TRC[ev.tr];
+    rail += `<div class="ti-rchip" onclick="tiradsScrollTo(${i})">`
+      + `<span class="rn" id="ti-rn-${i}">${esc(n.name||('N'+(i+1)))}</span>`
+      + (done ? `<span class="rt" style="background:${tc.c}">TR${ev.tr}</span>` : `<span class="rt off">—</span>`)
+      + `</div>`;
+  });
+  rail += `<div class="ti-rchip radd" onclick="tiradsAdd()" aria-label="Adicionar nódulo">＋</div></div>`;
+
+  const cards = ns.map((n,i)=>tiradsCardHTML(n,i)).join('');
+
+  const legend = Object.keys(TIRADS_TRC).map(k=>{
+    const tc=TIRADS_TRC[k]; const t=TIRADS_THR[k];
+    const cond = t ? `PAAF ≥ ${tiradsCm(t.fna)} · seguir ≥ ${tiradsCm(t.fu)}` : 'Sem PAAF / seguimento';
+    return `<div class="ti-legend-row"><span class="lk" style="background:${tc.c}">TR${k}</span><span class="lt">${esc(tc.name)} — ${cond}</span></div>`;
+  }).join('');
+
+  return `<div class="ti-wrap">
+    ${rail}
+    <div id="ti-list">${cards}</div>
+    <button class="ti-add" onclick="tiradsAdd()">＋ Adicionar nódulo</button>
+    <div class="ti-card">
+      <div class="tfg-sec-lbl">Níveis e conduta (por maior eixo)</div>
+      <div class="ti-legend">${legend}</div>
+    </div>
+    <div class="ti-card">
+      <div class="tfg-sec-lbl">Referências</div>
+      <div class="tfg-ref-list">${TIRADS_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
+    </div>
+    <div class="disc">Ferramenta <b>educacional</b> baseada no ACR TI-RADS 2017. Os focos ecogênicos somam todos os tipos presentes. Não substitui o julgamento clínico.</div>
+  </div>`;
+}
+
+function tiradsCardHTML(n,i){
+  const ts=tiradsState(); const ns=ts.nodules; const ev=tiradsEval(n);
+  const show=ev.complete||ev.auto; const tc=TIRADS_TRC[ev.tr];
+  let fields='';
+  ['comp','echo','shape','margin'].forEach(key=>{
+    const c=TIRADS_CATS[key]; const cur=n[key];
+    let opts=`<option value="" ${cur==null?'selected':''} disabled hidden>Selecionar…</option>`;
+    c.opts.forEach((o,oi)=>{ opts+=`<option value="${oi}" ${cur===oi?'selected':''}>${esc(o[0])} · ${o[1]} pt</option>`; });
+    const ptv = cur!=null ? c.opts[cur][1] : '–';
+    fields += `<div class="ti-field">
+      <label>${esc(c.label)}</label>
+      <div class="ti-selwrap"><select class="${cur==null?'empty':''}" onchange="tiradsSetSel(${i},'${key}',this.value)">${opts}</select></div>
+      <div class="ti-fp">${ptv}</div>
+    </div>`;
+  });
+  const open = ts.openFoci===i;
+  const fsum = tiradsFociSummary(n.foci); const fpts = tiradsFociPts(n.foci);
+  let fociPanel='';
+  if(open){
+    fociPanel = `<div class="ti-foci-panel">`+ TIRADS_FOCI.map((o,oi)=>{
+      const on=(n.foci||[]).indexOf(oi)>=0;
+      return `<div class="ti-foci-opt ${on?'on':''}" onclick="event.stopPropagation();tiradsToggleFoci(${i},${oi})">`
+        + `<span class="ck">${on?'✓':''}</span><span class="fl">${esc(o[0])}</span><span class="fpt">${o[1]} pt</span></div>`;
+    }).join('') +`</div>`;
+  }
+  const fociField = `<div class="ti-field">
+    <label>Focos<br>ecogênicos</label>
+    <div class="ti-selwrap">
+      <div class="ti-foci-trigger ${open?'open':''}" onclick="tiradsToggleFociPanel(${i})"><span class="${fsum==='Nenhum'?'empty':''}">${esc(fsum)}</span></div>
+      ${fociPanel}
+    </div>
+    <div class="ti-fp">${fpts}</div>
+  </div>`;
+  const sizeField = `<div class="ti-field">
+    <label>Maior eixo</label>
+    <div class="ti-szwrap"><div class="ti-szf"><input type="number" inputmode="decimal" step="0.1" placeholder="0,0" value="${esc(n.size)}" oninput="tiradsSetSize(${i},this.value)"><span>cm</span></div></div>
+  </div>`;
+  let result='';
+  if(show){ const r=tiradsRec(ev.tr,n.size,ev.auto);
+    result = `<div class="ti-res" style="background:${tc.bg}">
+      <div class="lv" style="color:${tc.c}">TR${ev.tr}</div>
+      <div class="meta"><div class="a">${esc(r.a)}</div><div class="b">${esc(r.b)}</div></div>
+      <div class="pts" style="background:${tc.c}">${ev.pts} pt${ev.pts!==1?'s':''}</div>
+    </div>`;
+  }
+  return `<div class="ti-card2" id="ti-card-${i}">
+    <div class="ti-stripe" style="background:${show?tc.c:'var(--line)'}"></div>
+    <div class="ti-chead">
+      <div class="ti-dot">${i+1}</div>
+      <input class="ti-nname" value="${esc(n.name||('Nódulo '+(i+1)))}" oninput="tiradsSetName(${i},this.value)">
+      ${ns.length>1?`<button class="ti-del" onclick="tiradsDel(${i})" aria-label="Remover nódulo">${svgIcon(P.trash,17,{sw:1.8})}</button>`:''}
+    </div>
+    <div class="ti-grid">${fields}${fociField}${sizeField}</div>
+    ${result}
+  </div>`;
+}
+
+function tiradsRerender(){ const s=$('scroll'); if(!s) return; const top=s.scrollTop; s.innerHTML=calcTiradsHTML(); s.scrollTop=top; }
+function tiradsSetSel(i,key,val){ const ts=tiradsState(); ts.nodules[i][key]= val===''?null:parseInt(val,10); ts.openFoci=null; tiradsRerender(); }
+function tiradsToggleFociPanel(i){ const ts=tiradsState(); ts.openFoci = ts.openFoci===i ? null : i; tiradsRerender(); }
+function tiradsToggleFoci(i,oi){
+  const ts=tiradsState(); const n=ts.nodules[i]; let f=(n.foci||[]).slice();
+  if(oi===0){ f=[0]; }
+  else{ f=f.filter(x=>x!==0); const p=f.indexOf(oi); if(p>=0) f.splice(p,1); else f.push(oi); if(!f.length) f=[0]; }
+  f.sort((a,b)=>a-b); n.foci=f; tiradsRerender();
+}
+function tiradsSetSize(i,val){
+  const ts=tiradsState(); const n=ts.nodules[i]; n.size=val; const ev=tiradsEval(n);
+  if(!(ev.complete||ev.auto)) return;
+  const r=tiradsRec(ev.tr,val,ev.auto); const card=$('ti-card-'+i); if(!card) return;
+  const res=card.querySelector('.ti-res'); if(res){ const a=res.querySelector('.a'),b=res.querySelector('.b'); if(a)a.textContent=r.a; if(b)b.textContent=r.b; }
+}
+function tiradsSetName(i,val){ const ts=tiradsState(); ts.nodules[i].name=val; const rn=$('ti-rn-'+i); if(rn) rn.textContent=val||('N'+(i+1)); }
+function tiradsAdd(){ const ts=tiradsState(); ts.nodules.push(tiradsNewNodule()); ts.openFoci=null; tiradsRerender();
+  setTimeout(()=>{ const c=$('ti-card-'+(ts.nodules.length-1)); if(c) c.scrollIntoView({behavior:'smooth',block:'center'}); },30); }
+function tiradsDel(i){ const ts=tiradsState(); ts.nodules.splice(i,1); if(!ts.nodules.length) ts.nodules.push(tiradsNewNodule()); ts.openFoci=null; tiradsRerender(); }
+function tiradsScrollTo(i){ const c=$('ti-card-'+i); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); }
 
 /* ---- 5. FAVORITOS ---- */
 function favHTML(){
