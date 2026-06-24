@@ -636,12 +636,21 @@ function tiradsCardHTML(n,i){
   let fields='';
   ['comp','echo','shape','margin'].forEach(key=>{
     const c=TIRADS_CATS[key]; const cur=n[key];
-    let opts=`<option value="" ${cur==null?'selected':''} disabled hidden>Selecionar…</option>`;
-    c.opts.forEach((o,oi)=>{ opts+=`<option value="${oi}" ${cur===oi?'selected':''}>${esc(o[0])} · ${o[1]} pt</option>`; });
+    const openDD = ts.open===(i+':'+key);
+    const valTxt = cur!=null ? (c.opts[cur][0]+' · '+c.opts[cur][1]+' pt') : 'Selecionar…';
     const ptv = cur!=null ? c.opts[cur][1] : '–';
-    fields += `<div class="ti-field">
+    let menu='';
+    if(openDD){
+      let rows = `<div class="ti-dd-opt clear" onclick="tiradsPickOpt(${i},'${key}','')">Selecionar…</div>`;
+      c.opts.forEach((o,oi)=>{ rows += `<div class="ti-dd-opt ${cur===oi?'on':''}" onclick="tiradsPickOpt(${i},'${key}',${oi})"><span class="ol">${esc(o[0])}</span><span class="op">${o[1]} pt</span></div>`; });
+      menu = `<div class="ti-dd-menu">${rows}</div>`;
+    }
+    fields += `<div class="ti-field ti-field-dd">
       <label>${esc(c.label)}</label>
-      <div class="ti-selwrap"><select class="${cur==null?'empty':''}" onchange="tiradsSetSel(${i},'${key}',this.value)">${opts}</select></div>
+      <div class="ti-dd">
+        <div class="ti-dd-trigger ${openDD?'open':''} ${cur==null?'empty':''}" onclick="tiradsToggleDD(${i},'${key}')"><span class="ddv">${esc(valTxt)}</span><span class="ddc">⌄</span></div>
+        ${menu}
+      </div>
       <div class="ti-fp">${ptv}</div>
     </div>`;
   });
@@ -680,12 +689,13 @@ function tiradsCardHTML(n,i){
 }
 
 function tiradsRerender(){ const s=$('scroll'); if(!s) return; const top=s.scrollTop; s.innerHTML=calcTiradsHTML(); s.scrollTop=top; }
-function tiradsSetSel(i,key,val){ const ts=tiradsState(); ts.nodules[i][key]= val===''?null:parseInt(val,10); tiradsRerender(); }
+function tiradsToggleDD(i,key){ const ts=tiradsState(); const id=i+':'+key; ts.open = ts.open===id ? null : id; tiradsRerender(); }
+function tiradsPickOpt(i,key,oi){ const ts=tiradsState(); ts.nodules[i][key] = (oi===''?null:parseInt(oi,10)); ts.open=null; tiradsRerender(); }
 function tiradsToggleFoci(i,oi){
   const ts=tiradsState(); const n=ts.nodules[i]; let f=(n.foci||[]).slice();
   if(oi===0){ f=[0]; }
   else{ f=f.filter(x=>x!==0); const p=f.indexOf(oi); if(p>=0) f.splice(p,1); else f.push(oi); if(!f.length) f=[0]; }
-  f.sort((a,b)=>a-b); n.foci=f; tiradsRerender();
+  f.sort((a,b)=>a-b); n.foci=f; ts.open=null; tiradsRerender();
 }
 function tiradsSetSize(i,val){
   const ts=tiradsState(); const n=ts.nodules[i]; n.size=val; const ev=tiradsEval(n);
@@ -694,9 +704,9 @@ function tiradsSetSize(i,val){
   const res=card.querySelector('.ti-res'); if(res){ const a=res.querySelector('.a'),b=res.querySelector('.b'); if(a)a.textContent=r.a; if(b)b.textContent=r.b; }
 }
 function tiradsSetName(i,val){ const ts=tiradsState(); ts.nodules[i].name=val; const rn=$('ti-rn-'+i); if(rn) rn.textContent=val||('N'+(i+1)); }
-function tiradsAdd(){ const ts=tiradsState(); ts.nodules.push(tiradsNewNodule()); tiradsRerender();
+function tiradsAdd(){ const ts=tiradsState(); ts.nodules.push(tiradsNewNodule()); ts.open=null; tiradsRerender();
   setTimeout(()=>{ const c=$('ti-card-'+(ts.nodules.length-1)); if(c) c.scrollIntoView({behavior:'smooth',block:'center'}); },30); }
-function tiradsDel(i){ const ts=tiradsState(); ts.nodules.splice(i,1); if(!ts.nodules.length) ts.nodules.push(tiradsNewNodule()); tiradsRerender(); }
+function tiradsDel(i){ const ts=tiradsState(); ts.nodules.splice(i,1); if(!ts.nodules.length) ts.nodules.push(tiradsNewNodule()); ts.open=null; tiradsRerender(); }
 function tiradsScrollTo(i){ const c=$('ti-card-'+i); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); }
 
 /* ---- 5. FAVORITOS ---- */
