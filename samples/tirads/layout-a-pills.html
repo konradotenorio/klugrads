@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>RadRef · TI-RADS — A (Pills)</title>
+<style>
+  :root{
+    --bg:#0e1216;--sf:#161c23;--sf2:#1e2730;--line:#28323d;--tx:#e9eef3;--dim:#8b98a5;
+    --shadow:0 8px 24px rgba(0,0,0,.40);--accent:#15b8a6;--accentInk:#04221f;--accentSoft:#15b8a624;
+    --p0:#1fae6b;--p1:#9fc63a;--p2:#f0922c;--p3:#ef4d4d;
+    --tr1:#1fae6b;--tr2:#9fc63a;--tr3:#eab308;--tr4:#f0922c;--tr5:#ef4d4d;font-size:16px;
+  }
+  [data-theme="light"]{--bg:#eceff3;--sf:#fff;--sf2:#f3f6f9;--line:#e4e9ef;--tx:#16202a;--dim:#5e6c7a;
+    --shadow:0 8px 24px rgba(20,40,60,.07);--accent:#0f9e90;--accentInk:#fff;--accentSoft:#0f9e9024;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;height:100%;}
+  body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;display:flex;justify-content:center;overflow:hidden;}
+  #app{width:min(440px,100vw);height:100vh;height:100dvh;background:var(--bg);display:flex;flex-direction:column;
+    position:relative;box-shadow:var(--shadow);overflow:hidden;}
+  .hdr{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:calc(env(safe-area-inset-top) + 12px) 16px 10px;}
+  .htitle{flex:1;font-size:21px;font-weight:750;letter-spacing:-.02em;}
+  .htitle b{color:var(--accent);font-weight:750;}
+  .iconbtn{width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:0;
+    background:transparent;color:var(--dim);border-radius:11px;font-size:18px;}
+  .iconbtn:active{opacity:.5;}
+  .scroll{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:4px 14px 130px;}
+  .scroll::-webkit-scrollbar{width:0;}
+  /* summary bar */
+  .sum{display:flex;align-items:center;gap:10px;background:var(--sf);border:1px solid var(--line);border-radius:16px;
+    padding:11px 14px;margin:6px 2px 14px;box-shadow:var(--shadow);}
+  .sum .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:700;}
+  .sum .big{font-size:15px;font-weight:680;margin-top:1px;}
+  .sum .pill{margin-left:auto;font-size:12.5px;font-weight:750;padding:6px 12px;border-radius:999px;color:#06121a;}
+  /* nodule card */
+  .card{background:var(--sf);border:1px solid var(--line);border-radius:22px;padding:15px 15px 6px;margin:0 2px 14px;
+    box-shadow:var(--shadow);animation:in .22s ease;}
+  @keyframes in{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .chead{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+  .dot{width:26px;height:26px;flex:none;border-radius:9px;background:var(--accentSoft);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:750;}
+  .nname{flex:1;border:0;background:transparent;color:var(--tx);font-size:16.5px;font-weight:700;font-family:inherit;
+    outline:none;padding:4px 2px;min-width:0;letter-spacing:-.01em;}
+  .nname:focus{border-bottom:1.5px solid var(--accent);}
+  .del{color:var(--dim);font-size:17px;background:transparent;border:0;cursor:pointer;padding:6px;border-radius:9px;}
+  .del:active{opacity:.5;}
+  .trbadge{display:flex;flex-direction:column;align-items:flex-end;line-height:1;}
+  .trbadge .lv{font-size:16px;font-weight:800;}
+  .trbadge .pt{font-size:11px;color:var(--dim);font-weight:650;margin-top:3px;}
+  /* category */
+  .cat{padding:10px 0 4px;border-top:1px solid var(--line);margin-top:8px;}
+  .cat:first-of-type{border-top:0;margin-top:2px;}
+  .catlbl{font-size:12px;font-weight:700;color:var(--dim);letter-spacing:.02em;margin-bottom:8px;display:flex;gap:6px;align-items:center;}
+  .catlbl .mu{font-size:10px;font-weight:700;color:var(--accent);background:var(--accentSoft);padding:2px 7px;border-radius:999px;letter-spacing:.04em;}
+  .pills{display:flex;flex-wrap:wrap;gap:7px;}
+  .pill-o{border:1px solid var(--line);background:var(--sf2);color:var(--tx);font-size:13.5px;font-weight:600;
+    padding:8px 13px;border-radius:12px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.12s;line-height:1.1;}
+  .pill-o:active{transform:scale(.96);}
+  .pill-o .pn{font-size:10.5px;font-weight:800;width:17px;height:17px;border-radius:6px;display:flex;align-items:center;
+    justify-content:center;background:var(--line);color:var(--dim);}
+  .pill-o.on{color:#06121a;border-color:transparent;font-weight:700;}
+  .pill-o.on .pn{background:rgba(0,0,0,.18);color:#06121a;}
+  /* size */
+  .sizerow{display:flex;align-items:center;gap:10px;padding:12px 0 8px;border-top:1px solid var(--line);margin-top:8px;}
+  .sizerow .catlbl{margin:0;flex:none;}
+  .sizefield{margin-left:auto;display:flex;align-items:center;gap:6px;background:var(--sf2);border:1px solid var(--line);
+    border-radius:12px;padding:4px 12px;}
+  .sizefield input{width:62px;border:0;background:transparent;color:var(--tx);font-size:17px;font-weight:700;
+    font-family:inherit;outline:none;text-align:right;}
+  .sizefield span{font-size:13px;color:var(--dim);font-weight:600;}
+  /* recommendation */
+  .rec{margin:10px 0 12px;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:11px;}
+  .rec .ri{width:34px;height:34px;flex:none;border-radius:10px;display:flex;align-items:center;justify-content:center;
+    font-size:18px;color:#06121a;}
+  .rec .rt{flex:1;min-width:0;}
+  .rec .rt .a{font-size:14.5px;font-weight:750;}
+  .rec .rt .b{font-size:12px;color:var(--dim);margin-top:1px;}
+  /* add + footer */
+  .foot{position:absolute;left:0;right:0;bottom:0;padding:12px 16px calc(env(safe-area-inset-bottom) + 14px);
+    background:linear-gradient(180deg,transparent,var(--bg) 38%);}
+  .add{width:100%;border:0;background:var(--accent);color:var(--accentInk);font-size:16px;font-weight:750;
+    font-family:inherit;padding:15px;border-radius:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    gap:8px;box-shadow:var(--shadow);}
+  .add:active{opacity:.85;transform:scale(.99);}
+  .disclaimer{font-size:10.5px;color:var(--dim);text-align:center;padding:10px 24px 2px;line-height:1.4;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="hdr">
+    <div class="htitle">TI-<b>RADS</b></div>
+    <button class="iconbtn" id="theme" aria-label="Tema">◐</button>
+  </div>
+  <div class="scroll">
+    <div class="sum" id="sum"></div>
+    <div id="list"></div>
+    <div class="disclaimer">ACR TI-RADS 2017 (Tessler et al., JACR). Ferramenta educacional — não substitui o julgamento clínico.</div>
+  </div>
+  <div class="foot"><button class="add" id="add">＋ Adicionar nódulo</button></div>
+</div>
+<script>
+const CATS={
+  comp:{label:'Composição',multi:false,opts:[['Cístico',0],['Espongiforme',0],['Misto cístico-sólido',1],['Sólido',2]]},
+  echo:{label:'Ecogenicidade',multi:false,opts:[['Anecoico',0],['Hiper/isoecoico',1],['Hipoecoico',2],['Muito hipoecoico',3]]},
+  shape:{label:'Formato',multi:false,opts:[['Mais largo que alto',0],['Mais alto que largo',3]]},
+  margin:{label:'Margens',multi:false,opts:[['Regular',0],['Mal definida',0],['Lobulada / irregular',2],['Ext. extratireoidiana',3]]},
+  foci:{label:'Focos ecogênicos',multi:true,opts:[['Nenhum',0],['Macrocalcificações',1],['Calc. periférica',2],['Focos puntiformes',3]]},
+};
+const ORDER=['comp','echo','shape','margin','foci'];
+const TRC=['','tr1','tr2','tr3','tr4','tr5'];
+const TRNAME={1:'Benigno',2:'Não suspeito',3:'Levemente suspeito',4:'Moderadamente suspeito',5:'Altamente suspeito'};
+const THR={1:null,2:null,3:{fna:2.5,fu:1.5},4:{fna:1.5,fu:1.0},5:{fna:1.0,fu:0.5}};
+function ptVar(p){return p<=0?'--p0':p===1?'--p1':p===2?'--p2':'--p3';}
+function trLevel(p){if(p<=0)return 1;if(p<=2)return 2;if(p===3)return 3;if(p<=6)return 4;return 5;}
+function newNodule(){return{comp:null,echo:null,shape:null,margin:null,foci:new Set([0]),size:''};}
+function evalN(n){
+  let pts=0,filled=0;
+  for(const k of ['comp','echo','shape','margin']){if(n[k]!==null){pts+=CATS[k].opts[n[k]][1];filled++;}}
+  [...n.foci].forEach(i=>pts+=CATS.foci.opts[i][1]);
+  const auto=(n.comp===0||n.comp===1);
+  const complete=filled===4;
+  const tr=auto?1:trLevel(pts);
+  return{pts,tr,auto,complete};
+}
+function recText(tr,size,auto){
+  const t=THR[tr];const s=parseFloat(String(size).replace(',','.'));
+  if(!t){return{a:auto&&tr===1?'Provável benignidade':'Sem PAAF / sem seguimento',b:auto?'Cístico ou espongiforme → TR1 automático':'Conduta benigna pelos critérios ACR',ic:'✓'};}
+  if(!s||isNaN(s))return{a:'Informe o tamanho',b:`PAAF se ≥ ${t.fna} cm · seguimento se ≥ ${t.fu} cm`,ic:'⌀'};
+  if(s>=t.fna)return{a:'PAAF recomendada',b:`Maior eixo ${s} cm ≥ limiar de ${t.fna} cm`,ic:'!'};
+  if(s>=t.fu)return{a:'Seguimento ecográfico',b:`${s} cm — abaixo do limiar de PAAF (${t.fna} cm)`,ic:'↻'};
+  return{a:'Sem conduta adicional',b:`${s} cm — abaixo do limiar de seguimento (${t.fu} cm)`,ic:'✓'};
+}
+let nodules=[newNodule()];
+const list=document.getElementById('list'),sum=document.getElementById('sum');
+function render(){
+  list.innerHTML='';
+  nodules.forEach((n,idx)=>list.appendChild(cardEl(n,idx)));
+  renderSum();
+}
+function renderSum(){
+  const evs=nodules.map(evalN);
+  const done=evs.filter(e=>e.complete||e.auto);
+  const maxTr=done.length?Math.max(...done.map(e=>e.tr)):0;
+  sum.innerHTML=`<div><div class="lbl">Sessão</div><div class="big">${nodules.length} nódulo${nodules.length>1?'s':''} avaliado${nodules.length>1?'s':''}</div></div>`;
+  if(maxTr){const c=getComputedStyle(document.documentElement).getPropertyValue('--'+TRC[maxTr]);
+    sum.innerHTML+=`<div class="pill" style="background:${c}">Máx · TR${maxTr}</div>`;}
+}
+function cardEl(n,idx){
+  const ev=evalN(n);const card=document.createElement('div');card.className='card';
+  const trcss='var(--'+TRC[ev.tr]+')';
+  const show=ev.complete||ev.auto;
+  card.innerHTML=`<div class="chead">
+    <div class="dot">${idx+1}</div>
+    <input class="nname" value="${n.name||'Nódulo '+(idx+1)}" data-i="${idx}" />
+    ${show?`<div class="trbadge"><div class="lv" style="color:${trcss}">TR${ev.tr}</div><div class="pt">${ev.pts} pt${ev.pts!==1?'s':''}</div></div>`:`<div class="trbadge"><div class="lv" style="color:var(--dim);font-size:13px;font-weight:650">${ev.pts} pts</div><div class="pt">incompleto</div></div>`}
+    ${nodules.length>1?`<button class="del" data-del="${idx}" aria-label="Remover">✕</button>`:''}
+  </div>`;
+  ORDER.forEach(key=>{
+    const c=CATS[key];const cat=document.createElement('div');cat.className='cat';
+    cat.innerHTML=`<div class="catlbl">${c.label}${c.multi?'<span class="mu">soma</span>':''}</div>`;
+    const pills=document.createElement('div');pills.className='pills';
+    c.opts.forEach((o,oi)=>{
+      const on=c.multi?n.foci.has(oi):n[key]===oi;
+      const b=document.createElement('button');b.className='pill-o'+(on?' on':'');
+      if(on){const cv='var('+ptVar(o[1])+')';b.style.background=cv;}
+      b.innerHTML=`<span class="pn">${o[1]}</span>${o[0]}`;
+      b.onclick=()=>{
+        if(c.multi){
+          if(oi===0){n.foci=new Set([0]);}
+          else{n.foci.delete(0);n.foci.has(oi)?n.foci.delete(oi):n.foci.add(oi);if(!n.foci.size)n.foci.add(0);}
+        }else{n[key]=oi;}
+        render();
+      };
+      pills.appendChild(b);
+    });
+    cat.appendChild(pills);card.appendChild(cat);
+  });
+  const sz=document.createElement('div');sz.className='sizerow';
+  sz.innerHTML=`<div class="catlbl">Maior eixo</div>
+    <div class="sizefield"><input type="number" inputmode="decimal" step="0.1" placeholder="0,0" value="${n.size}" data-sz="${idx}"/><span>cm</span></div>`;
+  card.appendChild(sz);
+  if(show){
+    const r=recText(ev.tr,n.size,ev.auto);const rec=document.createElement('div');rec.className='rec';
+    rec.style.background='color-mix(in srgb,'+trcss+' 14%,transparent)';
+    rec.innerHTML=`<div class="ri" style="background:${trcss}">${r.ic}</div>
+      <div class="rt"><div class="a">${r.a}</div><div class="b">${r.b}</div></div>`;
+    card.appendChild(rec);
+  }
+  return card;
+}
+list.addEventListener('input',e=>{
+  if(e.target.dataset.i!==undefined){nodules[+e.target.dataset.i].name=e.target.value;renderSum();}
+  if(e.target.dataset.sz!==undefined){const n=nodules[+e.target.dataset.sz];n.size=e.target.value;
+    const card=e.target.closest('.card');const ev=evalN(n);const r=recText(ev.tr,n.size,ev.auto);
+    const rec=card.querySelector('.rec');if(rec){rec.querySelector('.a').textContent=r.a;rec.querySelector('.b').textContent=r.b;
+      rec.querySelector('.ri').textContent=r.ic;}}
+});
+list.addEventListener('click',e=>{
+  const d=e.target.closest('[data-del]');if(d){nodules.splice(+d.dataset.del,1);render();}
+});
+document.getElementById('add').onclick=()=>{nodules.push(newNodule());render();
+  setTimeout(()=>document.querySelector('.scroll').scrollTo({top:9e9,behavior:'smooth'}),40);};
+document.getElementById('theme').onclick=()=>{const h=document.documentElement;
+  h.dataset.theme=h.dataset.theme==='dark'?'light':'dark';renderSum();};
+render();
+</script>
+</body>
+</html>

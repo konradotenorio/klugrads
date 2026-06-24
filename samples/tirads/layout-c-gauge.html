@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>RadRef · TI-RADS — C (Gauge)</title>
+<style>
+  :root{
+    --bg:#0e1216;--sf:#161c23;--sf2:#1e2730;--line:#28323d;--tx:#e9eef3;--dim:#8b98a5;
+    --shadow:0 8px 24px rgba(0,0,0,.40);--accent:#15b8a6;--accentInk:#04221f;--accentSoft:#15b8a624;
+    --p0:#1fae6b;--p1:#9fc63a;--p2:#f0922c;--p3:#ef4d4d;
+    --tr1:#1fae6b;--tr2:#9fc63a;--tr3:#eab308;--tr4:#f0922c;--tr5:#ef4d4d;font-size:16px;
+  }
+  [data-theme="light"]{--bg:#eceff3;--sf:#fff;--sf2:#f3f6f9;--line:#e4e9ef;--tx:#16202a;--dim:#5e6c7a;
+    --shadow:0 8px 24px rgba(20,40,60,.07);--accent:#0f9e90;--accentInk:#fff;--accentSoft:#0f9e9024;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;height:100%;}
+  body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;display:flex;justify-content:center;overflow:hidden;}
+  #app{width:min(440px,100vw);height:100vh;height:100dvh;background:var(--bg);display:flex;flex-direction:column;
+    position:relative;box-shadow:var(--shadow);overflow:hidden;}
+  .hdr{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:calc(env(safe-area-inset-top) + 12px) 16px 6px;}
+  .htitle{flex:1;font-size:21px;font-weight:750;letter-spacing:-.02em;}
+  .htitle b{color:var(--accent);}
+  .iconbtn{width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:0;
+    background:transparent;color:var(--dim);border-radius:11px;font-size:18px;}
+  /* tabs */
+  .tabs{display:flex;gap:8px;overflow-x:auto;padding:6px 14px 10px;flex:0 0 auto;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{flex:none;display:flex;align-items:center;gap:7px;background:var(--sf);border:1px solid var(--line);
+    border-radius:12px;padding:8px 13px;cursor:pointer;font-size:13.5px;font-weight:680;color:var(--dim);}
+  .tab.on{color:var(--tx);border-color:var(--accent);background:var(--accentSoft);}
+  .tab .tr{font-size:11px;font-weight:850;padding:1px 7px;border-radius:999px;color:#06121a;}
+  .tab.add{color:var(--accent);font-weight:800;font-size:16px;border-style:dashed;padding:8px 14px;}
+  .tab .x{color:var(--dim);font-size:13px;margin-left:1px;}
+  .scroll{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:0 16px 30px;}
+  .scroll::-webkit-scrollbar{width:0;}
+  /* gauge hero */
+  .hero{background:var(--sf);border:1px solid var(--line);border-radius:24px;padding:14px 16px 18px;margin:2px 0 14px;
+    box-shadow:var(--shadow);text-align:center;}
+  .namein{border:0;background:transparent;color:var(--tx);font-size:16px;font-weight:700;font-family:inherit;
+    outline:none;text-align:center;width:100%;padding:2px;letter-spacing:-.01em;}
+  .namein:focus{border-bottom:1.5px solid var(--accent);}
+  .gauge{position:relative;width:200px;height:118px;margin:4px auto 0;}
+  .gauge svg{width:200px;height:118px;overflow:visible;}
+  .gtrack{fill:none;stroke:var(--line);stroke-width:15;stroke-linecap:round;}
+  .gprog{fill:none;stroke-width:15;stroke-linecap:round;transition:stroke-dashoffset .55s cubic-bezier(.4,1.3,.5,1),stroke .35s;}
+  .gctr{position:absolute;left:0;right:0;top:44px;}
+  .gctr .lv{font-size:34px;font-weight:850;letter-spacing:-.03em;line-height:1;}
+  .gctr .pts{font-size:12px;color:var(--dim);font-weight:680;margin-top:4px;}
+  .gname{font-size:14.5px;font-weight:730;margin-top:2px;}
+  .rec{margin-top:12px;border-radius:14px;padding:11px 13px;display:flex;align-items:center;gap:10px;text-align:left;}
+  .rec .ri{width:32px;height:32px;flex:none;border-radius:10px;display:flex;align-items:center;justify-content:center;
+    font-size:17px;color:#06121a;}
+  .rec .a{font-size:13.5px;font-weight:750;}
+  .rec .b{font-size:11.5px;color:var(--dim);margin-top:1px;}
+  .szrow{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:12px;}
+  .szrow label{font-size:12.5px;color:var(--dim);font-weight:650;}
+  .szf{display:flex;align-items:center;gap:5px;background:var(--sf2);border:1px solid var(--line);border-radius:11px;padding:6px 12px;}
+  .szf input{width:58px;border:0;background:transparent;color:var(--tx);font-size:16px;font-weight:700;font-family:inherit;outline:none;text-align:right;}
+  .szf span{font-size:12px;color:var(--dim);}
+  /* category tiles */
+  .cat{margin-bottom:14px;}
+  .clbl{font-size:12px;font-weight:730;color:var(--dim);margin:0 4px 8px;display:flex;align-items:center;gap:7px;letter-spacing:.01em;}
+  .clbl .mu{font-size:9.5px;font-weight:800;color:var(--accent);background:var(--accentSoft);padding:2px 7px;border-radius:999px;}
+  .tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
+  .tiles.t2{grid-template-columns:repeat(2,1fr);}
+  .tile{position:relative;border:1.5px solid var(--line);background:var(--sf);border-radius:15px;padding:13px 12px;
+    cursor:pointer;display:flex;align-items:center;gap:11px;transition:.13s;min-height:56px;box-shadow:var(--shadow);}
+  .tile:active{transform:scale(.97);}
+  .tile .ti{width:34px;height:34px;flex:none;border-radius:10px;background:var(--sf2);display:flex;align-items:center;
+    justify-content:center;}
+  .tile .ti svg{width:21px;height:21px;fill:none;stroke:var(--dim);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+  .tile .tl{font-size:13.5px;font-weight:660;line-height:1.15;}
+  .tile .pb{position:absolute;top:8px;right:9px;font-size:10px;font-weight:850;color:var(--dim);background:var(--sf2);
+    width:18px;height:18px;border-radius:6px;display:flex;align-items:center;justify-content:center;}
+  .tile.on{border-color:transparent;}
+  .tile.on .ti{background:rgba(0,0,0,.16);}
+  .tile.on .ti svg{stroke:#06121a;}
+  .tile.on .tl{color:#06121a;}
+  .tile.on .pb{background:rgba(0,0,0,.2);color:#06121a;}
+  .disclaimer{font-size:10.5px;color:var(--dim);text-align:center;padding:4px 16px 10px;line-height:1.4;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="hdr"><div class="htitle">TI-<b>RADS</b></div><button class="iconbtn" id="theme">◐</button></div>
+  <div class="tabs" id="tabs"></div>
+  <div class="scroll"><div id="view"></div>
+    <div class="disclaimer">ACR TI-RADS 2017 (Tessler et al., JACR). Ferramenta educacional.</div>
+  </div>
+</div>
+<script>
+const I={
+  drop:'<svg viewBox="0 0 24 24"><path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11Z"/></svg>',
+  grid:'<svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>',
+  circle:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>',
+  sun:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M6 6l1.5 1.5M16.5 16.5 18 18M18 6l-1.5 1.5M7.5 16.5 6 18"/></svg>',
+  moon:'<svg viewBox="0 0 24 24"><path d="M19 14.5A7 7 0 0 1 9.5 5 7 7 0 1 0 19 14.5Z"/></svg>',
+  wide:'<svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2.5"/></svg>',
+  tall:'<svg viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.5"/></svg>',
+  smooth:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/></svg>',
+  fuzzy:'<svg viewBox="0 0 24 24"><path d="M12 4.5a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15Z" stroke-dasharray="2 2.5"/></svg>',
+  lobby:'<svg viewBox="0 0 24 24"><path d="M12 4c2 0 2.5 2 4 2.5s3 .5 3 3-1.5 2-1.5 4 .5 3-2 3.5-2-1-4-1-2 1.5-4.5 1-1-2.5-1.5-4-2-1.5-1.5-3.5 2-1.5 3-2.5 1-2.5 3-2.5Z"/></svg>',
+  arrow:'<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  none:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M8 12h8"/></svg>',
+  macro:'<svg viewBox="0 0 24 24"><circle cx="9" cy="10" r="2.4"/><circle cx="15" cy="14" r="2.4"/></svg>',
+  rim:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke-dasharray="3 2"/></svg>',
+  punct:'<svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="1"/><circle cx="14" cy="8" r="1"/><circle cx="11" cy="13" r="1"/><circle cx="16" cy="14" r="1"/><circle cx="9" cy="15" r="1"/></svg>',
+};
+const CATS={
+  comp:{label:'Composição',multi:false,opts:[['Cístico',0,I.drop],['Espongiforme',0,I.grid],['Misto cístico-sólido',1,I.circle],['Sólido',2,I.circle]]},
+  echo:{label:'Ecogenicidade',multi:false,opts:[['Anecoico',0,I.drop],['Hiper/isoecoico',1,I.sun],['Hipoecoico',2,I.moon],['Muito hipoecoico',3,I.moon]]},
+  shape:{label:'Formato',multi:false,opts:[['Mais largo que alto',0,I.wide],['Mais alto que largo',3,I.tall]]},
+  margin:{label:'Margens',multi:false,opts:[['Regular / lisa',0,I.smooth],['Mal definida',0,I.fuzzy],['Lobulada / irregular',2,I.lobby],['Ext. extratireoidiana',3,I.arrow]]},
+  foci:{label:'Focos ecogênicos',multi:true,opts:[['Nenhum',0,I.none],['Macrocalcificações',1,I.macro],['Calc. periférica',2,I.rim],['Focos puntiformes',3,I.punct]]},
+};
+const ORDER=['comp','echo','shape','margin','foci'];
+const TRC=['','tr1','tr2','tr3','tr4','tr5'];
+const TRNAME={1:'Benigno',2:'Não suspeito',3:'Levemente suspeito',4:'Moderadamente suspeito',5:'Altamente suspeito'};
+const THR={1:null,2:null,3:{fna:2.5,fu:1.5},4:{fna:1.5,fu:1.0},5:{fna:1.0,fu:0.5}};
+function ptVar(p){return p<=0?'--p0':p===1?'--p1':p===2?'--p2':'--p3';}
+function trLevel(p){if(p<=0)return 1;if(p<=2)return 2;if(p===3)return 3;if(p<=6)return 4;return 5;}
+function newNodule(){return{comp:null,echo:null,shape:null,margin:null,foci:new Set([0]),size:'',name:''};}
+function evalN(n){let pts=0,filled=0;
+  for(const k of ['comp','echo','shape','margin']){if(n[k]!==null){pts+=CATS[k].opts[n[k]][1];filled++;}}
+  [...n.foci].forEach(i=>pts+=CATS.foci.opts[i][1]);
+  const auto=(n.comp===0||n.comp===1);return{pts,tr:auto?1:trLevel(pts),auto,complete:filled===4};}
+function recText(tr,size,auto){const t=THR[tr];const s=parseFloat(String(size).replace(',','.'));
+  if(!t)return{a:auto?'Provável benignidade':'Conduta benigna',b:'Sem PAAF · sem seguimento',ic:'✓'};
+  if(!s||isNaN(s))return{a:'Informe o tamanho',b:`PAAF ≥ ${t.fna} cm · seguimento ≥ ${t.fu} cm`,ic:'⌀'};
+  if(s>=t.fna)return{a:'PAAF recomendada',b:`${s} cm ≥ limiar de ${t.fna} cm`,ic:'!'};
+  if(s>=t.fu)return{a:'Seguimento ecográfico',b:`abaixo do limiar de PAAF (${t.fna} cm)`,ic:'↻'};
+  return{a:'Sem conduta adicional',b:`abaixo do limiar de seguimento (${t.fu} cm)`,ic:'✓'};}
+let nodules=[newNodule()],active=0;
+const tabsEl=document.getElementById('tabs'),view=document.getElementById('view');
+const SEMI=251.3;
+function renderTabs(){tabsEl.innerHTML='';
+  nodules.forEach((n,i)=>{const ev=evalN(n);const t=document.createElement('div');t.className='tab'+(i===active?' on':'');
+    let inner=`<span>${n.name||'Nódulo '+(i+1)}</span>`;
+    if(ev.complete||ev.auto)inner+=`<span class="tr" style="background:var(--${TRC[ev.tr]})">TR${ev.tr}</span>`;
+    if(i===active&&nodules.length>1)inner+=`<span class="x" data-del="${i}">✕</span>`;
+    t.innerHTML=inner;t.onclick=(e)=>{if(e.target.dataset.del!==undefined){nodules.splice(i,1);active=Math.max(0,active-(i<=active?1:0));render();return;}active=i;render();};
+    tabsEl.appendChild(t);});
+  const a=document.createElement('div');a.className='tab add';a.textContent='＋';
+  a.onclick=()=>{nodules.push(newNodule());active=nodules.length-1;render();};tabsEl.appendChild(a);}
+function renderView(){
+  const n=nodules[active],ev=evalN(n);const show=ev.complete||ev.auto;
+  const trcss=show?'var(--'+TRC[ev.tr]+')':'var(--dim)';
+  const frac=show?ev.tr/5:0;const off=SEMI*(1-frac);
+  const r=recText(ev.tr,n.size,ev.auto);
+  view.innerHTML=`<div class="hero">
+    <input class="namein" value="${n.name||'Nódulo '+(active+1)}" id="nm"/>
+    <div class="gauge"><svg viewBox="0 0 200 118">
+      <path class="gtrack" d="M16 104 A 84 84 0 0 1 184 104"/>
+      <path class="gprog" id="prog" d="M16 104 A 84 84 0 0 1 184 104" stroke="${trcss}"
+        stroke-dasharray="${SEMI}" stroke-dashoffset="${off}"/>
+    </svg>
+      <div class="gctr"><div class="lv" style="color:${trcss}">${show?'TR'+ev.tr:'—'}</div>
+        <div class="pts">${ev.pts} ponto${ev.pts!==1?'s':''}</div></div>
+    </div>
+    <div class="gname" style="color:${show?trcss:'var(--dim)'}">${show?TRNAME[ev.tr]:'Selecione os parâmetros'}</div>
+    ${show?`<div class="rec" style="background:color-mix(in srgb,${trcss} 14%,transparent)">
+      <div class="ri" style="background:${trcss}">${r.ic}</div>
+      <div><div class="a">${r.a}</div><div class="b">${r.b}</div></div></div>`:''}
+    <div class="szrow"><label>Maior eixo</label><div class="szf"><input type="number" inputmode="decimal" step="0.1" placeholder="0,0" value="${n.size}" id="sz"/><span>cm</span></div></div>
+  </div>`;
+  ORDER.forEach(key=>{
+    const c=CATS[key];const cat=document.createElement('div');cat.className='cat';
+    cat.innerHTML=`<div class="clbl">${c.label}${c.multi?'<span class="mu">soma</span>':''}</div>`;
+    const tiles=document.createElement('div');tiles.className='tiles'+(c.opts.length===2?' t2':'');
+    c.opts.forEach((o,oi)=>{const on=c.multi?n.foci.has(oi):n[key]===oi;
+      const tile=document.createElement('div');tile.className='tile'+(on?' on':'');
+      if(on){tile.style.background='var('+ptVar(o[1])+')';}
+      tile.innerHTML=`<div class="ti">${o[2]}</div><div class="tl">${o[0]}</div><div class="pb">${o[1]}</div>`;
+      tile.onclick=()=>{if(c.multi){if(oi===0)n.foci=new Set([0]);else{n.foci.delete(0);n.foci.has(oi)?n.foci.delete(oi):n.foci.add(oi);if(!n.foci.size)n.foci.add(0);}}else n[key]=oi;render();};
+      tiles.appendChild(tile);});
+    cat.appendChild(tiles);view.appendChild(cat);
+  });
+  document.getElementById('nm').oninput=e=>{n.name=e.target.value;renderTabs();};
+  document.getElementById('sz').oninput=e=>{n.size=e.target.value;
+    const ev2=evalN(n);const r2=recText(ev2.tr,n.size,ev2.auto);const rec=view.querySelector('.rec');
+    if(rec){rec.querySelector('.a').textContent=r2.a;rec.querySelector('.b').textContent=r2.b;rec.querySelector('.ri').textContent=r2.ic;}};
+}
+function render(){renderTabs();renderView();}
+document.getElementById('theme').onclick=()=>{const h=document.documentElement;h.dataset.theme=h.dataset.theme==='dark'?'light':'dark';render();};
+render();
+</script>
+</body>
+</html>

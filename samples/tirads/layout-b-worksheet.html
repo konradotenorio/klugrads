@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>RadRef · TI-RADS — B (Worksheet)</title>
+<style>
+  :root{
+    --bg:#0e1216;--sf:#161c23;--sf2:#1e2730;--line:#28323d;--tx:#e9eef3;--dim:#8b98a5;
+    --shadow:0 8px 24px rgba(0,0,0,.40);--accent:#15b8a6;--accentInk:#04221f;--accentSoft:#15b8a624;
+    --tr1:#1fae6b;--tr2:#9fc63a;--tr3:#eab308;--tr4:#f0922c;--tr5:#ef4d4d;font-size:16px;
+  }
+  [data-theme="light"]{--bg:#eceff3;--sf:#fff;--sf2:#f3f6f9;--line:#e4e9ef;--tx:#16202a;--dim:#5e6c7a;
+    --shadow:0 8px 24px rgba(20,40,60,.07);--accent:#0f9e90;--accentInk:#fff;--accentSoft:#0f9e9024;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;height:100%;}
+  body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;display:flex;justify-content:center;overflow:hidden;}
+  #app{width:min(440px,100vw);height:100vh;height:100dvh;background:var(--bg);display:flex;flex-direction:column;
+    position:relative;box-shadow:var(--shadow);overflow:hidden;}
+  .hdr{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:calc(env(safe-area-inset-top) + 12px) 16px 8px;}
+  .htitle{flex:1;font-size:21px;font-weight:750;letter-spacing:-.02em;}
+  .htitle b{color:var(--accent);}
+  .htitle small{display:block;font-size:11.5px;color:var(--dim);font-weight:600;letter-spacing:0;margin-top:1px;}
+  .iconbtn{width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:0;
+    background:transparent;color:var(--dim);border-radius:11px;font-size:18px;}
+  /* overview rail */
+  .rail{display:flex;gap:8px;overflow-x:auto;padding:6px 14px 12px;flex:0 0 auto;}
+  .rail::-webkit-scrollbar{display:none;}
+  .rchip{flex:none;display:flex;align-items:center;gap:8px;background:var(--sf);border:1px solid var(--line);
+    border-radius:13px;padding:8px 12px;cursor:pointer;box-shadow:var(--shadow);}
+  .rchip .rn{font-size:13px;font-weight:680;}
+  .rchip .rt{font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:999px;color:#06121a;}
+  .rchip.radd{color:var(--accent);font-weight:750;font-size:18px;border-style:dashed;padding:8px 15px;}
+  .scroll{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:0 14px 120px;}
+  .scroll::-webkit-scrollbar{width:0;}
+  .card{background:var(--sf);border:1px solid var(--line);border-radius:18px;margin:0 2px 12px;box-shadow:var(--shadow);
+    overflow:hidden;animation:in .2s ease;}
+  @keyframes in{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .card .stripe{height:4px;background:var(--line);}
+  .chead{display:flex;align-items:center;gap:10px;padding:12px 14px 4px;}
+  .dot{width:24px;height:24px;flex:none;border-radius:8px;background:var(--accentSoft);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:750;}
+  .nname{flex:1;border:0;background:transparent;color:var(--tx);font-size:15.5px;font-weight:700;font-family:inherit;
+    outline:none;padding:3px 2px;min-width:0;}
+  .nname:focus{border-bottom:1.5px solid var(--accent);}
+  .del{color:var(--dim);font-size:16px;background:transparent;border:0;cursor:pointer;padding:6px;}
+  .grid{padding:6px 14px 4px;}
+  .field{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--line);}
+  .field:first-child{border-top:0;}
+  .field>label{font-size:12.5px;color:var(--dim);font-weight:650;width:104px;flex:none;}
+  .selwrap{position:relative;flex:1;}
+  .selwrap::after{content:"⌄";position:absolute;right:13px;top:50%;transform:translateY(-65%);color:var(--dim);
+    pointer-events:none;font-size:16px;font-weight:800;}
+  select{width:100%;appearance:none;-webkit-appearance:none;border:1px solid var(--line);background:var(--sf2);
+    color:var(--tx);font-size:14px;font-weight:600;font-family:inherit;padding:10px 30px 10px 12px;border-radius:11px;
+    outline:none;cursor:pointer;}
+  select:focus{border-color:var(--accent);}
+  select.empty{color:var(--dim);font-weight:600;}
+  .fp{flex:none;width:22px;height:22px;border-radius:7px;background:var(--line);color:var(--dim);font-size:11px;
+    font-weight:800;display:flex;align-items:center;justify-content:center;}
+  /* foci toggles */
+  .foci{display:flex;flex-wrap:wrap;gap:6px;flex:1;}
+  .ftog{border:1px solid var(--line);background:var(--sf2);color:var(--tx);font-size:12px;font-weight:600;
+    padding:7px 10px;border-radius:10px;cursor:pointer;display:flex;gap:5px;align-items:center;}
+  .ftog .n{font-size:10px;font-weight:800;color:var(--dim);}
+  .ftog.on{background:var(--accent);color:#06121a;border-color:transparent;}
+  .ftog.on .n{color:#06121a;}
+  .szf{margin-left:auto;display:flex;align-items:center;gap:5px;background:var(--sf2);border:1px solid var(--line);
+    border-radius:11px;padding:6px 10px;}
+  .szf input{width:54px;border:0;background:transparent;color:var(--tx);font-size:15px;font-weight:700;
+    font-family:inherit;outline:none;text-align:right;}
+  .szf span{font-size:12px;color:var(--dim);}
+  /* result footer */
+  .res{display:flex;align-items:center;gap:11px;padding:12px 14px;margin-top:4px;}
+  .res .lv{font-size:20px;font-weight:850;letter-spacing:-.02em;line-height:1;}
+  .res .meta{flex:1;min-width:0;}
+  .res .meta .a{font-size:13.5px;font-weight:730;line-height:1.15;}
+  .res .meta .b{font-size:11.5px;color:var(--dim);margin-top:2px;}
+  .res .pts{font-size:12px;font-weight:750;color:#06121a;padding:5px 11px;border-radius:999px;}
+  .foot{position:absolute;left:0;right:0;bottom:0;padding:10px 16px calc(env(safe-area-inset-bottom) + 12px);
+    background:linear-gradient(180deg,transparent,var(--bg) 38%);display:flex;gap:10px;}
+  .add{flex:1;border:0;background:var(--accent);color:var(--accentInk);font-size:15.5px;font-weight:750;
+    font-family:inherit;padding:14px;border-radius:15px;cursor:pointer;box-shadow:var(--shadow);}
+  .add:active{opacity:.85;}
+  .disclaimer{font-size:10.5px;color:var(--dim);text-align:center;padding:6px 24px 4px;line-height:1.4;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="hdr">
+    <div class="htitle">TI-<b>RADS</b><small>Estratificação ACR · planilha</small></div>
+    <button class="iconbtn" id="theme" aria-label="Tema">◐</button>
+  </div>
+  <div class="rail" id="rail"></div>
+  <div class="scroll"><div id="list"></div>
+    <div class="disclaimer">ACR TI-RADS 2017 (Tessler et al., JACR). Ferramenta educacional.</div>
+  </div>
+  <div class="foot"><button class="add" id="add">＋ Adicionar nódulo</button></div>
+</div>
+<script>
+const CATS={
+  comp:{label:'Composição',multi:false,opts:[['Cístico',0],['Espongiforme',0],['Misto cístico-sólido',1],['Sólido',2]]},
+  echo:{label:'Ecogenicidade',multi:false,opts:[['Anecoico',0],['Hiper/isoecoico',1],['Hipoecoico',2],['Muito hipoecoico',3]]},
+  shape:{label:'Formato',multi:false,opts:[['Mais largo que alto',0],['Mais alto que largo',3]]},
+  margin:{label:'Margens',multi:false,opts:[['Regular',0],['Mal definida',0],['Lobulada / irregular',2],['Ext. extratireoidiana',3]]},
+  foci:{label:'Focos',multi:true,opts:[['Nenhum',0],['Macrocalc.',1],['Calc. perif.',2],['Puntiformes',3]]},
+};
+const TRC=['','tr1','tr2','tr3','tr4','tr5'];
+const THR={1:null,2:null,3:{fna:2.5,fu:1.5},4:{fna:1.5,fu:1.0},5:{fna:1.0,fu:0.5}};
+function trLevel(p){if(p<=0)return 1;if(p<=2)return 2;if(p===3)return 3;if(p<=6)return 4;return 5;}
+function newNodule(){return{comp:null,echo:null,shape:null,margin:null,foci:new Set([0]),size:'',name:''};}
+function evalN(n){let pts=0,filled=0;
+  for(const k of ['comp','echo','shape','margin']){if(n[k]!==null){pts+=CATS[k].opts[n[k]][1];filled++;}}
+  [...n.foci].forEach(i=>pts+=CATS.foci.opts[i][1]);
+  const auto=(n.comp===0||n.comp===1);return{pts,tr:auto?1:trLevel(pts),auto,complete:filled===4};}
+function recText(tr,size,auto){const t=THR[tr];const s=parseFloat(String(size).replace(',','.'));
+  if(!t)return{a:auto?'Cístico/espongiforme → TR1':'Conduta benigna',b:'Sem PAAF · sem seguimento'};
+  if(!s||isNaN(s))return{a:'Informe o tamanho',b:`PAAF ≥ ${t.fna} cm · seguimento ≥ ${t.fu} cm`};
+  if(s>=t.fna)return{a:'PAAF recomendada',b:`${s} cm ≥ limiar ${t.fna} cm`};
+  if(s>=t.fu)return{a:'Seguimento ecográfico',b:`abaixo do limiar de PAAF (${t.fna} cm)`};
+  return{a:'Sem conduta adicional',b:`abaixo do limiar de seguimento (${t.fu} cm)`};}
+let nodules=[newNodule()];
+const list=document.getElementById('list'),rail=document.getElementById('rail');
+function render(){list.innerHTML='';nodules.forEach((n,i)=>list.appendChild(cardEl(n,i)));renderRail();}
+function renderRail(){rail.innerHTML='';
+  nodules.forEach((n,i)=>{const ev=evalN(n);const c=document.createElement('div');c.className='rchip';
+    c.innerHTML=`<span class="rn">${n.name||'N'+(i+1)}</span>`;
+    if(ev.complete||ev.auto){const col='var(--'+TRC[ev.tr]+')';
+      c.innerHTML+=`<span class="rt" style="background:${col}">TR${ev.tr}</span>`;}
+    else c.innerHTML+=`<span class="rt" style="background:var(--line);color:var(--dim)">—</span>`;
+    c.onclick=()=>list.children[i].scrollIntoView({behavior:'smooth',block:'start'});
+    rail.appendChild(c);});
+  const a=document.createElement('div');a.className='rchip radd';a.textContent='＋';a.onclick=addN;rail.appendChild(a);}
+function opt(o,sel){return `<option value="${o[2]}" ${sel?'selected':''}>${o[0]}  ·  ${o[1]} pt</option>`;}
+function cardEl(n,idx){
+  const ev=evalN(n);const show=ev.complete||ev.auto;const trcss='var(--'+TRC[ev.tr]+')';
+  const card=document.createElement('div');card.className='card';
+  card.innerHTML=`<div class="stripe" style="background:${show?trcss:'var(--line)'}"></div>
+    <div class="chead"><div class="dot">${idx+1}</div>
+      <input class="nname" value="${n.name||'Nódulo '+(idx+1)}" data-i="${idx}"/>
+      ${nodules.length>1?`<button class="del" data-del="${idx}">✕</button>`:''}</div>`;
+  const grid=document.createElement('div');grid.className='grid';
+  ['comp','echo','shape','margin'].forEach(key=>{
+    const c=CATS[key];const f=document.createElement('div');f.className='field';
+    const cur=n[key];const ptv=cur!==null?c.opts[cur][1]:'';
+    let opts=`<option value="" ${cur===null?'selected':''} disabled hidden>Selecionar…</option>`;
+    c.opts.forEach((o,oi)=>opts+=`<option value="${oi}" ${cur===oi?'selected':''}>${o[0]}  ·  ${o[1]} pt</option>`);
+    f.innerHTML=`<label>${c.label}</label>
+      <div class="selwrap"><select data-k="${key}" data-i="${idx}" class="${cur===null?'empty':''}">${opts}</select></div>
+      <div class="fp">${ptv===''?'–':ptv}</div>`;
+    grid.appendChild(f);
+  });
+  const ff=document.createElement('div');ff.className='field';
+  ff.innerHTML=`<label>Focos</label>`;const fwrap=document.createElement('div');fwrap.className='foci';
+  CATS.foci.opts.forEach((o,oi)=>{const on=n.foci.has(oi);const t=document.createElement('div');
+    t.className='ftog'+(on?' on':'');t.innerHTML=`${o[0]}<span class="n">${o[1]}</span>`;
+    t.onclick=()=>{if(oi===0)n.foci=new Set([0]);else{n.foci.delete(0);n.foci.has(oi)?n.foci.delete(oi):n.foci.add(oi);if(!n.foci.size)n.foci.add(0);}render();};
+    fwrap.appendChild(t);});
+  ff.appendChild(fwrap);grid.appendChild(ff);
+  const sf=document.createElement('div');sf.className='field';
+  sf.innerHTML=`<label>Maior eixo</label><div class="szf"><input type="number" inputmode="decimal" step="0.1" placeholder="0,0" value="${n.size}" data-sz="${idx}"/><span>cm</span></div>`;
+  grid.appendChild(sf);card.appendChild(grid);
+  if(show){const r=recText(ev.tr,n.size,ev.auto);const res=document.createElement('div');res.className='res';
+    res.style.background='color-mix(in srgb,'+trcss+' 13%,transparent)';
+    res.innerHTML=`<div class="lv" style="color:${trcss}">TR${ev.tr}</div>
+      <div class="meta"><div class="a">${r.a}</div><div class="b">${r.b}</div></div>
+      <div class="pts" style="background:${trcss}">${ev.pts} pt${ev.pts!==1?'s':''}</div>`;
+    card.appendChild(res);}
+  return card;
+}
+list.addEventListener('change',e=>{if(e.target.dataset.k){const i=+e.target.dataset.i;
+  nodules[i][e.target.dataset.k]=+e.target.value;render();}});
+list.addEventListener('input',e=>{
+  if(e.target.dataset.i!==undefined&&e.target.classList.contains('nname')){nodules[+e.target.dataset.i].name=e.target.value;renderRail();}
+  if(e.target.dataset.sz!==undefined){const i=+e.target.dataset.sz;nodules[i].size=e.target.value;
+    const ev=evalN(nodules[i]);const r=recText(ev.tr,nodules[i].size,ev.auto);
+    const res=list.children[i].querySelector('.res');if(res){res.querySelector('.a').textContent=r.a;res.querySelector('.b').textContent=r.b;}}
+});
+list.addEventListener('click',e=>{const d=e.target.closest('[data-del]');if(d){nodules.splice(+d.dataset.del,1);render();}});
+function addN(){nodules.push(newNodule());render();setTimeout(()=>list.lastElementChild.scrollIntoView({behavior:'smooth'}),40);}
+document.getElementById('add').onclick=addN;
+document.getElementById('theme').onclick=()=>{const h=document.documentElement;h.dataset.theme=h.dataset.theme==='dark'?'light':'dark';render();};
+render();
+</script>
+</body>
+</html>
