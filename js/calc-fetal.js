@@ -1,4 +1,4 @@
-/* =========================================================================
+﻿/* =========================================================================
    RadRef — Calculadoras de Medicina Fetal (especialidade Obstétrico e Fetal)
    ---------------------------------------------------------------------------
    Fórmulas de artigos publicados (referência em cada calculadora).
@@ -17,7 +17,10 @@ function fmErf(x){
 }
 function fmPhi(z){ return 0.5*(1+fmErf(z/Math.SQRT2)); }
 function fmPct(z){ return Math.min(99.9, Math.max(0.1, fmPhi(z)*100)); }
-function fmNum(id){ const v = parseFloat((document.getElementById(id)||{}).value); return isNaN(v)?null:v; }
+function fmNum(id){
+  const raw = String((document.getElementById(id)||{}).value||'').trim().replace(',','.');
+  const v = parseFloat(raw); return isNaN(v)?null:v;
+}
 function fmGA(){ const s=fmNum('fm-gs'), d=fmNum('fm-gd')||0; return s==null?null:s+d/7; }
 function fmGAStr(days){ const w=Math.floor(days/7), d=Math.round(days%7); return `${w}s ${d}d`; }
 function fmInterp(tbl, ga, col){ // tbl: [[semana, ...cols]]
@@ -107,7 +110,7 @@ const FETAL_CALCS = [
 {id:'fm-dating', title:'Datação da Gestação (CCN)', badge:'IG',
  desc:'Idade gestacional pelo comprimento cabeça-nádega — Robinson & Fleming',
  inputs:`<div class="calc-label">CCN — comprimento cabeça-nádega (mm)</div>
-   <div class="calc-in"><input id="fm-crl" type="number" inputmode="decimal" placeholder="15–84"></div>`,
+   <div class="calc-in"><input id="fm-crl" type="text" inputmode="decimal" placeholder="15–84"></div>`,
  compute(){
    const crl = fmNum('fm-crl');
    if(crl==null||crl<15||crl>84) return fmOut(`<div class="note">Informe um CCN entre 15 e 84 mm.</div>`);
@@ -122,15 +125,15 @@ const FETAL_CALCS = [
  desc:'Avaliação da TN pelo CCN (11–13+6 semanas)',
  review:true,
  inputs:`<div class="calc-label">CCN (mm)</div>
-   <div class="calc-in"><input id="fm-crl" type="number" inputmode="decimal" placeholder="45–84"></div>
+   <div class="calc-in"><input id="fm-crl" type="text" inputmode="decimal" placeholder="45–84"></div>
    <div class="calc-label">TN (mm)</div>
-   <div class="calc-in"><input id="fm-nt" type="number" inputmode="decimal" placeholder="ex.: 1.8"></div>`,
+   <div class="calc-in"><input id="fm-nt" type="text" inputmode="decimal" placeholder="ex.: 1.8"></div>`,
  compute(){
    const crl=fmNum('fm-crl'), nt=fmNum('fm-nt');
    if(crl==null||crl<45||crl>84||nt==null) return fmOut(`<div class="note">Informe CCN (45–84 mm) e TN.</div>`);
    const p50=fmInterp(FM_NT,crl,1), p95=fmInterp(FM_NT,crl,2);
    let b;
-   if(nt>=3.5) b=fmBadge(`TN ${nt.toFixed(1)} mm — ≥ 3,5 mm (aumentada)`,'bad');
+   if(nt>=3.5) b=fmBadge(`TN ${nt.toFixed(1)} mm — ≥ 3.5 mm (aumentada)`,'bad');
    else if(nt>p95) b=fmBadge(`TN ${nt.toFixed(1)} mm — acima do P95 (${p95.toFixed(1)} mm)`,'warn');
    else b=fmBadge(`TN ${nt.toFixed(1)} mm — dentro da normalidade (P95: ${p95.toFixed(1)} mm)`,'ok');
    return fmOut(b+`<div class="prose" style="margin-top:10px">Mediana esperada para CCN ${crl} mm: <b>${p50.toFixed(1)} mm</b></div>`);
@@ -143,11 +146,11 @@ const FETAL_CALCS = [
  inputs:`<div class="calc-label">Idade gestacional</div>
    <div class="calc-in"><input id="fm-gs" type="number" placeholder="semanas"><input id="fm-gd" type="number" placeholder="dias"></div>
    <div class="calc-label">CC — circunferência cefálica (mm)</div>
-   <div class="calc-in"><input id="fm-hc" type="number" inputmode="decimal" placeholder="ex.: 280"></div>
+   <div class="calc-in"><input id="fm-hc" type="text" inputmode="decimal" placeholder="ex.: 280"></div>
    <div class="calc-label">CA — circunferência abdominal (mm)</div>
-   <div class="calc-in"><input id="fm-ac" type="number" inputmode="decimal" placeholder="ex.: 260"></div>
+   <div class="calc-in"><input id="fm-ac" type="text" inputmode="decimal" placeholder="ex.: 260"></div>
    <div class="calc-label">CF — comprimento do fêmur (mm)</div>
-   <div class="calc-in"><input id="fm-fl" type="number" inputmode="decimal" placeholder="ex.: 55"></div>`,
+   <div class="calc-in"><input id="fm-fl" type="text" inputmode="decimal" placeholder="ex.: 55"></div>`,
  compute(){
    const ga=fmGA(), hc=fmNum('fm-hc'), ac=fmNum('fm-ac'), fl=fmNum('fm-fl');
    if(ga==null||ga<14||ga>42||!hc||!ac||!fl) return fmOut(`<div class="note">Informe IG (14–42 sem), CC, CA e CF.</div>`);
@@ -185,9 +188,9 @@ const FETAL_CALCS = [
  inputs:`<div class="calc-label">Idade gestacional</div>
    <div class="calc-in"><input id="fm-gs" type="number" placeholder="semanas"><input id="fm-gd" type="number" placeholder="dias"></div>
    <div class="calc-label">IP — artéria umbilical</div>
-   <div class="calc-in"><input id="fm-ua" type="number" inputmode="decimal" placeholder="ex.: 0.95"></div>
+   <div class="calc-in"><input id="fm-ua" type="text" inputmode="decimal" placeholder="ex.: 0.95"></div>
    <div class="calc-label">IP — artéria cerebral média (opcional)</div>
-   <div class="calc-in"><input id="fm-mca" type="number" inputmode="decimal" placeholder="ex.: 1.80"></div>`,
+   <div class="calc-in"><input id="fm-mca" type="text" inputmode="decimal" placeholder="ex.: 1.80"></div>`,
  compute(){
    const ga=fmGA(), ua=fmNum('fm-ua'), mca=fmNum('fm-mca');
    if(ga==null||ga<20||ga>41||!ua) return fmOut(`<div class="note">Informe IG (20–41 sem) e IP da art. umbilical.</div>`);
@@ -203,7 +206,7 @@ const FETAL_CALCS = [
        : fmBadge(`ACM IP ${mca.toFixed(2)} — normal (P5: ${m5.toFixed(2)})`,'ok')}</div>`;
      const rcp = mca/ua;
      h += `<div style="margin-top:10px">${rcp<1
-       ? fmBadge(`RCP ${rcp.toFixed(2)} — < 1,0 (alterada)`,'bad')
+       ? fmBadge(`RCP ${rcp.toFixed(2)} — < 1.0 (alterada)`,'bad')
        : fmBadge(`RCP ${rcp.toFixed(2)} — normal`,'ok')}</div>`;
    }
    return fmOut(h);
@@ -217,7 +220,7 @@ const FETAL_CALCS = [
  inputs:`<div class="calc-label">Idade gestacional</div>
    <div class="calc-in"><input id="fm-gs" type="number" placeholder="semanas"><input id="fm-gd" type="number" placeholder="dias"></div>
    <div class="calc-label">IP médio (média direita/esquerda)</div>
-   <div class="calc-in"><input id="fm-ut" type="number" inputmode="decimal" placeholder="ex.: 1.10"></div>`,
+   <div class="calc-in"><input id="fm-ut" type="text" inputmode="decimal" placeholder="ex.: 1.10"></div>`,
  compute(){
    const ga=fmGA(), pi=fmNum('fm-ut');
    if(ga==null||ga<11||ga>41||!pi) return fmOut(`<div class="note">Informe IG (11–41 sem) e o IP médio.</div>`);
@@ -234,7 +237,7 @@ const FETAL_CALCS = [
  inputs:`<div class="calc-label">Idade gestacional</div>
    <div class="calc-in"><input id="fm-gs" type="number" placeholder="semanas"><input id="fm-gd" type="number" placeholder="dias"></div>
    <div class="calc-label">PSV da ACM (cm/s)</div>
-   <div class="calc-in"><input id="fm-psv" type="number" inputmode="decimal" placeholder="ex.: 42"></div>`,
+   <div class="calc-in"><input id="fm-psv" type="text" inputmode="decimal" placeholder="ex.: 42"></div>`,
  compute(){
    const ga=fmGA(), psv=fmNum('fm-psv');
    if(ga==null||ga<18||ga>40||!psv) return fmOut(`<div class="note">Informe IG (18–40 sem) e PSV.</div>`);
@@ -243,7 +246,7 @@ const FETAL_CALCS = [
    const b = mom>=1.5 ? fmBadge(`${mom.toFixed(2)} MoM — sugere anemia moderada/grave`,'bad')
      : mom>=1.29 ? fmBadge(`${mom.toFixed(2)} MoM — sugere anemia leve`,'warn')
      : fmBadge(`${mom.toFixed(2)} MoM — dentro da normalidade`,'ok');
-   return fmOut(b+`<div class="prose" style="margin-top:8px">Mediana esperada para ${fmGAStr(ga*7)}: <b>${med.toFixed(1)} cm/s</b> · limiar 1,5 MoM: ${(med*1.5).toFixed(1)} cm/s</div>`);
+   return fmOut(b+`<div class="prose" style="margin-top:8px">Mediana esperada para ${fmGAStr(ga*7)}: <b>${med.toFixed(1)} cm/s</b> · limiar 1.5 MoM: ${(med*1.5).toFixed(1)} cm/s</div>`);
  },
  refs:['Mari G, et al. Noninvasive diagnosis by Doppler ultrasonography of fetal anemia due to maternal red-cell alloimmunization. N Engl J Med. 2000;342(1):9–14.']},
 
