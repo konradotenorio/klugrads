@@ -41,6 +41,7 @@ const P = {
   exam:'<circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/>',
   tech:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>',
   tools:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  gear:'<circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
 };
 function svgIcon(inner, size, o){
   o = o || {};
@@ -159,13 +160,19 @@ let state = {
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
   tirads:null,
+  lang:'pt', fontScale:1, user:null,
 };
+const FONT_STEPS = [0.85, 0.925, 1, 1.075, 1.15, 1.25];
+const LANGS = [['pt','Português'],['en','English'],['es','Español']];
 
 function persist(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(_){} }
 function loadState(){
   try{ const t=localStorage.getItem('radref_theme'); if(t==='dark'||t==='light') state.theme=t; }catch(_){}
   try{ const f=JSON.parse(localStorage.getItem('radref_favs')||'[]'); if(Array.isArray(f)) state.favs=f; }catch(_){}
   try{ const l=JSON.parse(localStorage.getItem('radref_lists')||'[]'); if(Array.isArray(l)) state.lists=l; }catch(_){}
+  try{ const g=localStorage.getItem('radref_lang'); if(LANGS.some(x=>x[0]===g)) state.lang=g; }catch(_){}
+  try{ const f=parseFloat(localStorage.getItem('radref_fontscale')); if(FONT_STEPS.includes(f)) state.fontScale=f; }catch(_){}
+  try{ const u=JSON.parse(localStorage.getItem('radref_user')||'null'); if(u&&u.email) state.user=u; }catch(_){}
 }
 
 /* ---- HELPERS de dados ---- */
@@ -199,6 +206,7 @@ function metaOf(d){ return [d.region, d.abbr].filter(Boolean).join(' · '); }
    ========================================================================= */
 function render(keep){
   applyTheme();
+  applyFontScale();
   const v = state.view;
   // header
   const hdr = $('hdr');
@@ -231,6 +239,7 @@ function headerHTML(){
   else if(v==='detail'){ title=state.item?state.item.name:''; sub=(state.item&&state.item.abbr)?state.item.abbr:''; }
   else if(v==='calc'){ title = state.calcId==='tfg' ? 'Taxa de Filtração Glomerular' : state.calcId==='tirads' ? 'TI-RADS — Tireoide' : 'Calculadoras'; }
   else if(v==='ferramentas'){ title='Outras Ferramentas'; }
+  else if(v==='config'){ title='Configurações'; }
   else if(v==='favoritos'){ title='Favoritos'; }
   else if(v==='novalista'){ const cl=state.lists.find(x=>x.id===state.composingId); title=cl?cl.name:'Minhas listas'; sub=cl?'Lista personalizada':''; }
   else if(v==='construction'){ const m=MODALITIES.find(x=>x.id===state.modalityId)||{}; title=m.name||'Em Construção'; }
@@ -258,6 +267,7 @@ function viewHTML(){
     case 'novalista': return listsHTML();
     case 'construction': return constructionHTML();
     case 'ferramentas': return ferramentasHTML();
+    case 'config': return configHTML();
     default: return modalityHTML();
   }
 }
@@ -295,6 +305,11 @@ function modalityHTML(){
         <div class="st"><div class="t">Nova lista</div><div class="d">Monte um pacote para o plantão</div></div>
         <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
       </div>
+      <div class="lc-short" onclick="setView('config')">
+        <div class="si acc">${svgIcon(P.gear,23)}</div>
+        <div class="st"><div class="t">Configurações</div><div class="d">Tema, conta, idioma e tamanho da fonte</div></div>
+        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
+      </div>
     </div>
   </div>`;
 }
@@ -309,6 +324,78 @@ function ferramentasHTML(){
       </div>
     </div>
   </div>`;
+}
+
+/* ---- 1c. CONFIGURAÇÕES ---- */
+function configHTML(){
+  const i = FONT_STEPS.indexOf(state.fontScale);
+  const langs = LANGS.map(([id,nome])=>
+    `<button class="${state.lang===id?'on':''}" onclick="setLang('${id}')">${nome}</button>`
+  ).join('');
+  const conta = state.user
+    ? `<div class="set-row"><div class="lbl">${esc(state.user.email)}<div class="sub">Conta conectada</div></div></div>
+       <div style="padding:14px 18px"><button class="set-btn" onclick="logout()">Sair da conta</button></div>`
+    : `<div class="set-row"><div class="lbl">Você não está conectado<div class="sub">Entre para sincronizar favoritos e listas</div></div></div>
+       <div style="padding:14px 18px"><button class="set-btn accent" onclick="login()">Entrar</button></div>`;
+  return `<div class="set-wrap">
+    <div class="sec-label">Aparência</div>
+    <div class="set-row">
+      <div class="lbl">Tema<div class="sub">Layout dia ou noite</div></div>
+      <div class="set-seg">
+        <button class="${state.theme==='light'?'on':''}" onclick="setTheme('light')">☀️ Dia</button>
+        <button class="${state.theme==='dark'?'on':''}" onclick="setTheme('dark')">🌙 Noite</button>
+      </div>
+    </div>
+    <div class="set-row">
+      <div class="lbl">Tamanho da fonte<div class="sub">Aumenta ou diminui todo o app</div></div>
+      <div class="set-step">
+        <button onclick="stepFont(-1)" ${i<=0?'disabled':''} aria-label="Diminuir fonte">−</button>
+        <div class="val">${Math.round(state.fontScale*100)}%</div>
+        <button onclick="stepFont(1)" ${i>=FONT_STEPS.length-1?'disabled':''} aria-label="Aumentar fonte">+</button>
+      </div>
+    </div>
+
+    <div class="sec-label" style="margin-top:14px">Idioma</div>
+    <div class="set-row">
+      <div class="lbl">Idioma do app<div class="sub">Português é o padrão</div></div>
+    </div>
+    <div style="padding:0 18px 14px"><div class="set-seg">${langs}</div></div>
+    <div class="set-note">A tradução do conteúdo ainda está em andamento — por enquanto a
+      preferência fica salva e o app segue em português.</div>
+
+    <div class="sec-label" style="margin-top:14px">Conta</div>
+    ${conta}
+  </div>`;
+}
+function setTheme(t){
+  if(state.theme===t) return;
+  state.theme=t;
+  try{ localStorage.setItem('radref_theme', t); }catch(_){}
+  applyTheme(); render(true);
+}
+function setLang(l){
+  state.lang=l;
+  try{ localStorage.setItem('radref_lang', l); }catch(_){}
+  render(true);
+}
+function applyFontScale(){
+  document.documentElement.style.setProperty('--app-zoom', state.fontScale);
+}
+function stepFont(dir){
+  const i = FONT_STEPS.indexOf(state.fontScale) + dir;
+  if(i<0 || i>=FONT_STEPS.length) return;
+  state.fontScale = FONT_STEPS[i];
+  try{ localStorage.setItem('radref_fontscale', String(state.fontScale)); }catch(_){}
+  applyFontScale(); render(true);
+}
+function login(){
+  // Placeholder — a autenticação real (Supabase/Stripe) entra na etapa de monetização.
+  alert('Login em breve.');
+}
+function logout(){
+  state.user=null;
+  try{ localStorage.removeItem('radref_user'); }catch(_){}
+  render(true);
 }
 
 /* ---- 1b. LAUNCHER (home) ---- */
@@ -804,10 +891,11 @@ function goBack(){
   const v = state.view;
   if(v==='detail'){ state.view='refs'; render(); return; }
   if(v==='novalista' && state.composingId){ state.composingId=null; render(); return; }
-  if(v==='construction'||v==='ferramentas'){ state.view='modality'; render(); return; }
+  if(v==='construction'||v==='ferramentas'||v==='config'){ state.view='modality'; render(); return; }
   if(v==='calc'){
     if(state.calcId){ state.calcId=null; render(); return; }
-    state.view='ferramentas'; render(); return;
+    state.view = state.modalityId==='us' ? 'home' : 'ferramentas';
+    render(); return;
   }
   state.view='home'; render();
 }
