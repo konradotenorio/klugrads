@@ -230,7 +230,6 @@ function applyTheme(){
   if(m) m.setAttribute('content', state.theme==='light'?'#eceff3':'#0e1216');
 }
 function renderHeader(){ $('hdr').innerHTML = headerHTML(); }
-function themeIcon(){ return `<span style="font-size:21px;line-height:1">${state.theme==='dark'?'☀️':'🌙'}</span>`; }
 
 function headerHTML(){
   const v = state.view;
@@ -249,7 +248,6 @@ function headerHTML(){
     const isFav = state.favs.indexOf(state.item.id)>=0;
     right += `<button class="iconbtn" style="color:${isFav?'var(--star)':'var(--dim)'}" onclick="toggleFav('${esc(state.item.id)}')" aria-label="Favoritar">${svgIcon(P.star,22,{fill:isFav?'currentColor':'none'})}</button>`;
   }
-  right += `<button class="iconbtn" onclick="toggleTheme()" aria-label="Alternar tema">${themeIcon()}</button>`;
 
   return `<button class="hbtn" onclick="goBack()" aria-label="Voltar">${svgIcon(P.back,22,{sw:2.2})}</button>
     <div class="htitle-wrap"><div class="htitle">${esc(title)}</div>${sub?`<div class="hsub">${esc(sub)}</div>`:''}</div>
@@ -281,7 +279,6 @@ function modalityHTML(){
       ${!m.active?'<div class="mod-badge">Em construção</div>':''}
     </div>`).join('');
   return `<div class="modal-screen">
-    <button class="iconbtn mod-themebtn" id="mod-themebtn" onclick="toggleTheme()" aria-label="Alternar tema">${themeIcon()}</button>
     <div class="modal-head">
       <div class="modal-brand">RAD<span>REF</span></div>
       <div class="modal-slogan">Sua referência em radiologia</div>
@@ -402,7 +399,6 @@ function logout(){
 function homeHTML(){
   return `<div class="lc">
     <button class="iconbtn lc-back" onclick="setView('modality')" aria-label="Voltar">${svgIcon(P.back,22,{sw:2.2})}</button>
-    <button class="iconbtn lc-toggle" id="lc-themebtn" onclick="toggleTheme()" aria-label="Alternar tema">${themeIcon()}</button>
     <div class="lc-head">
       <div class="lc-brand">RAD<span>REF</span></div>
       <div class="lc-greet">Ultrassonografia</div>
@@ -899,16 +895,6 @@ function goBack(){
   }
   state.view='home'; render();
 }
-function toggleTheme(){
-  state.theme = state.theme==='dark' ? 'light' : 'dark';
-  try{ localStorage.setItem('radref_theme', state.theme); }catch(_){}
-  applyTheme();
-  // só o ícone sol/lua muda; preserva scroll/estado da tela atual
-  if(state.view==='home'){ const b=$('lc-themebtn'); if(b) b.innerHTML = themeIcon(); }
-  else if(state.view==='modality'){ const b=$('mod-themebtn'); if(b) b.innerHTML = themeIcon(); }
-  else renderHeader();
-}
-
 function setSpecialty(id){ state.specialty=id; render(); }
 function setSubBand(b){ state.subBand=b; render(); }
 function onSearch(v){ state.query=v; const el=$('reflist'); if(el) el.innerHTML=refsListHTML(); }
