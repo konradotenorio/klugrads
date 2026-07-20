@@ -461,33 +461,40 @@ function calcViewHTML(){
 /* Catálogo de calculadoras por especialidade (mesmos ids de SPECIALTIES). */
 const CALCS = [
   {id:'tirads', spec:'neurocab',  title:'TI-RADS — Tireoide',              desc:'Classificação de nódulos tireoidianos (ACR) — 1 ou vários', badge:'TR'},
-  {id:'tfg',    spec:'abdome',    title:'Taxa de Filtração Glomerular',    desc:'Fórmula MDRD — estimativa da função renal'},
 ];
+/* Calculadoras gerais (Outras Ferramentas), fora da ultrassonografia. */
+const GENERAL_CALCS = [
+  {id:'tfg', title:'Taxa de Filtração Glomerular', desc:'Fórmula MDRD — estimativa da função renal'},
+];
+function calcCardHTML(c){
+  const icon = c.badge
+    ? `<div class="si acc" style="font-weight:800;font-size:13px;letter-spacing:-.01em">${esc(c.badge)}</div>`
+    : `<div class="si acc">${svgIcon(P.calc,22)}</div>`;
+  return `<div class="lc-short" onclick="state.calcId='${c.id}';render()">
+    ${icon}
+    <div class="st">
+      <div class="t">${esc(c.title)}</div>
+      <div class="d">${esc(c.desc)}</div>
+    </div>
+    <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
+  </div>`;
+}
 function calcListHTML(){
-  // Fora da ultrassonografia (Outras Ferramentas): espaço reservado para as
-  // calculadoras gerais, ainda sem conteúdo.
+  // Fora da ultrassonografia (Outras Ferramentas): calculadoras gerais.
   if(state.modalityId !== 'us'){
+    const gerais = GENERAL_CALCS.length
+      ? GENERAL_CALCS.map(c=>calcCardHTML(c)).join('')
+      : `<div class="empty"><div class="msg">Nenhuma calculadora disponível ainda.</div></div>`;
     return `<div class="calc-list-wrap">
-      <div class="empty"><div class="msg">Nenhuma calculadora disponível ainda.</div></div>
+      <div class="calc-intro-lbl">Calculadoras disponíveis</div>
+      ${gerais}
     </div>`;
   }
   const specChips = SPECIALTIES.map(s=>
     `<div class="chip ${state.calcSpec===s.id?'on':''}" onclick="setCalcSpec('${s.id}')">${esc(s.name)}</div>`
   ).join('');
   const items = CALCS.filter(c=>c.spec===state.calcSpec);
-  const cards = items.length ? items.map(c=>{
-    const icon = c.badge
-      ? `<div class="si acc" style="font-weight:800;font-size:13px;letter-spacing:-.01em">${esc(c.badge)}</div>`
-      : `<div class="si acc">${svgIcon(P.calc,22)}</div>`;
-    return `<div class="lc-short" onclick="state.calcId='${c.id}';render()">
-      ${icon}
-      <div class="st">
-        <div class="t">${esc(c.title)}</div>
-        <div class="d">${esc(c.desc)}</div>
-      </div>
-      <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-    </div>`;
-  }).join('')
+  const cards = items.length ? items.map(c=>calcCardHTML(c)).join('')
   : `<div class="empty"><div class="msg">Ainda não há calculadoras nesta especialidade.</div></div>`;
   return `<div class="calc-list-wrap">
     <div class="sec-label">Especialidades</div>
