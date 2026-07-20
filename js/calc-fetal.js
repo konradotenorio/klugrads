@@ -98,7 +98,7 @@ function fmCurveSVG(tbl, opts){
   const gx = x => x0 + (x-xmin)/(xmax-xmin)*xw;
   const gy = y => y0 - (y-ymin)/(ymax-ymin)*yh;
   let grid='';
-  const xstep = (xmax-xmin)>20?4:2;
+  const xstep = (xmax-xmin)>40?10:(xmax-xmin)>20?4:2;
   for(let x=Math.ceil(xmin/xstep)*xstep; x<=xmax; x+=xstep)
     grid+=`<line x1="${gx(x)}" y1="${y0}" x2="${gx(x)}" y2="16" stroke="currentColor" opacity=".08"/><text x="${gx(x)}" y="${y0+18}" font-size="10" fill="currentColor" opacity=".6" text-anchor="middle">${x}${opts.xunit||'s'}</text>`;
   const ystep = (ymax-ymin)/4;
@@ -145,8 +145,11 @@ const FETAL_CALCS = [
    if(crl==null||crl<15||crl>84) return fmOut(`<div class="note">Informe um CCN entre 15 e 84 mm.</div>`);
    const gaDays = 8.052*Math.sqrt(crl) + 23.73;
    const dpp = new Date(Date.now() + (280-gaDays)*864e5);
+   const tbl=[]; for(let c=15;c<=84;c+=3) tbl.push([c,(8.052*Math.sqrt(c)+23.73)/7]);
    return fmOut(`${fmBadge('IG: '+fmGAStr(gaDays),'ok')}
-     <div class="prose" style="margin-top:10px">Data provável do parto (se o exame for hoje): <b>${dpp.toLocaleDateString('pt-BR')}</b></div>`);
+     <div class="prose" style="margin-top:10px">Data provável do parto (se o exame for hoje): <b>${dpp.toLocaleDateString('pt-BR')}</b></div>`
+     + fmCurveSVG(tbl,{title:'IG (semanas) pelo CCN — Robinson', xmin:15, xmax:84, xunit:'mm', pt:{x:crl,y:gaDays/7},
+       cols:[{c:1,color:'#0891b2',label:'IG'}]}));
  },
  refs:['Robinson HP, Fleming JE. A critical evaluation of sonar "crown-rump length" measurements. Br J Obstet Gynaecol. 1975;82(9):702–10.']},
 
@@ -165,7 +168,9 @@ const FETAL_CALCS = [
    if(nt>=3.5) b=fmBadge(`TN ${nt.toFixed(1)} mm — ≥ 3.5 mm (aumentada)`,'bad');
    else if(nt>p95) b=fmBadge(`TN ${nt.toFixed(1)} mm — acima do P95 (${p95.toFixed(1)} mm)`,'warn');
    else b=fmBadge(`TN ${nt.toFixed(1)} mm — dentro da normalidade (P95: ${p95.toFixed(1)} mm)`,'ok');
-   return fmOut(b+`<div class="prose" style="margin-top:10px">Mediana esperada para CCN ${crl} mm: <b>${p50.toFixed(1)} mm</b></div>`);
+   return fmOut(b+`<div class="prose" style="margin-top:10px">Mediana esperada para CCN ${crl} mm: <b>${p50.toFixed(1)} mm</b></div>`
+     + fmCurveSVG(FM_NT,{title:'TN (mm) pelo CCN', xmin:45, xmax:84, xunit:'mm', pt:{x:crl,y:nt},
+       cols:[{c:2,color:'#d97706',dash:1,label:'P95'},{c:1,color:'#0891b2',label:'P50'}]}));
  },
  refs:['Nicolaides KH. Nuchal translucency and other first-trimester sonographic markers of chromosomal abnormalities. Am J Obstet Gynecol. 2004;191(1):45–67.',
        'Wright D, et al. A mixture model of nuchal translucency thickness in screening for chromosomal defects. Ultrasound Obstet Gynecol. 2008;31(4):376–83.']},
@@ -262,7 +267,9 @@ const FETAL_CALCS = [
    return fmOut((pi>p95
      ? fmBadge(`IP ${pi.toFixed(2)} — acima do P95 (${p95.toFixed(2)})`,'bad')
      : fmBadge(`IP ${pi.toFixed(2)} — normal (P95: ${p95.toFixed(2)})`,'ok'))
-     + `<div class="prose" style="margin-top:8px">Mediana esperada: ${p50.toFixed(2)}</div>`);
+     + `<div class="prose" style="margin-top:8px">Mediana esperada: ${p50.toFixed(2)}</div>`
+     + fmCurveSVG(FM_UT_PI,{title:'IP médio das artérias uterinas por IG', xmin:11, xmax:40, pt:{x:ga,y:pi},
+       cols:[{c:2,color:'#d97706',dash:1,label:'P95'},{c:1,color:'#0891b2',label:'P50'}]}));
  },
  refs:['Gómez O, et al. Reference ranges for uterine artery mean pulsatility index at 11–41 weeks of gestation. Ultrasound Obstet Gynecol. 2008;32(2):128–32.']},
 
@@ -280,7 +287,10 @@ const FETAL_CALCS = [
    const b = mom>=1.5 ? fmBadge(`${mom.toFixed(2)} MoM — sugere anemia moderada/grave`,'bad')
      : mom>=1.29 ? fmBadge(`${mom.toFixed(2)} MoM — sugere anemia leve`,'warn')
      : fmBadge(`${mom.toFixed(2)} MoM — dentro da normalidade`,'ok');
-   return fmOut(b+`<div class="prose" style="margin-top:8px">Mediana esperada para ${fmGAStr(ga*7)}: <b>${med.toFixed(1)} cm/s</b> · limiar 1.5 MoM: ${(med*1.5).toFixed(1)} cm/s</div>`);
+   const tbl=[]; for(let g=18;g<=40;g+=1){ const m=Math.exp(2.31+0.046*g); tbl.push([g,m,m*1.29,m*1.5]); }
+   return fmOut(b+`<div class="prose" style="margin-top:8px">Mediana esperada para ${fmGAStr(ga*7)}: <b>${med.toFixed(1)} cm/s</b> · limiar 1.5 MoM: ${(med*1.5).toFixed(1)} cm/s</div>`
+     + fmCurveSVG(tbl,{title:'PSV da ACM (cm/s) por IG — Mari', xmin:18, xmax:40, pt:{x:ga,y:psv},
+       cols:[{c:3,color:'#dc2626',dash:1,label:'1.5 MoM'},{c:2,color:'#d97706',dash:1,label:'1.29 MoM'},{c:1,color:'#0891b2',label:'Mediana'}]}));
  },
  refs:['Mari G, et al. Noninvasive diagnosis by Doppler ultrasonography of fetal anemia due to maternal red-cell alloimmunization. N Engl J Med. 2000;342(1):9–14.']},
 
