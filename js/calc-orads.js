@@ -190,16 +190,7 @@ function oradsClassicaMgmt(tipo, meno, s){
 
 /* ---- UI ---- */
 function calcOradsHTML(){
-  const os = oradsState(); const ls = os.lesions;
-  let rail = `<div class="ti-rail">`;
-  ls.forEach((L,i)=>{ const ev=oradsEval(L); const c=ORADS_C[ev.cat];
-    rail += `<div class="ti-rchip" onclick="oradsScrollTo(${i})">`
-      + `<span class="rn" id="orads-rn-${i}">${esc(L.name||('L'+(i+1)))}</span>`
-      + `<span id="orads-rt-${i}">${oradsChipBadge(ev)}</span>`
-      + `</div>`;
-  });
-  rail += `<div class="ti-rchip radd" onclick="oradsAdd()" aria-label="Adicionar lesão">＋</div></div>`;
-
+  const os = oradsState();
   const menoChips = ORADS_MENO.map(([id,nome])=>
     `<div class="ti-ftog ${os.meno===id?'on':''}" onclick="oradsSetMeno('${id}')">${esc(nome)}</div>`
   ).join('');
@@ -215,9 +206,7 @@ function calcOradsHTML(){
       <div class="ti-foci" style="margin-top:8px">${menoChips}</div>
       <div class="ti-legend-row" style="margin-top:10px"><span class="lt">Pós-menopausa = ≥1 ano de amenorreia. Se incerto ou útero ausente, usar idade &gt;50 anos.</span></div>
     </div>
-    ${rail}
-    <div id="orads-list">${ls.map((L,i)=>oradsCardHTML(L,i)).join('')}</div>
-    <button class="ti-add" onclick="oradsAdd()">＋ Adicionar lesão</button>
+    <div id="orads-list">${oradsCardHTML(os.lesions[0], 0)}</div>
     <div class="ti-card">
       <div class="tfg-sec-lbl">Categorias e risco de malignidade</div>
       <div class="ti-legend">${legend}</div>
@@ -288,11 +277,6 @@ function oradsCardHTML(L,i){
 
   return `<div class="ti-card2" id="orads-card-${i}">
     <div class="ti-stripe" id="orads-stripe-${i}" style="background:${show?c.c:'var(--line)'}"></div>
-    <div class="ti-chead">
-      <div class="ti-dot">${i+1}</div>
-      <input class="ti-nname" value="${esc(L.name||('Lesão '+(i+1)))}" oninput="oradsSetName(${i},this.value)">
-      ${os.lesions.length>1?`<div class="ti-del" onclick="oradsDel(${i})">${svgIcon(P.trash,17,{sw:1.8})}</div>`:''}
-    </div>
     <div class="ti-fields">${fields}${sizeField}${asciteField}</div>
     <div id="orads-res-${i}">${oradsResultHTML(L,i)}</div>
   </div>`;
@@ -310,28 +294,16 @@ function oradsResultHTML(L,i){
     <div class="pts" style="background:${c.c}">${esc(c.risk)}</div>
   </div>`;
 }
-function oradsChipBadge(ev){
-  const c=ORADS_C[ev.cat];
-  return (ev.complete&&c) ? `<span class="rt" style="background:${c.c}">O${ev.cat}</span>`
-                          : `<span class="rt off">—</span>`;
-}
-/* Atualiza só o resultado, a faixa colorida e o chip da lesão i. */
+/* Atualiza só o resultado e a faixa colorida, sem recriar os campos. */
 function oradsRefresh(i){
   const L=oradsState().lesions[i]; if(!L) return;
   const ev=oradsEval(L); const c=ORADS_C[ev.cat]; const show=ev.complete&&c;
   const res=document.getElementById('orads-res-'+i);   if(res) res.innerHTML=oradsResultHTML(L,i);
   const st=document.getElementById('orads-stripe-'+i); if(st) st.style.background = show?c.c:'var(--line)';
-  const rt=document.getElementById('orads-rt-'+i);     if(rt) rt.innerHTML=oradsChipBadge(ev);
 }
 
 /* ---- ações ---- */
 function oradsSetMeno(id){ oradsState().meno=id; render(true); }
-function oradsAdd(){ oradsState().lesions.push(oradsNewLesion()); render(true); }
-function oradsDel(i){ const os=oradsState(); os.lesions.splice(i,1); if(!os.lesions.length) os.lesions=[oradsNewLesion()]; render(true); }
-function oradsSetName(i,v){
-  oradsState().lesions[i].name=v;
-  const rn=document.getElementById('orads-rn-'+i); if(rn) rn.textContent = v || ('L'+(i+1));
-}
 /* Atualiza sem re-render para não perder o foco enquanto digita (ex.: "2,3"). */
 function oradsSetSize(i,v){ oradsState().lesions[i].size=v; oradsRefresh(i); }
 function oradsToggleAscite(i){ const L=oradsState().lesions[i]; L.ascite=!L.ascite; render(true); }
@@ -350,11 +322,6 @@ function oradsPick(i,campo,val){
   }
   os.open=null; render(true);
 }
-function oradsScrollTo(i){
-  const el=document.getElementById('orads-card-'+i);
-  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
-}
-
 /* registra no catálogo (CALCS de app.js) */
 CALCS.push({id:'orads', spec:'abdome', badge:'OR',
   title:'O-RADS US — Anexos',

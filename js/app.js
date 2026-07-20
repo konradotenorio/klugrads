@@ -717,17 +717,8 @@ function tiradsRec(tr,size,auto){
   return {a:'Sem conduta adicional', b:`abaixo do limiar de seguimento (${tiradsCm(t.fu)})`};
 }
 function calcTiradsHTML(){
-  const ts=tiradsState(); const ns=ts.nodules;
-  let rail = `<div class="ti-rail">`;
-  ns.forEach((n,i)=>{ const ev=tiradsEval(n); const done=ev.complete||ev.auto; const tc=TIRADS_TRC[ev.tr];
-    rail += `<div class="ti-rchip" onclick="tiradsScrollTo(${i})">`
-      + `<span class="rn" id="ti-rn-${i}">${esc(n.name||('N'+(i+1)))}</span>`
-      + (done ? `<span class="rt" style="background:${tc.c}">TR${ev.tr}</span>` : `<span class="rt off">—</span>`)
-      + `</div>`;
-  });
-  rail += `<div class="ti-rchip radd" onclick="tiradsAdd()" aria-label="Adicionar nódulo">＋</div></div>`;
-
-  const cards = ns.map((n,i)=>tiradsCardHTML(n,i)).join('');
+  const ts=tiradsState();
+  const cards = tiradsCardHTML(ts.nodules[0], 0);
 
   const legend = Object.keys(TIRADS_TRC).map(k=>{
     const tc=TIRADS_TRC[k]; const t=TIRADS_THR[k];
@@ -736,9 +727,7 @@ function calcTiradsHTML(){
   }).join('');
 
   return `<div class="ti-wrap">
-    ${rail}
     <div id="ti-list">${cards}</div>
-    <button class="ti-add" onclick="tiradsAdd()">＋ Adicionar nódulo</button>
     <div class="ti-card">
       <div class="tfg-sec-lbl">Níveis e conduta (por maior eixo)</div>
       <div class="ti-legend">${legend}</div>
@@ -799,11 +788,6 @@ function tiradsCardHTML(n,i){
   }
   return `<div class="ti-card2" id="ti-card-${i}">
     <div class="ti-stripe" style="background:${show?tc.c:'var(--line)'}"></div>
-    <div class="ti-chead">
-      <div class="ti-dot">${i+1}</div>
-      <input class="ti-nname" value="${esc(n.name||('Nódulo '+(i+1)))}" oninput="tiradsSetName(${i},this.value)">
-      ${ns.length>1?`<button class="ti-del" onclick="tiradsDel(${i})" aria-label="Remover nódulo">${svgIcon(P.trash,17,{sw:1.8})}</button>`:''}
-    </div>
     <div class="ti-grid">${fields}${fociField}${sizeField}</div>
     ${result}
   </div>`;
@@ -824,11 +808,6 @@ function tiradsSetSize(i,val){
   const r=tiradsRec(ev.tr,val,ev.auto); const card=$('ti-card-'+i); if(!card) return;
   const res=card.querySelector('.ti-res'); if(res){ const a=res.querySelector('.a'),b=res.querySelector('.b'); if(a)a.textContent=r.a; if(b)b.textContent=r.b; }
 }
-function tiradsSetName(i,val){ const ts=tiradsState(); ts.nodules[i].name=val; const rn=$('ti-rn-'+i); if(rn) rn.textContent=val||('N'+(i+1)); }
-function tiradsAdd(){ const ts=tiradsState(); ts.nodules.push(tiradsNewNodule()); ts.open=null; tiradsRerender();
-  setTimeout(()=>{ const c=$('ti-card-'+(ts.nodules.length-1)); if(c) c.scrollIntoView({behavior:'smooth',block:'center'}); },30); }
-function tiradsDel(i){ const ts=tiradsState(); ts.nodules.splice(i,1); if(!ts.nodules.length) ts.nodules.push(tiradsNewNodule()); ts.open=null; tiradsRerender(); }
-function tiradsScrollTo(i){ const c=$('ti-card-'+i); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); }
 
 /* ---- 5. FAVORITOS ---- */
 function favHTML(){
