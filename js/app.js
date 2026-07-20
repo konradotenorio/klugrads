@@ -404,18 +404,11 @@ function detailHTML(){
     if(d.tables&&d.tables.length){ d.tables.forEach(t=>{ h+=tableHTML(t); }); }
     else { h+=`<div class="empty"><div class="msg">Sem tabela de medidas para este item.</div></div>`; }
     if(d.footnotes&&d.footnotes.length){ h+=`<div class="note">`+d.footnotes.map(f=>nl2br(f)).join('<br>')+`</div>`; }
-    h += refsAccHTML(d);
   }
   else if(state.sub==='calc'){ h += calcDetailHTML(d); }
-  else if(state.sub==='exame'){
-    if(e.prep) h+=`<div class="prose-label">Preparo</div><div class="prose">${nl2br(e.prep)}</div>`;
-    if(e.position) h+=`<div class="prose-label">Posicionamento</div><div class="prose">${nl2br(e.position)}</div>`;
-    if(e.points&&e.points.length) h+=`<div class="prose-label">Pontos-chave</div><ul class="pts">`+e.points.map(p=>`<li>${nl2br(p)}</li>`).join('')+`</ul>`;
-    if(!e.prep&&!e.position&&!(e.points&&e.points.length)) h+=`<div class="empty"><div class="msg">Sem dados de exame para este item.</div></div>`;
-  }
-  else if(state.sub==='tecnica'){
-    if(e.technique) h+=`<div class="prose-label">Técnica de medida</div><div class="tech-prose">${nl2br(e.technique)}</div>`;
-    else h+=`<div class="empty"><div class="msg">Sem dados de técnica para este item.</div></div>`;
+  else if(state.sub==='referencias'){
+    if(d.refs&&d.refs.length) h+=`<div class="prose-label">Referências</div>`+d.refs.map(r=>`<div class="ref">${nl2br(r)}</div>`).join('');
+    else h+=`<div class="empty"><div class="msg">Sem referências para este item.</div></div>`;
   }
   return h;
 }
@@ -438,11 +431,6 @@ function tableHTML(t){
   h+=`</tbody></table>`;
   return h;
 }
-function refsAccHTML(d){
-  if(!d.refs||!d.refs.length) return '';
-  return `<div class="acc-head" onclick="toggleAcc('refsbody','refchev')"><span>Referências</span><span id="refchev">⌄</span></div>
-    <div class="acc-body" id="refsbody">`+d.refs.map(r=>`<div class="ref">${nl2br(r)}</div>`).join('')+`</div>`;
-}
 function calcDetailHTML(d){
   const ch = d.chart;
   if(!ch||!ch.rows||!ch.rows.length) return `<div class="empty"><div class="msg">Este item não possui calculadora.</div></div>`;
@@ -461,10 +449,9 @@ function calcDetailHTML(d){
 }
 function subtabsHTML(){
   const d = state.item, e = d.exam||{};
-  const tabs = [['tabela','Tabela',P.table]];
+  const tabs = [['tabela','Informações',P.table]];
   if(d.chart) tabs.push(['calc','Cálculo',P.calcTab]);
-  if(e.prep||e.position||(e.points&&e.points.length)) tabs.push(['exame','Exame',P.exam]);
-  if(e.technique) tabs.push(['tecnica','Técnica',P.tech]);
+  if(d.refs&&d.refs.length) tabs.push(['referencias','Referências',P.book]);
   return tabs.map(t=>`<button class="${state.sub===t[0]?'on':''}" onclick="setSub('${t[0]}')">${svgIcon(t[2],22)}<span>${t[1]}</span></button>`).join('');
 }
 
