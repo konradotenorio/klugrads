@@ -303,13 +303,9 @@ function modalityHTML(){
 function ferramentasHTML(){
   return `<div class="lc-b">
     <div class="lc-top">
-      <div class="lc-card" onclick="state.modalityId='us';setView('calc')">
+      <div class="lc-card fill" onclick="state.modalityId=null;setView('calc')">
         <div class="lc-chip">${svgIcon(P.calc,26)}</div>
-        <div><div class="t">Calculadoras</div><div class="d">TI-RADS, BI-RADS, escores e fórmulas</div></div>
-      </div>
-      <div class="lc-card fill" onclick="state.modalityId='us';setView('refs')">
-        <div class="lc-chip">${svgIcon(P.book,26)}</div>
-        <div><div class="t">Referências</div><div class="d">Medidas normais por órgão e idade</div></div>
+        <div><div class="t">Calculadoras</div><div class="d">Calculadoras gerais, fora da ultrassonografia</div></div>
       </div>
     </div>
   </div>`;
@@ -468,6 +464,13 @@ const CALCS = [
   {id:'tfg',    spec:'abdome',    title:'Taxa de Filtração Glomerular',    desc:'Fórmula MDRD — estimativa da função renal'},
 ];
 function calcListHTML(){
+  // Fora da ultrassonografia (Outras Ferramentas): espaço reservado para as
+  // calculadoras gerais, ainda sem conteúdo.
+  if(state.modalityId !== 'us'){
+    return `<div class="calc-list-wrap">
+      <div class="empty"><div class="msg">Nenhuma calculadora disponível ainda.</div></div>
+    </div>`;
+  }
   const specChips = SPECIALTIES.map(s=>
     `<div class="chip ${state.calcSpec===s.id?'on':''}" onclick="setCalcSpec('${s.id}')">${esc(s.name)}</div>`
   ).join('');
@@ -860,7 +863,7 @@ function initDrums(){
 function calcTFG(){ autoCalcTFG(); }
 function openModality(id){
   const m = MODALITIES.find(x=>x.id===id); if(!m) return;
-  if(m.active){ state.view='home'; render(); return; }
+  if(m.active){ state.modalityId=id; state.view='home'; render(); return; }
   state.modalityId=id; state.view='construction'; render();
 }
 
