@@ -152,7 +152,7 @@ async function syncData(){
 
 /* ---- ESTADO ---- */
 let state = {
-  view:'modality', theme:'dark', specialty:'abdome', subBand:'Adultos', query:'',
+  view:'modality', theme:'dark', specialty:'abdome', subBand:'Adultos', query:'', calcSpec:'neurocab',
   item:null, sub:'tabela',
   favs:[], lists:[],
   newName:'', composingId:null, modalityId:null,
@@ -461,27 +461,41 @@ function calcViewHTML(){
   if(state.calcId === 'tirads') return calcTiradsHTML();
   return calcListHTML();
 }
+/* Catálogo de calculadoras por especialidade (mesmos ids de SPECIALTIES). */
+const CALCS = [
+  {id:'tirads', spec:'neurocab',  title:'TI-RADS — Tireoide',              desc:'Classificação de nódulos tireoidianos (ACR) — 1 ou vários', badge:'TR'},
+  {id:'tfg',    spec:'abdome',    title:'Taxa de Filtração Glomerular',    desc:'Fórmula MDRD — estimativa da função renal'},
+];
 function calcListHTML(){
+  const specChips = SPECIALTIES.map(s=>
+    `<div class="chip ${state.calcSpec===s.id?'on':''}" onclick="setCalcSpec('${s.id}')">${esc(s.name)}</div>`
+  ).join('');
+  const items = CALCS.filter(c=>c.spec===state.calcSpec);
+  const cards = items.length ? items.map(c=>{
+    const icon = c.badge
+      ? `<div class="si acc" style="font-weight:800;font-size:13px;letter-spacing:-.01em">${esc(c.badge)}</div>`
+      : `<div class="si acc">${svgIcon(P.calc,22)}</div>`;
+    return `<div class="lc-short" onclick="state.calcId='${c.id}';render()">
+      ${icon}
+      <div class="st">
+        <div class="t">${esc(c.title)}</div>
+        <div class="d">${esc(c.desc)}</div>
+      </div>
+      <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
+    </div>`;
+  }).join('')
+  : `<div class="empty"><div class="msg">Ainda não há calculadoras nesta especialidade.</div></div>`;
   return `<div class="calc-list-wrap">
+    <div class="sec-label">Especialidades</div>
+    <div class="bandzone">
+      <div class="bandrow" id="bandrow">${specChips}</div>
+      <div class="band-fade"><div class="band-arrow" onclick="scrollBandMore()">»</div></div>
+    </div>
     <div class="calc-intro-lbl">Calculadoras disponíveis</div>
-    <div class="lc-short" onclick="state.calcId='tirads';render()">
-      <div class="si acc" style="font-weight:800;font-size:13px;letter-spacing:-.01em">TR</div>
-      <div class="st">
-        <div class="t">TI-RADS — Tireoide</div>
-        <div class="d">Classificação de nódulos tireoidianos (ACR) — 1 ou vários</div>
-      </div>
-      <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-    </div>
-    <div class="lc-short" onclick="state.calcId='tfg';render()">
-      <div class="si acc">${svgIcon(P.calc,22)}</div>
-      <div class="st">
-        <div class="t">Taxa de Filtração Glomerular</div>
-        <div class="d">Fórmula MDRD — estimativa da função renal</div>
-      </div>
-      <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-    </div>
+    ${cards}
   </div>`;
 }
+function setCalcSpec(id){ state.calcSpec=id; render(); }
 
 /* ---- 4b. TFG (MDRD) com drum picker ---- */
 function drumHTML(id, values, selected){
