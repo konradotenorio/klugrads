@@ -459,6 +459,7 @@ function subtabsHTML(){
 function calcViewHTML(){
   if(state.calcId === 'tfg') return calcTFGHTML();
   if(state.calcId === 'tirads') return calcTiradsHTML();
+  if(typeof FETAL_CALC_MAP!=='undefined' && FETAL_CALC_MAP[state.calcId]) return fetalCalcHTML(state.calcId);
   return calcListHTML();
 }
 /* Catálogo de calculadoras por especialidade (mesmos ids de SPECIALTIES). */
