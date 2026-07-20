@@ -197,7 +197,7 @@ function calcOradsHTML(){
 
   const legend = [1,2,3,4,5].map(k=>{
     const c=ORADS_C[k];
-    return `<div class="ti-legend-row"><span class="lk" style="background:${c.c}">O${k}</span><span class="lt">${esc(c.name)} — risco ${esc(c.risk)}</span></div>`;
+    return `<div class="ti-legend-row"><span class="lk" style="background:${c.c}">O${k}</span><span class="lt">${esc(t(c.name))} — ${esc(t('risco'))} ${esc(c.risk)}</span></div>`;
   }).join('');
 
   return `<div class="ti-wrap">
@@ -215,9 +215,7 @@ function calcOradsHTML(){
       <div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${ORADS_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc">Ferramenta <b>educacional</b> baseada no ACR O-RADS US v2022.
-      Sólido = ≥80% sólido; componente sólido = projeção ≥3 mm para a luz; PP = projeção papilar.
-      Contorno irregular da parede interna = &lt;3 mm de altura. Não substitui o julgamento clínico.</div>
+    <div class="disc"><b>Ferramenta educacional baseada no ACR O-RADS US v2022. Sólido = ≥80% sólido; componente sólido = projeção ≥3 mm para a luz; PP = projeção papilar. Contorno irregular da parede interna = menor que 3 mm de altura. Não substitui o julgamento clínico.</b></div>
   </div>`;
 }
 
@@ -298,7 +296,7 @@ function oradsResultHTML(L,i){
 function oradsRefresh(i){
   const L=oradsState().lesions[i]; if(!L) return;
   const ev=oradsEval(L); const c=ORADS_C[ev.cat]; const show=ev.complete&&c;
-  const res=document.getElementById('orads-res-'+i);   if(res) res.innerHTML=oradsResultHTML(L,i);
+  const res=document.getElementById('orads-res-'+i);   if(res) res.innerHTML=translateHTML(oradsResultHTML(L,i));
   const st=document.getElementById('orads-stripe-'+i); if(st) st.style.background = show?c.c:'var(--line)';
 }
 

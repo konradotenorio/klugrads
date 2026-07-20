@@ -23,9 +23,13 @@ function fmNum(id){
 }
 function fmGA(){ const s=fmNum('fm-gs'), d=fmNum('fm-gd')||0; return s==null?null:s+d/7; }
 function fmGAStr(days){
-  const t=Math.round(days);            // arredonda os dias antes de dividir,
-  return `${Math.floor(t/7)}s ${t%7}d`; // senão 20,99 sem vira "20s 7d"
+  const n=Math.round(days);             // arredonda os dias antes de dividir,
+  const w=(state&&state.lang==='pt')?'s':'w'; // senão 20,99 sem vira "20s 7d"
+  return `${Math.floor(n/7)}${w} ${n%7}d`;
 }
+/* Rótulos que carregam valor: traduzidos aqui, pois não casam por texto exato. */
+function fmIG(){ return state&&state.lang==='pt'?'IG':(state.lang==='es'?'EG':'GA'); }
+function fmDPP(){ return state&&state.lang==='pt'?'DPP':(state.lang==='es'?'FPP':'EDD'); }
 function fmInterp(tbl, ga, col){ // tbl: [[semana, ...cols]]
   if(ga<=tbl[0][0]) return tbl[0][col];
   for(let i=1;i<tbl.length;i++){
@@ -63,8 +67,8 @@ function fmDatingBloco(titulo, gaDays){
   const dpp = new Date(fmHoje().getTime() + (280-gaDays)*864e5);
   return `<div style="margin-top:14px">
     <div class="prose-label">${esc(titulo)}</div>
-    <div style="margin-top:6px">${fmBadge('IG: '+fmGAStr(gaDays),'ok')}</div>
-    <div class="prose" style="margin-top:8px">DPP: <b>${dpp.toLocaleDateString('pt-BR')}</b></div>
+    <div style="margin-top:6px">${fmBadge(fmIG()+': '+fmGAStr(gaDays),'ok')}</div>
+    <div class="prose" style="margin-top:8px">${fmDPP()}: <b>${dpp.toLocaleDateString(state.lang==='pt'?'pt-BR':(state.lang==='es'?'es-ES':'en-GB'))}</b></div>
   </div>`;
 }
 
@@ -438,5 +442,5 @@ function fetalCalcHTML(id){
 }
 function fetalCalcRun(id){
   const c = FETAL_CALC_MAP[id];
-  document.getElementById('fm-out').innerHTML = c.compute();
+  document.getElementById('fm-out').innerHTML = translateHTML(c.compute());
 }

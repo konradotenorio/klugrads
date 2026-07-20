@@ -1,0 +1,10 @@
+﻿feat(i18n): traducao completa da interface (pt/en/es) e Criticas e Sugestoes
+
+Novo js/i18n.js com dicionario pt->en/es; o HTML renderizado passa por
+translateHTML(), que troca textos e atributos placeholder/aria-label/title
+por correspondencia exata. Trocar o idioma em Configuracoes reflete na
+hora em todas as telas e fica salvo. Rotulos com valor (IG/DPP, semanas)
+e legendas concatenadas passaram a usar t(). Acrescenta o item Criticas e
+Sugestoes em Configuracoes (em construcao, e-mail a definir). SW v0.8.6.
+
+Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>

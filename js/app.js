@@ -215,17 +215,17 @@ function render(keep){
   // header
   const hdr = $('hdr');
   if(v==='home' || v==='modality'){ hdr.className='hdr hide'; hdr.innerHTML=''; }
-  else { hdr.className='hdr'; hdr.innerHTML = headerHTML(); }
+  else { hdr.className='hdr'; hdr.innerHTML = translateHTML(headerHTML()); }
   // corpo
   const s = $('scroll');
   const top = keep ? s.scrollTop : 0;
-  s.innerHTML = viewHTML();
+  s.innerHTML = translateHTML(viewHTML());
   s.className = keep ? 'scroll' : 'scroll fade';
   s.scrollTop = top;
   if(v==='calc' && state.calcId==='tfg') setTimeout(initDrums, 0);
   // sub-abas
   const sub = $('subtabs');
-  if(v==='detail'){ sub.className='subtabs'; sub.innerHTML = subtabsHTML(); }
+  if(v==='detail'){ sub.className='subtabs'; sub.innerHTML = translateHTML(subtabsHTML()); }
   else { sub.className='subtabs hide'; sub.innerHTML=''; }
 }
 function applyTheme(){
@@ -364,11 +364,16 @@ function configHTML(){
       <div class="lbl">Idioma do app<div class="sub">Português é o padrão</div></div>
     </div>
     <div style="padding:0 18px 14px"><div class="set-seg">${langs}</div></div>
-    <div class="set-note">A tradução do conteúdo ainda está em andamento — por enquanto a
-      preferência fica salva e o app segue em português.</div>
+    <div class="set-note">O conteúdo das referências (nomes de órgãos, tabelas e citações) permanece em português por enquanto.</div>
 
     <div class="sec-label" style="margin-top:14px">Conta</div>
     ${conta}
+
+    <div class="sec-label" style="margin-top:14px">Críticas e Sugestões</div>
+    <div class="set-row">
+      <div class="lbl">Envie sua opinião para a nossa equipe<div class="sub">Em construção</div></div>
+    </div>
+    <div style="padding:14px 18px"><button class="set-btn" onclick="enviarSugestao()">Enviar mensagem</button></div>
   </div>`;
 }
 function setTheme(t){
@@ -394,7 +399,11 @@ function stepFont(dir){
 }
 function login(){
   // Placeholder — a autenticação real (Supabase/Stripe) entra na etapa de monetização.
-  alert('Login em breve.');
+  alert(t('Login em breve.'));
+}
+function enviarSugestao(){
+  // Placeholder — o e-mail da central ainda será definido.
+  alert(t('Canal de contato em construção — em breve você poderá enviar críticas e sugestões por aqui.'));
 }
 function logout(){
   state.user=null;
@@ -467,7 +476,7 @@ function refsListHTML(){
     if(d.region!==last){ html+=`<div class="grp">${esc(d.region)}</div>`; last=d.region; }
     html += rowHTML(d);
   });
-  html += `<div class="disc">Ferramenta <b>educacional</b>. Os valores são referências da literatura e não substituem o julgamento clínico.</div>`;
+  html += `<div class="disc"><b>Ferramenta educacional. Os valores são referências da literatura e não substituem o julgamento clínico.</b></div>`;
   return html;
 }
 function rowHTML(d){
@@ -721,9 +730,9 @@ function calcTiradsHTML(){
   const cards = tiradsCardHTML(ts.nodules[0], 0);
 
   const legend = Object.keys(TIRADS_TRC).map(k=>{
-    const tc=TIRADS_TRC[k]; const t=TIRADS_THR[k];
-    const cond = t ? `PAAF ≥ ${tiradsCm(t.fna)} · seguir ≥ ${tiradsCm(t.fu)}` : 'Sem PAAF / seguimento';
-    return `<div class="ti-legend-row"><span class="lk" style="background:${tc.c}">TR${k}</span><span class="lt">${esc(tc.name)} — ${cond}</span></div>`;
+    const tc=TIRADS_TRC[k]; const thr=TIRADS_THR[k];
+    const cond = thr ? `${t('PAAF ≥')} ${tiradsCm(thr.fna)} · ${t('seguir ≥')} ${tiradsCm(thr.fu)}` : t('Sem PAAF / seguimento');
+    return `<div class="ti-legend-row"><span class="lk" style="background:${tc.c}">TR${k}</span><span class="lt">${esc(t(tc.name))} — ${cond}</span></div>`;
   }).join('');
 
   return `<div class="ti-wrap">
@@ -736,7 +745,7 @@ function calcTiradsHTML(){
       <div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${TIRADS_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc">Ferramenta <b>educacional</b> baseada no ACR TI-RADS 2017. Os focos ecogênicos somam todos os tipos presentes. Não substitui o julgamento clínico.</div>
+    <div class="disc"><b>Ferramenta educacional baseada no ACR TI-RADS 2017. Os focos ecogênicos somam todos os tipos presentes. Não substitui o julgamento clínico.</b></div>
   </div>`;
 }
 
@@ -793,7 +802,7 @@ function tiradsCardHTML(n,i){
   </div>`;
 }
 
-function tiradsRerender(){ const s=$('scroll'); if(!s) return; const top=s.scrollTop; s.innerHTML=calcTiradsHTML(); s.scrollTop=top; }
+function tiradsRerender(){ const s=$('scroll'); if(!s) return; const top=s.scrollTop; s.innerHTML=translateHTML(calcTiradsHTML()); s.scrollTop=top; }
 function tiradsToggleDD(i,key){ const ts=tiradsState(); const id=i+':'+key; ts.open = ts.open===id ? null : id; tiradsRerender(); }
 function tiradsPickOpt(i,key,oi){ const ts=tiradsState(); ts.nodules[i][key] = (oi===''?null:parseInt(oi,10)); ts.open=null; tiradsRerender(); }
 function tiradsToggleFoci(i,oi){
