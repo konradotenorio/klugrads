@@ -86,6 +86,35 @@ function growthChartSVG(gaPt, wPt){
   </svg>`;
 }
 
+/* ---- gráfico genérico de percentis (curvas de tabela + ponto do paciente) ---- */
+function fmCurveSVG(tbl, opts){
+  // tbl: [[x, ...cols]]; opts: {title, cols:[{c,color,dash,label}], xmin,xmax, xunit, pt:{x,y}}
+  const W=560, H=280, x0=46, y0=H-30, xw=W-x0-14, yh=y0-16;
+  const xmin=opts.xmin, xmax=opts.xmax;
+  let ymin=Infinity, ymax=-Infinity;
+  tbl.forEach(r=>opts.cols.forEach(c=>{ ymin=Math.min(ymin,r[c.c]); ymax=Math.max(ymax,r[c.c]); }));
+  if(opts.pt){ ymin=Math.min(ymin,opts.pt.y); ymax=Math.max(ymax,opts.pt.y); }
+  const pad=(ymax-ymin)*0.12||0.2; ymin=Math.max(0,ymin-pad); ymax+=pad;
+  const gx = x => x0 + (x-xmin)/(xmax-xmin)*xw;
+  const gy = y => y0 - (y-ymin)/(ymax-ymin)*yh;
+  let grid='';
+  const xstep = (xmax-xmin)>20?4:2;
+  for(let x=Math.ceil(xmin/xstep)*xstep; x<=xmax; x+=xstep)
+    grid+=`<line x1="${gx(x)}" y1="${y0}" x2="${gx(x)}" y2="16" stroke="currentColor" opacity=".08"/><text x="${gx(x)}" y="${y0+18}" font-size="10" fill="currentColor" opacity=".6" text-anchor="middle">${x}${opts.xunit||'s'}</text>`;
+  const ystep = (ymax-ymin)/4;
+  for(let i=1;i<=4;i++){ const y=ymin+i*ystep;
+    grid+=`<line x1="${x0}" y1="${gy(y)}" x2="${W-14}" y2="${gy(y)}" stroke="currentColor" opacity=".08"/><text x="${x0-6}" y="${gy(y)+3}" font-size="10" fill="currentColor" opacity=".6" text-anchor="end">${y.toFixed(ymax<10?1:0)}</text>`; }
+  const paths = opts.cols.map(c=>{
+    let p='';
+    tbl.forEach(r=>{ if(r[0]>=xmin&&r[0]<=xmax) p+=(p?' L':'M')+gx(r[0]).toFixed(1)+' '+gy(r[c.c]).toFixed(1); });
+    return `<path d="${p}" fill="none" stroke="${c.color}" stroke-width="${c.dash?1.4:2}" ${c.dash?'stroke-dasharray="4 3"':''}/>`;
+  }).join('');
+  const legend = opts.cols.map((c,i)=>`<text x="${W-18}" y="${24+i*15}" font-size="10" fill="${c.color}" text-anchor="end">${c.label}</text>`).join('');
+  const pt = opts.pt ? `<circle cx="${gx(opts.pt.x)}" cy="${gy(opts.pt.y)}" r="5" fill="#dc2626" stroke="#fff" stroke-width="1.5"/>` : '';
+  const title = opts.title?`<div class="prose-label" style="margin-top:14px">${opts.title}</div>`:'';
+  return `${title}<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:560px;margin-top:8px">${grid}${paths}${pt}${legend}</svg>`;
+}
+
 /* ---- tabelas de referência (REVISAR — aproximadas de artigos publicados) ---- */
 const FM_UA_PI = [ // Doppler art. umbilical IP [sem, p5, p50, p95]
   [20,0.90,1.19,1.55],[24,0.82,1.09,1.44],[28,0.75,1.00,1.33],
@@ -178,7 +207,8 @@ const FETAL_CALCS = [
    const {pct}=efwPercentile(w, Math.min(ga,42));
    const tone = pct<3?'bad':pct<10?'warn':pct>97?'warn':'ok';
    const cls = pct<10?'Pequeno para a idade gestacional (PIG)':pct>90?'Grande para a idade gestacional (GIG)':'Adequado para a idade gestacional (AIG)';
-   return fmOut(`${fmBadge(`P${pct.toFixed(0)}`,tone)}<div class="prose" style="margin-top:10px">${cls}</div>`);
+   return fmOut(`${fmBadge(`P${pct.toFixed(0)}`,tone)}<div class="prose" style="margin-top:10px">${cls}</div>`
+     + growthChartSVG(Math.min(ga,42), w));
  },
  refs:['Hadlock FP, Harrist RB, Martinez-Poyer J. In utero analysis of fetal growth: a sonographic weight standard. Radiology. 1991;181(1):129–33.']},
 
@@ -209,6 +239,10 @@ const FETAL_CALCS = [
        ? fmBadge(`RCP ${rcp.toFixed(2)} — < 1.0 (alterada)`,'bad')
        : fmBadge(`RCP ${rcp.toFixed(2)} — normal`,'ok')}</div>`;
    }
+   h += fmCurveSVG(FM_UA_PI, {title:'Artéria umbilical — IP por IG', xmin:20, xmax:40, pt:{x:ga,y:ua},
+     cols:[{c:3,color:'#d97706',dash:1,label:'P95'},{c:2,color:'#0891b2',label:'P50'},{c:1,color:'#d97706',dash:1,label:'P5'}]});
+   if(mca) h += fmCurveSVG(FM_MCA_PI, {title:'Artéria cerebral média — IP por IG', xmin:20, xmax:40, pt:{x:ga,y:mca},
+     cols:[{c:3,color:'#d97706',dash:1,label:'P95'},{c:2,color:'#0891b2',label:'P50'},{c:1,color:'#d97706',dash:1,label:'P5'}]});
    return fmOut(h);
  },
  refs:['Ciobanu A, et al. Fetal Medicine Foundation reference ranges for umbilical artery and middle cerebral artery pulsatility index and cerebroplacental ratio. Ultrasound Obstet Gynecol. 2019;53(4):465–72.',
