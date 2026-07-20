@@ -41,6 +41,7 @@ const P = {
   exam:'<circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/>',
   tech:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>',
   tools:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  reset:'<path d="M3 12a9 9 0 1 0 2.64-6.36"/><polyline points="3 3.5 3 9 8.5 9"/>',
   gear:'<circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
 };
 function svgIcon(inner, size, o){
@@ -239,7 +240,7 @@ function headerHTML(){
   let title='', sub='';
   if(v==='refs'){ title='Referências'; }
   else if(v==='detail'){ title=state.item?state.item.name:''; sub=(state.item&&state.item.abbr)?state.item.abbr:''; }
-  else if(v==='calc'){ title = state.calcId==='tfg' ? 'Taxa de Filtração Glomerular' : state.calcId==='tirads' ? 'TI-RADS — Tireoide' : 'Calculadoras'; }
+  else if(v==='calc'){ const c = state.calcId ? findCalc(state.calcId) : null; title = c ? c.title : 'Calculadoras'; }
   else if(v==='ferramentas'){ title='Outras Ferramentas'; }
   else if(v==='config'){ title='Configurações'; }
   else if(v==='favoritos'){ title='Favoritos'; }
@@ -247,6 +248,9 @@ function headerHTML(){
   else if(v==='construction'){ const m=MODALITIES.find(x=>x.id===state.modalityId)||{}; title=m.name||'Em Construção'; }
 
   let right='';
+  if(v==='calc' && state.calcId){
+    right += `<button class="iconbtn" onclick="resetCalc()" aria-label="Resetar calculadora" title="Resetar">${svgIcon(P.reset,21,{sw:2})}</button>`;
+  }
   if(v==='detail' && state.item){
     const isFav = state.favs.indexOf(state.item.id)>=0;
     right += `<button class="iconbtn" style="color:${isFav?'var(--star)':'var(--dim)'}" onclick="toggleFav('${esc(state.item.id)}')" aria-label="Favoritar">${svgIcon(P.star,22,{fill:isFav?'currentColor':'none'})}</button>`;
@@ -945,6 +949,15 @@ function openItem(id){
   state.item=d; state.view='detail'; state.sub='tabela'; render();
 }
 function openCalc(id){ navPush(); state.calcId=id; render(); }
+/* Limpa a calculadora aberta. As fetais não guardam estado: o render()
+   recria os campos vazios e some com o resultado. */
+function resetCalc(){
+  if(state.calcId==='tirads') state.tirads=null;
+  else if(state.calcId==='tfg'){
+    state.tfgCr='1.0'; state.tfgAge='45'; state.tfgSexo='M'; state.tfgResult=null;
+  }
+  render();
+}
 function openGeneralCalcs(){ navPush(); state.modalityId=null; state.calcId=null; state.view='calc'; render(); }
 function setSub(s){ state.sub=s; render(); }
 function toggleAcc(bodyId, chevId){
