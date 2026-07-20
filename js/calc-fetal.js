@@ -226,20 +226,16 @@ const FETAL_CALCS = [
  refs:['Hadlock FP, Harrist RB, Martinez-Poyer J. In utero analysis of fetal growth: a sonographic weight standard. Radiology. 1991;181(1):129–33.']},
 
 {id:'fm-doppler', title:'Doppler Fetal (AU, ACM e RCP)', badge:'DP',
- desc:'IP da art. umbilical, ACM, RCP, ducto venoso e istmo aórtico',
+ desc:'Percentis do IP da art. umbilical e ACM + razão cerebroplacentária',
  review:true,
  inputs:`<div class="calc-label">Idade gestacional</div>
    <div class="calc-in"><input id="fm-gs" type="number" placeholder="semanas"><input id="fm-gd" type="number" placeholder="dias"></div>
    <div class="calc-label">IP — artéria umbilical</div>
    <div class="calc-in"><input id="fm-ua" type="text" inputmode="decimal" placeholder="ex.: 0.95"></div>
    <div class="calc-label">IP — artéria cerebral média (opcional)</div>
-   <div class="calc-in"><input id="fm-mca" type="text" inputmode="decimal" placeholder="ex.: 1.80"></div>
-   <div class="calc-label">IPV — ducto venoso (opcional)</div>
-   <div class="calc-in"><input id="fm-dv" type="text" inputmode="decimal" placeholder="ex.: 0.55"></div>
-   <div class="calc-label">IP — istmo aórtico (opcional)</div>
-   <div class="calc-in"><input id="fm-aoi" type="text" inputmode="decimal" placeholder="ex.: 2.60"></div>`,
+   <div class="calc-in"><input id="fm-mca" type="text" inputmode="decimal" placeholder="ex.: 1.80"></div>`,
  compute(){
-   const ga=fmGA(), ua=fmNum('fm-ua'), mca=fmNum('fm-mca'), dv=fmNum('fm-dv'), aoi=fmNum('fm-aoi');
+   const ga=fmGA(), ua=fmNum('fm-ua'), mca=fmNum('fm-mca');
    if(ga==null||ga<20||ga>41||!ua) return fmOut(`<div class="note">Informe IG (20–41 sem) e IP da art. umbilical.</div>`);
    const ua95=fmInterp(FM_UA_PI,ga,3), ua50=fmInterp(FM_UA_PI,ga,2);
    let h = ua>ua95
@@ -256,35 +252,56 @@ const FETAL_CALCS = [
        ? fmBadge(`RCP ${rcp.toFixed(2)} — < 1.0 (alterada)`,'bad')
        : fmBadge(`RCP ${rcp.toFixed(2)} — normal`,'ok')}</div>`;
    }
-   if(dv){
-     const d95=fmInterp(FM_DV_PIV,ga,3), d50=fmInterp(FM_DV_PIV,ga,2);
-     h += `<div style="margin-top:10px">${dv>d95
-       ? fmBadge(`DV IPV ${dv.toFixed(2)} — acima do P95 (${d95.toFixed(2)})`,'bad')
-       : fmBadge(`DV IPV ${dv.toFixed(2)} — normal (P95: ${d95.toFixed(2)})`,'ok')}</div>
-       <div class="prose" style="margin-top:6px">DV mediana esperada: ${d50.toFixed(2)}</div>`;
-   }
-   if(aoi){
-     const a95=fmInterp(FM_AOI_PI,ga,3), a5=fmInterp(FM_AOI_PI,ga,1);
-     h += `<div style="margin-top:10px">${aoi>a95
-       ? fmBadge(`Istmo aórtico IP ${aoi.toFixed(2)} — acima do P95 (${a95.toFixed(2)})`,'warn')
-       : aoi<a5
-       ? fmBadge(`Istmo aórtico IP ${aoi.toFixed(2)} — abaixo do P5 (${a5.toFixed(2)})`,'warn')
-       : fmBadge(`Istmo aórtico IP ${aoi.toFixed(2)} — normal (P5–P95: ${a5.toFixed(2)}–${a95.toFixed(2)})`,'ok')}</div>`;
-   }
    h += fmCurveSVG(FM_UA_PI, {title:'Artéria umbilical — IP por IG', xmin:20, xmax:40, pt:{x:ga,y:ua},
      cols:[{c:3,color:'#d97706',dash:1,label:'P95'},{c:2,color:'#0891b2',label:'P50'},{c:1,color:'#d97706',dash:1,label:'P5'}]});
    if(mca) h += fmCurveSVG(FM_MCA_PI, {title:'Artéria cerebral média — IP por IG', xmin:20, xmax:40, pt:{x:ga,y:mca},
      cols:[{c:3,color:'#d97706',dash:1,label:'P95'},{c:2,color:'#0891b2',label:'P50'},{c:1,color:'#d97706',dash:1,label:'P5'}]});
-   if(dv) h += fmCurveSVG(FM_DV_PIV, {title:'Ducto venoso — IPV por IG', xmin:20, xmax:40, pt:{x:ga,y:dv},
-     cols:[{c:3,color:'#d97706',dash:1,label:'P95'},{c:2,color:'#0891b2',label:'P50'},{c:1,color:'#d97706',dash:1,label:'P5'}]});
-   if(aoi) h += fmCurveSVG(FM_AOI_PI, {title:'Istmo aórtico — IP por IG', xmin:20, xmax:40, pt:{x:ga,y:aoi},
-     cols:[{c:3,color:'#d97706',dash:1,label:'P95'},{c:2,color:'#0891b2',label:'P50'},{c:1,color:'#d97706',dash:1,label:'P5'}]});
    return fmOut(h);
  },
  refs:['Ciobanu A, et al. Fetal Medicine Foundation reference ranges for umbilical artery and middle cerebral artery pulsatility index and cerebroplacental ratio. Ultrasound Obstet Gynecol. 2019;53(4):465–72.',
-       'Arduini D, Rizzo G. Normal values of Pulsatility Index from fetal vessels: a cross-sectional study on 1556 healthy fetuses. J Perinat Med. 1990;18(3):165–72.',
-       'Kessler J, et al. Longitudinal reference ranges for ductus venosus flow velocities and waveform indices. Ultrasound Obstet Gynecol. 2006;28(7):890–8.',
-       'Del Río M, et al. Reference ranges for Doppler parameters of the fetal aortic isthmus during the second half of pregnancy. Ultrasound Obstet Gynecol. 2006;28(1):71–6.']},
+       'Arduini D, Rizzo G. Normal values of Pulsatility Index from fetal vessels: a cross-sectional study on 1556 healthy fetuses. J Perinat Med. 1990;18(3):165–72.']},
+
+{id:'fm-dv', title:'Ducto Venoso (IPV)', badge:'DV',
+ desc:'Percentil do índice de pulsatilidade venosa do ducto venoso por IG',
+ review:true,
+ inputs:`<div class="calc-label">Idade gestacional</div>
+   <div class="calc-in"><input id="fm-gs" type="number" placeholder="semanas"><input id="fm-gd" type="number" placeholder="dias"></div>
+   <div class="calc-label">IPV — ducto venoso</div>
+   <div class="calc-in"><input id="fm-dv" type="text" inputmode="decimal" placeholder="ex.: 0.55"></div>`,
+ compute(){
+   const ga=fmGA(), dv=fmNum('fm-dv');
+   if(ga==null||ga<20||ga>40||!dv) return fmOut(`<div class="note">Informe IG (20–40 sem) e o IPV.</div>`);
+   const d95=fmInterp(FM_DV_PIV,ga,3), d50=fmInterp(FM_DV_PIV,ga,2);
+   return fmOut((dv>d95
+     ? fmBadge(`IPV ${dv.toFixed(2)} — acima do P95 (${d95.toFixed(2)})`,'bad')
+     : fmBadge(`IPV ${dv.toFixed(2)} — normal (P95: ${d95.toFixed(2)})`,'ok'))
+     + `<div class="prose" style="margin-top:8px">Mediana esperada: ${d50.toFixed(2)}</div>`
+     + fmCurveSVG(FM_DV_PIV,{title:'Ducto venoso — IPV por IG', xmin:20, xmax:40, pt:{x:ga,y:dv},
+       cols:[{c:3,color:'#d97706',dash:1,label:'P95'},{c:2,color:'#0891b2',label:'P50'},{c:1,color:'#d97706',dash:1,label:'P5'}]}));
+ },
+ refs:['Kessler J, et al. Longitudinal reference ranges for ductus venosus flow velocities and waveform indices. Ultrasound Obstet Gynecol. 2006;28(7):890–8.']},
+
+{id:'fm-aoi', title:'Istmo Aórtico (IP)', badge:'IA',
+ desc:'Percentil do índice de pulsatilidade do istmo aórtico por IG',
+ review:true,
+ inputs:`<div class="calc-label">Idade gestacional</div>
+   <div class="calc-in"><input id="fm-gs" type="number" placeholder="semanas"><input id="fm-gd" type="number" placeholder="dias"></div>
+   <div class="calc-label">IP — istmo aórtico</div>
+   <div class="calc-in"><input id="fm-aoi" type="text" inputmode="decimal" placeholder="ex.: 2.60"></div>`,
+ compute(){
+   const ga=fmGA(), aoi=fmNum('fm-aoi');
+   if(ga==null||ga<20||ga>40||!aoi) return fmOut(`<div class="note">Informe IG (20–40 sem) e o IP.</div>`);
+   const a95=fmInterp(FM_AOI_PI,ga,3), a5=fmInterp(FM_AOI_PI,ga,1), a50=fmInterp(FM_AOI_PI,ga,2);
+   return fmOut((aoi>a95
+     ? fmBadge(`IP ${aoi.toFixed(2)} — acima do P95 (${a95.toFixed(2)})`,'warn')
+     : aoi<a5
+     ? fmBadge(`IP ${aoi.toFixed(2)} — abaixo do P5 (${a5.toFixed(2)})`,'warn')
+     : fmBadge(`IP ${aoi.toFixed(2)} — normal (P5–P95: ${a5.toFixed(2)}–${a95.toFixed(2)})`,'ok'))
+     + `<div class="prose" style="margin-top:8px">Mediana esperada: ${a50.toFixed(2)}</div>`
+     + fmCurveSVG(FM_AOI_PI,{title:'Istmo aórtico — IP por IG', xmin:20, xmax:40, pt:{x:ga,y:aoi},
+       cols:[{c:3,color:'#d97706',dash:1,label:'P95'},{c:2,color:'#0891b2',label:'P50'},{c:1,color:'#d97706',dash:1,label:'P5'}]}));
+ },
+ refs:['Del Río M, et al. Reference ranges for Doppler parameters of the fetal aortic isthmus during the second half of pregnancy. Ultrasound Obstet Gynecol. 2006;28(1):71–6.']},
 
 {id:'fm-utpi', title:'IP das Artérias Uterinas', badge:'AU',
  desc:'Percentil do IP médio das artérias uterinas por IG',
