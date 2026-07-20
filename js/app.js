@@ -551,7 +551,7 @@ function calcViewHTML(){
 }
 /* Catálogo de calculadoras por especialidade (mesmos ids de SPECIALTIES). */
 const CALCS = [
-  {id:'tirads', spec:'neurocab',  title:'TI-RADS — Tireoide',              desc:'Classificação de nódulos tireoidianos (ACR) — 1 ou vários', badge:'TR'},
+  {id:'tirads', spec:'neurocab',  title:'TI-RADS',              desc:'Classificação de nódulos tireoidianos (ACR)', badge:'TR'},
 ];
 /* Calculadoras gerais (Outras Ferramentas), fora da ultrassonografia. */
 const GENERAL_CALCS = [

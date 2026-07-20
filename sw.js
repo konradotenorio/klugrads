@@ -7,7 +7,7 @@
    - API do Supabase (/rest/v1): network-first; em falha, último bom cache.
    Suba a versão do CACHE ao publicar mudanças para forçar atualização.
    ========================================================================= */
-const VERSION = 'v0.8.1';
+const VERSION = 'v0.8.3';
 const APP_CACHE = `ultraref-app-${VERSION}`;
 const DATA_CACHE = `ultraref-data-${VERSION}`;
 

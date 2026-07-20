@@ -324,5 +324,5 @@ function oradsPick(i,campo,val){
 }
 /* registra no catálogo (CALCS de app.js) */
 CALCS.push({id:'orads', spec:'abdome', badge:'OR',
-  title:'O-RADS US — Anexos',
-  desc:'Estratificação de risco de lesões ovarianas/anexiais (ACR v2022)'});
+  title:'O-RADS',
+  desc:'Estratificação de risco de lesões ovarianas/anexiais (ACR US v2022)'});

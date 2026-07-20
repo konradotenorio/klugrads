@@ -22,7 +22,10 @@ function fmNum(id){
   const v = parseFloat(raw); return isNaN(v)?null:v;
 }
 function fmGA(){ const s=fmNum('fm-gs'), d=fmNum('fm-gd')||0; return s==null?null:s+d/7; }
-function fmGAStr(days){ const w=Math.floor(days/7), d=Math.round(days%7); return `${w}s ${d}d`; }
+function fmGAStr(days){
+  const t=Math.round(days);            // arredonda os dias antes de dividir,
+  return `${Math.floor(t/7)}s ${t%7}d`; // senão 20,99 sem vira "20s 7d"
+}
 function fmInterp(tbl, ga, col){ // tbl: [[semana, ...cols]]
   if(ga<=tbl[0][0]) return tbl[0][col];
   for(let i=1;i<tbl.length;i++){
@@ -44,6 +47,25 @@ function fmRefs(refs){
 }
 function fmReview(){
   return `<div class="note" style="margin-top:12px">⚠️ Curva de referência aproximada de tabela publicada — <b>validar antes do uso clínico</b>.</div>`;
+}
+
+/* ---- Datação da gestação (fórmulas da FMF) ---- */
+function fmHoje(){ const d=new Date(); d.setHours(0,0,0,0); return d; }
+/* Robinson & Fleming: IG(dias) a partir do CCN (mm), 30–84 mm. */
+function gaFromCrl(crl){ return 23.53 + 8.052*Math.sqrt(1.037*crl); }
+/* Snijders & Nicolaides: IG(dias) a partir da CC (mm), 100–280 mm. */
+function gaFromHc(hc){
+  const a=-0.0596493, b=0.0029976, c=-0.0014988;
+  return 7*(a + Math.sqrt(a*a + b*(1.3369692 - Math.log10(hc+1)))) / c;
+}
+/* Bloco de resultado: IG + DPP correspondente. */
+function fmDatingBloco(titulo, gaDays){
+  const dpp = new Date(fmHoje().getTime() + (280-gaDays)*864e5);
+  return `<div style="margin-top:14px">
+    <div class="prose-label">${esc(titulo)}</div>
+    <div style="margin-top:6px">${fmBadge('IG: '+fmGAStr(gaDays),'ok')}</div>
+    <div class="prose" style="margin-top:8px">DPP: <b>${dpp.toLocaleDateString('pt-BR')}</b></div>
+  </div>`;
 }
 
 /* ---- Hadlock ---- */
@@ -144,22 +166,53 @@ const FM_NT = [ // TN por CCN [crl mm, p50, p95] — aproximado (Nicolaides)
 /* ---- definição das calculadoras ---- */
 const FETAL_CALCS = [
 
-{id:'fm-dating', title:'Datação da Gestação (CCN)', badge:'IG',
- desc:'Idade gestacional pelo comprimento cabeça-nádega — Robinson & Fleming',
+{id:'fm-dating', title:'Datação da Gestação', badge:'IG',
+ desc:'Idade gestacional pelo CCN, pela circunferência cefálica ou pela DUM',
  inputs:`<div class="calc-label">CCN — comprimento cabeça-nádega (mm)</div>
-   <div class="calc-in"><input id="fm-crl" type="text" inputmode="decimal" placeholder="15–84"></div>`,
+   <div class="calc-in"><input id="fm-crl" type="text" inputmode="decimal" placeholder="30–84"></div>
+   <div class="calc-hint">Corresponde a 9s5d – 14s1d</div>
+   <div class="calc-label">CC — circunferência cefálica (mm)</div>
+   <div class="calc-in"><input id="fm-hc" type="text" inputmode="decimal" placeholder="100–280"></div>
+   <div class="calc-hint">Corresponde a 13s3d – 29s5d</div>
+   <div class="calc-label">DUM — 1º dia da última menstruação</div>
+   <div class="calc-in"><input id="fm-lmp" type="date"></div>
+   <div class="calc-hint">Para ciclos regulares de 26–30 dias</div>`,
  compute(){
-   const crl = fmNum('fm-crl');
-   if(crl==null||crl<15||crl>84) return fmOut(`<div class="note">Informe um CCN entre 15 e 84 mm.</div>`);
-   const gaDays = 8.052*Math.sqrt(crl) + 23.73;
-   const dpp = new Date(Date.now() + (280-gaDays)*864e5);
-   const tbl=[]; for(let c=15;c<=84;c+=3) tbl.push([c,(8.052*Math.sqrt(c)+23.73)/7]);
-   return fmOut(`${fmBadge('IG: '+fmGAStr(gaDays),'ok')}
-     <div class="prose" style="margin-top:10px">Data provável do parto (se o exame for hoje): <b>${dpp.toLocaleDateString('pt-BR')}</b></div>`
-     + fmCurveSVG(tbl,{title:'IG (semanas) pelo CCN — Robinson', xmin:15, xmax:84, xunit:'mm', pt:{x:crl,y:gaDays/7},
-       cols:[{c:1,color:'#0891b2',label:'IG'}]}));
+   const crl=fmNum('fm-crl'), hc=fmNum('fm-hc');
+   const lmpRaw=(document.getElementById('fm-lmp')||{}).value;
+   let h='', algum=false;
+
+   if(crl!=null){
+     if(crl<30||crl>84) h += fmOut(`<div class="note">CCN fora da faixa aplicável (30–84 mm).</div>`);
+     else { algum=true; h += fmDatingBloco('Pelo CCN', gaFromCrl(crl)); }
+   }
+   if(hc!=null){
+     if(hc<100||hc>280) h += fmOut(`<div class="note">CC fora da faixa aplicável (100–280 mm).</div>`);
+     else { algum=true; h += fmDatingBloco('Pela circunferência cefálica', gaFromHc(hc)); }
+   }
+   if(lmpRaw){
+     const lmp=new Date(lmpRaw+'T00:00:00');
+     const dias=(fmHoje()-lmp)/864e5;
+     if(isNaN(dias)||dias<0) h += fmOut(`<div class="note">Data da DUM inválida.</div>`);
+     else if(dias>300) h += fmOut(`<div class="note">DUM há mais de 300 dias — verifique a data.</div>`);
+     else { algum=true; h += fmDatingBloco('Pela DUM', dias); }
+   }
+   if(!algum && !h) return fmOut(`<div class="note">Informe o CCN, a CC ou a DUM.</div>`);
+
+   if(crl!=null && crl>=30 && crl<=84){
+     const tbl=[]; for(let c=30;c<=84;c+=3) tbl.push([c, gaFromCrl(c)/7]);
+     h += fmCurveSVG(tbl,{title:'IG pelo CCN — Robinson & Fleming', xmin:30, xmax:84, xunit:'mm',
+       pt:{x:crl,y:gaFromCrl(crl)/7}, cols:[{c:1,color:'#0891b2',label:'IG (sem)'}]});
+   }
+   if(hc!=null && hc>=100 && hc<=280){
+     const tbl=[]; for(let c=100;c<=280;c+=10) tbl.push([c, gaFromHc(c)/7]);
+     h += fmCurveSVG(tbl,{title:'IG pela CC — Snijders & Nicolaides', xmin:100, xmax:280, xunit:'mm',
+       pt:{x:hc,y:gaFromHc(hc)/7}, cols:[{c:1,color:'#0891b2',label:'IG (sem)'}]});
+   }
+   return h;
  },
- refs:['Robinson HP, Fleming JE. A critical evaluation of sonar "crown-rump length" measurements. Br J Obstet Gynaecol. 1975;82(9):702–10.']},
+ refs:['Robinson HP, Fleming JE. A critical evaluation of sonar "crown-rump length" measurements. Br J Obstet Gynaecol. 1975;82(9):702–10.',
+       'Snijders RJ, Nicolaides KH. Fetal biometry at 14–40 weeks\' gestation. Ultrasound Obstet Gynecol. 1994;4(1):34–48.']},
 
 {id:'fm-nt', title:'Translucência Nucal', badge:'TN',
  desc:'Avaliação da TN pelo CCN (11–13+6 semanas)',
