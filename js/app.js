@@ -162,6 +162,7 @@ let state = {
   tirads:null,
   lang:'pt', fontScale:1, user:null,
   favCalcs:[],
+  nav:[],
 };
 const FONT_STEPS = [0.85, 0.925, 1, 1.075, 1.15, 1.25];
 const LANGS = [['pt','Português'],['en','English'],['es','Español']];
@@ -317,7 +318,7 @@ function modalityHTML(){
 function ferramentasHTML(){
   return `<div class="lc-b">
     <div class="lc-top">
-      <div class="lc-card fill" onclick="state.modalityId=null;setView('calc')">
+      <div class="lc-card fill" onclick="openGeneralCalcs()">
         <div class="lc-chip">${svgIcon(P.calc,26)}</div>
         <div><div class="t">Calculadoras</div><div class="d">Calculadoras gerais, fora da ultrassonografia</div></div>
       </div>
@@ -400,7 +401,7 @@ function logout(){
 /* ---- 1b. LAUNCHER (home) ---- */
 function homeHTML(){
   return `<div class="lc">
-    <button class="iconbtn lc-back" onclick="setView('modality')" aria-label="Voltar">${svgIcon(P.back,22,{sw:2.2})}</button>
+    <button class="iconbtn lc-back" onclick="goBack()" aria-label="Voltar">${svgIcon(P.back,22,{sw:2.2})}</button>
     <div class="lc-head">
       <div class="lc-brand">RAD<span>REF</span></div>
       <div class="lc-greet">Ultrassonografia</div>
@@ -556,7 +557,7 @@ function calcCardHTML(c){
     ? `<div class="si acc" style="font-weight:800;font-size:13px;letter-spacing:-.01em">${esc(c.badge)}</div>`
     : `<div class="si acc">${svgIcon(P.calc,22)}</div>`;
   const isFav = state.favCalcs.indexOf(c.id)>=0;
-  return `<div class="lc-short" onclick="state.calcId='${c.id}';render()">
+  return `<div class="lc-short" onclick="openCalc('${esc(c.id)}')">
     ${icon}
     <div class="st">
       <div class="t">${esc(c.title)}</div>
@@ -577,6 +578,7 @@ function toggleFavCalc(id){
 }
 function openFavCalc(id){
   const c = findCalc(id); if(!c) return;
+  navPush();
   if(c.spec){ state.modalityId='us'; state.calcSpec=c.spec; }
   else { state.modalityId=null; }
   state.calcId=id; state.view='calc'; render();
@@ -915,18 +917,22 @@ function listsHTML(){
 /* =========================================================================
    AÇÕES
    ========================================================================= */
-function setView(v){ state.view=v; state.composingId=null; if(v!=='calc') state.calcId=null; render(); }
+/* ---- Navegação: pilha de telas, para o Voltar sempre desfazer o último passo ---- */
+const NAV_KEYS = ['view','calcId','calcSpec','modalityId','item','sub','composingId','specialty','subBand','query'];
+function navSnapshot(){ const s={}; NAV_KEYS.forEach(k=>s[k]=state[k]); return s; }
+function navPush(){
+  state.nav.push(navSnapshot());
+  if(state.nav.length>40) state.nav.shift();
+}
+function setView(v){
+  navPush();
+  state.view=v; state.composingId=null; if(v!=='calc') state.calcId=null;
+  render();
+}
 function goBack(){
-  const v = state.view;
-  if(v==='detail'){ state.view='refs'; render(); return; }
-  if(v==='novalista' && state.composingId){ state.composingId=null; render(); return; }
-  if(v==='construction'||v==='ferramentas'||v==='config'){ state.view='modality'; render(); return; }
-  if(v==='calc'){
-    if(state.calcId){ state.calcId=null; render(); return; }
-    state.view = state.modalityId==='us' ? 'home' : 'ferramentas';
-    render(); return;
-  }
-  state.view='home'; render();
+  const prev = state.nav.pop();
+  if(prev){ NAV_KEYS.forEach(k=>state[k]=prev[k]); render(); return; }
+  state.view='modality'; render();  // fallback: tela inicial
 }
 function setSpecialty(id){ state.specialty=id; render(); }
 function setSubBand(b){ state.subBand=b; render(); }
@@ -935,8 +941,11 @@ function scrollBandMore(){ const el=$('bandrow'); if(el) el.scrollBy({left:170, 
 
 function openItem(id){
   const d = DATA.find(x=>x.id===id); if(!d) return;
+  navPush();
   state.item=d; state.view='detail'; state.sub='tabela'; render();
 }
+function openCalc(id){ navPush(); state.calcId=id; render(); }
+function openGeneralCalcs(){ navPush(); state.modalityId=null; state.calcId=null; state.view='calc'; render(); }
 function setSub(s){ state.sub=s; render(); }
 function toggleAcc(bodyId, chevId){
   const b = $(bodyId); if(!b) return;
@@ -977,8 +986,10 @@ function initDrums(){
 function calcTFG(){ autoCalcTFG(); }
 function openModality(id){
   const m = MODALITIES.find(x=>x.id===id); if(!m) return;
-  if(m.active){ state.modalityId=id; state.view='home'; render(); return; }
-  state.modalityId=id; state.view='construction'; render();
+  navPush();
+  state.modalityId=id;
+  state.view = m.active ? 'home' : 'construction';
+  render();
 }
 
 function toggleFav(id){
@@ -1003,7 +1014,7 @@ function delList(id){
   persist('radref_lists', state.lists);
   render(true);
 }
-function openCompose(id){ state.composingId=id; render(); }
+function openCompose(id){ navPush(); state.composingId=id; render(); }
 function toggleInList(listId, itemId){
   const l = state.lists.find(x=>x.id===listId); if(!l) return;
   const i = l.items.indexOf(itemId);
