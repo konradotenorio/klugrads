@@ -161,6 +161,7 @@ let state = {
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
   tirads:null,
   lang:'pt', fontScale:1, user:null,
+  favCalcs:[],
 };
 const FONT_STEPS = [0.85, 0.925, 1, 1.075, 1.15, 1.25];
 const LANGS = [['pt','Português'],['en','English'],['es','Español']];
@@ -173,6 +174,7 @@ function loadState(){
   try{ const g=localStorage.getItem('radref_lang'); if(LANGS.some(x=>x[0]===g)) state.lang=g; }catch(_){}
   try{ const f=parseFloat(localStorage.getItem('radref_fontscale')); if(FONT_STEPS.includes(f)) state.fontScale=f; }catch(_){}
   try{ const u=JSON.parse(localStorage.getItem('radref_user')||'null'); if(u&&u.email) state.user=u; }catch(_){}
+  try{ const c=JSON.parse(localStorage.getItem('radref_favcalcs')||'[]'); if(Array.isArray(c)) state.favCalcs=c; }catch(_){}
 }
 
 /* ---- HELPERS de dados ---- */
@@ -553,14 +555,31 @@ function calcCardHTML(c){
   const icon = c.badge
     ? `<div class="si acc" style="font-weight:800;font-size:13px;letter-spacing:-.01em">${esc(c.badge)}</div>`
     : `<div class="si acc">${svgIcon(P.calc,22)}</div>`;
+  const isFav = state.favCalcs.indexOf(c.id)>=0;
   return `<div class="lc-short" onclick="state.calcId='${c.id}';render()">
     ${icon}
     <div class="st">
       <div class="t">${esc(c.title)}</div>
       <div class="d">${esc(c.desc)}</div>
     </div>
+    <div class="star-btn ${isFav?'on':''}" onclick="event.stopPropagation();toggleFavCalc('${esc(c.id)}')" aria-label="Favoritar">${svgIcon(P.star,20,{fill:isFav?'currentColor':'none'})}</div>
     <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
   </div>`;
+}
+/* Todas as calculadoras (US + gerais) para busca por id. */
+function allCalcs(){ return CALCS.concat(GENERAL_CALCS); }
+function findCalc(id){ return allCalcs().find(c=>c.id===id); }
+function toggleFavCalc(id){
+  const i = state.favCalcs.indexOf(id);
+  if(i<0) state.favCalcs.push(id); else state.favCalcs.splice(i,1);
+  persist('radref_favcalcs', state.favCalcs);
+  render(true);
+}
+function openFavCalc(id){
+  const c = findCalc(id); if(!c) return;
+  if(c.spec){ state.modalityId='us'; state.calcSpec=c.spec; }
+  else { state.modalityId=null; }
+  state.calcId=id; state.view='calc'; render();
 }
 function calcListHTML(){
   // Fora da ultrassonografia (Outras Ferramentas): calculadoras gerais.
@@ -807,18 +826,32 @@ function tiradsScrollTo(i){ const c=$('ti-card-'+i); if(c) c.scrollIntoView({beh
 /* ---- 5. FAVORITOS ---- */
 function favHTML(){
   const refs = state.favs.map(id=>DATA.find(d=>d.id===id)).filter(Boolean);
-  if(!refs.length){
+  const calcs = state.favCalcs.map(id=>findCalc(id)).filter(Boolean);
+  if(!refs.length && !calcs.length){
     return `<div class="empty">
       <div class="ico" style="color:var(--star)">${svgIcon(P.star,46,{sw:1.4})}</div>
       <div class="msg" style="font-size:16px;font-weight:650;color:var(--tx)">Nada favoritado ainda</div>
-      <div class="msg" style="margin-top:6px">Toque na estrela ★ de qualquer referência para guardá-la aqui.</div>
+      <div class="msg" style="margin-top:6px">Toque na estrela ★ de qualquer referência ou calculadora para guardá-la aqui.</div>
     </div>`;
   }
-  return refs.map(d=>`<div class="row" onclick="openItem('${esc(d.id)}')">
-    <div class="ic star">${svgIcon(P.star,19,{fill:'currentColor',noStroke:true})}</div>
-    <div class="tx"><div class="nm">${esc(d.name)}</div><div class="meta">${esc(metaOf(d))}</div></div>
-    <div class="star-btn on" onclick="event.stopPropagation();toggleFav('${esc(d.id)}')">${svgIcon(P.star,20,{fill:'currentColor'})}</div>
-  </div>`).join('');
+  let h = '';
+  if(calcs.length){
+    h += `<div class="grp">Calculadoras</div>`;
+    h += calcs.map(c=>`<div class="row" onclick="openFavCalc('${esc(c.id)}')">
+      <div class="ic star">${svgIcon(P.calc,19)}</div>
+      <div class="tx"><div class="nm">${esc(c.title)}</div><div class="meta">${esc(c.desc)}</div></div>
+      <div class="star-btn on" onclick="event.stopPropagation();toggleFavCalc('${esc(c.id)}')">${svgIcon(P.star,20,{fill:'currentColor'})}</div>
+    </div>`).join('');
+  }
+  if(refs.length){
+    h += `<div class="grp">Referências</div>`;
+    h += refs.map(d=>`<div class="row" onclick="openItem('${esc(d.id)}')">
+      <div class="ic star">${svgIcon(P.star,19,{fill:'currentColor',noStroke:true})}</div>
+      <div class="tx"><div class="nm">${esc(d.name)}</div><div class="meta">${esc(metaOf(d))}</div></div>
+      <div class="star-btn on" onclick="event.stopPropagation();toggleFav('${esc(d.id)}')">${svgIcon(P.star,20,{fill:'currentColor'})}</div>
+    </div>`).join('');
+  }
+  return h;
 }
 
 /* ---- 6.5 EM CONSTRUÇÃO ---- */
