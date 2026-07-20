@@ -194,8 +194,8 @@ function calcOradsHTML(){
   let rail = `<div class="ti-rail">`;
   ls.forEach((L,i)=>{ const ev=oradsEval(L); const c=ORADS_C[ev.cat];
     rail += `<div class="ti-rchip" onclick="oradsScrollTo(${i})">`
-      + `<span class="rn">${esc(L.name||('L'+(i+1)))}</span>`
-      + (ev.complete&&c ? `<span class="rt" style="background:${c.c}">O${ev.cat}</span>` : `<span class="rt off">—</span>`)
+      + `<span class="rn" id="orads-rn-${i}">${esc(L.name||('L'+(i+1)))}</span>`
+      + `<span id="orads-rt-${i}">${oradsChipBadge(ev)}</span>`
       + `</div>`;
   });
   rail += `<div class="ti-rchip radd" onclick="oradsAdd()" aria-label="Adicionar lesão">＋</div></div>`;
@@ -286,34 +286,54 @@ function oradsCardHTML(L,i){
     <div class="ti-foci"><div class="ti-ftog ${L.ascite?'on':''}" onclick="oradsToggleAscite(${i})">Ascite e/ou nódulos peritoneais</div></div>
   </div>`;
 
-  let result='';
-  if(show){
-    const m = oradsMgmt(L, ev, os.meno);
-    result = `<div class="ti-res" style="background:${c.bg};align-items:flex-start">
-      <div class="lv" style="color:${c.c}">O${ev.cat}</div>
-      <div class="meta"><div class="a">${esc(m.a)}</div><div class="b">${esc(m.b)}</div>
-        ${ev.why?`<div class="b" style="margin-top:4px;opacity:.85">${esc(ev.why)}</div>`:''}</div>
-      <div class="pts" style="background:${c.c}">${esc(c.risk)}</div>
-    </div>`;
-  }
   return `<div class="ti-card2" id="orads-card-${i}">
-    <div class="ti-stripe" style="background:${show?c.c:'var(--line)'}"></div>
+    <div class="ti-stripe" id="orads-stripe-${i}" style="background:${show?c.c:'var(--line)'}"></div>
     <div class="ti-chead">
       <div class="ti-dot">${i+1}</div>
       <input class="ti-nname" value="${esc(L.name||('Lesão '+(i+1)))}" oninput="oradsSetName(${i},this.value)">
       ${os.lesions.length>1?`<div class="ti-del" onclick="oradsDel(${i})">${svgIcon(P.trash,17,{sw:1.8})}</div>`:''}
     </div>
     <div class="ti-fields">${fields}${sizeField}${asciteField}</div>
-    ${result}
+    <div id="orads-res-${i}">${oradsResultHTML(L,i)}</div>
   </div>`;
+}
+/* Resultado isolado: permite atualizar sem recriar os campos (o input de
+   tamanho perderia o foco a cada tecla, impedindo digitar "2,3"). */
+function oradsResultHTML(L,i){
+  const os=oradsState(); const ev=oradsEval(L); const c=ORADS_C[ev.cat];
+  if(!(ev.complete && c)) return '';
+  const m = oradsMgmt(L, ev, os.meno);
+  return `<div class="ti-res" style="background:${c.bg};align-items:flex-start">
+    <div class="lv" style="color:${c.c}">O${ev.cat}</div>
+    <div class="meta"><div class="a">${esc(m.a)}</div><div class="b">${esc(m.b)}</div>
+      ${ev.why?`<div class="b" style="margin-top:4px;opacity:.85">${esc(ev.why)}</div>`:''}</div>
+    <div class="pts" style="background:${c.c}">${esc(c.risk)}</div>
+  </div>`;
+}
+function oradsChipBadge(ev){
+  const c=ORADS_C[ev.cat];
+  return (ev.complete&&c) ? `<span class="rt" style="background:${c.c}">O${ev.cat}</span>`
+                          : `<span class="rt off">—</span>`;
+}
+/* Atualiza só o resultado, a faixa colorida e o chip da lesão i. */
+function oradsRefresh(i){
+  const L=oradsState().lesions[i]; if(!L) return;
+  const ev=oradsEval(L); const c=ORADS_C[ev.cat]; const show=ev.complete&&c;
+  const res=document.getElementById('orads-res-'+i);   if(res) res.innerHTML=oradsResultHTML(L,i);
+  const st=document.getElementById('orads-stripe-'+i); if(st) st.style.background = show?c.c:'var(--line)';
+  const rt=document.getElementById('orads-rt-'+i);     if(rt) rt.innerHTML=oradsChipBadge(ev);
 }
 
 /* ---- ações ---- */
 function oradsSetMeno(id){ oradsState().meno=id; render(true); }
 function oradsAdd(){ oradsState().lesions.push(oradsNewLesion()); render(true); }
 function oradsDel(i){ const os=oradsState(); os.lesions.splice(i,1); if(!os.lesions.length) os.lesions=[oradsNewLesion()]; render(true); }
-function oradsSetName(i,v){ oradsState().lesions[i].name=v; }
-function oradsSetSize(i,v){ oradsState().lesions[i].size=v; render(true); }
+function oradsSetName(i,v){
+  oradsState().lesions[i].name=v;
+  const rn=document.getElementById('orads-rn-'+i); if(rn) rn.textContent = v || ('L'+(i+1));
+}
+/* Atualiza sem re-render para não perder o foco enquanto digita (ex.: "2,3"). */
+function oradsSetSize(i,v){ oradsState().lesions[i].size=v; oradsRefresh(i); }
 function oradsToggleAscite(i){ const L=oradsState().lesions[i]; L.ascite=!L.ascite; render(true); }
 function oradsToggleDD(i,campo){ const os=oradsState(); const k=i+':'+campo; os.open = os.open===k?null:k; render(true); }
 function oradsPick(i,campo,val){
