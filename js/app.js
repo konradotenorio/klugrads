@@ -164,9 +164,74 @@ let state = {
   lang:'pt', fontScale:1, user:null,
   favCalcs:[],
   nav:[],
+  termsAccepted:false,
 };
 const FONT_STEPS = [0.85, 0.925, 1, 1.075, 1.15, 1.25];
 const LANGS = [['pt','Português'],['en','English'],['es','Español']];
+
+/* ---- Termos de Uso e Responsabilidade (texto próprio do RadRef, 3 idiomas) ----
+   Ao alterar o conteúdo, suba TERMS_VERSION para reexibir o aceite a todos. */
+const TERMS_VERSION = '1';
+const TERMS = {
+  pt:{
+    title:'Termos de Uso e Responsabilidade',
+    intro:'Leia e aceite os termos abaixo para usar o aplicativo.',
+    items:[
+      ['Finalidade educacional','O RadRef é uma ferramenta de referência e educação. Não fornece diagnóstico nem conduta e não substitui o julgamento clínico do profissional.'],
+      ['Responsabilidade do usuário','Todas as decisões clínicas são de sua inteira responsabilidade. Confira valores e fórmulas nas fontes originais antes de aplicá-los.'],
+      ['Uso profissional','Destinado a profissionais de saúde e estudantes da área. Você declara ser maior de 18 anos.'],
+      ['Dados e privacidade','Os dados que você insere ficam somente no seu aparelho; não são enviados a servidores do RadRef. Você é responsável por obter o consentimento dos pacientes cujos dados venha a inserir.'],
+      ['Sem garantias','O conteúdo é fornecido "como está", sem garantia de disponibilidade, exatidão ou atualização. O uso é por sua conta e risco.'],
+      ['Conteúdo de terceiros','Fórmulas e referências pertencem aos seus autores e são citadas para fins educacionais.'],
+    ],
+    check:'Confirmo que sou profissional de saúde e li os termos acima.',
+    accept:'Aceitar e continuar', reject:'Recusar',
+    need:'Marque a confirmação acima para continuar.',
+    rejected:'É necessário aceitar os termos para usar o aplicativo. Você poderá alterar sua resposta a qualquer momento em Configurações.',
+    foot:'Você poderá rever estes termos ou alterar sua resposta a qualquer momento em Configurações.',
+    manageLbl:'Termos de Uso e Responsabilidade', manageSub:'Leia novamente e gerencie seu aceite',
+    accepted:'Você aceitou os termos de uso.', revoke:'Revogar aceite',
+  },
+  en:{
+    title:'Terms of Use and Responsibility',
+    intro:'Read and accept the terms below to use the app.',
+    items:[
+      ['Educational purpose','RadRef is a reference and education tool. It does not provide diagnosis or management and does not replace the professional\'s clinical judgment.'],
+      ['User responsibility','All clinical decisions are entirely your responsibility. Check values and formulas against the original sources before applying them.'],
+      ['Professional use','Intended for healthcare professionals and students in the field. You declare that you are 18 or older.'],
+      ['Data and privacy','The data you enter stays only on your device; it is not sent to RadRef servers. You are responsible for obtaining consent from the patients whose data you enter.'],
+      ['No warranties','Content is provided "as is", with no guarantee of availability, accuracy or timeliness. Use is at your own risk.'],
+      ['Third-party content','Formulas and references belong to their authors and are cited for educational purposes.'],
+    ],
+    check:'I confirm that I am a healthcare professional and have read the terms above.',
+    accept:'Accept and continue', reject:'Decline',
+    need:'Check the confirmation above to continue.',
+    rejected:'You must accept the terms to use the app. You can change your answer any time in Settings.',
+    foot:'You can review these terms or change your answer any time in Settings.',
+    manageLbl:'Terms of Use and Responsibility', manageSub:'Read again and manage your acceptance',
+    accepted:'You have accepted the terms of use.', revoke:'Revoke acceptance',
+  },
+  es:{
+    title:'Términos de Uso y Responsabilidad',
+    intro:'Lea y acepte los términos a continuación para usar la aplicación.',
+    items:[
+      ['Finalidad educativa','RadRef es una herramienta de referencia y educación. No proporciona diagnóstico ni conducta y no sustituye el juicio clínico del profesional.'],
+      ['Responsabilidad del usuario','Todas las decisiones clínicas son de su entera responsabilidad. Verifique valores y fórmulas en las fuentes originales antes de aplicarlos.'],
+      ['Uso profesional','Destinado a profesionales de la salud y estudiantes del área. Usted declara ser mayor de 18 años.'],
+      ['Datos y privacidad','Los datos que ingresa permanecen solo en su dispositivo; no se envían a servidores de RadRef. Usted es responsable de obtener el consentimiento de los pacientes cuyos datos ingrese.'],
+      ['Sin garantías','El contenido se ofrece "tal cual", sin garantía de disponibilidad, exactitud o actualización. El uso es bajo su propio riesgo.'],
+      ['Contenido de terceros','Las fórmulas y referencias pertenecen a sus autores y se citan con fines educativos.'],
+    ],
+    check:'Confirmo que soy profesional de la salud y he leído los términos anteriores.',
+    accept:'Aceptar y continuar', reject:'Rechazar',
+    need:'Marque la confirmación anterior para continuar.',
+    rejected:'Debe aceptar los términos para usar la aplicación. Puede cambiar su respuesta en cualquier momento en Ajustes.',
+    foot:'Puede revisar estos términos o cambiar su respuesta en cualquier momento en Ajustes.',
+    manageLbl:'Términos de Uso y Responsabilidad', manageSub:'Léalos de nuevo y gestione su aceptación',
+    accepted:'Ha aceptado los términos de uso.', revoke:'Revocar aceptación',
+  },
+};
+function TT(){ return TERMS[state.lang] || TERMS.pt; }
 
 function persist(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(_){} }
 function loadState(){
@@ -177,6 +242,7 @@ function loadState(){
   try{ const f=parseFloat(localStorage.getItem('radref_fontscale')); if(FONT_STEPS.includes(f)) state.fontScale=f; }catch(_){}
   try{ const u=JSON.parse(localStorage.getItem('radref_user')||'null'); if(u&&u.email) state.user=u; }catch(_){}
   try{ const c=JSON.parse(localStorage.getItem('radref_favcalcs')||'[]'); if(Array.isArray(c)) state.favCalcs=c; }catch(_){}
+  try{ state.termsAccepted = localStorage.getItem('radref_terms')===TERMS_VERSION; }catch(_){}
 }
 
 /* ---- HELPERS de dados ---- */
@@ -211,10 +277,13 @@ function metaOf(d){ return [d.region, d.abbr].filter(Boolean).join(' · '); }
 function render(keep){
   applyTheme();
   applyFontScale();
+  // Enquanto os termos não forem aceitos, o app abre na tela de aceite (bloqueia
+  // toda a navegação). A leitura em Configurações usa a view 'termsRead'.
+  if(!state.termsAccepted && state.view!=='terms'){ state.view='terms'; }
   const v = state.view;
   // header
   const hdr = $('hdr');
-  if(v==='home' || v==='modality'){ hdr.className='hdr hide'; hdr.innerHTML=''; }
+  if(v==='home' || v==='modality' || v==='terms'){ hdr.className='hdr hide'; hdr.innerHTML=''; }
   else { hdr.className='hdr'; hdr.innerHTML = translateHTML(headerHTML()); }
   // corpo
   const s = $('scroll');
@@ -243,6 +312,7 @@ function headerHTML(){
   else if(v==='calc'){ const c = state.calcId ? findCalc(state.calcId) : null; title = c ? c.title : 'Calculadoras'; }
   else if(v==='ferramentas'){ title='Outras Ferramentas'; }
   else if(v==='config'){ title='Configurações'; }
+  else if(v==='termsRead'){ title=TT().title; }
   else if(v==='favoritos'){ title='Favoritos'; }
   else if(v==='novalista'){ const cl=state.lists.find(x=>x.id===state.composingId); title=cl?cl.name:'Minhas listas'; sub=cl?'Lista personalizada':''; }
   else if(v==='construction'){ const m=MODALITIES.find(x=>x.id===state.modalityId)||{}; title=m.name||'Em Construção'; }
@@ -273,6 +343,8 @@ function viewHTML(){
     case 'construction': return constructionHTML();
     case 'ferramentas': return ferramentasHTML();
     case 'config': return configHTML();
+    case 'terms': return termsGateHTML();
+    case 'termsRead': return termsReadHTML();
     default: return modalityHTML();
   }
 }
@@ -374,7 +446,67 @@ function configHTML(){
       <div class="lbl">Envie sua opinião para a nossa equipe<div class="sub">Em construção</div></div>
     </div>
     <div style="padding:14px 18px"><button class="set-btn" onclick="enviarSugestao()">Enviar mensagem</button></div>
+
+    <div class="sec-label" style="margin-top:14px">${esc(TT().title)}</div>
+    <div class="set-row" onclick="setView('termsRead')" style="cursor:pointer">
+      <div class="lbl">${esc(TT().manageLbl)}<div class="sub">${esc(TT().manageSub)}</div></div>
+      <div style="color:var(--dim);display:flex">${svgIcon(P.chev,18,{sw:2})}</div>
+    </div>
   </div>`;
+}
+
+/* ---- Termos: itens + tela de aceite (1º uso) + leitura em Configurações ---- */
+function termsItemsHTML(){
+  return `<div class="terms-box">` + TT().items.map(it=>
+    `<div class="terms-item"><b>${esc(it[0])}</b><span>${esc(it[1])}</span></div>`
+  ).join('') + `</div>`;
+}
+function termsGateHTML(){
+  const T = TT();
+  return `<div class="terms-wrap">
+    <div class="terms-brand">RAD<span>REF</span></div>
+    <div class="terms-title">${esc(T.title)}</div>
+    <div class="terms-intro">${esc(T.intro)}</div>
+    ${termsItemsHTML()}
+    <label class="terms-check">
+      <input type="checkbox" id="terms-chk" onchange="document.getElementById('terms-msg').style.display='none'">
+      <span>${esc(T.check)}</span>
+    </label>
+    <div class="terms-msg" id="terms-msg"></div>
+    <div class="terms-actions">
+      <button class="terms-reject" onclick="rejectTerms()">${esc(T.reject)}</button>
+      <button class="terms-accept" onclick="acceptTerms()">${esc(T.accept)}</button>
+    </div>
+    <div class="terms-foot">${esc(T.foot)}</div>
+  </div>`;
+}
+function termsReadHTML(){
+  const T = TT();
+  return `<div class="terms-wrap" style="padding-top:12px">
+    ${termsItemsHTML()}
+    <div class="set-note" style="text-align:center">✓ ${esc(T.accepted)}</div>
+    <div style="padding:6px 2px"><button class="set-btn" onclick="revokeTerms()">${esc(T.revoke)}</button></div>
+  </div>`;
+}
+function acceptTerms(){
+  const chk = document.getElementById('terms-chk');
+  if(!chk || !chk.checked){
+    const m = document.getElementById('terms-msg');
+    if(m){ m.textContent = TT().need; m.style.display='block'; }
+    return;
+  }
+  state.termsAccepted = true;
+  try{ localStorage.setItem('radref_terms', TERMS_VERSION); }catch(_){}
+  state.nav=[]; state.view='modality'; render();
+}
+function rejectTerms(){
+  const m = document.getElementById('terms-msg');
+  if(m){ m.textContent = TT().rejected; m.style.display='block'; }
+}
+function revokeTerms(){
+  state.termsAccepted = false;
+  try{ localStorage.removeItem('radref_terms'); }catch(_){}
+  state.nav=[]; state.view='terms'; render();
 }
 function setTheme(t){
   if(state.theme===t) return;
