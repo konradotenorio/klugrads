@@ -16,6 +16,8 @@
 
 const SGA_REFS = [
   'Papastefanou I, Wright D, Nicolaides KH. Competing-risks model for prediction of small-for-gestational-age neonate from maternal characteristics and medical history. Ultrasound Obstet Gynecol 2020;56:196-205.',
+  'Papastefanou I, Wright D, Syngelaki A, Souretis K, Chrysanthopoulou E, Nicolaides KH. Competing-risks model for prediction of small-for-gestational-age neonate from biophysical and biochemical markers at 11-13 weeks. Ultrasound Obstet Gynecol 2021;57:52-61.',
+  'Papastefanou I, Wright D, Lolos M, Anampousi K, Mamalis M, Nicolaides KH. Competing-risks model for prediction of small-for-gestational-age neonates from maternal characteristics, serum PAPP-A and PlGF at 11-13 weeks. Ultrasound Obstet Gynecol 2021. DOI:10.1002/uog.23118.',
 ];
 
 /* Parâmetros — Papastefanou 2020, Tabela 2 */
@@ -83,6 +85,68 @@ function sgaCompute(inp){
   };
 }
 
+/* ---- Biomarcadores — verossimilhança folded-plane (Papastefanou 2021 / ref.20) ----
+   Média do log10 MoM = superfície quadrática em (Z, IG-40), "dobrada" em 0 (1 MoM):
+   UtA-PI e MAP elevam-se no PIG (max(sup,0)); PAPP-A e PLGF caem (min(sup,0)). */
+const SGA_BIO = {
+  uta: {i:-0.056310714, z:-0.039447609, g:-0.015560167, g2:-0.000833378, sd:0.128688076, fold:'max'},
+  map: {i:-0.000239856, z:-0.001752502, g:-0.001512578, g2:-0.000076992, sd:0.035903306, fold:'max'},
+  papp:{i:0.0167065204, z:0.0415211600, g:0.0129835876, g2:0.0008288029, sd:0.2376927440, fold:'min'},
+  plgf:{i:0.0396191116, z:0.0353880640, g:0.0175942812, g2:0.0009299725, sd:0.1703244200, fold:'min'},
+};
+const SGA_BIO_ORDER = ['uta','map','papp','plgf'];
+const SGA_BIO_CORR = {
+  'uta_map':-0.03833283, 'uta_papp':-0.1604627, 'uta_plgf':-0.1605271,
+  'map_papp':-0.008953812, 'map_plgf':-0.04538137, 'papp_plgf':0.3279437,
+};
+function sgaBioCorr(i,j){ if(i===j) return 1; return SGA_BIO_CORR[i+'_'+j] ?? SGA_BIO_CORR[j+'_'+i] ?? 0; }
+function sgaFoldedMean(key, GA, Z){
+  const b=SGA_BIO[key];
+  const s=b.i + b.z*Z + b.g*(GA-40) + b.g2*(GA-40)*(GA-40);
+  return b.fold==='max' ? Math.max(s,0) : Math.min(s,0);
+}
+/* inverte matriz n×n (via peSolve, de calc-preeclampsia.js) */
+function sgaInv(A){
+  const n=A.length, I=A.map((_,i)=>A.map((_,j)=>i===j?1:0));
+  const cols=[]; for(let j=0;j<n;j++) cols.push(peSolve(A, I.map(r=>r[j])));
+  return A.map((_,i)=>cols.map(c=>c[i]));
+}
+
+/* Cálculo com biomarcadores: integração 2D da posterior (prior × verossimilhança). */
+function sgaComputeBio(inp, keys){
+  const muZ=sgaMuZ(inp), muGA=sgaMuGA(inp,muZ);
+  const y=keys.map(k=>Math.log10(inp[k]));
+  const Sig=keys.map(ki=>keys.map(kj=>sgaBioCorr(ki,kj)*SGA_BIO[ki].sd*SGA_BIO[kj].sd));
+  const Sinv=sgaInv(Sig);
+  const rho=SGA_RHO, sZ=SGA_SD_Z, sGA=SGA_SD_GA, om=1-rho*rho;
+  const z10=SGA_PCTZ.p10, z3=SGA_PCTZ.p3;
+  // grade
+  const gaA=20, gaB=70, dGA=0.5, zA=-6, zB=5, dZ=0.1;
+  let tot=0, s10any=0, s3any=0, s10pre=0, s10e=0;
+  const acc=[];
+  let maxlp=-Infinity;
+  for(let GA=gaA; GA<=gaB; GA+=dGA){
+    const a=(GA-muGA)/sGA;
+    for(let Z=zA; Z<=zB; Z+=dZ){
+      const b=(Z-muZ)/sZ;
+      const qp=(a*a - 2*rho*a*b + b*b)/om;         // forma quadrática do prior
+      // verossimilhança dos biomarcadores
+      const d=keys.map((k,i)=>y[i]-sgaFoldedMean(k,GA,Z));
+      let qb=0; for(let i=0;i<d.length;i++) for(let j=0;j<d.length;j++) qb+=d[i]*Sinv[i][j]*d[j];
+      const lp=-0.5*(qp+qb);
+      acc.push([GA,Z,lp]); if(lp>maxlp) maxlp=lp;
+    }
+  }
+  for(const [GA,Z,lp] of acc){
+    const w=Math.exp(lp-maxlp);
+    tot+=w;
+    if(Z<z10){ s10any+=w; if(GA<37) s10pre+=w; if(GA<34) s10e+=w; }
+    if(Z<z3) s3any+=w;
+  }
+  return { muZ, muGA,
+    p10any:s10any/tot, p3any:s3any/tot, p10pre:s10pre/tot, p10e:s10e/tot };
+}
+
 /* ---- UI ---- */
 function sgaSeg(label, group, opts){
   const cur=(state.sga&&state.sga[group])||opts[0][0];
@@ -106,11 +170,22 @@ function calcSgaHTML(){
         ${sgaSeg('Diabetes mellitus','diabetes',[['no','Não'],['yes','Sim']])}
         ${sgaSeg('Paridade','parity',[['nulli','Nulípara'],['parous','Multípara']])}
         <div id="sga-parous">${sgaParousHTML()}</div>
+
+        <div class="sec-label" style="text-align:left;padding-left:0;margin-top:12px">Biomarcadores (MoM) — opcionais</div>
+        <div class="calc-label">IP médio das artérias uterinas (MoM)</div>
+        <div class="calc-in"><input id="sga-uta" type="text" inputmode="decimal" placeholder="ex.: 1.0"></div>
+        <div class="calc-label">Pressão arterial média (MoM)</div>
+        <div class="calc-in"><input id="sga-map" type="text" inputmode="decimal" placeholder="ex.: 1.0"></div>
+        <div class="calc-label">PAPP-A (MoM)</div>
+        <div class="calc-in"><input id="sga-papp" type="text" inputmode="decimal" placeholder="ex.: 1.0"></div>
+        <div class="calc-label">PLGF (MoM)</div>
+        <div class="calc-in"><input id="sga-plgf" type="text" inputmode="decimal" placeholder="ex.: 1.0"></div>
+
         <div class="calc-in" style="margin-top:10px"><button class="calc-btn" onclick="sgaRun()">Calcular</button></div>
       </div>
       <div id="sga-out"></div>
     </div>
-    <div class="note" style="margin:0 2px 12px">⚠️ <span>Rastreio do 1º trimestre — não é diagnóstico. Estima o risco de recém-nascido PIG (peso < percentil). Modelo por fatores maternos; biomarcadores ainda não incluídos. Resultado a validar contra a fonte antes do uso clínico.</span></div>
+    <div class="note" style="margin:0 2px 12px">⚠️ <span>Rastreio do 1º trimestre — não é diagnóstico. Estima o risco de recém-nascido PIG (peso < percentil). Resultado a validar contra a fonte antes do uso clínico.</span></div>
     <div class="ti-card"><div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${SGA_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
@@ -151,8 +226,10 @@ function sgaRun(){
     parity:s.parity||'nulli',
     lastga:sgaNum('sga-lastga')||39, prevz:sgaNum('sga-prevz')||0,
     interval:sgaNum('sga-interval')||3, prevpe:s.prevpe==='yes', previud:s.previud==='yes',
+    uta:sgaNum('sga-uta'), map:sgaNum('sga-map'), papp:sgaNum('sga-papp'), plgf:sgaNum('sga-plgf'),
   };
-  const r=sgaCompute(inp);
+  const keys=SGA_BIO_ORDER.filter(k=>inp[k]!=null);
+  const r = keys.length ? sgaComputeBio(inp, keys) : sgaCompute(inp);
   const nA=Math.round(1/r.p10any), n3=Math.round(1/r.p3any), nP=Math.round(1/r.p10pre);
   const alto=r.p10pre>=1/100;
   out.innerHTML=`<div style="padding:2px 16px 16px">
