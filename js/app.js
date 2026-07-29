@@ -160,7 +160,7 @@ let state = {
   newName:'', composingId:null, modalityId:null,
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
-  tirads:null, orads:null, pe:null,
+  tirads:null, orads:null, pe:null, sga:null,
   lang:'pt', fontScale:1, user:null,
   favCalcs:[],
   nav:[],
@@ -689,6 +689,7 @@ function calcViewHTML(){
   if(state.calcId === 'orads') return calcOradsHTML();
   if(state.calcId === 'tri') return calcTrisomiasHTML();
   if(state.calcId === 'pe') return calcPreeclampsiaHTML();
+  if(state.calcId === 'sga') return calcSgaHTML();
   if(typeof FETAL_CALC_MAP!=='undefined' && FETAL_CALC_MAP[state.calcId]) return fetalCalcHTML(state.calcId);
   return calcListHTML();
 }
@@ -1078,6 +1079,7 @@ function resetCalc(){
   if(state.calcId==='tirads') state.tirads=null;
   else if(state.calcId==='orads') state.orads=null;
   else if(state.calcId==='pe') state.pe=null;
+  else if(state.calcId==='sga') state.sga=null;
   else if(state.calcId==='tfg'){
     state.tfgCr='1.0'; state.tfgAge='45'; state.tfgSexo='M'; state.tfgResult=null;
   }
