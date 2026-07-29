@@ -115,7 +115,9 @@ en:{
   'Lesão clássica':'Classic lesion','Liso':'Smooth','Irregular':'Irregular','Ausente':'Absent',
   /* Trissomias */
   'Risco de Trissomias':'Trisomy Risk',
-  'Teste combinado do 1º trimestre (FMF) — T21':'First-trimester combined test (FMF) — T21',
+  'Teste combinado do 1º trimestre (FMF) — T21, T18 e T13':'First-trimester combined test (FMF) — T21, T18 and T13',
+  'Trissomia 21':'Trisomy 21','Trissomia 18':'Trisomy 18','Trissomia 13':'Trisomy 13',
+  'Rastreio do 1º trimestre — não é diagnóstico. Calcula o risco para Trissomias 21, 18 e 13. Resultado a validar contra a fonte antes do uso clínico.':'First-trimester screening — not a diagnosis. Computes the risk for Trisomies 21, 18 and 13. Result to be validated against the source before clinical use.',
   'Idade materna (anos)':'Maternal age (years)',
   'Define a IG e é usado no cálculo da TN (válido 11–13+6 sem)':'Sets the GA and is used in the NT calculation (valid 11–13+6 wk)',
   'TN — translucência nucal (mm)':'NT — nuchal translucency (mm)',
@@ -259,7 +261,9 @@ es:{
   'Lesão clássica':'Lesión clásica','Liso':'Liso','Irregular':'Irregular','Ausente':'Ausente',
   /* Trisomías */
   'Risco de Trissomias':'Riesgo de Trisomías',
-  'Teste combinado do 1º trimestre (FMF) — T21':'Prueba combinada del 1.er trimestre (FMF) — T21',
+  'Teste combinado do 1º trimestre (FMF) — T21, T18 e T13':'Prueba combinada del 1.er trimestre (FMF) — T21, T18 y T13',
+  'Trissomia 21':'Trisomía 21','Trissomia 18':'Trisomía 18','Trissomia 13':'Trisomía 13',
+  'Rastreio do 1º trimestre — não é diagnóstico. Calcula o risco para Trissomias 21, 18 e 13. Resultado a validar contra a fonte antes do uso clínico.':'Cribado del 1.er trimestre — no es diagnóstico. Calcula el riesgo de Trisomías 21, 18 y 13. Resultado a validar contra la fuente antes del uso clínico.',
   'Idade materna (anos)':'Edad materna (años)',
   'Define a IG e é usado no cálculo da TN (válido 11–13+6 sem)':'Define la EG y se usa en el cálculo de la TN (válido 11–13+6 sem)',
   'TN — translucência nucal (mm)':'TN — translucencia nucal (mm)',

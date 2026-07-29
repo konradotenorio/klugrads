@@ -17,6 +17,7 @@ const TRI_REFS = [
   'Snijders RJM, Sundberg K, Holzgreve W, Henry G, Nicolaides KH. Maternal age- and gestation-specific risk for trisomy 21. Ultrasound Obstet Gynecol 1999;13:167-170.',
   'Wright D, Kagan KO, Molina FS, Gazzoni A, Nicolaides KH. A mixture model of nuchal translucency thickness in screening for chromosomal defects. Ultrasound Obstet Gynecol 2008;31:376-383.',
   'Kagan KO, Wright D, Valencia C, Maiz N, Nicolaides KH. Screening for trisomies 21, 18 and 13 by maternal age, fetal nuchal translucency, fetal heart rate, free beta-hCG and PAPP-A. Hum Reprod 2008;23:1968-1975.',
+  'Snijders RJM, Sebire NJ, Nicolaides KH. Maternal age and gestational age-specific risk for chromosomal defects. Fetal Diagn Ther 1995;10:356-367.',
 ];
 
 /* ---- Risco de base T21 (Snijders 1999) ---- */
@@ -50,6 +51,33 @@ function triRelPrev(gaWeeks){
 }
 /* Risco de base T21 (probabilidade) na IG do exame. */
 function triAprioriT21(age, gaWeeks){ return triTermRiskP(age)*triRelPrev(gaWeeks); }
+
+/* Prevalências relativas por IG vs T21 a termo (Snijders 1995, Tabela 1).
+   [semanas, T21, T18, T13]. Usadas só para a razão T18:T21 e T13:T21. */
+const TRI_TBL1 = [
+  [10,1.90,0.77,0.24],[12,1.70,0.62,0.20],[14,1.56,0.51,0.16],[16,1.45,0.43,0.14],
+  [18,1.37,0.36,0.12],[20,1.30,0.31,0.10],[25,1.18,0.22,0.08],[30,1.10,0.16,0.06],
+  [35,1.04,0.12,0.05],[40,1.00,0.09,0.04],
+];
+function triTbl1Col(gaWeeks, col){ // col: 1=T21,2=T18,3=T13
+  const T=TRI_TBL1;
+  if(gaWeeks<=T[0][0]) return T[0][col];
+  if(gaWeeks>=T[T.length-1][0]) return T[T.length-1][col];
+  for(let i=1;i<T.length;i++){ if(gaWeeks<=T[i][0]){
+    const a=T[i-1],b=T[i],f=(gaWeeks-a[0])/(b[0]-a[0]); return a[col]+f*(b[col]-a[col]);
+  }}
+  return T[T.length-1][col];
+}
+/* Razão da prevalência de T18/T13 sobre T21 na IG (Snijders 1995). */
+function triRatio(key, gaWeeks){
+  const col = key==='t18'?2:3;
+  return triTbl1Col(gaWeeks,col)/triTbl1Col(gaWeeks,1);
+}
+/* Risco de base por trissomia: T21 validado × razão da Tabela 1. */
+function triApriori(key, age, gaWeeks){
+  const a21=triAprioriT21(age,gaWeeks);
+  return key==='t21' ? a21 : a21*triRatio(key,gaWeeks);
+}
 
 /* ---- normal ---- */
 function triNpdf(x,mu,sd){ const z=(x-mu)/sd; return Math.exp(-0.5*z*z)/(sd*Math.sqrt(2*Math.PI)); }
@@ -159,24 +187,29 @@ function triMvnLR(key, present, gaWeeks, gaDays){
   return Math.sqrt(triDet(Sn)/triDet(Sa))*Math.exp(-0.5*(qa-qn));
 }
 
-/* ---- cálculo T21 ---- */
-function triCompute(inp){
-  // inp: age, crl, nt, bhcg(MoM), pappa(MoM), fhr(bpm)
-  const gaDays=gaFromCrl(inp.crl), gaWeeks=gaDays/7;
-  const a0=triAprioriT21(inp.age, gaWeeks);           // probabilidade
+/* ---- cálculo (T21, T18, T13) ---- */
+function triComputeOne(key, inp, gaDays, gaWeeks){
+  const a0=triApriori(key, inp.age, gaWeeks);         // probabilidade
   let odds=a0/(1-a0);
   const lrs={};
-  if(inp.nt){ lrs.nt=triNtLR(inp.crl, inp.nt, 't21'); odds*=lrs.nt; }
+  if(inp.nt){ lrs.nt=triNtLR(inp.crl, inp.nt, key); odds*=lrs.nt; }
   const present={ F:null, B:null, P:null };
   if(inp.fhr){ present.F=inp.fhr-triExpFHR(gaDays); }
   if(inp.bhcg){ present.B=Math.log10(inp.bhcg); }
   if(inp.pappa){ present.P=Math.log10(inp.pappa); }
   if(present.F!=null||present.B!=null||present.P!=null){
-    lrs.bio=triMvnLR('t21', present, gaWeeks, gaDays); odds*=lrs.bio;
+    lrs.bio=triMvnLR(key, present, gaWeeks, gaDays); odds*=lrs.bio;
   }
   const p=odds/(1+odds);
-  return { gaDays, gaWeeks, aprioriP:a0, aprioriN:Math.round(1/a0),
-           lrs, finalP:p, finalN:Math.round(1/p) };
+  return { aprioriN:Math.round(1/a0), lrs, finalP:p, finalN:Math.round(1/p) };
+}
+function triCompute(inp){
+  // inp: age, crl, nt, bhcg(MoM), pappa(MoM), fhr(bpm)
+  const gaDays=gaFromCrl(inp.crl), gaWeeks=gaDays/7;
+  return { gaDays, gaWeeks,
+    t21:triComputeOne('t21',inp,gaDays,gaWeeks),
+    t18:triComputeOne('t18',inp,gaDays,gaWeeks),
+    t13:triComputeOne('t13',inp,gaDays,gaWeeks) };
 }
 
 /* ---- UI ---- */
@@ -200,7 +233,7 @@ function calcTrisomiasHTML(){
       </div>
       <div id="tri-out"></div>
     </div>
-    <div class="note" style="margin:0 2px 12px">⚠️ <span>Rastreio do 1º trimestre — não é diagnóstico. Resultado a validar contra a fonte antes do uso clínico. Atualmente calcula Trissomia 21; T18 e T13 serão adicionados (risco de base — Snijders 1995).</span></div>
+    <div class="note" style="margin:0 2px 12px">⚠️ <span>Rastreio do 1º trimestre — não é diagnóstico. Calcula o risco para Trissomias 21, 18 e 13. Resultado a validar contra a fonte antes do uso clínico.</span></div>
     <div class="ti-card"><div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${TRI_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
@@ -215,18 +248,19 @@ function triRun(){
   if(age==null||crl==null){ out.innerHTML=translateHTML(`<div class="note" style="margin:0 16px 14px">Informe ao menos a idade materna e o CCN.</div>`); return; }
   if(crl<45||crl>84){ out.innerHTML=translateHTML(`<div class="note" style="margin:0 16px 14px">CCN fora da faixa do teste combinado (45–84 mm).</div>`); return; }
   const r=triCompute({age, crl, nt, bhcg:triNumVal('tri-bhcg'), pappa:triNumVal('tri-pappa'), fhr:triNumVal('tri-fhr')});
-  const alto = r.finalP >= 1/100;
-  const risco = `${t('Risco T21:')} 1 ${t('em')} ${r.finalN}`;
-  const badge = fmBadge(risco, alto?'bad':'ok');
-  let lrTxt='';
-  if(r.lrs.nt!=null) lrTxt+=`<div class="prose" style="margin-top:4px">${t('LR da TN:')} ×${r.lrs.nt.toFixed(2)}</div>`;
-  if(r.lrs.bio!=null) lrTxt+=`<div class="prose">${t('LR bioquímica/FHR:')} ×${r.lrs.bio.toFixed(2)}</div>`;
+  const linha=(key,label)=>{
+    const o=r[key], alto=o.finalP>=1/100;
+    return `<div style="margin-top:10px">
+      ${fmBadge(`${label} — 1 ${t('em')} ${o.finalN}`, alto?'bad':'ok')}
+      <div class="prose" style="margin-top:3px">${t('Risco de base (idade + IG):')} 1 ${t('em')} ${o.aprioriN}</div>
+    </div>`;
+  };
   out.innerHTML=`<div style="padding:2px 16px 16px">
-    ${badge}
-    <div class="prose" style="margin-top:10px">${t('Risco de base (idade + IG):')} 1 ${t('em')} ${r.aprioriN}</div>
-    ${lrTxt}
-    <div class="prose" style="margin-top:6px">${t('IG estimada pelo CCN:')} <b>${fmGAStr(r.gaDays)}</b></div>
-    <div class="note" style="margin-top:10px">${alto?t('Risco aumentado'):t('Risco reduzido')} — ${t('limiar ilustrativo de 1:100 (o ponto de corte é definição de cada serviço).')}</div>
+    ${linha('t21',t('Trissomia 21'))}
+    ${linha('t18',t('Trissomia 18'))}
+    ${linha('t13',t('Trissomia 13'))}
+    <div class="prose" style="margin-top:10px">${t('IG estimada pelo CCN:')} <b>${fmGAStr(r.gaDays)}</b></div>
+    <div class="note" style="margin-top:10px">${t('limiar ilustrativo de 1:100 (o ponto de corte é definição de cada serviço).')}</div>
   </div>`;
 }
 
@@ -234,5 +268,5 @@ function triRun(){
 (function(){
   if(typeof CALCS==='undefined') return;
   CALCS.push({id:'tri', spec:'obstetrico', badge:'T21',
-    title:'Risco de Trissomias', desc:'Teste combinado do 1º trimestre (FMF) — T21'});
+    title:'Risco de Trissomias', desc:'Teste combinado do 1º trimestre (FMF) — T21, T18 e T13'});
 })();
