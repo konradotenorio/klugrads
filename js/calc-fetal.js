@@ -402,7 +402,6 @@ const FETAL_CALCS = [
  refs:['Mari G, et al. Noninvasive diagnosis by Doppler ultrasonography of fetal anemia due to maternal red-cell alloimmunization. N Engl J Med. 2000;342(1):9–14.']},
 
 /* ---- Em construção (algoritmos proprietários FMF) ---- */
-{id:'fm-tri',  title:'Risco de Trissomias',            badge:'T21', wip:true, desc:'Rastreio combinado 1º trimestre (21, 18 e 13)'},
 {id:'fm-pe',   title:'Risco de Pré-eclâmpsia',         badge:'PE',  wip:true, desc:'Rastreio combinado de pré-eclâmpsia'},
 {id:'fm-sga',  title:'Risco de PIG',                   badge:'PIG', wip:true, desc:'Pequeno para a idade gestacional'},
 {id:'fm-dmg',  title:'Risco de Diabetes Gestacional',  badge:'DMG', wip:true, desc:'Rastreio de diabetes gestacional'},

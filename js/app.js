@@ -687,6 +687,7 @@ function calcViewHTML(){
   if(state.calcId === 'tfg') return calcTFGHTML();
   if(state.calcId === 'tirads') return calcTiradsHTML();
   if(state.calcId === 'orads') return calcOradsHTML();
+  if(state.calcId === 'tri') return calcTrisomiasHTML();
   if(typeof FETAL_CALC_MAP!=='undefined' && FETAL_CALC_MAP[state.calcId]) return fetalCalcHTML(state.calcId);
   return calcListHTML();
 }
