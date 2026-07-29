@@ -32784,5 +32784,504 @@
   "refs": [
    "Berghout, A., et al. \"Determinants of thyroid volume as measured by ultrasonography in healthy adults in a non‐iodine deficient area.\" Clinical endocrinology 26.3 (1987): 273-280."
   ]
+ },
+ {
+  "id": "doppler-carotidas-vertebrais",
+  "group": "Doppler",
+  "region": "Cervical",
+  "name": "Doppler de Carótidas e Vertebrais",
+  "abbr": "DCV",
+  "iconKey": "drop",
+  "calculator": {
+   "kind": "carotid-brazil-2023",
+   "title": "Estimativa da estenose da ACI",
+   "source": "DIC/CBR/SABCV 2023"
+  },
+  "tables": [
+   {
+    "title": "Estenose da ACI nativa (NASCET)",
+    "source": "Brasil — DIC/CBR/SABCV 2023",
+    "collapsible": true,
+    "defaultOpen": true,
+    "rows": [
+     [
+      "Estenose",
+      "VPS ACI",
+      "VDF ACI",
+      "VPS ACI / VPS ACC",
+      "VPS ACI / VDF ACC",
+      "VDF ACI / VDF ACC"
+     ],
+     [
+      "< 50%",
+      "< 140",
+      "< 40",
+      "< 2,0",
+      "< 8",
+      "< 2,6"
+     ],
+     [
+      "50–59%",
+      "140–230",
+      "40–69",
+      "2,0–3,1",
+      "8–10",
+      "2,6–5,5"
+     ],
+     [
+      "60–69%",
+      "140–230",
+      "70–100",
+      "3,2–4,0",
+      "11–13",
+      "2,6–5,5"
+     ],
+     [
+      "70–79%",
+      "> 230",
+      "> 100",
+      "> 4,0",
+      "14–21",
+      "—"
+     ],
+     [
+      "80–89%",
+      "> 230",
+      "> 140",
+      "> 4,0",
+      "22–29",
+      "> 5,5"
+     ],
+     [
+      "> 90%",
+      "> 400",
+      "—",
+      "> 5,0",
+      "> 30",
+      "—"
+     ],
+     [
+      "Suboclusão",
+      "Variável / fluxo filiforme",
+      "Variável / fluxo filiforme",
+      "Variável",
+      "Variável",
+      "Variável"
+     ],
+     [
+      "Oclusão",
+      "Fluxo indetectável",
+      "Fluxo indetectável",
+      "Não se aplica",
+      "Não se aplica",
+      "Não se aplica"
+     ]
+    ]
+   },
+   {
+    "title": "Estenose da ACI nativa (SRU modificado)",
+    "source": "Internacional — IAC 2023",
+    "collapsible": true,
+    "defaultOpen": false,
+    "rows": [
+     [
+      "Estenose",
+      "VPS ACI",
+      "Placa",
+      "VPS ACI / VPS ACC",
+      "VDF ACI"
+     ],
+     [
+      "Normal",
+      "< 180",
+      "Ausente",
+      "< 2,0",
+      "< 40"
+     ],
+     [
+      "< 50%",
+      "< 180",
+      "< 50%",
+      "< 2,0",
+      "< 40"
+     ],
+     [
+      "50–69%",
+      "180–230",
+      "> 50%",
+      "2,0–4,0",
+      "40–100"
+     ],
+     [
+      "50–69% (alternativo)",
+      "125–179",
+      "Significativa",
+      "≥ 2,0",
+      "Variável"
+     ],
+     [
+      "≥ 70% sem suboclusão",
+      "> 230",
+      "> 50%",
+      "> 4,0",
+      "> 100"
+     ],
+     [
+      "Suboclusão",
+      "Alta, baixa ou indetectável",
+      "Lúmen estreito visível",
+      "Variável",
+      "Variável"
+     ],
+     [
+      "Oclusão",
+      "Indetectável",
+      "Sem lúmen detectável",
+      "Não se aplica",
+      "Não se aplica"
+     ]
+    ]
+   },
+   {
+    "title": "Definição ultrassonográfica de placa carotídea",
+    "rows": [
+     [
+      "Critério",
+      "Valor"
+     ],
+     [
+      "Projeção focal para o lúmen",
+      "≥ 0,5 mm"
+     ],
+     [
+      "Espessamento em relação ao complexo adjacente",
+      "≥ 50%"
+     ],
+     [
+      "Espessura focal do complexo mediointimal",
+      "> 1,5 mm"
+     ]
+    ]
+   },
+   {
+    "title": "Controle após intervenção carotídea — DIC/CBR/SABCV 2023",
+    "rows": [
+     [
+      "Situação",
+      "VPS ACI",
+      "VDF ACI",
+      "VPS ACI / VPS ACC"
+     ],
+     [
+      "Restenose > 70% após endarterectomia",
+      "> 300",
+      "> 125",
+      "> 5,0"
+     ],
+     [
+      "Restenose > 50% no stent",
+      "≥ 220",
+      "—",
+      "≥ 2,7"
+     ],
+     [
+      "Restenose > 80% no stent",
+      "≥ 340",
+      "—",
+      "≥ 4,15"
+     ]
+    ]
+   },
+   {
+    "title": "Estenose proximal da artéria vertebral — DIC/CBR/SABCV 2023",
+    "rows": [
+     [
+      "Estenose",
+      "VPS na estenose",
+      "VPS estenose / VPS V2",
+      "VDF"
+     ],
+     [
+      "< 50%",
+      "≥ 85",
+      "≥ 1,3",
+      "≥ 27"
+     ],
+     [
+      "50–69%",
+      "≥ 140",
+      "≥ 2,1",
+      "≥ 35"
+     ],
+     [
+      "70–99%",
+      "≥ 210",
+      "≥ 4,0",
+      "≥ 55"
+     ]
+    ]
+   },
+   {
+    "title": "Hipoplasia da artéria vertebral",
+    "rows": [
+     [
+      "Parâmetro",
+      "Critério"
+     ],
+     [
+      "Diâmetro no segmento V2",
+      "≤ 2 mm"
+     ],
+     [
+      "Fluxo diastólico",
+      "Reduzido"
+     ],
+     [
+      "Índice de resistência",
+      "> 0,75"
+     ],
+     [
+      "Vertebral contralateral",
+      "> 4 mm, com velocidades normais"
+     ]
+    ]
+   },
+   {
+    "title": "Padrões de roubo da subclávia",
+    "rows": [
+     [
+      "Tipo",
+      "Padrão na artéria vertebral"
+     ],
+     [
+      "Tipo 1 — latente",
+      "Desaceleração mesossistólica / entalhe sistólico"
+     ],
+     [
+      "Tipo 2 — intermitente ou parcial",
+      "Fluxo bidirecional com reversão sistólica"
+     ],
+     [
+      "Tipo 3 — completo",
+      "Fluxo reverso durante sístole e diástole"
+     ]
+    ]
+   }
+  ],
+  "footnotes": [
+   "Todos os valores de velocidade estão em cm/s. A calculadora usa os critérios brasileiros de 2023 e não classifica suboclusão ou oclusão."
+  ],
+  "refs": [
+   "Albricker ACL, Freire CMV, Santos SN, et al. Recommendation Update for Vascular Ultrasound Evaluation of Carotid and Vertebral Artery Disease: DIC, CBR and SABCV — 2023. Arq Bras Cardiol. 2023;120(10):e20230695. doi:10.36660/abc.20230695.",
+   "Intersocietal Accreditation Commission. Updated Recommendations for Carotid Stenosis Interpretation Criteria. IAC Vascular Testing Communication. 2023.",
+   "Gornik HL, Rundek T, Gardener H, et al. Optimization of duplex velocity criteria for diagnosis of internal carotid artery stenosis. Vasc Med. 2021;26(5):515-525. doi:10.1177/1358863X211011253.",
+   "Touboul PJ, Hennerici MG, Meairs S, et al. Mannheim carotid intima-media thickness and plaque consensus (2004–2006–2011). Cerebrovasc Dis. 2012;34(4):290-296. doi:10.1159/000343145."
+  ]
+ },
+ {
+  "id": "doppler-transcraniano",
+  "group": "Doppler",
+  "region": "Cervical",
+  "name": "Doppler Transcraniano",
+  "abbr": "DTC",
+  "iconKey": "drop",
+  "calculator": {
+   "kind": "lindegaard",
+   "title": "Índice de Lindegaard",
+   "source": "ACM / ACI extracraniana"
+  },
+  "tables": [
+   {
+    "title": "Velocidades médias de referência — DIC/CBR/SABCV 2023",
+    "rows": [
+     [
+      "Artéria",
+      "Velocidade média"
+     ],
+     [
+      "Sifão carotídeo",
+      "40–50 cm/s"
+     ],
+     [
+      "Oftálmica",
+      "20 cm/s"
+     ],
+     [
+      "Carótida interna distal",
+      "45 cm/s"
+     ],
+     [
+      "Cerebral anterior",
+      "60 cm/s"
+     ],
+     [
+      "Cerebral média",
+      "70 cm/s"
+     ],
+     [
+      "Cerebral posterior (P1/P2)",
+      "40 cm/s"
+     ],
+     [
+      "Vertebral intracraniana (V4)",
+      "40 cm/s"
+     ],
+     [
+      "Basilar proximal",
+      "45 cm/s"
+     ],
+     [
+      "Cerebelar posteroinferior",
+      "45 cm/s"
+     ]
+    ]
+   },
+   {
+    "title": "Vasoespasmo da artéria cerebral média",
+    "rows": [
+     [
+      "Classificação",
+      "Velocidade média ACM",
+      "Índice de Lindegaard"
+     ],
+     [
+      "Ausente",
+      "< 120 cm/s",
+      "< 3"
+     ],
+     [
+      "Leve",
+      "120–149 cm/s",
+      "3–6"
+     ],
+     [
+      "Moderado",
+      "150–199 cm/s",
+      "3–6"
+     ],
+     [
+      "Grave",
+      "≥ 200 cm/s",
+      "> 6"
+     ],
+     [
+      "Hiperemia",
+      "≥ 120 cm/s",
+      "< 3"
+     ]
+    ]
+   },
+   {
+    "title": "Doença falciforme — protocolo STOP, DTC sem imagem",
+    "rows": [
+     [
+      "Categoria",
+      "TAMMV na ACM ou ACI distal"
+     ],
+     [
+      "Normal",
+      "< 170 cm/s"
+     ],
+     [
+      "Condicional",
+      "170–199 cm/s"
+     ],
+     [
+      "Anormal",
+      "≥ 200 cm/s em 2 exames ou > 220 cm/s em 1 exame"
+     ]
+    ]
+   },
+   {
+    "title": "Doença falciforme — DTC com imagem, ASH 2020",
+    "rows": [
+     [
+      "Categoria",
+      "TAMX na ACM ou ACI distal"
+     ],
+     [
+      "Limiar anormal",
+      "≥ 185 cm/s em 2 exames ou > 205 cm/s em 1 exame"
+     ]
+    ]
+   }
+  ],
+  "footnotes": [
+   "Na doença falciforme, usar TAMMV/TAMX — não usar a velocidade de pico sistólico. Os limiares diferem entre DTC com e sem imagem."
+  ],
+  "refs": [
+   "Albricker ACL, Freire CMV, Santos SN, et al. Recommendation Update for Vascular Ultrasound Evaluation of Carotid and Vertebral Artery Disease: DIC, CBR and SABCV — 2023. Arq Bras Cardiol. 2023;120(10):e20230695. doi:10.36660/abc.20230695.",
+   "Alexandrov AV, Sloan MA, Tegeler CH, et al. Practice standards for transcranial Doppler ultrasound. Part II: Clinical indications and expected outcomes. J Neuroimaging. 2012;22(3):215-224. doi:10.1111/j.1552-6569.2010.00523.x.",
+   "Samagh N, Bhagat H, Jangra K. Monitoring cerebral vasospasm: How much can we rely on transcranial Doppler. J Anaesthesiol Clin Pharmacol. 2019;35(1):12-18. doi:10.4103/joacp.JOACP_192_17.",
+   "DeBaun MR, Jordan LC, King AA, et al. American Society of Hematology 2020 guidelines for sickle cell disease: cerebrovascular disease. Blood Adv. 2020;4(8):1554-1588. doi:10.1182/bloodadvances.2019001142."
+  ]
+ },
+ {
+  "id": "doppler-arterias-temporais",
+  "group": "Doppler",
+  "region": "Cervical",
+  "name": "Doppler de Artérias Temporais",
+  "abbr": "AT",
+  "iconKey": "drop",
+  "tables": [
+   {
+    "title": "Espessura mediointimal — valores de corte propostos",
+    "rows": [
+     [
+      "Segmento arterial",
+      "Valor de corte"
+     ],
+     [
+      "Temporal superficial comum",
+      "0,42 mm"
+     ],
+     [
+      "Ramo frontal",
+      "0,34 mm"
+     ],
+     [
+      "Ramo parietal",
+      "0,29 mm"
+     ],
+     [
+      "Artéria facial",
+      "0,37 mm"
+     ],
+     [
+      "Artéria axilar",
+      "1,0 mm"
+     ]
+    ]
+   },
+   {
+    "title": "Achados ultrassonográficos de referência",
+    "rows": [
+     [
+      "Achado",
+      "Critério"
+     ],
+     [
+      "Sinal do halo",
+      "Espessamento parietal homogêneo e hipoecoico"
+     ],
+     [
+      "Sinal da compressão positivo",
+      "Artéria permanece visível e não colaba à compressão"
+     ],
+     [
+      "Comprometimento axilar",
+      "Espessamento parietal homogêneo; corte proposto ≥ 1,0 mm"
+     ]
+    ]
+   }
+  ],
+  "footnotes": [
+   "A EULAR 2023 recomenda avaliar artérias temporais e axilares. Os valores de espessura são pontos de corte propostos e podem variar com idade e aterosclerose."
+  ],
+  "refs": [
+   "Dejaco C, Ramiro S, Bond M, et al. EULAR recommendations for the use of imaging in large vessel vasculitis in clinical practice: 2023 update. Ann Rheum Dis. 2024;83(6):741-751. doi:10.1136/ard-2023-224543.",
+   "Schäfer VS, Juche A, Ramiro S, Krause A, Schmidt WA. Ultrasound cut-off values for intima-media thickness of temporal, facial and axillary arteries in giant cell arteritis. Rheumatology (Oxford). 2017;56(9):1479-1483. doi:10.1093/rheumatology/kex143.",
+   "Chrysidis S, Duftner C, Dejaco C, et al. Definitions and reliability assessment of elementary ultrasound lesions in giant cell arteritis: OMERACT large vessel vasculitis ultrasound working group. RMD Open. 2018;4:e000598. doi:10.1136/rmdopen-2017-000598."
+  ]
  }
 ]
