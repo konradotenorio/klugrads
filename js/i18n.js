@@ -1,5 +1,5 @@
 /* =========================================================================
-   RadRef — tradução da interface (pt padrão, en, es)
+   KlugRads — tradução da interface (pt padrão, en, es)
    ---------------------------------------------------------------------------
    Como funciona: o app é escrito em português e, ao renderizar, o HTML passa
    por translateHTML(), que troca o conteúdo dos nós de texto e dos atributos
@@ -12,7 +12,7 @@
 const I18N = {
 en:{
   /* Tela inicial / navegação */
-  'Sua referência em radiologia':'Your radiology reference',
+  'Sua referência em Radiologia':'Your radiology reference',
   'Métodos de Diagnóstico':'Diagnostic Methods',
   'Selecione uma modalidade':'Select a modality',
   'Radiografia':'Radiography','Mamografia':'Mammography','Densitometria':'Densitometry',
@@ -209,7 +209,7 @@ en:{
   'Pós-menopausa = ≥1 ano de amenorreia. Se incerto ou útero ausente, usar idade >50 anos.':'Postmenopausal = ≥1 year of amenorrhea. If uncertain or uterus absent, use age >50 years.',
 },
 es:{
-  'Sua referência em radiologia':'Tu referencia en radiología',
+  'Sua referência em Radiologia':'Tu referencia en radiología',
   'Métodos de Diagnóstico':'Métodos de Diagnóstico',
   'Selecione uma modalidade':'Seleccione una modalidad',
   'Radiografia':'Radiografía','Mamografia':'Mamografía','Densitometria':'Densitometría',

@@ -1,5 +1,5 @@
 /* =========================================================================
-   RadRef — O-RADS US v2022 (ACR Ovarian-Adnexal Reporting and Data System)
+   KlugRads — O-RADS US v2022 (ACR Ovarian-Adnexal Reporting and Data System)
    ---------------------------------------------------------------------------
    Fonte: O-RADS US v2022 Assessment Categories (ACR, nov/2022) e
    Andreotti RF et al. O-RADS US Risk Stratification and Management System.

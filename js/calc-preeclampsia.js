@@ -1,5 +1,5 @@
 /* =========================================================================
-   RadRef — Risco de Pré-eclâmpsia (modelo de riscos competitivos da FMF)
+   KlugRads — Risco de Pré-eclâmpsia (modelo de riscos competitivos da FMF)
    ---------------------------------------------------------------------------
    Fontes (parâmetros extraídos das tabelas originais):
    • Prior por fatores maternos: Wright D, Syngelaki A, Akolekar R, Poon LC,

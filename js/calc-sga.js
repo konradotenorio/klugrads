@@ -1,5 +1,5 @@
 /* =========================================================================
-   RadRef — Risco de PIG (pequeno para a idade gestacional) — modelo de
+   KlugRads — Risco de PIG (pequeno para a idade gestacional) — modelo de
    riscos competitivos da FMF (por fatores maternos).
    ---------------------------------------------------------------------------
    Fonte: Papastefanou I, Wright D, Nicolaides KH. Competing-risks model for

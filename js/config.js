@@ -1,5 +1,5 @@
 /* =========================================================================
-   RadRef — configuração pública do cliente.
+   KlugRads — configuração pública do cliente.
    ---------------------------------------------------------------------------
    A chave abaixo é a PUBLISHABLE/ANON do Supabase: é pública por design e
    PODE ir no client/repositório. A segurança vem do Row Level Security (RLS),

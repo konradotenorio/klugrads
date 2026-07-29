@@ -1,5 +1,5 @@
 ﻿/* =========================================================================
-   RadRef — Calculadoras de Medicina Fetal (especialidade Obstétrico e Fetal)
+   KlugRads — Calculadoras de Medicina Fetal (especialidade Obstétrico e Fetal)
    ---------------------------------------------------------------------------
    Fórmulas de artigos publicados (referência em cada calculadora).
    ATENÇÃO: curvas marcadas com REVISAR usam valores aproximados de tabelas

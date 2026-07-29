@@ -1,5 +1,5 @@
 /* =========================================================================
-   RadRef — Risco de Trissomias (teste combinado do 1º trimestre)
+   KlugRads — Risco de Trissomias (teste combinado do 1º trimestre)
    ---------------------------------------------------------------------------
    Fontes (parâmetros extraídos das tabelas originais):
    • Risco de base (idade materna + IG): Snijders RJM, Sundberg K, Holzgreve W,

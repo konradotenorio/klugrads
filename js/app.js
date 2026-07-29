@@ -1,5 +1,5 @@
 ﻿/* =========================================================================
-   RadRef — app de referência em ultrassonografia (PT-BR).
+   KlugRads — app de referência em ultrassonografia (PT-BR).
    Conteúdo reconstruído a partir do app MedUltra (propriedade do usuário).
    FERRAMENTA EDUCACIONAL — não substitui o julgamento clínico.
 
@@ -217,7 +217,7 @@ let state = {
 const FONT_STEPS = [0.85, 0.925, 1, 1.075, 1.15, 1.25];
 const LANGS = [['pt','Português'],['en','English'],['es','Español']];
 
-/* ---- Termos de Uso e Responsabilidade (texto próprio do RadRef, 3 idiomas) ----
+/* ---- Termos de Uso e Responsabilidade (texto próprio do KlugRads, 3 idiomas) ----
    Ao alterar o conteúdo, suba TERMS_VERSION para reexibir o aceite a todos. */
 const TERMS_VERSION = '1';
 const TERMS = {
@@ -225,10 +225,10 @@ const TERMS = {
     title:'Termos de Uso e Responsabilidade',
     intro:'Leia e aceite os termos abaixo para usar o aplicativo.',
     items:[
-      ['Finalidade educacional','O RadRef é uma ferramenta de referência e educação. Não fornece diagnóstico nem conduta e não substitui o julgamento clínico do profissional.'],
+      ['Finalidade educacional','O KlugRads é uma ferramenta de referência e educação. Não fornece diagnóstico nem conduta e não substitui o julgamento clínico do profissional.'],
       ['Responsabilidade do usuário','Todas as decisões clínicas são de sua inteira responsabilidade. Confira valores e fórmulas nas fontes originais antes de aplicá-los.'],
       ['Uso profissional','Destinado a profissionais de saúde e estudantes da área. Você declara ser maior de 18 anos.'],
-      ['Dados e privacidade','Os dados que você insere ficam somente no seu aparelho; não são enviados a servidores do RadRef. Você é responsável por obter o consentimento dos pacientes cujos dados venha a inserir.'],
+      ['Dados e privacidade','Os dados que você insere ficam somente no seu aparelho; não são enviados a servidores do KlugRads. Você é responsável por obter o consentimento dos pacientes cujos dados venha a inserir.'],
       ['Sem garantias','O conteúdo é fornecido "como está", sem garantia de disponibilidade, exatidão ou atualização. O uso é por sua conta e risco.'],
       ['Conteúdo de terceiros','Fórmulas e referências pertencem aos seus autores e são citadas para fins educacionais.'],
     ],
@@ -244,10 +244,10 @@ const TERMS = {
     title:'Terms of Use and Responsibility',
     intro:'Read and accept the terms below to use the app.',
     items:[
-      ['Educational purpose','RadRef is a reference and education tool. It does not provide diagnosis or management and does not replace the professional\'s clinical judgment.'],
+      ['Educational purpose','KlugRads is a reference and education tool. It does not provide diagnosis or management and does not replace the professional\'s clinical judgment.'],
       ['User responsibility','All clinical decisions are entirely your responsibility. Check values and formulas against the original sources before applying them.'],
       ['Professional use','Intended for healthcare professionals and students in the field. You declare that you are 18 or older.'],
-      ['Data and privacy','The data you enter stays only on your device; it is not sent to RadRef servers. You are responsible for obtaining consent from the patients whose data you enter.'],
+      ['Data and privacy','The data you enter stays only on your device; it is not sent to KlugRads servers. You are responsible for obtaining consent from the patients whose data you enter.'],
       ['No warranties','Content is provided "as is", with no guarantee of availability, accuracy or timeliness. Use is at your own risk.'],
       ['Third-party content','Formulas and references belong to their authors and are cited for educational purposes.'],
     ],
@@ -263,10 +263,10 @@ const TERMS = {
     title:'Términos de Uso y Responsabilidad',
     intro:'Lea y acepte los términos a continuación para usar la aplicación.',
     items:[
-      ['Finalidad educativa','RadRef es una herramienta de referencia y educación. No proporciona diagnóstico ni conducta y no sustituye el juicio clínico del profesional.'],
+      ['Finalidad educativa','KlugRads es una herramienta de referencia y educación. No proporciona diagnóstico ni conducta y no sustituye el juicio clínico del profesional.'],
       ['Responsabilidad del usuario','Todas las decisiones clínicas son de su entera responsabilidad. Verifique valores y fórmulas en las fuentes originales antes de aplicarlos.'],
       ['Uso profesional','Destinado a profesionales de la salud y estudiantes del área. Usted declara ser mayor de 18 años.'],
-      ['Datos y privacidad','Los datos que ingresa permanecen solo en su dispositivo; no se envían a servidores de RadRef. Usted es responsable de obtener el consentimiento de los pacientes cuyos datos ingrese.'],
+      ['Datos y privacidad','Los datos que ingresa permanecen solo en su dispositivo; no se envían a servidores de KlugRads. Usted es responsable de obtener el consentimiento de los pacientes cuyos datos ingrese.'],
       ['Sin garantías','El contenido se ofrece "tal cual", sin garantía de disponibilidad, exactitud o actualización. El uso es bajo su propio riesgo.'],
       ['Contenido de terceros','Las fórmulas y referencias pertenecen a sus autores y se citan con fines educativos.'],
     ],
@@ -407,8 +407,8 @@ function modalityHTML(){
     </div>`).join('');
   return `<div class="modal-screen">
     <div class="modal-head">
-      <div class="modal-brand">RAD<span>REF</span></div>
-      <div class="modal-slogan">Sua referência em radiologia</div>
+      <div class="modal-brand">KLUG<span>RADS</span></div>
+      <div class="modal-slogan">Sua referência em Radiologia</div>
       <div class="modal-title">Métodos de Diagnóstico</div>
       <div class="modal-sub">Selecione uma modalidade</div>
     </div>
@@ -512,7 +512,7 @@ function termsItemsHTML(){
 function termsGateHTML(){
   const T = TT();
   return `<div class="terms-wrap">
-    <div class="terms-brand">RAD<span>REF</span></div>
+    <div class="terms-brand">KLUG<span>RADS</span></div>
     <div class="terms-title">${esc(T.title)}</div>
     <div class="terms-intro">${esc(T.intro)}</div>
     ${termsItemsHTML()}
@@ -596,7 +596,7 @@ function homeHTML(){
   return `<div class="lc">
     <button class="iconbtn lc-back" onclick="goBack()" aria-label="Voltar">${svgIcon(P.back,22,{sw:2.2})}</button>
     <div class="lc-head">
-      <div class="lc-brand">RAD<span>REF</span></div>
+      <div class="lc-brand">KLUG<span>RADS</span></div>
       <div class="lc-greet">Ultrassonografia</div>
     </div>
     <div class="lc-b">

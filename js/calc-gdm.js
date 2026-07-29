@@ -1,5 +1,5 @@
 /* =========================================================================
-   RadRef — Risco de Diabetes Gestacional (DMG) — 1º trimestre (FMF)
+   KlugRads — Risco de Diabetes Gestacional (DMG) — 1º trimestre (FMF)
    ---------------------------------------------------------------------------
    Fonte: Syngelaki A, Pastides A, Kotecha R, Wright A, Akolekar R, Nicolaides
    KH. First-trimester screening for gestational diabetes mellitus based on
