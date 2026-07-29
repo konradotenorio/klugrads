@@ -81,6 +81,47 @@ const SPECIALTIES = [
   {id:'abdome',     name:'Abdome',               regions:['Abdome superior','Retroperitônio','Trato Gastrintestinal','Trato Genital - Feminino','Trato Genital - Masculino','Trato Urinário'], hasSub:true,  groups:['Pediatria','Adultos']},
   {id:'musculo',    name:'Musculoesquelético',   regions:['Ossos Longos'],                                                                                                      hasSub:true,  groups:['Pediatria','Adultos']},
   {id:'obstetrico', name:'Obstétrico e Fetal',   regions:['1º Trimestre','2º e 3º Trimestres','Ossos Longos','Cabeça e Pescoço'],                                            hasSub:false, groups:['Fetal']},
+  {id:'doppler',    name:'Doppler',              regions:['Cervical'],                                                                                                           hasSub:false, groups:['Doppler']},
+];
+
+/* ---- Índice Doppler: exames ativos + próximos conteúdos ---- */
+const DOPPLER_INDEX = [
+  {region:'Cervical', id:'doppler-carotidas-vertebrais'},
+  {region:'Cervical', id:'doppler-transcraniano'},
+  {region:'Cervical', id:'doppler-arterias-temporais'},
+
+  {region:'Membros inferiores', id:'doppler-arterial-membros-inferiores'},
+  {region:'Membros inferiores', id:'doppler-venoso-mmii-trombose'},
+  {region:'Membros inferiores', id:'doppler-venoso-mmii-varizes'},
+  {region:'Membros inferiores', id:'doppler-controle-arterial-mmii'},
+  {region:'Membros inferiores', id:'doppler-aneurisma-pseudoaneurisma-mmii'},
+  {region:'Membros inferiores', id:'doppler-aprisionamento-poplitea'},
+
+  {region:'Membros superiores', name:'Doppler arterial de membros superiores'},
+  {region:'Membros superiores', name:'Doppler venoso de membros superiores — pesquisa de trombose'},
+  {region:'Membros superiores', name:'Doppler para síndrome do desfiladeiro torácico'},
+  {region:'Membros superiores', name:'Mapeamento venoso pré-operatório'},
+
+  {region:'Aorta e vasos abdominais', name:'Doppler de aorta abdominal e artérias ilíacas'},
+  {region:'Aorta e vasos abdominais', name:'Doppler para controle de endoprótese de aorta'},
+  {region:'Aorta e vasos abdominais', name:'Doppler de artérias renais'},
+  {region:'Aorta e vasos abdominais', name:'Doppler de artérias mesentéricas'},
+  {region:'Aorta e vasos abdominais', name:'Doppler de veia cava inferior e veias ilíacas'},
+  {region:'Aorta e vasos abdominais', name:'Doppler para síndrome de May–Thurner'},
+  {region:'Aorta e vasos abdominais', name:'Doppler para síndrome de Nutcracker'},
+  {region:'Aorta e vasos abdominais', name:'Doppler para compressão do tronco celíaco'},
+
+  {region:'Fígado e sistema portal', name:'Doppler hepático'},
+  {region:'Fígado e sistema portal', name:'Doppler para hipertensão portal'},
+  {region:'Fígado e sistema portal', name:'Doppler para trombose portal'},
+  {region:'Fígado e sistema portal', name:'Doppler de TIPS e derivações portossistêmicas'},
+  {region:'Fígado e sistema portal', name:'Doppler do fígado transplantado'},
+
+  {region:'Rim', name:'Doppler do rim transplantado'},
+
+  {region:'Hemodiálise', name:'Mapeamento pré-operatório para fístula arteriovenosa'},
+  {region:'Hemodiálise', name:'Doppler de fístula arteriovenosa para hemodiálise'},
+  {region:'Hemodiálise', name:'Doppler de prótese arteriovenosa para hemodiálise'},
 ];
 
 /* ---- Taxa de Filtração Glomerular (MDRD) ---- */
@@ -125,8 +166,14 @@ function hydrate(items){
     return d;
   });
 }
+function mergeWithSeed(items){
+  const incoming=Array.isArray(items)?items:[];
+  const seed=Array.isArray(window.SEED_DATA)?window.SEED_DATA:[];
+  const incomingIds=new Set(incoming.map(item=>item&&item.id).filter(Boolean));
+  return incoming.concat(seed.filter(item=>item&&item.id&&!incomingIds.has(item.id)));
+}
 function initialData(){
-  try{ const c=localStorage.getItem('ultraref_data'); if(c){ const a=JSON.parse(c); if(Array.isArray(a)&&a.length) return a; } }catch(_){}
+  try{ const c=localStorage.getItem('ultraref_data'); if(c){ const a=JSON.parse(c); if(Array.isArray(a)&&a.length) return mergeWithSeed(a); } }catch(_){}
   return window.SEED_DATA || [];
 }
 let DATA = hydrate(initialData());
@@ -147,8 +194,9 @@ async function loadFromSupabase(){
 async function syncData(){
   const remote = await loadFromSupabase();
   if(!remote) return;
-  DATA = hydrate(remote);
-  try{ localStorage.setItem('ultraref_data', JSON.stringify(remote)); }catch(_){}
+  const merged=mergeWithSeed(remote);
+  DATA = hydrate(merged);
+  try{ localStorage.setItem('ultraref_data', JSON.stringify(merged)); }catch(_){}
   render(true);
 }
 
@@ -292,10 +340,10 @@ function render(keep){
   s.className = keep ? 'scroll' : 'scroll fade';
   s.scrollTop = top;
   if(v==='calc' && state.calcId==='tfg') setTimeout(initDrums, 0);
-  // sub-abas
+  // O detalhe é uma página única: calculadora opcional, tabelas e referências.
   const sub = $('subtabs');
-  if(v==='detail'){ sub.className='subtabs'; sub.innerHTML = translateHTML(subtabsHTML()); }
-  else { sub.className='subtabs hide'; sub.innerHTML=''; }
+  sub.className='subtabs hide';
+  sub.innerHTML='';
 }
 function applyTheme(){
   document.documentElement.setAttribute('data-theme', state.theme==='light'?'light':'dark');
@@ -594,8 +642,9 @@ function refsHTML(){
 }
 function refsListHTML(){
   const sp = SPECIALTIES.find(x=>x.id===state.specialty);
-  let items = specialtyItems();
   const q = state.query.trim().toLowerCase();
+  if(sp&&sp.id==='doppler') return dopplerIndexHTML(q);
+  let items = specialtyItems();
   if(q) items = items.filter(d=>(d.name+' '+(d.abbr||'')+' '+d.region).toLowerCase().includes(q));
   if(!items.length){
     const msg = (sp && !sp.regions.length)
@@ -611,6 +660,35 @@ function refsListHTML(){
   html += `<div class="disc"><b>Ferramenta educacional. Os valores são referências da literatura e não substituem o julgamento clínico.</b></div>`;
   return html;
 }
+function dopplerIndexHTML(q){
+  const entries=DOPPLER_INDEX.map(entry=>{
+    if(!entry.id) return entry;
+    const item=DATA.find(d=>d.id===entry.id);
+    return item?Object.assign({},entry,{item}):entry;
+  }).filter(entry=>{
+    if(!q) return true;
+    const item=entry.item;
+    const text=item?(item.name+' '+(item.abbr||'')+' '+entry.region):(entry.name+' '+entry.region);
+    return text.toLowerCase().includes(q);
+  });
+  if(!entries.length){
+    return `<div class="empty"><div class="big">○</div><div class="msg">Nenhum resultado para "${esc(state.query)}".</div></div>`;
+  }
+  let html='',last=null;
+  entries.forEach(entry=>{
+    if(entry.region!==last){ html+=`<div class="grp">${esc(entry.region)}</div>`; last=entry.region; }
+    html+=entry.item?rowHTML(entry.item):dopplerSoonRowHTML(entry);
+  });
+  html+=`<div class="disc">Os itens marcados como <b>Em breve</b> formam o índice planejado da seção Doppler. Os valores publicados são referências da literatura e não substituem o julgamento clínico.</div>`;
+  return html;
+}
+function dopplerSoonRowHTML(entry){
+  return `<button class="row roadmap-row" type="button" disabled aria-label="${esc(entry.name)} — em breve">
+    <span class="ic">${ICONS.drop}</span>
+    <span class="tx"><span class="nm">${esc(entry.name)}</span><span class="meta">${esc(entry.region)}</span></span>
+    <span class="soon-badge">Em breve</span>
+  </button>`;
+}
 function rowHTML(d){
   const isFav = state.favs.indexOf(d.id)>=0;
   return `<div class="row" onclick="openItem('${esc(d.id)}')">
@@ -624,62 +702,312 @@ function rowHTML(d){
 /* ---- 3. DETALHE ---- */
 function detailHTML(){
   const d = state.item; if(!d) return '';
-  const e = d.exam||{};
   const faixa = (GROUP_BAND[d.group]||d.group)+' — '+d.region;
-  let h = `<div class="sec-label">Faixa etária</div><div class="d-age">${esc(faixa)}</div>`;
-  if(state.sub==='tabela'){
-    if(d.tables&&d.tables.length){ d.tables.forEach(t=>{ h+=tableHTML(t); }); }
-    else { h+=`<div class="empty"><div class="msg">Sem tabela de medidas para este item.</div></div>`; }
-    if(d.footnotes&&d.footnotes.length){ h+=`<div class="note">`+d.footnotes.map(f=>nl2br(f)).join('<br>')+`</div>`; }
-  }
-  else if(state.sub==='calc'){ h += calcDetailHTML(d); }
-  else if(state.sub==='referencias'){
-    if(d.refs&&d.refs.length) h+=`<div class="prose-label">Referências</div>`+d.refs.map(r=>`<div class="ref">${nl2br(r)}</div>`).join('');
-    else h+=`<div class="empty"><div class="msg">Sem referências para este item.</div></div>`;
-  }
+  const contextLabel = d.group==='Doppler' ? 'Seção' : 'Faixa etária';
+  let h = `<div class="sec-label">${contextLabel}</div><div class="d-age">${esc(faixa)}</div>`;
+  h += referenceCalculatorHTML(d);
+  if(d.tables&&d.tables.length){ d.tables.forEach((t,i)=>{ h+=tableHTML(t,d.id+'-'+i); }); }
+  else { h+=`<div class="empty"><div class="msg">Sem tabela de referência para este item.</div></div>`; }
+  if(d.footnotes&&d.footnotes.length){ h+=`<div class="note">`+d.footnotes.map(f=>nl2br(f)).join('<br>')+`</div>`; }
+  h += refsAccHTML(d);
   return h;
 }
-function tableHTML(t){
+function tableHTML(t,key){
   const rows = t.rows||[]; if(!rows.length) return '';
   const ncols = Math.max.apply(null, rows.map(r=>r.length));
-  let h='';
-  if(t.title) h+=`<div class="tb-title">${esc(t.title)}</div>`;
-  h+=`<table class="mtable"><tbody>`;
+  let table='';
+  const minWidth = ncols > 3 ? Math.max(620, ncols*126) : 0;
+  table+=`<div class="table-scroll"><table class="mtable"${minWidth?` style="min-width:${minWidth}px"`:''}><tbody>`;
   rows.forEach((r,ri)=>{
     const head = ri===0 && rows.length>1;
-    h+=`<tr>`;
+    table+=`<tr>`;
     for(let c=0;c<ncols;c++){
       const cell = r[c]==null?'':r[c];
       const cls = head ? 'head' : (c===0 ? 'lbl' : '');
-      h+=`<td class="${cls}">${nl2br(cell)}</td>`;
+      table+=`<td class="${cls}">${nl2br(cell)}</td>`;
     }
-    h+=`</tr>`;
+    table+=`</tr>`;
   });
-  h+=`</tbody></table>`;
-  return h;
+  table+=`</tbody></table></div>`;
+  if(!t.collapsible){
+    return (t.title?`<div class="tb-title">${esc(t.title)}</div>`:'')
+      +(t.source?`<div class="tb-source">${esc(t.source)}</div>`:'')+table;
+  }
+  const safeKey = String(key||'table').replace(/[^a-zA-Z0-9_-]/g,'-');
+  const bodyId = 'table-body-'+safeKey;
+  const chevId = 'table-chev-'+safeKey;
+  const open = !!t.defaultOpen;
+  return `<section class="table-acc">
+    <button class="table-acc-head" type="button" aria-expanded="${open?'true':'false'}"
+      aria-controls="${bodyId}" onclick="toggleTableAcc('${bodyId}','${chevId}',this)">
+      <span class="table-acc-copy">
+        <span class="table-acc-source">${esc(t.source||'Critério')}</span>
+        <span class="table-acc-title">${esc(t.title||'Tabela')}</span>
+      </span>
+      <span class="table-acc-chev" id="${chevId}">${open?'⌃':'⌄'}</span>
+    </button>
+    <div class="table-acc-body ${open?'open':''}" id="${bodyId}">${table}</div>
+  </section>`;
 }
-function calcDetailHTML(d){
+function refsAccHTML(d){
+  if(!d.refs||!d.refs.length) return '';
+  return `<div class="acc-head" onclick="toggleAcc('refsbody','refchev')"><span>Referências</span><span id="refchev">⌄</span></div>
+    <div class="acc-body" id="refsbody">`+d.refs.map(r=>`<div class="ref">${nl2br(r)}</div>`).join('')+`</div>`;
+}
+function chartCalculatorHTML(d){
   const ch = d.chart;
-  if(!ch||!ch.rows||!ch.rows.length) return `<div class="empty"><div class="msg">Este item não possui calculadora.</div></div>`;
+  if(!ch||!ch.rows||!ch.rows.length) return '';
   const label = 'Informe '+((ch.header&&ch.header[0])||'o valor');
-  let h = `<div class="calc-wrap">
+  return `<div class="calc-wrap">
+    <div class="calc-title">Consulta rápida</div>
     <div class="calc-label">${esc(label)}</div>
     <div class="calc-in">
-      <input id="ci1" type="number" inputmode="decimal" placeholder="0">
-      <button class="calc-btn" onclick="doCalc()">Consultar</button>
+      <input id="chart-value" type="number" inputmode="decimal" placeholder="0">
+      <button class="calc-btn" onclick="runReferenceCalculator('chart')">Consultar</button>
     </div>
-    <div id="calcout"></div>
+    <div id="reference-calc-output"></div>
   </div>`;
-  h += `<div class="acc-head" onclick="toggleAcc('chartbody','chartchev')"><span>Tabela completa</span><span id="chartchev">⌄</span></div>
-    <div class="acc-body" id="chartbody">`+tableHTML({rows:[ch.header].concat(ch.rows)})+`</div>`;
-  return h;
 }
-function subtabsHTML(){
-  const d = state.item, e = d.exam||{};
-  const tabs = [['tabela','Informações',P.table]];
-  if(d.chart) tabs.push(['calc','Cálculo',P.calcTab]);
-  if(d.refs&&d.refs.length) tabs.push(['referencias','Referências',P.book]);
-  return tabs.map(t=>`<button class="${state.sub===t[0]?'on':''}" onclick="setSub('${t[0]}')">${svgIcon(t[2],22)}<span>${t[1]}</span></button>`).join('');
+function calcFieldHTML(id, label, unit){
+  return `<label class="refcalc-field" for="${id}">
+    <span>${esc(label)}</span>
+    <div class="refcalc-input"><input id="${id}" type="number" inputmode="decimal" min="0" placeholder="0"><b>${esc(unit)}</b></div>
+  </label>`;
+}
+function customCalculatorHTML(calc){
+  if(calc.kind==='carotid-brazil-2023'){
+    return `<div class="calc-wrap refcalc">
+      <div class="calc-title">${esc(calc.title)}</div>
+      <div class="calc-source">${esc(calc.source||'')}</div>
+      <div class="refcalc-grid">
+        ${calcFieldHTML('car-ica-psv','VPS da ACI','cm/s')}
+        ${calcFieldHTML('car-ica-edv','VDF da ACI','cm/s')}
+        ${calcFieldHTML('car-cca-psv','VPS da ACC','cm/s')}
+        ${calcFieldHTML('car-cca-edv','VDF da ACC','cm/s')}
+      </div>
+      <button class="calc-btn refcalc-btn" onclick="runReferenceCalculator('carotid-brazil-2023')">Calcular</button>
+      <div id="reference-calc-output"></div>
+    </div>`;
+  }
+  if(calc.kind==='lindegaard'){
+    return `<div class="calc-wrap refcalc">
+      <div class="calc-title">${esc(calc.title)}</div>
+      <div class="calc-source">${esc(calc.source||'')}</div>
+      <div class="refcalc-grid">
+        ${calcFieldHTML('lind-mca','Velocidade média da ACM','cm/s')}
+        ${calcFieldHTML('lind-ica','Velocidade média da ACI extracraniana','cm/s')}
+      </div>
+      <button class="calc-btn refcalc-btn" onclick="runReferenceCalculator('lindegaard')">Calcular</button>
+      <div id="reference-calc-output"></div>
+    </div>`;
+  }
+  if(calc.kind==='lower-limb-native-stenosis'){
+    return `<div class="calc-wrap refcalc">
+      <div class="calc-title">${esc(calc.title)}</div>
+      <div class="calc-source">${esc(calc.source||'')}</div>
+      <div class="refcalc-grid">
+        ${calcFieldHTML('lli-v2','VPS no ponto da lesão (V2)','cm/s')}
+        ${calcFieldHTML('lli-v1','VPS proximal à lesão (V1)','cm/s')}
+      </div>
+      <button class="calc-btn refcalc-btn" onclick="runReferenceCalculator('lower-limb-native-stenosis')">Calcular</button>
+      <div id="reference-calc-output"></div>
+    </div>`;
+  }
+  if(calc.kind==='lower-limb-intervention'){
+    return `<div class="calc-wrap refcalc">
+      <div class="calc-title">${esc(calc.title)}</div>
+      <div class="calc-source">${esc(calc.source||'')}</div>
+      <div class="refcalc-grid">
+        ${calcFieldHTML('lli-ctrl-v2','Maior VPS no segmento tratado','cm/s')}
+        ${calcFieldHTML('lli-ctrl-v1','VPS no segmento proximal','cm/s')}
+      </div>
+      <button class="calc-btn refcalc-btn" onclick="runReferenceCalculator('lower-limb-intervention')">Calcular</button>
+      <div id="reference-calc-output"></div>
+    </div>`;
+  }
+  return '';
+}
+function referenceCalculatorHTML(d){
+  if(d.calculator) return customCalculatorHTML(d.calculator);
+  if(d.chart) return chartCalculatorHTML(d);
+  return '';
+}
+
+function calcNumber(id){
+  const el=$(id);
+  const raw=el&&String(el.value).trim().replace(',','.');
+  const value=parseFloat(raw);
+  return Number.isFinite(value)?value:null;
+}
+function calcFmt(value,digits){
+  return Number(value).toLocaleString('pt-BR',{minimumFractionDigits:digits,maximumFractionDigits:digits});
+}
+function calcMetricHTML(label,value){
+  return `<div class="refcalc-metric"><span>${esc(label)}</span><b>${esc(value)}</b></div>`;
+}
+function calcSourceResultHTML(source,title,note,tone){
+  return `<div class="refcalc-result ${tone||'ok'}">
+    <div class="refcalc-result-kicker">${esc(source)}</div>
+    <div class="refcalc-result-title">${esc(title)}</div>
+    ${note?`<div class="refcalc-result-note">${esc(note)}</div>`:''}
+  </div>`;
+}
+function renderReferenceCalc(html){
+  const out=$('reference-calc-output');
+  if(out) out.innerHTML=html;
+}
+function calcErrorHTML(message){
+  return `<div class="refcalc-result error"><div class="refcalc-result-title">Revise os dados</div><div class="refcalc-result-note">${esc(message)}</div></div>`;
+}
+function runReferenceCalculator(kind){
+  if(kind==='carotid-brazil-2023'){
+    const psv=calcNumber('car-ica-psv'), edv=calcNumber('car-ica-edv');
+    const ccaPsv=calcNumber('car-cca-psv'), ccaEdv=calcNumber('car-cca-edv');
+    if([psv,edv,ccaPsv,ccaEdv].some(v=>v===null||v<0)){
+      renderReferenceCalc(calcErrorHTML('Preencha as quatro velocidades com valores válidos.'));
+      return;
+    }
+    if(ccaPsv<=0||ccaEdv<=0){
+      renderReferenceCalc(calcErrorHTML('As velocidades da ACC devem ser maiores que zero para calcular as relações.'));
+      return;
+    }
+    if(psv===0&&edv===0){
+      renderReferenceCalc(`<div class="refcalc-result warn">
+        <div class="refcalc-result-kicker">Tabela brasileira</div>
+        <div class="refcalc-result-title">Não classificável automaticamente</div>
+        <div class="refcalc-result-note">Suboclusão e oclusão exigem avaliação do lúmen e do fluxo; confira diretamente a tabela.</div>
+      </div>`);
+      return;
+    }
+    const psvRatio=psv/ccaPsv, stMary=psv/ccaEdv, edvRatio=edv/ccaEdv;
+    let grade='Critérios discordantes';
+    let tone='warn';
+    if(psv>400&&psvRatio>5&&stMary>30){ grade='> 90%'; tone='ok'; }
+    else if(psv>230&&edv>140){ grade='80–89%'; tone='ok'; }
+    else if(psv>230&&edv>100&&edv<=140){ grade='70–79%'; tone='ok'; }
+    else if(psv>=140&&psv<=230&&edv>=70&&edv<=100){ grade='60–69%'; tone='ok'; }
+    else if(psv>=140&&psv<=230&&edv>=40&&edv<70){ grade='50–59%'; tone='ok'; }
+    else if(psv<140&&edv<40){ grade='< 50%'; tone='ok'; }
+    const note=tone==='ok'
+      ? 'Estimativa pela combinação de VPS e VDF. Confirme a coerência nas relações e na avaliação morfológica.'
+      : 'VPS e VDF não apontam para a mesma faixa. Não force uma classificação automática; confronte todos os parâmetros na tabela.';
+    renderReferenceCalc(`<div class="refcalc-result ${tone}">
+      <div class="refcalc-result-kicker">Estimativa pela DIC/CBR/SABCV 2023</div>
+      <div class="refcalc-result-title">${esc(grade)}</div>
+      <div class="refcalc-metrics">
+        ${calcMetricHTML('VPS ACI / VPS ACC',calcFmt(psvRatio,2))}
+        ${calcMetricHTML('VPS ACI / VDF ACC',calcFmt(stMary,1))}
+        ${calcMetricHTML('VDF ACI / VDF ACC',calcFmt(edvRatio,2))}
+      </div>
+      <div class="refcalc-result-note">${esc(note)}</div>
+    </div>`);
+    return;
+  }
+  if(kind==='lindegaard'){
+    const mca=calcNumber('lind-mca'), ica=calcNumber('lind-ica');
+    if(mca===null||ica===null||mca<0||ica<=0){
+      renderReferenceCalc(calcErrorHTML('Preencha as duas velocidades; a velocidade da ACI deve ser maior que zero.'));
+      return;
+    }
+    const ratio=mca/ica;
+    let grade='Critérios discordantes', note='Confira separadamente a velocidade média da ACM e o índice na tabela.';
+    if(mca<120&&ratio<3){ grade='Vasoespasmo ausente'; note='Velocidade média da ACM < 120 cm/s e índice < 3.'; }
+    else if(mca>=120&&ratio<3){ grade='Hiperemia'; note='Velocidade média elevada com índice < 3.'; }
+    else if(mca>=120&&mca<150&&ratio>=3&&ratio<=6){ grade='Vasoespasmo leve'; note='Velocidade média de 120–149 cm/s e índice entre 3 e 6.'; }
+    else if(mca>=150&&mca<200&&ratio>=3&&ratio<=6){ grade='Vasoespasmo moderado'; note='Velocidade média de 150–199 cm/s e índice entre 3 e 6.'; }
+    else if(mca>=200&&ratio>6){ grade='Vasoespasmo grave'; note='Velocidade média ≥ 200 cm/s e índice > 6.'; }
+    renderReferenceCalc(`<div class="refcalc-result ${grade==='Critérios discordantes'?'warn':'ok'}">
+      <div class="refcalc-result-kicker">Índice de Lindegaard</div>
+      <div class="refcalc-result-title">${esc(grade)}</div>
+      <div class="refcalc-metrics">${calcMetricHTML('ACM / ACI extracraniana',calcFmt(ratio,2))}</div>
+      <div class="refcalc-result-note">${esc(note)}</div>
+    </div>`);
+    return;
+  }
+  if(kind==='lower-limb-native-stenosis'){
+    const v2=calcNumber('lli-v2'), v1=calcNumber('lli-v1');
+    if(v2===null||v1===null||v2<0||v1<=0){
+      renderReferenceCalc(calcErrorHTML('Preencha as duas velocidades; a VPS proximal deve ser maior que zero.'));
+      return;
+    }
+    if(v2===0){
+      renderReferenceCalc(`<div class="refcalc-result warn">
+        <div class="refcalc-result-kicker">DIC/SBC 2019</div>
+        <div class="refcalc-result-title">Não classificável automaticamente</div>
+        <div class="refcalc-result-note">Velocidade zero isolada não confirma oclusão. Confira a ausência de fluxo com os ajustes apropriados.</div>
+      </div>`);
+      return;
+    }
+    const ratio=v2/v1;
+    let grade='< 50%';
+    if(ratio>=4) grade='≥ 70%';
+    else if(ratio>=2) grade='≥ 50% e < 70%';
+    renderReferenceCalc(`<div class="refcalc-result ok">
+      <div class="refcalc-result-kicker">Artéria nativa — DIC/SBC 2019</div>
+      <div class="refcalc-result-title">${esc(grade)}</div>
+      <div class="refcalc-metrics">${calcMetricHTML('Razão VPS V2 / V1',calcFmt(ratio,2))}</div>
+      <div class="refcalc-result-note">Classificação baseada somente na razão de velocidades; confronte com a morfologia e a curva distal.</div>
+    </div>`);
+    return;
+  }
+  if(kind==='lower-limb-intervention'){
+    const v2=calcNumber('lli-ctrl-v2'), v1=calcNumber('lli-ctrl-v1');
+    if(v2===null||v1===null||v2<0||v1<=0){
+      renderReferenceCalc(calcErrorHTML('Preencha as duas velocidades; a VPS proximal deve ser maior que zero.'));
+      return;
+    }
+    if(v2===0){
+      renderReferenceCalc(calcErrorHTML('Ausência de fluxo exige avaliação direta e não pode ser classificada apenas pela razão.'));
+      return;
+    }
+    const ratio=v2/v1;
+
+    let graft='Critérios discordantes', graftTone='warn';
+    if(v2>300&&ratio>3.5){ graft='Critério de alta velocidade presente'; graftTone='ok'; }
+    else if(v2>=180&&v2<=300&&ratio>2){ graft='Faixa de risco moderado'; graftTone='ok'; }
+    else if(v2<180&&ratio<2){ graft='Faixa de baixo risco'; graftTone='ok'; }
+
+    let angioplasty='Critérios discordantes', angioplastyTone='warn';
+    if(v2>300&&ratio>3.5){ angioplasty='Estenose > 70%'; angioplastyTone='ok'; }
+    else if(v2>=180&&v2<=300&&ratio>=2&&ratio<=3.5){ angioplasty='Estenose > 50%'; angioplastyTone='ok'; }
+    else if(v2<180&&ratio<2){ angioplasty='Estenose < 50%'; angioplastyTone='ok'; }
+
+    let stent='Critérios discordantes', stentTone='warn';
+    if(v2>=275&&ratio>=3.5){ stent='Reestenose ≥ 80%'; stentTone='ok'; }
+    else if(v2>=190&&ratio>=1.5){ stent='Reestenose ≥ 50%'; stentTone='ok'; }
+    else if(v2<190&&ratio<1.5){ stent='Abaixo dos limiares de 50%'; stentTone='ok'; }
+
+    renderReferenceCalc(`<div class="refcalc-result ok">
+      <div class="refcalc-result-kicker">Cálculo comum</div>
+      <div class="refcalc-result-title">Razão ${esc(calcFmt(ratio,2))}</div>
+      <div class="refcalc-metrics">${calcMetricHTML('VPS no segmento',calcFmt(v2,0)+' cm/s')}${calcMetricHTML('VPS segmento / proximal',calcFmt(ratio,2))}</div>
+    </div>
+    ${calcSourceResultHTML('Enxerto venoso infrainguinal — SVS 2018',graft,'Velocidade global do enxerto e variação do ITB completam a estratificação.',graftTone)}
+    ${calcSourceResultHTML('Angioplastia femoropoplítea — UCSD / SVS 2018',angioplasty,'Use somente para o sítio e o segmento correspondentes.',angioplastyTone)}
+    ${calcSourceResultHTML('Stent da artéria femoral superficial — Baril et al. 2009',stent,'Critérios validados especificamente para stent na AFS.',stentTone)}`);
+    return;
+  }
+  if(kind==='chart'){
+    const value=calcNumber('chart-value');
+    const ch=state.item&&state.item.chart;
+    if(value===null||!ch||!ch.rows||!ch.rows.length){
+      renderReferenceCalc(calcErrorHTML('Informe um valor válido.'));
+      return;
+    }
+    const numericRows=ch.rows.map(row=>({row,value:parseFloat(String(row[0]).replace(',','.'))})).filter(x=>Number.isFinite(x.value));
+    if(!numericRows.length){
+      renderReferenceCalc(calcErrorHTML('Esta tabela não permite consulta numérica automática.'));
+      return;
+    }
+    const match=numericRows.reduce((best,current)=>Math.abs(current.value-value)<Math.abs(best.value-value)?current:best);
+    const header=ch.header||[];
+    const metrics=match.row.map((cell,i)=>calcMetricHTML(header[i]||('Campo '+(i+1)),String(cell))).join('');
+    renderReferenceCalc(`<div class="refcalc-result ok">
+      <div class="refcalc-result-kicker">Linha mais próxima</div>
+      <div class="refcalc-result-title">${esc(String(match.row[0]))}</div>
+      <div class="refcalc-metrics">${metrics}</div>
+    </div>`);
+  }
 }
 
 /* ---- 4a. CALCULADORAS — lista ---- */
@@ -1095,6 +1423,12 @@ function toggleAcc(bodyId, chevId){
   const b = $(bodyId); if(!b) return;
   const open = b.classList.toggle('open');
   const c = $(chevId); if(c) c.textContent = open ? '⌃' : '⌄';
+}
+function toggleTableAcc(bodyId,chevId,button){
+  const b=$(bodyId); if(!b) return;
+  const open=b.classList.toggle('open');
+  const c=$(chevId); if(c) c.textContent=open?'⌃':'⌄';
+  if(button) button.setAttribute('aria-expanded',open?'true':'false');
 }
 function onDrumScroll(id, el){
   const ITEM_H = 44;

@@ -281,6 +281,24 @@ if _trato:
     _trato['footnotes'] = [_note] if _note else []
     _trato['refs'] = [pt[k] for k in ('refTabela1VBTBAdulto', 'refTabela2VBTBAdulto') if k in pt]
 
+# ---- conteúdo curado do RadRef ----
+# Os arquivos desta pasta complementam os dados históricos do MedUltra com
+# referências novas, revisadas e estruturadas diretamente no modelo do PWA.
+CURATED_DIR = os.path.join(os.path.dirname(__file__), 'curated_data')
+known_ids = {it['id'] for it in items}
+for curated_path in sorted(glob.glob(os.path.join(CURATED_DIR, '*.json'))):
+    curated_items = json.load(open(curated_path))
+    if not isinstance(curated_items, list):
+        raise ValueError('Arquivo curado deve conter uma lista: %s' % curated_path)
+    for entry in curated_items:
+        entry_id = entry.get('id')
+        if not entry_id:
+            raise ValueError('Item curado sem id: %s' % curated_path)
+        if entry_id in known_ids:
+            raise ValueError('id duplicado no conteúdo curado: %s' % entry_id)
+        known_ids.add(entry_id)
+        items.append(entry)
+
 json.dump(items, open(os.path.join(BASE, 'items.generated.json'), 'w'), ensure_ascii=False, indent=1)
 
 # ---- emite js/seed.js (window.SEED_DATA) ----
