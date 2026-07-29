@@ -7,7 +7,7 @@
    - API do Supabase (/rest/v1): network-first; em falha, último bom cache.
    Suba a versão do CACHE ao publicar mudanças para forçar atualização.
    ========================================================================= */
-const VERSION = 'v0.8.9';
+const VERSION = 'v0.9.0';
 const APP_CACHE = `ultraref-app-${VERSION}`;
 const DATA_CACHE = `ultraref-data-${VERSION}`;
 
@@ -21,6 +21,7 @@ const APP_SHELL = [
   '/js/calc-fetal.js',
   '/js/calc-orads.js',
   '/js/calc-trisomias.js',
+  '/js/calc-preeclampsia.js',
   '/manifest.webmanifest',
   '/icons/icon.svg',
   '/icons/favicon-32.png',

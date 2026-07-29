@@ -366,6 +366,12 @@
   .constr-sub{font-size:14px;color:var(--dim);line-height:1.55;max-width:260px;}
   .constr-badge{margin-top:20px;padding:9px 22px;border-radius:12px;background:var(--sf);border:1px solid var(--line);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
 
+  /* Pré-eclâmpsia — linhas de fator materno (rótulo + segmento) */
+  .pe-row{display:flex;align-items:center;gap:10px;padding:7px 0;}
+  .pe-row .pe-lbl{flex:1;font-size:13px;color:var(--dim);font-weight:650;line-height:1.2;}
+  .pe-seg{flex:none;flex-wrap:wrap;justify-content:flex-end;}
+  .pe-seg button{padding:7px 11px;font-size:12.5px;}
+
   /* Termos de uso — tela de aceite e leitura */
   .terms-wrap{padding:calc(env(safe-area-inset-top) + 22px) 20px 30px;}
   .terms-brand{font-size:26px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--accent);text-align:center;margin-bottom:4px;}
@@ -510,5 +516,6 @@
 <script src="/js/calc-fetal.js"></script>
 <script src="/js/calc-orads.js"></script>
 <script src="/js/calc-trisomias.js"></script>
+<script src="/js/calc-preeclampsia.js"></script>
 </body>
 </html>
