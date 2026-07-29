@@ -90,12 +90,12 @@ const DOPPLER_INDEX = [
   {region:'Cervical', id:'doppler-transcraniano'},
   {region:'Cervical', id:'doppler-arterias-temporais'},
 
-  {region:'Membros inferiores', name:'Doppler arterial de membros inferiores'},
-  {region:'Membros inferiores', name:'Doppler venoso de membros inferiores — pesquisa de trombose'},
-  {region:'Membros inferiores', name:'Doppler venoso de membros inferiores — varizes e insuficiência venosa'},
-  {region:'Membros inferiores', name:'Doppler para controle de enxerto, angioplastia ou stent'},
-  {region:'Membros inferiores', name:'Doppler de aneurisma e pseudoaneurisma'},
-  {region:'Membros inferiores', name:'Doppler para aprisionamento da artéria poplítea'},
+  {region:'Membros inferiores', id:'doppler-arterial-membros-inferiores'},
+  {region:'Membros inferiores', id:'doppler-venoso-mmii-trombose'},
+  {region:'Membros inferiores', id:'doppler-venoso-mmii-varizes'},
+  {region:'Membros inferiores', id:'doppler-controle-arterial-mmii'},
+  {region:'Membros inferiores', id:'doppler-aneurisma-pseudoaneurisma-mmii'},
+  {region:'Membros inferiores', id:'doppler-aprisionamento-poplitea'},
 
   {region:'Membros superiores', name:'Doppler arterial de membros superiores'},
   {region:'Membros superiores', name:'Doppler venoso de membros superiores — pesquisa de trombose'},
@@ -801,6 +801,30 @@ function customCalculatorHTML(calc){
       <div id="reference-calc-output"></div>
     </div>`;
   }
+  if(calc.kind==='lower-limb-native-stenosis'){
+    return `<div class="calc-wrap refcalc">
+      <div class="calc-title">${esc(calc.title)}</div>
+      <div class="calc-source">${esc(calc.source||'')}</div>
+      <div class="refcalc-grid">
+        ${calcFieldHTML('lli-v2','VPS no ponto da lesão (V2)','cm/s')}
+        ${calcFieldHTML('lli-v1','VPS proximal à lesão (V1)','cm/s')}
+      </div>
+      <button class="calc-btn refcalc-btn" onclick="runReferenceCalculator('lower-limb-native-stenosis')">Calcular</button>
+      <div id="reference-calc-output"></div>
+    </div>`;
+  }
+  if(calc.kind==='lower-limb-intervention'){
+    return `<div class="calc-wrap refcalc">
+      <div class="calc-title">${esc(calc.title)}</div>
+      <div class="calc-source">${esc(calc.source||'')}</div>
+      <div class="refcalc-grid">
+        ${calcFieldHTML('lli-ctrl-v2','Maior VPS no segmento tratado','cm/s')}
+        ${calcFieldHTML('lli-ctrl-v1','VPS no segmento proximal','cm/s')}
+      </div>
+      <button class="calc-btn refcalc-btn" onclick="runReferenceCalculator('lower-limb-intervention')">Calcular</button>
+      <div id="reference-calc-output"></div>
+    </div>`;
+  }
   return '';
 }
 function referenceCalculatorHTML(d){
@@ -820,6 +844,13 @@ function calcFmt(value,digits){
 }
 function calcMetricHTML(label,value){
   return `<div class="refcalc-metric"><span>${esc(label)}</span><b>${esc(value)}</b></div>`;
+}
+function calcSourceResultHTML(source,title,note,tone){
+  return `<div class="refcalc-result ${tone||'ok'}">
+    <div class="refcalc-result-kicker">${esc(source)}</div>
+    <div class="refcalc-result-title">${esc(title)}</div>
+    ${note?`<div class="refcalc-result-note">${esc(note)}</div>`:''}
+  </div>`;
 }
 function renderReferenceCalc(html){
   const out=$('reference-calc-output');
@@ -891,6 +922,69 @@ function runReferenceCalculator(kind){
       <div class="refcalc-metrics">${calcMetricHTML('ACM / ACI extracraniana',calcFmt(ratio,2))}</div>
       <div class="refcalc-result-note">${esc(note)}</div>
     </div>`);
+    return;
+  }
+  if(kind==='lower-limb-native-stenosis'){
+    const v2=calcNumber('lli-v2'), v1=calcNumber('lli-v1');
+    if(v2===null||v1===null||v2<0||v1<=0){
+      renderReferenceCalc(calcErrorHTML('Preencha as duas velocidades; a VPS proximal deve ser maior que zero.'));
+      return;
+    }
+    if(v2===0){
+      renderReferenceCalc(`<div class="refcalc-result warn">
+        <div class="refcalc-result-kicker">DIC/SBC 2019</div>
+        <div class="refcalc-result-title">Não classificável automaticamente</div>
+        <div class="refcalc-result-note">Velocidade zero isolada não confirma oclusão. Confira a ausência de fluxo com os ajustes apropriados.</div>
+      </div>`);
+      return;
+    }
+    const ratio=v2/v1;
+    let grade='< 50%';
+    if(ratio>=4) grade='≥ 70%';
+    else if(ratio>=2) grade='≥ 50% e < 70%';
+    renderReferenceCalc(`<div class="refcalc-result ok">
+      <div class="refcalc-result-kicker">Artéria nativa — DIC/SBC 2019</div>
+      <div class="refcalc-result-title">${esc(grade)}</div>
+      <div class="refcalc-metrics">${calcMetricHTML('Razão VPS V2 / V1',calcFmt(ratio,2))}</div>
+      <div class="refcalc-result-note">Classificação baseada somente na razão de velocidades; confronte com a morfologia e a curva distal.</div>
+    </div>`);
+    return;
+  }
+  if(kind==='lower-limb-intervention'){
+    const v2=calcNumber('lli-ctrl-v2'), v1=calcNumber('lli-ctrl-v1');
+    if(v2===null||v1===null||v2<0||v1<=0){
+      renderReferenceCalc(calcErrorHTML('Preencha as duas velocidades; a VPS proximal deve ser maior que zero.'));
+      return;
+    }
+    if(v2===0){
+      renderReferenceCalc(calcErrorHTML('Ausência de fluxo exige avaliação direta e não pode ser classificada apenas pela razão.'));
+      return;
+    }
+    const ratio=v2/v1;
+
+    let graft='Critérios discordantes', graftTone='warn';
+    if(v2>300&&ratio>3.5){ graft='Critério de alta velocidade presente'; graftTone='ok'; }
+    else if(v2>=180&&v2<=300&&ratio>2){ graft='Faixa de risco moderado'; graftTone='ok'; }
+    else if(v2<180&&ratio<2){ graft='Faixa de baixo risco'; graftTone='ok'; }
+
+    let angioplasty='Critérios discordantes', angioplastyTone='warn';
+    if(v2>300&&ratio>3.5){ angioplasty='Estenose > 70%'; angioplastyTone='ok'; }
+    else if(v2>=180&&v2<=300&&ratio>=2&&ratio<=3.5){ angioplasty='Estenose > 50%'; angioplastyTone='ok'; }
+    else if(v2<180&&ratio<2){ angioplasty='Estenose < 50%'; angioplastyTone='ok'; }
+
+    let stent='Critérios discordantes', stentTone='warn';
+    if(v2>=275&&ratio>=3.5){ stent='Reestenose ≥ 80%'; stentTone='ok'; }
+    else if(v2>=190&&ratio>=1.5){ stent='Reestenose ≥ 50%'; stentTone='ok'; }
+    else if(v2<190&&ratio<1.5){ stent='Abaixo dos limiares de 50%'; stentTone='ok'; }
+
+    renderReferenceCalc(`<div class="refcalc-result ok">
+      <div class="refcalc-result-kicker">Cálculo comum</div>
+      <div class="refcalc-result-title">Razão ${esc(calcFmt(ratio,2))}</div>
+      <div class="refcalc-metrics">${calcMetricHTML('VPS no segmento',calcFmt(v2,0)+' cm/s')}${calcMetricHTML('VPS segmento / proximal',calcFmt(ratio,2))}</div>
+    </div>
+    ${calcSourceResultHTML('Enxerto venoso infrainguinal — SVS 2018',graft,'Velocidade global do enxerto e variação do ITB completam a estratificação.',graftTone)}
+    ${calcSourceResultHTML('Angioplastia femoropoplítea — UCSD / SVS 2018',angioplasty,'Use somente para o sítio e o segmento correspondentes.',angioplastyTone)}
+    ${calcSourceResultHTML('Stent da artéria femoral superficial — Baril et al. 2009',stent,'Critérios validados especificamente para stent na AFS.',stentTone)}`);
     return;
   }
   if(kind==='chart'){

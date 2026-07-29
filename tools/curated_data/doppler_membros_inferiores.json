@@ -1,0 +1,325 @@
+[
+  {
+    "id": "doppler-arterial-membros-inferiores",
+    "group": "Doppler",
+    "region": "Membros inferiores",
+    "name": "Doppler Arterial de Membros Inferiores",
+    "abbr": "DAMI",
+    "iconKey": "drop",
+    "calculator": {
+      "kind": "lower-limb-native-stenosis",
+      "title": "Razão de velocidades na estenose",
+      "source": "DIC/SBC 2019"
+    },
+    "tables": [
+      {
+        "title": "Estenose em artérias nativas",
+        "source": "Brasil — DIC/SBC 2019",
+        "collapsible": true,
+        "defaultOpen": true,
+        "rows": [
+          ["Classificação", "Razão VPS V2 / V1"],
+          ["Estenose < 50%", "< 2,0"],
+          ["Estenose ≥ 50%", "≥ 2,0"],
+          ["Estenose ≥ 70%", "≥ 4,0"],
+          ["Oclusão", "Ausência de fluxo"]
+        ]
+      },
+      {
+        "title": "Índice tornozelo-braquial em repouso",
+        "source": "ACC/AHA 2024",
+        "rows": [
+          ["ITB", "Classificação"],
+          ["≤ 0,90", "Anormal"],
+          ["0,91–0,99", "Limítrofe"],
+          ["1,00–1,40", "Normal"],
+          ["> 1,40", "Artérias não compressíveis"]
+        ]
+      },
+      {
+        "title": "Achados complementares",
+        "source": "DIC/SBC 2019",
+        "rows": [
+          ["Situação", "Achado de referência"],
+          ["Pré-oclusão", "Alta resistência, VPS baixa e ausência de fluxo diastólico"],
+          ["Pós-oclusão", "Onda monofásica, VPS reduzida e tempo de aceleração prolongado"],
+          ["Repercussão hemodinâmica distal", "Padrão tardus-parvus"],
+          ["Oclusão", "Ausência de fluxo mesmo com ajustes para baixa velocidade"]
+        ]
+      }
+    ],
+    "footnotes": [
+      "V2 é a maior VPS no ponto da lesão; V1 é a VPS medida 1–4 cm proximalmente. A calculadora não diagnostica oclusão."
+    ],
+    "refs": [
+      "Santos SN, Alcantara ML, Freire CMV, et al. Vascular Ultrasound Statement from the Department of Cardiovascular Imaging of the Brazilian Society of Cardiology — 2019. Arq Bras Cardiol. 2019;112(6):809-849. doi:10.5935/abc.20190106.",
+      "2024 ACC/AHA/AACVPR/APMA/ABC/SCAI/SVM/SVN/SVS/SIR/VESS Guideline for the Management of Lower Extremity Peripheral Artery Disease. Circulation. 2024;149:e1313-e1410. doi:10.1161/CIR.0000000000001251."
+    ]
+  },
+  {
+    "id": "doppler-venoso-mmii-trombose",
+    "group": "Doppler",
+    "region": "Membros inferiores",
+    "name": "Doppler Venoso de Membros Inferiores — Pesquisa de Trombose",
+    "abbr": "TVP",
+    "iconKey": "drop",
+    "tables": [
+      {
+        "title": "Terminologia recomendada no laudo",
+        "source": "SRU 2018",
+        "rows": [
+          ["Categoria", "Uso"],
+          ["Trombose venosa aguda", "Achados que favorecem evento atual"],
+          ["Alterações pós-trombóticas crônicas", "Material e remodelamento residuais após TVP prévia"],
+          ["Indeterminado", "Achados que não permitem distinguir com segurança evento agudo de alteração pós-trombótica"]
+        ]
+      },
+      {
+        "title": "Achados que favorecem a classificação",
+        "source": "SRU 2018 / RadioGraphics 2024",
+        "rows": [
+          ["Parâmetro", "Trombose aguda", "Alterações pós-trombóticas crônicas"],
+          ["Calibre venoso", "Frequentemente aumentado", "Normal ou reduzido"],
+          ["Conteúdo intraluminal", "Ecogenicidade variável; oclusivo ou não; aderido ou móvel", "Bandas lineares, sinequias ou calcificações"],
+          ["Parede", "Sem remodelamento crônico obrigatório", "Espessada e irregular"],
+          ["Compressão", "Incompleta ou ausente", "Lúmen residual geralmente compressível"],
+          ["Fluxo ao color", "Ausente ou parcial no segmento trombosado", "Canais de recanalização, fluxo periférico ou colaterais"]
+        ]
+      },
+      {
+        "title": "Doppler espectral — sinais indiretos",
+        "source": "SRU 2018 / RadioGraphics 2024",
+        "rows": [
+          ["Achado", "Interpretação"],
+          ["Perda unilateral da fasicidade respiratória", "Pesquisar obstrução venosa central ou compressão extrínseca proximal"],
+          ["Resposta amortecida à compressão distal", "Obstrução entre o ponto de compressão e o volume de amostra"],
+          ["Pulsatilidade bilateral aumentada", "Pode refletir pressão atrial direita elevada ou insuficiência tricúspide"]
+        ]
+      }
+    ],
+    "footnotes": [
+      "Evitar “TVP crônica”, “trombo residual” e “subaguda” quando a idade não puder ser definida; preferir alterações pós-trombóticas crônicas ou indeterminado."
+    ],
+    "refs": [
+      "Needleman L, Cronan JJ, Lilly MP, et al. Ultrasound for Lower Extremity Deep Venous Thrombosis: Multidisciplinary Recommendations From the Society of Radiologists in Ultrasound Consensus Conference. Circulation. 2018;137(14):1505-1515. doi:10.1161/CIRCULATIONAHA.117.030687.",
+      "Roberts N, DiMaggio M Jr, Horrow MM. US of Lower Extremity Deep Vein Thrombosis: A Review. RadioGraphics. 2024;44(11):e240113. doi:10.1148/rg.240113.",
+      "Sobreira ML, Marques MA, Paschoa AF, et al. Guidelines on deep vein thrombosis of the Brazilian Society of Angiology and Vascular Surgery. J Vasc Bras. 2024;23:e20230107. doi:10.1590/1677-5449.202301072."
+    ]
+  },
+  {
+    "id": "doppler-venoso-mmii-varizes",
+    "group": "Doppler",
+    "region": "Membros inferiores",
+    "name": "Doppler Venoso de Membros Inferiores — Varizes e Insuficiência Venosa",
+    "abbr": "IVC",
+    "iconKey": "drop",
+    "tables": [
+      {
+        "title": "Tempos de refluxo patológico",
+        "source": "SVS/AVF/AVLS 2023",
+        "collapsible": true,
+        "defaultOpen": true,
+        "rows": [
+          ["Segmento", "Refluxo"],
+          ["Safena magna, safena parva e safenas acessórias", "> 500 ms"],
+          ["Veias tibiais e femoral profunda", "> 500 ms"],
+          ["Veias perfurantes", "> 500 ms"],
+          ["Veias femoral comum, femoral e poplítea", "> 1,0 s"]
+        ]
+      },
+      {
+        "title": "Calibres de referência das veias safenas",
+        "source": "Radiologia Online — Manual de Doppler",
+        "rows": [
+          ["Veia", "Segmento", "Calibre de referência"],
+          ["Safena magna", "Crossa", "≤ 7 mm"],
+          ["Safena magna", "Coxa e perna", "≤ 4 mm"],
+          ["Safena parva", "Crossa", "≤ 4 mm"],
+          ["Safena parva", "Segmento distal", "≤ 2 mm"]
+        ]
+      },
+      {
+        "title": "Distribuição do refluxo",
+        "source": "SVS/AVF/AVLS 2023",
+        "rows": [
+          ["Classificação", "Definição"],
+          ["Axial — safena magna", "Fluxo retrógrado ininterrupto da virilha à panturrilha superior"],
+          ["Axial — safena parva", "Fluxo retrógrado ininterrupto do joelho ao tornozelo"],
+          ["Axial — safenas acessórias", "Fluxo retrógrado entre dois pontos separados por ≥ 5 cm"],
+          ["Juncional", "Limitado à junção safenofemoral ou safenopoplítea"],
+          ["Segmentar", "Restrito a parte de uma veia troncular superficial ou profunda"]
+        ]
+      },
+      {
+        "title": "Veia perfurante patológica em CEAP C2",
+        "source": "SVS/AVF/AVLS 2023",
+        "rows": [
+          ["Parâmetro", "Critério"],
+          ["Fluxo para fora do sistema profundo", "> 500 ms"],
+          ["Diâmetro", "> 3,5 mm"],
+          ["Critério completo", "Ambos os achados"]
+        ]
+      }
+    ],
+    "footnotes": [
+      "O calibre das safenas é um parâmetro morfológico complementar e varia com a posição do paciente, a técnica e o local da medida; não deve ser interpretado isoladamente como diagnóstico de insuficiência.",
+      "Não há diâmetro mínimo para definir refluxo patológico em uma veia troncular; o critério de 3,5 mm aplica-se às perfurantes em CEAP C2."
+    ],
+    "refs": [
+      "Gloviczki P, Lawrence PF, Wasan SM, et al. The 2023 Society for Vascular Surgery, American Venous Forum, and American Vein and Lymphatic Society clinical practice guidelines for the management of varicose veins of the lower extremities. Part II. J Vasc Surg Venous Lymphat Disord. 2024;12(1):101670. doi:10.1016/j.jvsv.2023.08.011.",
+      "Gloviczki P, Lawrence PF, Wasan SM, et al. The 2022 Society for Vascular Surgery, American Venous Forum, and American Vein and Lymphatic Society clinical practice guidelines for the management of varicose veins of the lower extremities. Part I. J Vasc Surg Venous Lymphat Disord. 2023;11(2):231-261.e6. doi:10.1016/j.jvsv.2022.09.004.",
+      "Radiologia Online. Manual de Doppler — Doppler venoso de membros inferiores para pesquisa de varizes e insuficiência venosa crônica. Disponível em: https://radiologia.online/manual-de-doppler/.",
+      "Engelhorn CA, Engelhorn AL, Salles-Cunha SX, et al. Relationship between reflux and greater saphenous vein diameter. J Vasc Technol. 1997;21(3):167-172."
+    ]
+  },
+  {
+    "id": "doppler-controle-arterial-mmii",
+    "group": "Doppler",
+    "region": "Membros inferiores",
+    "name": "Doppler para Controle de Enxerto, Angioplastia ou Stent",
+    "abbr": "CTRL",
+    "iconKey": "drop",
+    "calculator": {
+      "kind": "lower-limb-intervention",
+      "title": "Razão de velocidades no segmento tratado",
+      "source": "Critérios separados por fonte"
+    },
+    "tables": [
+      {
+        "title": "Enxerto venoso infrainguinal — risco de trombose",
+        "source": "SVS 2018",
+        "collapsible": true,
+        "defaultOpen": true,
+        "rows": [
+          ["Categoria", "VPS focal", "Razão VPS", "Velocidade no enxerto", "Queda do ITB"],
+          ["Risco máximo", "> 300 cm/s", "> 3,5", "< 45 cm/s", "> 0,15"],
+          ["Alto risco", "> 300 cm/s", "> 3,5", "> 45 cm/s", "< 0,15"],
+          ["Risco moderado", "180–300 cm/s", "> 2,0", "> 45 cm/s", "< 0,15"],
+          ["Baixo risco", "< 180 cm/s", "< 2,0", "> 45 cm/s", "< 0,15"]
+        ]
+      },
+      {
+        "title": "Sítio de angioplastia femoropoplítea",
+        "source": "UCSD — resumido na diretriz SVS 2018",
+        "collapsible": true,
+        "defaultOpen": false,
+        "rows": [
+          ["Estenose", "VPS", "Razão VPS", "VDF", "Onda distal"],
+          ["< 50%", "< 180 cm/s", "< 2,0", "—", "Preservada"],
+          ["> 50%", "180–300 cm/s", "2,0–3,5", "> 0", "Monofásica"],
+          ["> 70%", "> 300 cm/s", "> 3,5", "> 45 cm/s", "Amortecida e monofásica"],
+          ["Oclusão", "Ausência de fluxo", "—", "Ausência de fluxo", "Amortecida e monofásica"]
+        ]
+      },
+      {
+        "title": "Reestenose intrastent na artéria femoral superficial",
+        "source": "Baril et al. 2009",
+        "collapsible": true,
+        "defaultOpen": false,
+        "rows": [
+          ["Estenose", "VPS intrastent", "VPS intrastent / VPS proximal"],
+          ["≥ 50%", "≥ 190 cm/s", "≥ 1,5"],
+          ["≥ 80%", "≥ 275 cm/s", "≥ 3,5"]
+        ]
+      }
+    ],
+    "footnotes": [
+      "Os limiares variam com o tipo e o segmento da intervenção. A calculadora mostra cada fonte separadamente e não substitui a comparação com o exame basal."
+    ],
+    "refs": [
+      "Zierler RE, Jordan WD, Lal BK, et al. The Society for Vascular Surgery practice guidelines on follow-up after vascular surgery arterial procedures. J Vasc Surg. 2018;68(1):256-284. doi:10.1016/j.jvs.2018.04.018.",
+      "Westerband A, Mills JL, Kistler S, Berman SS, Hunter GC, Marek JM. Prospective validation of threshold criteria for intervention in infrainguinal vein grafts undergoing duplex surveillance. Ann Vasc Surg. 1997;11(1):44-48. doi:10.1007/s100169900008.",
+      "Baril DT, Rhee RY, Kim J, Makaroun MS, Chaer RA, Marone LK. Duplex criteria for determination of in-stent stenosis after angioplasty and stenting of the superficial femoral artery. J Vasc Surg. 2009;49(1):133-139. doi:10.1016/j.jvs.2008.09.046."
+    ]
+  },
+  {
+    "id": "doppler-aneurisma-pseudoaneurisma-mmii",
+    "group": "Doppler",
+    "region": "Membros inferiores",
+    "name": "Doppler de Aneurisma e Pseudoaneurisma",
+    "abbr": "ANEUR",
+    "iconKey": "drop",
+    "tables": [
+      {
+        "title": "Aneurisma arterial periférico",
+        "source": "ESC 2024 / DIC-SBC 2019",
+        "rows": [
+          ["Parâmetro", "Referência"],
+          ["Definição", "Diâmetro > 1,5 vez o esperado para a artéria"],
+          ["Diâmetro máximo", "Medida de parede externa a parede externa"],
+          ["Planos", "Maior diâmetro anteroposterior ou transversal"],
+          ["Trombo mural", "Presença e extensão"],
+          ["Canal pérvio", "Diâmetro e fluxo"],
+          ["Repercussão arterial", "Estenose, oclusão ou alteração do fluxo distal"],
+          ["Runoff distal", "Perviedade das artérias de perna"]
+        ]
+      },
+      {
+        "title": "Pseudoaneurisma",
+        "source": "DIC/SBC 2019",
+        "rows": [
+          ["Parâmetro", "Achado de referência"],
+          ["Parede", "Dilatação sem todas as camadas da parede arterial"],
+          ["Comunicação", "Colo entre o saco e o lúmen da artéria"],
+          ["Doppler no colo", "Padrão to-and-fro"],
+          ["Doppler no saco", "Fluxo bidirecional em redemoinho; pode haver trombo parcial"],
+          ["Medidas essenciais", "Saco, colo, lúmen pérvio e trombo"],
+          ["Artéria nativa", "Perviedade e fluxo distal"],
+          ["Achado associado", "Pesquisar fístula arteriovenosa"]
+        ]
+      }
+    ],
+    "footnotes": [
+      "No aneurisma poplíteo, diâmetro máximo, trombo mural, alterações do fluxo e runoff distal são os elementos mais úteis para o relatório."
+    ],
+    "refs": [
+      "2024 ESC Guidelines for the management of peripheral arterial and aortic diseases. Eur Heart J. 2024;45(36):3538-3700. doi:10.1093/eurheartj/ehae179.",
+      "Santos SN, Alcantara ML, Freire CMV, et al. Vascular Ultrasound Statement from the Department of Cardiovascular Imaging of the Brazilian Society of Cardiology — 2019. Arq Bras Cardiol. 2019;112(6):809-849. doi:10.5935/abc.20190106.",
+      "Bellomo TR, Goudot G, Gaston B, et al. Popliteal artery aneurysm ultrasound criteria for reporting characteristics. Vasc Med. 2024;29(1):58-63. doi:10.1177/1358863X231215781."
+    ]
+  },
+  {
+    "id": "doppler-aprisionamento-poplitea",
+    "group": "Doppler",
+    "region": "Membros inferiores",
+    "name": "Doppler para Aprisionamento da Artéria Poplítea",
+    "abbr": "SAAP",
+    "iconKey": "drop",
+    "tables": [
+      {
+        "title": "Achados dinâmicos",
+        "source": "IUA 2023",
+        "rows": [
+          ["Achado", "Interpretação"],
+          ["Fluxo preservado em repouso e na provocação", "Sem compressão dinâmica demonstrável"],
+          ["Aceleração focal e turbulência apenas na provocação", "Estenose dinâmica"],
+          ["Desaparecimento transitório do fluxo na provocação", "Oclusão dinâmica"],
+          ["Estenose ou oclusão persistente em repouso", "Lesão arterial fixa associada"],
+          ["Aneurisma, trombo mural ou embolização distal", "Complicação arterial"],
+          ["Compressão simultânea da veia poplítea", "Componente venoso associado"]
+        ]
+      },
+      {
+        "title": "Classificação anatômica de Rich modificada",
+        "source": "Referência anatômica tradicional",
+        "rows": [
+          ["Tipo", "Relação anatômica"],
+          ["I", "Trajeto medial anômalo da artéria; gastrocnêmio medial normal"],
+          ["II", "Inserção lateral anômala da cabeça medial do gastrocnêmio desloca a artéria"],
+          ["III", "Feixe muscular ou fibroso acessório envolve e comprime a artéria"],
+          ["IV", "Artéria em posição profunda, comprimida pelo poplíteo ou por banda fibrosa"],
+          ["V", "Aprisionamento simultâneo da artéria e da veia"],
+          ["VI", "Compressão funcional por hipertrofia muscular, sem anomalia anatômica fixa"]
+        ]
+      }
+    ],
+    "footnotes": [
+      "Compressão à provocação isoladamente não confirma a síndrome: deve haver correlação com sintomas e com a anatomia. Não existe limiar velocimétrico universal validado."
+    ],
+    "refs": [
+      "D’Oria M, Zlatanovic P, Anthony A, et al. International Union of Angiology consensus document on vascular compression syndromes. Int Angiol. 2023;42(4):282-309. doi:10.23736/S0392-9590.23.05100-3.",
+      "Rangel Villalobos E, Busquier Cerdán T, Cortés Sañudo X, et al. Vascular compression syndromes: the value of Doppler ultrasonography. Radiologia (Engl Ed). 2022;64(1):17-25. doi:10.1016/j.rxeng.2021.08.001.",
+      "Jayaraj A, Gloviczki P, Duncan AA, et al. Popliteal entrapment syndrome—The case for a new classification. Vascular. 2022;30(2):285-291. doi:10.1177/17085381211007612."
+    ]
+  }
+]
