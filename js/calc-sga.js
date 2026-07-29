@@ -185,7 +185,7 @@ function calcSgaHTML(){
       </div>
       <div id="sga-out"></div>
     </div>
-    <div class="note" style="margin:0 2px 12px">⚠️ <span>Rastreio do 1º trimestre — não é diagnóstico. Estima o risco de recém-nascido PIG (peso < percentil). Resultado a validar contra a fonte antes do uso clínico.</span></div>
+    <div class="note" style="margin:0 2px 12px">⚠️ <span>Rastreio do 1º trimestre — não é diagnóstico. Estima o risco de recém-nascido PIG (peso abaixo do percentil). Os biomarcadores entram como MoM (calculados no seu serviço) e o resultado pode variar levemente em relação à calculadora online da FMF. Validar contra a fonte antes do uso clínico.</span></div>
     <div class="ti-card"><div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${SGA_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>

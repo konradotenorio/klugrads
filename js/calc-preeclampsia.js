@@ -149,7 +149,7 @@ function calcPreeclampsiaHTML(){
       </div>
       <div id="pe-out"></div>
     </div>
-    <div class="note" style="margin:0 2px 12px">⚠️ <span>Rastreio do 1º trimestre — não é diagnóstico. Estima o risco de pré-eclâmpsia pré-termo (parto < 37 semanas). Resultado a validar contra a fonte antes do uso clínico.</span></div>
+    <div class="note" style="margin:0 2px 12px">⚠️ <span>Rastreio do 1º trimestre — não é diagnóstico. Estima o risco de pré-eclâmpsia pré-termo (parto antes de 37 semanas). Resultado a validar contra a fonte antes do uso clínico.</span></div>
     <div class="ti-card"><div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${PE_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
