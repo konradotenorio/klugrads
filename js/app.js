@@ -166,37 +166,47 @@ function hydrate(items){
     return d;
   });
 }
-function mergeWithSeed(items){
-  const incoming=Array.isArray(items)?items:[];
-  const seed=Array.isArray(window.SEED_DATA)?window.SEED_DATA:[];
-  const incomingIds=new Set(incoming.map(item=>item&&item.id).filter(Boolean));
-  return incoming.concat(seed.filter(item=>item&&item.id&&!incomingIds.has(item.id)));
-}
+// Sem seed embarcado: o conteúdo é do assinante, não do navegador. O que
+// existe é um cache da última carga, para a tela não piscar em branco —
+// e ele é apagado assim que o acesso deixa de valer (ver js/sessao.js).
 function initialData(){
-  try{ const c=localStorage.getItem('ultraref_data'); if(c){ const a=JSON.parse(c); if(Array.isArray(a)&&a.length) return mergeWithSeed(a); } }catch(_){}
-  return window.SEED_DATA || [];
+  try{ const c=localStorage.getItem('ultraref_data'); if(c){ const a=JSON.parse(c); if(Array.isArray(a)&&a.length) return a; } }catch(_){}
+  return [];
 }
 let DATA = hydrate(initialData());
 
+// Distingue três situações que antes eram uma só ("deu ruim"):
+//   {itens}        — veio conteúdo
+//   'sem-acesso'   — autenticou, mas a assinatura não cobre (RLS devolve 0)
+//   null           — falha de rede; mantém o que já estava em tela
 async function loadFromSupabase(){
   const cfg = window.CONFIG || {};
   if(cfg.USE_SUPABASE === false) return null;
   if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY) return null;
+
+  const sessao = await KlugSessao.valida();
+  if(!sessao) return 'sem-sessao';
+
   const url = `${cfg.SUPABASE_URL}/rest/v1/${cfg.TABLE||'referencias'}?select=conteudo&order=sort_order.asc`;
   try{
-    const res = await fetch(url, { headers:{ apikey:cfg.SUPABASE_ANON_KEY, Authorization:`Bearer ${cfg.SUPABASE_ANON_KEY}` }});
+    const res = await fetch(url, { headers:{ apikey:cfg.SUPABASE_ANON_KEY, Authorization:`Bearer ${sessao.access_token}` }});
+    if(res.status===401 || res.status===403) return 'sem-sessao';
     if(!res.ok) return null;
     const rows = await res.json();
     const items = (Array.isArray(rows)?rows:[]).map(r=>r&&r.conteudo).filter(Boolean);
-    return items.length ? items : null;
+    // Lista vazia com HTTP 200 é a resposta do RLS a quem não assina:
+    // a consulta é válida, só não há linha visível para este usuário.
+    return items.length ? items : 'sem-acesso';
   }catch(_){ return null; }
 }
+
 async function syncData(){
   const remote = await loadFromSupabase();
-  if(!remote) return;
-  const merged=mergeWithSeed(remote);
-  DATA = hydrate(merged);
-  try{ localStorage.setItem('ultraref_data', JSON.stringify(merged)); }catch(_){}
+  if(remote === null) return;                       // rede caiu; segue com o cache
+  if(remote === 'sem-sessao'){ KlugSessao.paraLogin('sessao'); return; }
+  if(remote === 'sem-acesso'){ KlugSessao.paraLogin('assinatura'); return; }
+  DATA = hydrate(remote);
+  try{ localStorage.setItem('ultraref_data', JSON.stringify(remote)); }catch(_){}
   render(true);
 }
 
@@ -1513,7 +1523,13 @@ function toggleInList(listId, itemId){
 }
 
 /* ---- BOOT ---- */
-loadState();
-render();
-syncData();
+// /app é área de assinante. A sessão é conferida ANTES de montar a tela:
+// renderizar primeiro e checar depois mostraria a casca do app (e o
+// conteúdo em cache) a quem já não tem direito, mesmo que por um instante.
+KlugSessao.exigir().then(function(sessao){
+  if(!sessao) return;              // exigir() já redirecionou para /login
+  loadState();
+  render();
+  syncData();
+});
 if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{})); }

@@ -204,7 +204,18 @@
   $('aba-entrar').addEventListener('click', function () { trocarAba('entrar'); });
   $('aba-criar').addEventListener('click', function () { trocarAba('criar'); });
 
-  if (new URLSearchParams(location.search).get('modo') === 'cadastro') trocarAba('criar');
+  var params = new URLSearchParams(location.search);
+  if (params.get('modo') === 'cadastro') trocarAba('criar');
+
+  // O /app manda de volta para cá com o motivo. Sem isso a pessoa é
+  // deslogada sem explicação e acha que o app quebrou — em especial no
+  // caso de assinatura vencida, que não é erro nenhum.
+  var MOTIVOS = {
+    sessao: 'Sua sessão expirou. Entre novamente para continuar.',
+    assinatura: 'Seu acesso ao conteúdo terminou. Renove a assinatura para voltar a usar o KlugRads.',
+    outro_dispositivo: 'Sua conta foi aberta em outro aparelho. Entre de novo para usar aqui.'
+  };
+  if (MOTIVOS[params.get('motivo')]) mostrarAviso(MOTIVOS[params.get('motivo')]);
 
   /* ===================== validação do cadastro ===================== */
 
