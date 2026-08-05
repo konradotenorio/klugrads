@@ -229,7 +229,11 @@ const LANGS = [['pt','Português'],['en','English'],['es','Español']];
 
 /* ---- Termos de Uso e Responsabilidade (texto próprio do KlugRads, 3 idiomas) ----
    Ao alterar o conteúdo, suba TERMS_VERSION para reexibir o aceite a todos. */
-const TERMS_VERSION = '1';
+// v2 (05/08/2026): o app passou a ter conta e assinatura. A versão anterior
+// afirmava que nenhum dado ia para servidores nossos — verdade enquanto o
+// app era aberto, falsa a partir do cadastro de CPF e CRM. Subir a versão
+// reexibe o aceite a quem já havia aceitado o texto antigo.
+const TERMS_VERSION = '2';
 const TERMS = {
   pt:{
     title:'Termos de Uso e Responsabilidade',
@@ -238,7 +242,9 @@ const TERMS = {
       ['Finalidade educacional','O KlugRads é uma ferramenta de referência e educação. Não fornece diagnóstico nem conduta e não substitui o julgamento clínico do profissional.'],
       ['Responsabilidade do usuário','Todas as decisões clínicas são de sua inteira responsabilidade. Confira valores e fórmulas nas fontes originais antes de aplicá-los.'],
       ['Uso profissional','Destinado a profissionais de saúde e estudantes da área. Você declara ser maior de 18 anos.'],
-      ['Dados e privacidade','Os dados que você insere ficam somente no seu aparelho; não são enviados a servidores do KlugRads. Você é responsável por obter o consentimento dos pacientes cujos dados venha a inserir.'],
+      ['Conta e dados pessoais','Para criar sua conta coletamos nome, CPF, telefone, e-mail e, quando informado, CRM e UF. Usamos esses dados apenas para identificar você, manter a conta e controlar o acesso à assinatura — não vendemos nem cedemos a terceiros. Ficam guardados em servidores da Supabase. Você pode pedir acesso, correção ou exclusão a qualquer momento pelo e-mail de contato.'],
+      ['Dados clínicos que você digita','Valores de exame e medidas que você insere nas calculadoras continuam somente no seu aparelho e não são enviados aos nossos servidores. Você é responsável por obter o consentimento dos pacientes cujos dados venha a inserir.'],
+      ['Assinatura e uso da conta','O acesso ao conteúdo depende de assinatura vigente, incluído o período de teste. A conta é pessoal e intransferível: pode ser usada em um aparelho por vez — ao entrar em outro, a sessão anterior é encerrada. Trocar de aparelho é livre; o uso simultâneo, não.'],
       ['Sem garantias','O conteúdo é fornecido "como está", sem garantia de disponibilidade, exatidão ou atualização. O uso é por sua conta e risco.'],
       ['Conteúdo de terceiros','Fórmulas e referências pertencem aos seus autores e são citadas para fins educacionais.'],
     ],
@@ -257,7 +263,9 @@ const TERMS = {
       ['Educational purpose','KlugRads is a reference and education tool. It does not provide diagnosis or management and does not replace the professional\'s clinical judgment.'],
       ['User responsibility','All clinical decisions are entirely your responsibility. Check values and formulas against the original sources before applying them.'],
       ['Professional use','Intended for healthcare professionals and students in the field. You declare that you are 18 or older.'],
-      ['Data and privacy','The data you enter stays only on your device; it is not sent to KlugRads servers. You are responsible for obtaining consent from the patients whose data you enter.'],
+      ['Account and personal data','To create your account we collect name, national ID (CPF), phone, e-mail and, when provided, medical licence number and state. We use this only to identify you, maintain the account and control subscription access — we do not sell or share it with third parties. It is stored on Supabase servers. You may request access, correction or deletion at any time through the contact e-mail.'],
+      ['Clinical data you enter','Exam values and measurements you type into the calculators stay only on your device and are not sent to our servers. You are responsible for obtaining consent from the patients whose data you enter.'],
+      ['Subscription and account use','Access to the content requires an active subscription, including the trial period. The account is personal and non-transferable: it can be used on one device at a time — signing in on another ends the previous session. Switching devices is free; simultaneous use is not.'],
       ['No warranties','Content is provided "as is", with no guarantee of availability, accuracy or timeliness. Use is at your own risk.'],
       ['Third-party content','Formulas and references belong to their authors and are cited for educational purposes.'],
     ],
@@ -276,7 +284,9 @@ const TERMS = {
       ['Finalidad educativa','KlugRads es una herramienta de referencia y educación. No proporciona diagnóstico ni conducta y no sustituye el juicio clínico del profesional.'],
       ['Responsabilidad del usuario','Todas las decisiones clínicas son de su entera responsabilidad. Verifique valores y fórmulas en las fuentes originales antes de aplicarlos.'],
       ['Uso profesional','Destinado a profesionales de la salud y estudiantes del área. Usted declara ser mayor de 18 años.'],
-      ['Datos y privacidad','Los datos que ingresa permanecen solo en su dispositivo; no se envían a servidores de KlugRads. Usted es responsable de obtener el consentimiento de los pacientes cuyos datos ingrese.'],
+      ['Cuenta y datos personales','Para crear su cuenta recopilamos nombre, documento (CPF), teléfono, correo electrónico y, cuando se informa, número de colegiatura médica y estado. Usamos estos datos solo para identificarlo, mantener la cuenta y controlar el acceso a la suscripción — no los vendemos ni cedemos a terceros. Se guardan en servidores de Supabase. Puede solicitar acceso, corrección o eliminación en cualquier momento por el correo de contacto.'],
+      ['Datos clínicos que usted ingresa','Los valores de examen y medidas que escribe en las calculadoras permanecen solo en su dispositivo y no se envían a nuestros servidores. Usted es responsable de obtener el consentimiento de los pacientes cuyos datos ingrese.'],
+      ['Suscripción y uso de la cuenta','El acceso al contenido requiere una suscripción vigente, incluido el período de prueba. La cuenta es personal e intransferible: puede usarse en un dispositivo a la vez — al entrar en otro, la sesión anterior se cierra. Cambiar de dispositivo es libre; el uso simultáneo, no.'],
       ['Sin garantías','El contenido se ofrece "tal cual", sin garantía de disponibilidad, exactitud o actualización. El uso es bajo su propio riesgo.'],
       ['Contenido de terceros','Las fórmulas y referencias pertenecen a sus autores y se citan con fines educativos.'],
     ],
@@ -1531,5 +1541,9 @@ KlugSessao.exigir().then(function(sessao){
   loadState();
   render();
   syncData();
+  // Assume a sessão para este aparelho (derrubando qualquer outro) e passa
+  // a vigiar. A ordem importa: assumir primeiro, senão a própria vigilância
+  // veria "inexistente" e ficaria conferindo à toa.
+  KlugSessao.assumirAparelho().then(function(){ KlugSessao.vigiarAparelho(); });
 });
 if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{})); }
