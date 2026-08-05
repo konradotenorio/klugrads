@@ -166,37 +166,47 @@ function hydrate(items){
     return d;
   });
 }
-function mergeWithSeed(items){
-  const incoming=Array.isArray(items)?items:[];
-  const seed=Array.isArray(window.SEED_DATA)?window.SEED_DATA:[];
-  const incomingIds=new Set(incoming.map(item=>item&&item.id).filter(Boolean));
-  return incoming.concat(seed.filter(item=>item&&item.id&&!incomingIds.has(item.id)));
-}
+// Sem seed embarcado: o conteúdo é do assinante, não do navegador. O que
+// existe é um cache da última carga, para a tela não piscar em branco —
+// e ele é apagado assim que o acesso deixa de valer (ver js/sessao.js).
 function initialData(){
-  try{ const c=localStorage.getItem('ultraref_data'); if(c){ const a=JSON.parse(c); if(Array.isArray(a)&&a.length) return mergeWithSeed(a); } }catch(_){}
-  return window.SEED_DATA || [];
+  try{ const c=localStorage.getItem('ultraref_data'); if(c){ const a=JSON.parse(c); if(Array.isArray(a)&&a.length) return a; } }catch(_){}
+  return [];
 }
 let DATA = hydrate(initialData());
 
+// Distingue três situações que antes eram uma só ("deu ruim"):
+//   {itens}        — veio conteúdo
+//   'sem-acesso'   — autenticou, mas a assinatura não cobre (RLS devolve 0)
+//   null           — falha de rede; mantém o que já estava em tela
 async function loadFromSupabase(){
   const cfg = window.CONFIG || {};
   if(cfg.USE_SUPABASE === false) return null;
   if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY) return null;
+
+  const sessao = await KlugSessao.valida();
+  if(!sessao) return 'sem-sessao';
+
   const url = `${cfg.SUPABASE_URL}/rest/v1/${cfg.TABLE||'referencias'}?select=conteudo&order=sort_order.asc`;
   try{
-    const res = await fetch(url, { headers:{ apikey:cfg.SUPABASE_ANON_KEY, Authorization:`Bearer ${cfg.SUPABASE_ANON_KEY}` }});
+    const res = await fetch(url, { headers:{ apikey:cfg.SUPABASE_ANON_KEY, Authorization:`Bearer ${sessao.access_token}` }});
+    if(res.status===401 || res.status===403) return 'sem-sessao';
     if(!res.ok) return null;
     const rows = await res.json();
     const items = (Array.isArray(rows)?rows:[]).map(r=>r&&r.conteudo).filter(Boolean);
-    return items.length ? items : null;
+    // Lista vazia com HTTP 200 é a resposta do RLS a quem não assina:
+    // a consulta é válida, só não há linha visível para este usuário.
+    return items.length ? items : 'sem-acesso';
   }catch(_){ return null; }
 }
+
 async function syncData(){
   const remote = await loadFromSupabase();
-  if(!remote) return;
-  const merged=mergeWithSeed(remote);
-  DATA = hydrate(merged);
-  try{ localStorage.setItem('ultraref_data', JSON.stringify(merged)); }catch(_){}
+  if(remote === null) return;                       // rede caiu; segue com o cache
+  if(remote === 'sem-sessao'){ KlugSessao.paraLogin('sessao'); return; }
+  if(remote === 'sem-acesso'){ KlugSessao.paraLogin('assinatura'); return; }
+  DATA = hydrate(remote);
+  try{ localStorage.setItem('ultraref_data', JSON.stringify(remote)); }catch(_){}
   render(true);
 }
 
@@ -219,7 +229,11 @@ const LANGS = [['pt','Português'],['en','English'],['es','Español']];
 
 /* ---- Termos de Uso e Responsabilidade (texto próprio do KlugRads, 3 idiomas) ----
    Ao alterar o conteúdo, suba TERMS_VERSION para reexibir o aceite a todos. */
-const TERMS_VERSION = '1';
+// v2 (05/08/2026): o app passou a ter conta e assinatura. A versão anterior
+// afirmava que nenhum dado ia para servidores nossos — verdade enquanto o
+// app era aberto, falsa a partir do cadastro de CPF e CRM. Subir a versão
+// reexibe o aceite a quem já havia aceitado o texto antigo.
+const TERMS_VERSION = '2';
 const TERMS = {
   pt:{
     title:'Termos de Uso e Responsabilidade',
@@ -228,7 +242,9 @@ const TERMS = {
       ['Finalidade educacional','O KlugRads é uma ferramenta de referência e educação. Não fornece diagnóstico nem conduta e não substitui o julgamento clínico do profissional.'],
       ['Responsabilidade do usuário','Todas as decisões clínicas são de sua inteira responsabilidade. Confira valores e fórmulas nas fontes originais antes de aplicá-los.'],
       ['Uso profissional','Destinado a profissionais de saúde e estudantes da área. Você declara ser maior de 18 anos.'],
-      ['Dados e privacidade','Os dados que você insere ficam somente no seu aparelho; não são enviados a servidores do KlugRads. Você é responsável por obter o consentimento dos pacientes cujos dados venha a inserir.'],
+      ['Conta e dados pessoais','Para criar sua conta coletamos nome, CPF, telefone, e-mail e, quando informado, CRM e UF. Usamos esses dados apenas para identificar você, manter a conta e controlar o acesso à assinatura — não vendemos nem cedemos a terceiros. Ficam guardados em servidores da Supabase. Você pode pedir acesso, correção ou exclusão a qualquer momento pelo e-mail de contato.'],
+      ['Dados clínicos que você digita','Valores de exame e medidas que você insere nas calculadoras continuam somente no seu aparelho e não são enviados aos nossos servidores. Você é responsável por obter o consentimento dos pacientes cujos dados venha a inserir.'],
+      ['Assinatura e uso da conta','O acesso ao conteúdo depende de assinatura vigente, incluído o período de teste. A conta é pessoal e intransferível: pode ser usada em um aparelho por vez — ao entrar em outro, a sessão anterior é encerrada. Trocar de aparelho é livre; o uso simultâneo, não.'],
       ['Sem garantias','O conteúdo é fornecido "como está", sem garantia de disponibilidade, exatidão ou atualização. O uso é por sua conta e risco.'],
       ['Conteúdo de terceiros','Fórmulas e referências pertencem aos seus autores e são citadas para fins educacionais.'],
     ],
@@ -247,7 +263,9 @@ const TERMS = {
       ['Educational purpose','KlugRads is a reference and education tool. It does not provide diagnosis or management and does not replace the professional\'s clinical judgment.'],
       ['User responsibility','All clinical decisions are entirely your responsibility. Check values and formulas against the original sources before applying them.'],
       ['Professional use','Intended for healthcare professionals and students in the field. You declare that you are 18 or older.'],
-      ['Data and privacy','The data you enter stays only on your device; it is not sent to KlugRads servers. You are responsible for obtaining consent from the patients whose data you enter.'],
+      ['Account and personal data','To create your account we collect name, national ID (CPF), phone, e-mail and, when provided, medical licence number and state. We use this only to identify you, maintain the account and control subscription access — we do not sell or share it with third parties. It is stored on Supabase servers. You may request access, correction or deletion at any time through the contact e-mail.'],
+      ['Clinical data you enter','Exam values and measurements you type into the calculators stay only on your device and are not sent to our servers. You are responsible for obtaining consent from the patients whose data you enter.'],
+      ['Subscription and account use','Access to the content requires an active subscription, including the trial period. The account is personal and non-transferable: it can be used on one device at a time — signing in on another ends the previous session. Switching devices is free; simultaneous use is not.'],
       ['No warranties','Content is provided "as is", with no guarantee of availability, accuracy or timeliness. Use is at your own risk.'],
       ['Third-party content','Formulas and references belong to their authors and are cited for educational purposes.'],
     ],
@@ -266,7 +284,9 @@ const TERMS = {
       ['Finalidad educativa','KlugRads es una herramienta de referencia y educación. No proporciona diagnóstico ni conducta y no sustituye el juicio clínico del profesional.'],
       ['Responsabilidad del usuario','Todas las decisiones clínicas son de su entera responsabilidad. Verifique valores y fórmulas en las fuentes originales antes de aplicarlos.'],
       ['Uso profesional','Destinado a profesionales de la salud y estudiantes del área. Usted declara ser mayor de 18 años.'],
-      ['Datos y privacidad','Los datos que ingresa permanecen solo en su dispositivo; no se envían a servidores de KlugRads. Usted es responsable de obtener el consentimiento de los pacientes cuyos datos ingrese.'],
+      ['Cuenta y datos personales','Para crear su cuenta recopilamos nombre, documento (CPF), teléfono, correo electrónico y, cuando se informa, número de colegiatura médica y estado. Usamos estos datos solo para identificarlo, mantener la cuenta y controlar el acceso a la suscripción — no los vendemos ni cedemos a terceros. Se guardan en servidores de Supabase. Puede solicitar acceso, corrección o eliminación en cualquier momento por el correo de contacto.'],
+      ['Datos clínicos que usted ingresa','Los valores de examen y medidas que escribe en las calculadoras permanecen solo en su dispositivo y no se envían a nuestros servidores. Usted es responsable de obtener el consentimiento de los pacientes cuyos datos ingrese.'],
+      ['Suscripción y uso de la cuenta','El acceso al contenido requiere una suscripción vigente, incluido el período de prueba. La cuenta es personal e intransferible: puede usarse en un dispositivo a la vez — al entrar en otro, la sesión anterior se cierra. Cambiar de dispositivo es libre; el uso simultáneo, no.'],
       ['Sin garantías','El contenido se ofrece "tal cual", sin garantía de disponibilidad, exactitud o actualización. El uso es bajo su propio riesgo.'],
       ['Contenido de terceros','Las fórmulas y referencias pertenecen a sus autores y se citan con fines educativos.'],
     ],
@@ -1513,7 +1533,17 @@ function toggleInList(listId, itemId){
 }
 
 /* ---- BOOT ---- */
-loadState();
-render();
-syncData();
+// /app é área de assinante. A sessão é conferida ANTES de montar a tela:
+// renderizar primeiro e checar depois mostraria a casca do app (e o
+// conteúdo em cache) a quem já não tem direito, mesmo que por um instante.
+KlugSessao.exigir().then(function(sessao){
+  if(!sessao) return;              // exigir() já redirecionou para /login
+  loadState();
+  render();
+  syncData();
+  // Assume a sessão para este aparelho (derrubando qualquer outro) e passa
+  // a vigiar. A ordem importa: assumir primeiro, senão a própria vigilância
+  // veria "inexistente" e ficaria conferindo à toa.
+  KlugSessao.assumirAparelho().then(function(){ KlugSessao.vigiarAparelho(); });
+});
 if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{})); }
