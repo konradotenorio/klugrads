@@ -33926,5 +33926,366 @@
    "Rangel Villalobos E, Busquier Cerdán T, Cortés Sañudo X, et al. Vascular compression syndromes: the value of Doppler ultrasonography. Radiologia (Engl Ed). 2022;64(1):17-25. doi:10.1016/j.rxeng.2021.08.001.",
    "Jayaraj A, Gloviczki P, Duncan AA, et al. Popliteal entrapment syndrome—The case for a new classification. Vascular. 2022;30(2):285-291. doi:10.1177/17085381211007612."
   ]
+ },
+ {
+  "id": "doppler-arterial-membros-superiores",
+  "group": "Doppler",
+  "region": "Membros superiores",
+  "name": "Doppler Arterial de Membros Superiores",
+  "abbr": "DAMS",
+  "iconKey": "drop",
+  "calculator": {
+   "kind": "upper-limb-native-stenosis",
+   "title": "Razão de velocidades na estenose",
+   "source": "Critérios periféricos convencionais"
+  },
+  "tables": [
+   {
+    "title": "Estenose em artérias nativas",
+    "source": "Radiologia Online — critérios periféricos extrapolados",
+    "collapsible": true,
+    "defaultOpen": true,
+    "rows": [
+     [
+      "Classificação",
+      "VPS",
+      "VPS estenose / VPS pré-estenose",
+      "Doppler colorido e espectral"
+     ],
+     [
+      "Normal",
+      "< 150 cm/s",
+      "< 1,5",
+      "Fluxo laminar; onda trifásica"
+     ],
+     [
+      "Estenose de 1–49%",
+      "150–200 cm/s",
+      "1,5–2,0",
+      "Onda trifásica; alargamento espectral progressivo"
+     ],
+     [
+      "Estenose de 50–75%",
+      "200–400 cm/s",
+      "2,0–4,0",
+      "Aliasing e turbulência; onda distal alterada"
+     ],
+     [
+      "Estenose > 75%",
+      "> 400 cm/s",
+      "> 4,0",
+      "Repercussão distal com padrão tardus-parvus"
+     ],
+     [
+      "Oclusão",
+      "Ausência de fluxo",
+      "—",
+      "Sem fluxo ao color e ao Doppler espectral"
+     ]
+    ]
+   },
+   {
+    "title": "Padrões de repercussão hemodinâmica",
+    "source": "DIC/SBC 2019 / Radiologia Online",
+    "rows": [
+     [
+      "Situação",
+      "Achado de referência"
+     ],
+     [
+      "Pré-oclusão",
+      "Alta resistência, VPS baixa e ausência de fluxo diastólico; pode haver padrão staccato"
+     ],
+     [
+      "Pós-estenose significativa",
+      "Redução da pulsatilidade e da amplitude; turbulência ou amortecimento"
+     ],
+     [
+      "Pós-oclusão com reenchimento colateral",
+      "Onda monofásica, VPS reduzida e tempo de aceleração prolongado"
+     ],
+     [
+      "Repercussão proximal importante",
+      "Padrão tardus-parvus nos segmentos distais"
+     ]
+    ]
+   }
+  ],
+  "footnotes": [
+   "Não há critérios de velocidade amplamente validados especificamente para as artérias dos membros superiores; o manual citado aplica convencionalmente os critérios periféricos dos membros inferiores. Correlacionar com a imagem em modo B e a repercussão distal."
+  ],
+  "refs": [
+   "Radiologia Online. Manual de Doppler — Doppler arterial periférico de membros inferiores e superiores. Disponível em: https://radiologia.online/manual-de-doppler/.",
+   "Santos SN, Alcantara ML, Freire CMV, et al. Vascular Ultrasound Statement from the Department of Cardiovascular Imaging of the Brazilian Society of Cardiology — 2019. Arq Bras Cardiol. 2019;112(6):809-849. doi:10.5935/abc.20190106."
+  ]
+ },
+ {
+  "id": "doppler-venoso-mmss-trombose",
+  "group": "Doppler",
+  "region": "Membros superiores",
+  "name": "Doppler Venoso de Membros Superiores — Pesquisa de Trombose",
+  "abbr": "TVP-MS",
+  "iconKey": "drop",
+  "tables": [
+   {
+    "title": "Achados de trombose venosa",
+    "source": "AIUM/ACR/SPR/SRU 2020 / DIC-SBC 2019",
+    "collapsible": true,
+    "defaultOpen": true,
+    "rows": [
+     [
+      "Parâmetro",
+      "Achado"
+     ],
+     [
+      "Compressibilidade",
+      "Ausência total ou parcial de colabamento venoso"
+     ],
+     [
+      "Modo B",
+      "Material intraluminal aderido ou móvel"
+     ],
+     [
+      "Doppler colorido",
+      "Falha parcial ou completa de preenchimento do lúmen"
+     ],
+     [
+      "Doppler espectral",
+      "Fluxo ausente ou reduzido no segmento acometido"
+     ],
+     [
+      "Extensão central",
+      "Perda ou assimetria da fasicidade respiratória, fluxo contínuo de baixa amplitude e colaterais"
+     ]
+    ]
+   },
+   {
+    "title": "Achados que favorecem a classificação temporal",
+    "source": "DIC/SBC 2019",
+    "rows": [
+     [
+      "Parâmetro",
+      "Trombose aguda",
+      "Alterações pós-trombóticas crônicas"
+     ],
+     [
+      "Calibre venoso",
+      "Frequentemente aumentado",
+      "Normal ou reduzido"
+     ],
+     [
+      "Conteúdo intraluminal",
+      "Hipoecoico ou de ecogenicidade variável",
+      "Mais ecogênico; bandas, sinequias ou calcificações"
+     ],
+     [
+      "Parede",
+      "Sem remodelamento crônico obrigatório",
+      "Espessada e irregular"
+     ],
+     [
+      "Fluxo",
+      "Ausente ou parcial",
+      "Canais de recanalização, colaterais ou fluxo contínuo"
+     ]
+    ]
+   },
+   {
+    "title": "Quando o Doppler inicial não encerra a investigação",
+    "source": "American Venous Forum 2026",
+    "rows": [
+     [
+      "Situação",
+      "Referência"
+     ],
+     [
+      "Suspeita clínica de TVP do membro superior",
+      "Doppler é o primeiro exame de imagem"
+     ],
+     [
+      "Suspeita de acometimento venoso central",
+      "Reconhecer menor sensibilidade e especificidade do Doppler"
+     ],
+     [
+      "Doppler negativo com alta suspeição persistente",
+      "Prosseguir com venografia por RM ou por TC"
+     ],
+     [
+      "Estudos não invasivos inconclusivos e intenção terapêutica endovascular",
+      "Considerar venografia por cateter"
+     ]
+    ]
+   },
+   {
+    "title": "Classificação etiológica da TVP do membro superior",
+    "source": "American Venous Forum 2026",
+    "rows": [
+     [
+      "Categoria",
+      "Contexto"
+     ],
+     [
+      "Associada à síndrome do desfiladeiro torácico venoso",
+      "Compressão costoclavicular; inclui síndrome de Paget–Schroetter"
+     ],
+     [
+      "Associada ao câncer",
+      "Neoplasia ativa, com ou sem dispositivo intravascular"
+     ],
+     [
+      "Não associada ao câncer",
+      "Relacionada ou não a cateter, marca-passo ou outro dispositivo"
+     ]
+    ]
+   }
+  ],
+  "footnotes": [
+   "As veias subclávia e braquiocefálica não são completamente acessíveis à compressão por sua localização; um Doppler negativo não exclui trombose ou obstrução central quando a suspeição permanece alta.",
+   "Quando a idade do trombo não puder ser definida com segurança, preferir o termo “indeterminado” em vez de “subagudo”."
+  ],
+  "refs": [
+   "Malgor RD, Etkin Y, Mouawad NJ, et al. The American Venous Forum clinical practice guideline on the care of patients with upper extremity deep venous thrombosis. J Vasc Surg Venous Lymphat Disord. 2026;14(4):102461. doi:10.1016/j.jvsv.2026.102461.",
+   "AIUM Practice Parameter for the Performance of a Peripheral Venous Ultrasound Examination. J Ultrasound Med. 2020;39(5):E49-E56. doi:10.1002/jum.15263.",
+   "Santos SN, Alcantara ML, Freire CMV, et al. Vascular Ultrasound Statement from the Department of Cardiovascular Imaging of the Brazilian Society of Cardiology — 2019. Arq Bras Cardiol. 2019;112(6):809-849. doi:10.5935/abc.20190106."
+  ]
+ },
+ {
+  "id": "doppler-desfiladeiro-toracico",
+  "group": "Doppler",
+  "region": "Membros superiores",
+  "name": "Doppler para Síndrome do Desfiladeiro Torácico",
+  "abbr": "SDT",
+  "iconKey": "drop",
+  "tables": [
+   {
+    "title": "Achados vasculares de referência",
+    "source": "SVS 2016 / Radiologia Online",
+    "collapsible": true,
+    "defaultOpen": true,
+    "rows": [
+     [
+      "Forma",
+      "Achados ao Doppler"
+     ],
+     [
+      "Venosa com trombose",
+      "Trombose axilossubclávia; a síndrome de Paget–Schroetter corresponde à TVP associada ao desfiladeiro venoso"
+     ],
+     [
+      "Venosa sem trombose",
+      "Redução ou interrupção posicional do fluxo, perda da fasicidade e colaterais; correlacionar com edema intermitente"
+     ],
+     [
+      "Arterial",
+      "Aceleração focal e aliasing no ponto de compressão, amortecimento ou interrupção do fluxo distal durante a manobra"
+     ],
+     [
+      "Neurogênica",
+      "O Doppler vascular não estabelece o diagnóstico; serve para excluir ou demonstrar componente vascular associado"
+     ]
+    ]
+   },
+   {
+    "title": "Complicações vasculares associadas",
+    "source": "SVS 2016",
+    "rows": [
+     [
+      "Sistema",
+      "Achados relevantes"
+     ],
+     [
+      "Arterial",
+      "Estenose fixa, dilatação pós-estenótica, aneurisma, trombo mural ou embolização distal"
+     ],
+     [
+      "Venoso",
+      "Trombose aguda, estenose ou oclusão crônica e circulação colateral"
+     ],
+     [
+      "Distal",
+      "Redução persistente da pulsatilidade ou oclusões compatíveis com fenômeno embólico"
+     ]
+    ]
+   }
+  ],
+  "footnotes": [
+   "Compressão ou perda do pulso observada apenas durante manobras posicionais pode ocorrer em indivíduos assintomáticos e não confirma isoladamente síndrome do desfiladeiro torácico; correlacionar com sintomas e lesão vascular objetiva."
+  ],
+  "refs": [
+   "Illig KA, Donahue D, Duncan A, et al. Reporting standards of the Society for Vascular Surgery for thoracic outlet syndrome. J Vasc Surg. 2016;64(3):e23-e35. doi:10.1016/j.jvs.2016.04.039.",
+   "Society for Vascular Surgery. Thoracic Outlet Syndrome. Disponível em: https://vascular.org/pmg/vascular-conditions/thoracic-outlet-syndrome.",
+   "Radiologia Online. Manual de Doppler — investigação de síndromes compressivas arteriais. Disponível em: https://radiologia.online/manual-de-doppler/."
+  ]
+ },
+ {
+  "id": "doppler-mapeamento-venoso-mmss",
+  "group": "Doppler",
+  "region": "Membros superiores",
+  "name": "Mapeamento Venoso Pré-operatório dos Membros Superiores",
+  "abbr": "MAP-V",
+  "iconKey": "drop",
+  "tables": [
+   {
+    "title": "Segmentos para registro do diâmetro",
+    "source": "Consenso CBR/SBACV 2019",
+    "collapsible": true,
+    "defaultOpen": true,
+    "rows": [
+     [
+      "Veia",
+      "Antebraço",
+      "Braço"
+     ],
+     [
+      "Cefálica",
+      "Distal, médio e proximal",
+      "Distal, médio e proximal"
+     ],
+     [
+      "Basílica",
+      "Distal, médio e proximal",
+      "Distal, médio e proximal"
+     ]
+    ]
+   },
+   {
+    "title": "Informações relevantes para o planejamento",
+    "source": "Consenso CBR/SBACV 2019 / AIUM 2020",
+    "rows": [
+     [
+      "Parâmetro",
+      "Registro"
+     ],
+     [
+      "Diâmetro",
+      "Valor em milímetros em cada segmento"
+     ],
+     [
+      "Perviedade",
+      "Ausência ou presença de trombose e sua localização"
+     ],
+     [
+      "Parede",
+      "Espessamento, fibrose, calcificação ou alteração pós-trombótica"
+     ],
+     [
+      "Continuidade",
+      "Interrupções, duplicidades, variações anatômicas ou veia acessória calibrosa"
+     ],
+     [
+      "Trajeto",
+      "Segmentos tortuosos ou inadequados como conduto"
+     ]
+    ]
+   }
+  ],
+  "footnotes": [
+   "Para o registro do diâmetro funcional, o consenso recomenda garrote na raiz do membro.",
+   "Não há um diâmetro mínimo universal para adequação como conduto; o valor deve ser informado e interpretado conforme a cirurgia planejada. O mapeamento específico para fístula de hemodiálise terá critérios próprios na seção Hemodiálise."
+  ],
+  "refs": [
+   "Nardino EP, et al. Consenso sobre Duplex Scan (Ultrassom Doppler Colorido) para Avaliação da Doença Venosa Crônica dos Membros Inferiores. 1. ed. Rio de Janeiro: Guanabara Koogan; 2019.",
+   "AIUM Practice Parameter for the Performance of a Peripheral Venous Ultrasound Examination. J Ultrasound Med. 2020;39(5):E49-E56. doi:10.1002/jum.15263."
+  ]
  }
 ]

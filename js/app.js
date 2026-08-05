@@ -97,10 +97,10 @@ const DOPPLER_INDEX = [
   {region:'Membros inferiores', id:'doppler-aneurisma-pseudoaneurisma-mmii'},
   {region:'Membros inferiores', id:'doppler-aprisionamento-poplitea'},
 
-  {region:'Membros superiores', name:'Doppler arterial de membros superiores'},
-  {region:'Membros superiores', name:'Doppler venoso de membros superiores — pesquisa de trombose'},
-  {region:'Membros superiores', name:'Doppler para síndrome do desfiladeiro torácico'},
-  {region:'Membros superiores', name:'Mapeamento venoso pré-operatório'},
+  {region:'Membros superiores', id:'doppler-arterial-membros-superiores'},
+  {region:'Membros superiores', id:'doppler-venoso-mmss-trombose'},
+  {region:'Membros superiores', id:'doppler-desfiladeiro-toracico'},
+  {region:'Membros superiores', id:'doppler-mapeamento-venoso-mmss'},
 
   {region:'Aorta e vasos abdominais', name:'Doppler de aorta abdominal e artérias ilíacas'},
   {region:'Aorta e vasos abdominais', name:'Doppler para controle de endoprótese de aorta'},
@@ -801,15 +801,16 @@ function customCalculatorHTML(calc){
       <div id="reference-calc-output"></div>
     </div>`;
   }
-  if(calc.kind==='lower-limb-native-stenosis'){
+  if(calc.kind==='lower-limb-native-stenosis'||calc.kind==='upper-limb-native-stenosis'){
+    const fieldPrefix=calc.kind==='upper-limb-native-stenosis'?'uli':'lli';
     return `<div class="calc-wrap refcalc">
       <div class="calc-title">${esc(calc.title)}</div>
       <div class="calc-source">${esc(calc.source||'')}</div>
       <div class="refcalc-grid">
-        ${calcFieldHTML('lli-v2','VPS no ponto da lesão (V2)','cm/s')}
-        ${calcFieldHTML('lli-v1','VPS proximal à lesão (V1)','cm/s')}
+        ${calcFieldHTML(fieldPrefix+'-v2','VPS no ponto da lesão (V2)','cm/s')}
+        ${calcFieldHTML(fieldPrefix+'-v1','VPS proximal à lesão (V1)','cm/s')}
       </div>
-      <button class="calc-btn refcalc-btn" onclick="runReferenceCalculator('lower-limb-native-stenosis')">Calcular</button>
+      <button class="calc-btn refcalc-btn" onclick="runReferenceCalculator('${esc(calc.kind)}')">Calcular</button>
       <div id="reference-calc-output"></div>
     </div>`;
   }
@@ -924,29 +925,39 @@ function runReferenceCalculator(kind){
     </div>`);
     return;
   }
-  if(kind==='lower-limb-native-stenosis'){
-    const v2=calcNumber('lli-v2'), v1=calcNumber('lli-v1');
+  if(kind==='lower-limb-native-stenosis'||kind==='upper-limb-native-stenosis'){
+    const upper=kind==='upper-limb-native-stenosis';
+    const fieldPrefix=upper?'uli':'lli';
+    const v2=calcNumber(fieldPrefix+'-v2'), v1=calcNumber(fieldPrefix+'-v1');
     if(v2===null||v1===null||v2<0||v1<=0){
       renderReferenceCalc(calcErrorHTML('Preencha as duas velocidades; a VPS proximal deve ser maior que zero.'));
       return;
     }
     if(v2===0){
       renderReferenceCalc(`<div class="refcalc-result warn">
-        <div class="refcalc-result-kicker">DIC/SBC 2019</div>
+        <div class="refcalc-result-kicker">${upper?'Membro superior — critérios periféricos':'DIC/SBC 2019'}</div>
         <div class="refcalc-result-title">Não classificável automaticamente</div>
         <div class="refcalc-result-note">Velocidade zero isolada não confirma oclusão. Confira a ausência de fluxo com os ajustes apropriados.</div>
       </div>`);
       return;
     }
     const ratio=v2/v1;
-    let grade='< 50%';
-    if(ratio>=4) grade='≥ 70%';
-    else if(ratio>=2) grade='≥ 50% e < 70%';
+    let grade;
+    if(upper){
+      grade='Normal';
+      if(ratio>4) grade='> 75%';
+      else if(ratio>=2) grade='50–75%';
+      else if(ratio>=1.5) grade='1–49%';
+    } else {
+      grade='< 50%';
+      if(ratio>=4) grade='≥ 70%';
+      else if(ratio>=2) grade='≥ 50% e < 70%';
+    }
     renderReferenceCalc(`<div class="refcalc-result ok">
-      <div class="refcalc-result-kicker">Artéria nativa — DIC/SBC 2019</div>
+      <div class="refcalc-result-kicker">${upper?'Artéria do membro superior — critérios convencionais':'Artéria nativa — DIC/SBC 2019'}</div>
       <div class="refcalc-result-title">${esc(grade)}</div>
-      <div class="refcalc-metrics">${calcMetricHTML('Razão VPS V2 / V1',calcFmt(ratio,2))}</div>
-      <div class="refcalc-result-note">Classificação baseada somente na razão de velocidades; confronte com a morfologia e a curva distal.</div>
+      <div class="refcalc-metrics">${upper?calcMetricHTML('VPS na lesão',calcFmt(v2,0)+' cm/s'):''}${calcMetricHTML('Razão VPS V2 / V1',calcFmt(ratio,2))}</div>
+      <div class="refcalc-result-note">${upper?'Critérios periféricos extrapolados por falta de limiares específicos; confronte com a morfologia e a curva distal.':'Classificação baseada somente na razão de velocidades; confronte com a morfologia e a curva distal.'}</div>
     </div>`);
     return;
   }
