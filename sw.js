@@ -7,13 +7,19 @@
    - API do Supabase (/rest/v1): network-first; em falha, último bom cache.
    Suba a versão do CACHE ao publicar mudanças para forçar atualização.
    ========================================================================= */
-const VERSION = 'v0.9.9';
+const VERSION = 'v0.10.0';
 const APP_CACHE = `ultraref-app-${VERSION}`;
 const DATA_CACHE = `ultraref-data-${VERSION}`;
 
 const APP_SHELL = [
   '/',
   '/index.html',
+  '/app',
+  '/app.html',
+  '/login',
+  '/login.html',
+  '/js/landing.js',
+  '/js/auth.js',
   '/js/i18n.js',
   '/js/config.js',
   '/js/seed.js',
@@ -72,16 +78,20 @@ self.addEventListener('fetch', (event) => {
   // Apenas mesma origem daqui em diante.
   if (url.origin !== self.location.origin) return;
 
-  // Navegações (HTML): network-first -> cache -> index offline.
+  // Navegações (HTML): network-first -> cache da própria rota -> fallback.
+  // Guarda cada rota na sua própria chave: com landing (/), app (/app) e
+  // login (/login) servindo HTML diferente, gravar tudo em '/index.html'
+  // faria uma página sobrescrever a outra no cache.
   if (req.mode === 'navigate') {
+    const fallback = url.pathname.startsWith('/app') ? '/app.html' : '/index.html';
     event.respondWith(
       fetch(req).then((res) => {
         if (res && res.ok) {
           const copy = res.clone();
-          caches.open(APP_CACHE).then((c) => c.put('/index.html', copy)).catch(() => {});
+          caches.open(APP_CACHE).then((c) => c.put(req, copy)).catch(() => {});
         }
         return res;
-      }).catch(() => caches.match(req).then((r) => r || caches.match('/index.html')))
+      }).catch(() => caches.match(req).then((r) => r || caches.match(fallback)))
     );
     return;
   }
