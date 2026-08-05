@@ -1,6 +1,6 @@
 import fs from 'node:fs';
-const SUPA = 'https://ulmosuquzrkzsrmszexr.supabase.co';
-const KEY = 'sb_publishable_LmS-FkJRp6a2ReFp494d_Q_h6FuDAdp';
+const SUPA = 'https://mcqtxelqgvwomxhslqdq.supabase.co';
+const KEY = 'sb_publishable_tKekItUKXUYVnGgZulRmSg_mXDN48fq';
 globalThis.window = globalThis;
 await import('../js/seed.js');
 const seed = globalThis.SEED_DATA;

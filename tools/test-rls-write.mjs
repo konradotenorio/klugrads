@@ -1,6 +1,6 @@
 // Confirma que a chave publishable/anon NÃO consegue escrever (RLS bloqueia).
-const SUPA_URL = 'https://ulmosuquzrkzsrmszexr.supabase.co';
-const KEY = 'sb_publishable_LmS-FkJRp6a2ReFp494d_Q_h6FuDAdp';
+const SUPA_URL = 'https://mcqtxelqgvwomxhslqdq.supabase.co';
+const KEY = 'sb_publishable_tKekItUKXUYVnGgZulRmSg_mXDN48fq';
 
 const res = await fetch(`${SUPA_URL}/rest/v1/referencias`, {
   method: 'POST',

@@ -1,8 +1,8 @@
-// Re-seed pontual da tabela referencias com os 61 itens (modelo novo).
+// Re-seed pontual da tabela referencias com os itens do seed (modelo novo).
 // Requer a política de escrita temporária ATIVA. Roda via chave publishable.
 import fs from 'node:fs';
-const SUPA = 'https://ulmosuquzrkzsrmszexr.supabase.co';
-const KEY = 'sb_publishable_LmS-FkJRp6a2ReFp494d_Q_h6FuDAdp';
+const SUPA = 'https://mcqtxelqgvwomxhslqdq.supabase.co';
+const KEY = 'sb_publishable_tKekItUKXUYVnGgZulRmSg_mXDN48fq';
 const rows = JSON.parse(fs.readFileSync('/tmp/rows.json', 'utf8'));
 
 const res = await fetch(`${SUPA}/rest/v1/referencias`, {
