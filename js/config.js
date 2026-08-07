@@ -10,8 +10,8 @@ window.CONFIG = {
   SUPABASE_URL: 'https://mcqtxelqgvwomxhslqdq.supabase.co',
   SUPABASE_ANON_KEY: 'sb_publishable_tKekItUKXUYVnGgZulRmSg_mXDN48fq',
   TABLE: 'referencias',
-  // Supabase é a fonte editável (tabela `referencias`, 70 itens, modelo atual);
-  // o seed local (js/seed.js) é o fallback offline. Edite o conteúdo no painel
-  // do Supabase e ele reflete no app no próximo carregamento.
+  // O conteúdo vem SÓ do Supabase, com o usuário autenticado e assinatura
+  // vigente. Não há mais seed no cliente: db/seed.js é a fonte da verdade
+  // para popular o banco, e fica fora do que a Vercel publica.
   USE_SUPABASE: true
 };

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 const SUPA = 'https://mcqtxelqgvwomxhslqdq.supabase.co';
 const KEY = 'sb_publishable_tKekItUKXUYVnGgZulRmSg_mXDN48fq';
 globalThis.window = globalThis;
-await import('../js/seed.js');
+await import('../db/seed.js');
 const seed = globalThis.SEED_DATA;
 
 function canon(v){

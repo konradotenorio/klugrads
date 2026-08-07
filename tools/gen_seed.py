@@ -301,8 +301,8 @@ for curated_path in sorted(glob.glob(os.path.join(CURATED_DIR, '*.json'))):
 
 json.dump(items, open(os.path.join(BASE, 'items.generated.json'), 'w'), ensure_ascii=False, indent=1)
 
-# ---- emite js/seed.js (window.SEED_DATA) ----
-SEED_PATH = os.path.join(os.path.dirname(__file__), '..', 'js', 'seed.js')
+# ---- emite db/seed.js (window.SEED_DATA) — fora de js/, que vai para o ar ----
+SEED_PATH = os.path.join(os.path.dirname(__file__), '..', 'db', 'seed.js')
 header_comment = (
 "/* =========================================================================\n"
 "   RadRef — SEED de dados (fonte da verdade + fallback OFFLINE)\n"

@@ -12,6 +12,10 @@ db/
 tools/
 samples/
 
+# Rede de segurança: o seed já mora em db/, mas se algum dia voltar para js/
+# — pasta que PRECISA ir ao ar — ele não pode ser publicado junto.
+js/seed.js
+
 # Migrations e schema do banco
 supabase/
 
