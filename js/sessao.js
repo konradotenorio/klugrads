@@ -76,10 +76,31 @@ window.KlugSessao = (function () {
   }
 
   // Porteiro de /app: chamado antes de qualquer render.
+  //
+  // Confere a sessão CONTRA O SERVIDOR, não contra o armazenamento local.
+  // Ler só o localStorage deixava o app abrir offline: o token continua
+  // lá, o conteúdo em cache também, e nenhum aparelho e derrubado porque
+  // ninguém consegue avisar o outro. Na prática, uma conta rodava em
+  // quantos aparelhos quisesse, bastando desligar a internet.
+  //
+  // Devolve a sessão, ou um dos motivos: 'sessao' (não autenticado) ou
+  // 'offline' (sem como verificar — e sem verificar, não entra).
   function exigir() {
     return valida().then(function (s) {
       if (!s) { paraLogin('sessao'); return null; }
-      return s;
+      return fetch(CFG.SUPABASE_URL + '/auth/v1/user', {
+        headers: { apikey: CFG.SUPABASE_ANON_KEY, Authorization: 'Bearer ' + s.access_token },
+        cache: 'no-store'
+      }).then(function (r) {
+        if (r.status === 401 || r.status === 403) { paraLogin('sessao'); return null; }
+        if (!r.ok) return { erro: 'offline' };
+        return r.json().then(function (u) { s.user = u; salvar(s); return s; });
+      }).catch(function () {
+        // Sem rede: não dá para saber se a assinatura vale nem se outro
+        // aparelho assumiu. Na dúvida, não libera — mas também não
+        // desloga, para a pessoa voltar sem redigitar senha.
+        return { erro: 'offline' };
+      });
     });
   }
 

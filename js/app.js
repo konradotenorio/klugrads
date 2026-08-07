@@ -166,11 +166,15 @@ function hydrate(items){
     return d;
   });
 }
-// Sem seed embarcado: o conteúdo é do assinante, não do navegador. O que
-// existe é um cache da última carga, para a tela não piscar em branco —
-// e ele é apagado assim que o acesso deixa de valer (ver js/sessao.js).
+// Sem seed embarcado e sem cache de conteúdo. O app começa vazio e só
+// enche depois de o servidor confirmar sessão e assinatura.
+//
+// O cache local existia para a tela não piscar em branco, mas era ele que
+// permitia usar o app offline: os 74 itens ficavam no aparelho e apareciam
+// sem ninguém precisar autorizar. Guardar conteúdo pago no cliente é
+// entregar o produto — some daqui, e some também o resto de "offline".
 function initialData(){
-  try{ const c=localStorage.getItem('ultraref_data'); if(c){ const a=JSON.parse(c); if(Array.isArray(a)&&a.length) return a; } }catch(_){}
+  try{ localStorage.removeItem('ultraref_data'); }catch(_){}   // limpa o legado
   return [];
 }
 let DATA = hydrate(initialData());
@@ -202,18 +206,46 @@ async function loadFromSupabase(){
 
 async function syncData(){
   const remote = await loadFromSupabase();
-  if(remote === null) return;                       // rede caiu; segue com o cache
+  if(remote === null){ mostrarSemConexao(); return; }   // sem rede: nao ha o que mostrar
   if(remote === 'sem-sessao'){ KlugSessao.paraLogin('sessao'); return; }
   if(remote === 'sem-acesso'){ KlugSessao.paraLogin('assinatura'); return; }
   DATA = hydrate(remote);
-  try{ localStorage.setItem('ultraref_data', JSON.stringify(remote)); }catch(_){}
   render(true);
+}
+
+// Tela de bloqueio por falta de internet. O KlugRads deixou de funcionar
+// offline por decisao de produto: sem conexao nao da para conferir se a
+// assinatura vale nem se a conta foi aberta em outro aparelho.
+function mostrarSemConexao(){
+  if(document.getElementById('klug-offline')) return;
+  const box=document.createElement('div');
+  box.id='klug-offline';
+  box.innerHTML=
+    '<div class="ko-fundo"></div><div class="ko-caixa">'+
+    '<div class="ko-titulo">Sem conexão</div>'+
+    '<div class="ko-texto">O KlugRads precisa de internet para confirmar seu acesso. '+
+    'Conecte-se e tente de novo.</div>'+
+    '<button class="ko-btn" id="ko-tentar" type="button">Tentar de novo</button></div>';
+  const css=document.createElement('style');
+  css.textContent=
+    '#klug-offline{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:22px;}'+
+    '#klug-offline .ko-fundo{position:absolute;inset:0;background:var(--bg,#0e1216);}'+
+    '#klug-offline .ko-caixa{position:relative;max-width:360px;width:100%;text-align:center;}'+
+    '#klug-offline .ko-titulo{font-size:19px;font-weight:750;color:var(--tx,#e9eef3);margin-bottom:10px;}'+
+    '#klug-offline .ko-texto{font-size:14px;line-height:1.55;color:var(--dim,#8b98a5);margin-bottom:22px;}'+
+    '#klug-offline .ko-btn{width:100%;font:inherit;font-weight:700;font-size:15px;border-radius:12px;'+
+      'padding:13px;border:0;cursor:pointer;background:var(--accent,#15b8a6);color:var(--accentInk,#04221f);}';
+  document.head.appendChild(css);
+  document.body.appendChild(box);
+  document.getElementById('ko-tentar').addEventListener('click',()=>window.location.reload());
+  window.addEventListener('online',()=>window.location.reload(),{once:true});
 }
 
 /* ---- ESTADO ---- */
 let state = {
   view:'modality', theme:'dark', specialty:'abdome', subBand:'Adultos', query:'', calcSpec:'neurocab',
   item:null, sub:'tabela',
+  perfil:null, assinatura:null,     // preenchidos por carregarDadosDaConta()
   favs:[], lists:[],
   newName:'', composingId:null, modalityId:null,
   calcId:null,
@@ -476,11 +508,24 @@ function configHTML(){
   const langs = LANGS.map(([id,nome])=>
     `<button class="${state.lang===id?'on':''}" onclick="setLang('${id}')">${nome}</button>`
   ).join('');
+  // A area de Conta ja existia, mas lia um `state.user` do sistema antigo
+  // (radref_user), sem ligacao com a sessao real: mostrava "nao conectado"
+  // para quem estava logado, e o botao Sair so limpava aquela chave — nao
+  // encerrava a sessao nem liberava o aparelho.
+  const p = state.perfil;
+  const a = state.assinatura;
+  const linha = (rot,val,sub) => val
+    ? `<div class="set-row"><div class="lbl">${esc(rot)}<div class="sub">${esc(val)}${sub?' · '+esc(sub):''}</div></div></div>`
+    : '';
   const conta = state.user
-    ? `<div class="set-row"><div class="lbl">${esc(state.user.email)}<div class="sub">Conta conectada</div></div></div>
+    ? `${linha('E-mail', state.user.email)}
+       ${p ? linha('Nome', p.nome) : ''}
+       ${p && p.crm ? linha('CRM', p.crm + (p.crm_uf ? '-' + p.crm_uf : '')) : ''}
+       ${p ? linha('Telefone', formatarTelefone(p.telefone)) : ''}
+       ${a ? linha('Assinatura', rotuloAssinatura(a)) : ''}
+       ${linha('Este aparelho', 'Sessão ativa', 'um aparelho por vez')}
        <div style="padding:14px 18px"><button class="set-btn" onclick="logout()">Sair da conta</button></div>`
-    : `<div class="set-row"><div class="lbl">Você não está conectado<div class="sub">Entre para sincronizar favoritos e listas</div></div></div>
-       <div style="padding:14px 18px"><button class="set-btn accent" onclick="login()">Entrar</button></div>`;
+    : `<div class="set-row"><div class="lbl">Carregando sua conta…</div></div>`;
   return `<div class="set-wrap">
     <div class="sec-label">Aparência</div>
     <div class="set-row">
@@ -605,10 +650,59 @@ function enviarSugestao(){
   // Placeholder — o e-mail da central ainda será definido.
   alert(t('Canal de contato em construção — em breve você poderá enviar críticas e sugestões por aqui.'));
 }
+// Busca perfil e assinatura para a area de Conta. Sao dados do proprio
+// usuario: a RLS ja garante que ninguem enxerga os dos outros.
+async function carregarDadosDaConta(){
+  const cfg = window.CONFIG || {};
+  const s = await KlugSessao.valida();
+  if(!s) return;
+  const h = { apikey: cfg.SUPABASE_ANON_KEY, Authorization: `Bearer ${s.access_token}` };
+  try{
+    const [rp, ra] = await Promise.all([
+      fetch(`${cfg.SUPABASE_URL}/rest/v1/perfis?select=nome,cpf,crm,crm_uf,telefone&limit=1`, {headers:h}),
+      fetch(`${cfg.SUPABASE_URL}/rest/v1/assinaturas?select=status,expira_em&limit=1`, {headers:h}),
+    ]);
+    const perfis = rp.ok ? await rp.json() : [];
+    const assins = ra.ok ? await ra.json() : [];
+    state.perfil = perfis[0] || null;
+    state.assinatura = assins[0] || null;
+    if(state.view==='settings') render(true);
+  }catch(_){ /* area de Conta fica sem os extras; nao quebra o app */ }
+}
+
+function formatarTelefone(t){
+  const d=(t||'').replace(/\D/g,'');
+  if(d.length===11) return d.replace(/(\d{2})(\d{5})(\d{4})/,'($1) $2-$3');
+  if(d.length===10) return d.replace(/(\d{2})(\d{4})(\d{4})/,'($1) $2-$3');
+  return t||'';
+}
+
+function rotuloAssinatura(a){
+  const nomes={trial:'Período de teste',ativa:'Ativa',inadimplente:'Pagamento pendente',
+               cancelada:'Cancelada',expirada:'Expirada'};
+  const base=nomes[a.status]||a.status;
+  if(!a.expira_em) return a.status==='ativa' ? base+' · sem prazo' : base;
+  const dias=Math.ceil((new Date(a.expira_em)-Date.now())/86400000);
+  return dias>0 ? `${base} · ${dias} dia${dias===1?'':'s'} restante${dias===1?'':'s'}` : `${base} · vencida`;
+}
+
+// Sair de verdade: encerra a sessao no servidor (liberando o aparelho),
+// apaga token e conteudo, e volta para o login.
 function logout(){
-  state.user=null;
-  try{ localStorage.removeItem('radref_user'); }catch(_){}
-  render(true);
+  try{ localStorage.removeItem('radref_user'); }catch(_){}   // resto do sistema antigo
+  const id = KlugSessao.aparelhoId();
+  const cfg = window.CONFIG || {};
+  KlugSessao.valida().then(function(s){
+    const fim = s
+      ? fetch(`${cfg.SUPABASE_URL}/rest/v1/rpc/encerrar_sessao`, {
+          method:'POST',
+          headers:{'Content-Type':'application/json', apikey:cfg.SUPABASE_ANON_KEY,
+                   Authorization:`Bearer ${s.access_token}`},
+          body: JSON.stringify({p_device_id:id})
+        }).catch(()=>{})
+      : Promise.resolve();
+    fim.then(()=>KlugSessao.sair());
+  });
 }
 
 /* ---- 1b. LAUNCHER (home) ---- */
@@ -1537,13 +1631,16 @@ function toggleInList(listId, itemId){
 // renderizar primeiro e checar depois mostraria a casca do app (e o
 // conteúdo em cache) a quem já não tem direito, mesmo que por um instante.
 KlugSessao.exigir().then(function(sessao){
-  if(!sessao) return;              // exigir() já redirecionou para /login
+  if(!sessao) return;                                  // já redirecionou para /login
   loadState();
+  if(sessao.erro === 'offline'){ mostrarSemConexao(); return; }
+  state.user = sessao.user || null;                    // liga a area de Conta na sessao real
   render();
   syncData();
   // Assume a sessão para este aparelho (derrubando qualquer outro) e passa
   // a vigiar. A ordem importa: assumir primeiro, senão a própria vigilância
   // veria "inexistente" e ficaria conferindo à toa.
   KlugSessao.assumirAparelho().then(function(){ KlugSessao.vigiarAparelho(); });
+  carregarDadosDaConta();
 });
 if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{})); }
