@@ -227,8 +227,29 @@ window.KlugSessao = (function () {
     document.getElementById('kt-sair').addEventListener('click', function () { sair(); });
   }
 
+  // Quantas verificações seguidas podem falhar antes de bloquear a tela.
+  // Não pode ser 0: um soluço de rede derrubaria quem está trabalhando.
+  // Não pode ser alto: cada tentativa é meio minuto usando o app sem
+  // ninguém conseguir confirmar nada.
+  var FALHAS_ATE_BLOQUEAR = 2;
+  var falhasSeguidas = 0;
+  var aoPerderContato = null;
+
   function conferirAparelho() {
     return estadoAparelho().then(function (estado) {
+      // null = não deu para falar com o servidor. Isso NÃO é "está tudo
+      // bem": é justamente o estado em que o app fica cego. Sem confirmar,
+      // não dá para saber se a assinatura vale nem se outro aparelho
+      // assumiu — e era assim que dava para usar a mesma conta em vários
+      // aparelhos ao mesmo tempo, bastando ficar offline depois de abrir.
+      if (estado === null) {
+        falhasSeguidas++;
+        if (falhasSeguidas >= FALHAS_ATE_BLOQUEAR && typeof aoPerderContato === 'function') {
+          aoPerderContato();
+        }
+        return null;
+      }
+      falhasSeguidas = 0;
       if (estado === 'derrubada') mostrarAvisoTomada();
       // 'inexistente' acontece logo após o login, antes do primeiro
       // assumir_sessao — não é motivo para alarme.
@@ -239,7 +260,8 @@ window.KlugSessao = (function () {
   // Confere de tempos em tempos e sempre que a aba volta ao primeiro plano:
   // o caso típico é largar o computador, usar o celular e voltar. Sem o
   // gancho de foco, a pessoa mexeria numa tela que já não vale.
-  function vigiarAparelho() {
+  function vigiarAparelho(quandoPerderContato) {
+    if (typeof quandoPerderContato === 'function') aoPerderContato = quandoPerderContato;
     if (timer) return;
     timer = setInterval(conferirAparelho, INTERVALO_MS);
     document.addEventListener('visibilitychange', function () {

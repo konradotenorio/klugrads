@@ -1640,7 +1640,16 @@ KlugSessao.exigir().then(function(sessao){
   // Assume a sessão para este aparelho (derrubando qualquer outro) e passa
   // a vigiar. A ordem importa: assumir primeiro, senão a própria vigilância
   // veria "inexistente" e ficaria conferindo à toa.
-  KlugSessao.assumirAparelho().then(function(){ KlugSessao.vigiarAparelho(); });
+  // Ao perder contato com o servidor, o app bloqueia a tela e apaga os
+  // dados da memoria. Ficar mostrando o conteudo enquanto ninguem consegue
+  // confirmar nada era a brecha que permitia usar a mesma conta em varios
+  // aparelhos: bastava abrir e desligar a internet.
+  KlugSessao.assumirAparelho().then(function(){
+    KlugSessao.vigiarAparelho(function(){
+      DATA = [];
+      mostrarSemConexao();
+    });
+  });
   carregarDadosDaConta();
 });
 if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{})); }
