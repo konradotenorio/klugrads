@@ -5,9 +5,11 @@
    - App shell (HTML/JS/ícones/manifesto): precache + stale-while-revalidate.
    - Navegações: network-first com fallback para o index em cache (offline).
    - API do Supabase (/rest/v1): network-first; em falha, último bom cache.
-   Suba a versão do CACHE ao publicar mudanças para forçar atualização.
+   SUBA A VERSAO A CADA PUBLICACAO QUE MEXA EM JS/HTML. Sem isso o
+   stale-while-revalidate entrega o arquivo velho do cache e a correcao
+   simplesmente nao chega ao usuario — inclusive correcoes de seguranca.
    ========================================================================= */
-const VERSION = 'v0.12.0';
+const VERSION = 'v0.13.0';
 const APP_CACHE = `ultraref-app-${VERSION}`;
 const DATA_CACHE = `ultraref-data-${VERSION}`;
 
