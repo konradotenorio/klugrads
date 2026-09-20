@@ -379,22 +379,64 @@ function render(keep){
   // Enquanto os termos não forem aceitos, o app abre na tela de aceite (bloqueia
   // toda a navegação). A leitura em Configurações usa a view 'termsRead'.
   if(!state.termsAccepted && state.view!=='terms'){ state.view='terms'; }
+  renderSidebar();
+  renderStage(keep);
+}
+// Palco = tudo dentro de #app (header + corpo + subtabs). Separado da sidebar
+// para poder atualizar o conteúdo sem recriar a sidebar (mantém foco da busca).
+function renderStage(keep){
   const v = state.view;
-  // header
   const hdr = $('hdr');
   if(v==='home' || v==='modality' || v==='terms'){ hdr.className='hdr hide'; hdr.innerHTML=''; }
   else { hdr.className='hdr'; hdr.innerHTML = translateHTML(headerHTML()); }
-  // corpo
   const s = $('scroll');
   const top = keep ? s.scrollTop : 0;
   s.innerHTML = translateHTML(viewHTML());
   s.className = keep ? 'scroll' : 'scroll fade';
   s.scrollTop = top;
   if(v==='calc' && state.calcId==='tfg') setTimeout(initDrums, 0);
-  // O detalhe é uma página única: calculadora opcional, tabelas e referências.
   const sub = $('subtabs');
   sub.className='subtabs hide';
   sub.innerHTML='';
+}
+
+/* ---- Sidebar persistente (layout web / desktop) ---- */
+function sidebarHTML(){
+  const spItems = (typeof SPECIALTIES!=='undefined'?SPECIALTIES:[]).map(s=>
+    `<div class="side-item ${state.view==='refs'&&state.specialty===s.id?'on':''}" onclick="openSpecialty('${s.id}')">
+       <span class="si">${svgIcon(P.book,19,{sw:1.8})}</span>${esc(s.name)}</div>`).join('');
+  const tool=(view,label,icon)=>`<div class="side-item ${state.view===view?'on':''}" onclick="setView('${view}')"><span class="si">${icon}</span>${esc(label)}</div>`;
+  return `<div class="side-top">
+      <div class="side-brand"><span class="k">KLUG</span><span class="r">RADS</span></div>
+      <div class="side-slogan">Sua referência em Radiologia</div>
+    </div>
+    <div class="side-search">
+      <span class="si">${svgIcon(P.search,16,{sw:2})}</span>
+      <input placeholder="Buscar órgão ou medida…" value="${esc(state.query||'')}" oninput="sideSearch(this.value)">
+    </div>
+    <nav class="side-nav">
+      <div class="side-sec">Ultrassonografia</div>
+      ${spItems}
+      <div class="side-sec">Ferramentas</div>
+      ${tool('calc','Calculadoras', svgIcon(P.calc,19))}
+      ${tool('ferramentas','Outras Ferramentas', svgIcon(P.tools,19))}
+      ${tool('favoritos','Favoritos', svgIcon(P.star,19,{fill:'none'}))}
+      ${tool('config','Configurações', svgIcon(P.gear,19))}
+      <div class="side-item ${state.view==='modality'?'on':''}" onclick="setView('modality')"><span class="si">${svgIcon(P.grid,19)}</span>Métodos de Diagnóstico</div>
+    </nav>
+    <div class="side-foot"><b>Grátis · sem login</b><br>Ferramenta educacional — não substitui o julgamento clínico.</div>`;
+}
+function renderSidebar(){
+  const el = $('side'); if(!el) return;
+  if(!state.termsAccepted || state.view==='terms'){ el.style.display='none'; el.innerHTML=''; return; }
+  el.style.display='';
+  el.innerHTML = translateHTML(sidebarHTML());
+}
+function openSpecialty(id){ state.view='refs'; state.specialty=id; state.query=''; render(); }
+function sideSearch(v){
+  state.query = v;
+  if(state.view!=='refs'){ state.view='refs'; if(!state.specialty && typeof SPECIALTIES!=='undefined') state.specialty=SPECIALTIES[0].id; renderStage(); }
+  const el=$('reflist'); if(el) el.innerHTML = translateHTML(refsListHTML());
 }
 function applyTheme(){
   document.documentElement.setAttribute('data-theme', state.theme==='light'?'light':'dark');
@@ -1620,6 +1662,11 @@ function toggleInList(listId, itemId){
 // carregar as preferências e montar a tela.
 if(window.CONFIG && CONFIG.STATIC_MODE){
   loadState();
+  // No desktop, abre direto no guia (referências) — a sidebar é a navegação.
+  // No celular, mantém a tela inicial de modalidades.
+  if(state.termsAccepted && window.matchMedia && window.matchMedia('(min-width:900px)').matches){
+    state.view='refs';
+  }
   render();
 } else
 // (fase 2) /app como área com login: a sessão é conferida ANTES de montar a
