@@ -1,22 +1,14 @@
-# Nada aqui deve ir para o site: a Vercel publica a raiz do repositório,
-# então TUDO que fica versionado vira URL pública se não for excluído.
-#
-# Isso não é zelo teórico. Antes deste arquivo, dava para baixar o acervo
-# inteiro sem login em:
-#   /db/seed.generated.json   (199 KB, os 74 itens completos)
-#   /js/seed.js               (200 KB, os mesmos dados)
-# Com o app virando assinatura, isso entregava o produto de graça.
+# A Vercel publica a raiz do repositório: tudo versionado vira URL pública
+# se não for excluído aqui. No app ABERTO/gratuito (modo estático) o
+# conteúdo é servido de propósito em js/seed.js — que POR ISSO NÃO é
+# excluído aqui (o app não funciona sem ele).
 
-# Fonte da verdade do conteúdo e material de geração
+# Fonte de geração do seed e material de desenvolvimento (não precisam ir ao ar)
 db/
 tools/
 samples/
 
-# Rede de segurança: o seed já mora em db/, mas se algum dia voltar para js/
-# — pasta que PRECISA ir ao ar — ele não pode ser publicado junto.
-js/seed.js
-
-# Migrations e schema do banco
+# Migrations e schema do banco (fase 2)
 supabase/
 
 # Documentação e configuração de desenvolvimento
