@@ -336,6 +336,13 @@
     window.location.href = CFG.SUPABASE_URL + '/auth/v1/authorize?provider=google&redirect_to=' + volta;
   });
 
+  // Apple: mesmo fluxo do Google — volta para cá e, se for a primeira vez,
+  // cai no "completar cadastro" (Apple também não traz CPF/CRM).
+  $('btn-apple').addEventListener('click', function () {
+    var volta = encodeURIComponent(location.origin + '/login');
+    window.location.href = CFG.SUPABASE_URL + '/auth/v1/authorize?provider=apple&redirect_to=' + volta;
+  });
+
   function entrarModoCompletar(sessao) {
     modoCadastro = 'completar';
     trocarAba('criar');
@@ -345,6 +352,7 @@
       $(id).closest('.campo').hidden = true;
     });
     $('btn-google').hidden = true;
+    var btnApple = $('btn-apple'); if (btnApple) btnApple.hidden = true;
     document.querySelector('.ou').hidden = true;
     $('btn-criar').textContent = 'Concluir cadastro';
 
