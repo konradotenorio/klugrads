@@ -337,7 +337,7 @@ function loadState(){
   try{ const t=localStorage.getItem('radref_theme'); if(t==='dark'||t==='light') state.theme=t; }catch(_){}
   try{ const f=JSON.parse(localStorage.getItem('radref_favs')||'[]'); if(Array.isArray(f)) state.favs=f; }catch(_){}
   try{ const l=JSON.parse(localStorage.getItem('radref_lists')||'[]'); if(Array.isArray(l)) state.lists=l; }catch(_){}
-  try{ const g=localStorage.getItem('radref_lang'); if(LANGS.some(x=>x[0]===g)) state.lang=g; }catch(_){}
+  state.lang='pt';   // app em português apenas; i18n dormente até a fase de tradução
   try{ const f=parseFloat(localStorage.getItem('radref_fontscale')); if(FONT_STEPS.includes(f)) state.fontScale=f; }catch(_){}
   try{ const u=JSON.parse(localStorage.getItem('radref_user')||'null'); if(u&&u.email) state.user=u; }catch(_){}
   try{ const c=JSON.parse(localStorage.getItem('radref_favcalcs')||'[]'); if(Array.isArray(c)) state.favCalcs=c; }catch(_){}
@@ -504,9 +504,6 @@ function ferramentasHTML(){
 /* ---- 1c. CONFIGURAÇÕES ---- */
 function configHTML(){
   const i = FONT_STEPS.indexOf(state.fontScale);
-  const langs = LANGS.map(([id,nome])=>
-    `<button class="${state.lang===id?'on':''}" onclick="setLang('${id}')">${nome}</button>`
-  ).join('');
   // A area de Conta ja existia, mas lia um `state.user` do sistema antigo
   // (radref_user), sem ligacao com a sessao real: mostrava "nao conectado"
   // para quem estava logado, e o botao Sair so limpava aquela chave — nao
@@ -542,13 +539,6 @@ function configHTML(){
         <button onclick="stepFont(1)" ${i>=FONT_STEPS.length-1?'disabled':''} aria-label="Aumentar fonte">+</button>
       </div>
     </div>
-
-    <div class="sec-label" style="margin-top:14px">Idioma</div>
-    <div class="set-row">
-      <div class="lbl">Idioma do app<div class="sub">Português é o padrão</div></div>
-    </div>
-    <div style="padding:0 18px 14px"><div class="set-seg">${langs}</div></div>
-    <div class="set-note">O conteúdo das referências (nomes de órgãos, tabelas e citações) permanece em português por enquanto.</div>
 
     ${(window.CONFIG&&CONFIG.STATIC_MODE) ? '' : `<div class="sec-label" style="margin-top:14px">Conta</div>${conta}`}
 
