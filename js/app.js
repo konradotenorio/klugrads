@@ -175,6 +175,8 @@ function hydrate(items){
 // entregar o produto — some daqui, e some também o resto de "offline".
 function initialData(){
   try{ localStorage.removeItem('ultraref_data'); }catch(_){}   // limpa o legado
+  // Modo estático: conteúdo embutido em js/seed.js (window.SEED), sem backend.
+  if(window.CONFIG && CONFIG.STATIC_MODE && Array.isArray(window.SEED)) return window.SEED;
   return [];
 }
 let DATA = hydrate(initialData());
@@ -265,7 +267,7 @@ const LANGS = [['pt','Português'],['en','English'],['es','Español']];
 // afirmava que nenhum dado ia para servidores nossos — verdade enquanto o
 // app era aberto, falsa a partir do cadastro de CPF e CRM. Subir a versão
 // reexibe o aceite a quem já havia aceitado o texto antigo.
-const TERMS_VERSION = '3';
+const TERMS_VERSION = '4';
 const TERMS = {
   pt:{
     title:'Termos de Uso e Responsabilidade',
@@ -274,9 +276,8 @@ const TERMS = {
       ['Finalidade educacional','O KlugRads é uma ferramenta de referência e educação. Não fornece diagnóstico nem conduta e não substitui o julgamento clínico do profissional.'],
       ['Responsabilidade do usuário','Todas as decisões clínicas são de sua inteira responsabilidade. Confira valores e fórmulas nas fontes originais antes de aplicá-los.'],
       ['Uso profissional','Destinado a profissionais de saúde e estudantes da área. Você declara ser maior de 18 anos.'],
-      ['Conta e dados pessoais','Para criar sua conta coletamos nome, CPF, telefone, e-mail e, quando informado, CRM e UF. Usamos esses dados apenas para identificar você, manter a conta e controlar o acesso — não vendemos nem cedemos a terceiros. Ficam guardados em servidores da Supabase. Você pode pedir acesso, correção ou exclusão a qualquer momento pelo e-mail de contato.'],
-      ['Dados clínicos que você digita','Valores de exame e medidas que você insere nas calculadoras continuam somente no seu aparelho e não são enviados aos nossos servidores. Você é responsável por obter o consentimento dos pacientes cujos dados venha a inserir.'],
-      ['Acesso e uso da conta','O KlugRads é gratuito: basta criar uma conta para acessar o conteúdo. A conta é pessoal; você pode usá-la em quantos aparelhos quiser.'],
+      ['Acesso livre e gratuito','O KlugRads é aberto e gratuito, sem cadastro e sem login. Não coletamos dados pessoais nem exigimos conta para usar.'],
+      ['Seus dados ficam no aparelho','Favoritos, listas e os valores que você digita nas calculadoras ficam somente no seu aparelho (armazenamento local do navegador) e não são enviados a servidores nossos. Você é responsável por obter o consentimento dos pacientes cujos dados venha a inserir.'],
       ['Sem garantias','O conteúdo é fornecido "como está", sem garantia de disponibilidade, exatidão ou atualização. O uso é por sua conta e risco.'],
       ['Conteúdo de terceiros','Fórmulas e referências pertencem aos seus autores e são citadas para fins educacionais.'],
     ],
@@ -295,9 +296,8 @@ const TERMS = {
       ['Educational purpose','KlugRads is a reference and education tool. It does not provide diagnosis or management and does not replace the professional\'s clinical judgment.'],
       ['User responsibility','All clinical decisions are entirely your responsibility. Check values and formulas against the original sources before applying them.'],
       ['Professional use','Intended for healthcare professionals and students in the field. You declare that you are 18 or older.'],
-      ['Account and personal data','To create your account we collect name, national ID (CPF), phone, e-mail and, when provided, medical licence number and state. We use this only to identify you, maintain the account and control access — we do not sell or share it with third parties. It is stored on Supabase servers. You may request access, correction or deletion at any time through the contact e-mail.'],
-      ['Clinical data you enter','Exam values and measurements you type into the calculators stay only on your device and are not sent to our servers. You are responsible for obtaining consent from the patients whose data you enter.'],
-      ['Account access and use','KlugRads is free: just create an account to access the content. The account is personal; you may use it on as many devices as you like.'],
+      ['Free and open access','KlugRads is open and free — no sign-up, no login. We do not collect personal data or require an account to use it.'],
+      ['Your data stays on your device','Favorites, lists and the values you type into the calculators stay only on your device (the browser\'s local storage) and are not sent to our servers. You are responsible for obtaining consent from the patients whose data you enter.'],
       ['No warranties','Content is provided "as is", with no guarantee of availability, accuracy or timeliness. Use is at your own risk.'],
       ['Third-party content','Formulas and references belong to their authors and are cited for educational purposes.'],
     ],
@@ -316,9 +316,8 @@ const TERMS = {
       ['Finalidad educativa','KlugRads es una herramienta de referencia y educación. No proporciona diagnóstico ni conducta y no sustituye el juicio clínico del profesional.'],
       ['Responsabilidad del usuario','Todas las decisiones clínicas son de su entera responsabilidad. Verifique valores y fórmulas en las fuentes originales antes de aplicarlos.'],
       ['Uso profesional','Destinado a profesionales de la salud y estudiantes del área. Usted declara ser mayor de 18 años.'],
-      ['Cuenta y datos personales','Para crear su cuenta recopilamos nombre, documento (CPF), teléfono, correo electrónico y, cuando se informa, número de colegiatura médica y estado. Usamos estos datos solo para identificarlo, mantener la cuenta y controlar el acceso — no los vendemos ni cedemos a terceros. Se guardan en servidores de Supabase. Puede solicitar acceso, corrección o eliminación en cualquier momento por el correo de contacto.'],
-      ['Datos clínicos que usted ingresa','Los valores de examen y medidas que escribe en las calculadoras permanecen solo en su dispositivo y no se envían a nuestros servidores. Usted es responsable de obtener el consentimiento de los pacientes cuyos datos ingrese.'],
-      ['Acceso y uso de la cuenta','KlugRads es gratuito: basta con crear una cuenta para acceder al contenido. La cuenta es personal; puede usarla en tantos dispositivos como desee.'],
+      ['Acceso libre y gratuito','KlugRads es abierto y gratuito, sin registro y sin inicio de sesión. No recopilamos datos personales ni exigimos cuenta para usarlo.'],
+      ['Sus datos quedan en el dispositivo','Los favoritos, las listas y los valores que escribe en las calculadoras quedan solo en su dispositivo (almacenamiento local del navegador) y no se envían a nuestros servidores. Usted es responsable de obtener el consentimiento de los pacientes cuyos datos ingrese.'],
       ['Sin garantías','El contenido se ofrece "tal cual", sin garantía de disponibilidad, exactitud o actualización. El uso es bajo su propio riesgo.'],
       ['Contenido de terceros','Las fórmulas y referencias pertenecen a sus autores y se citan con fines educativos.'],
     ],
@@ -551,8 +550,7 @@ function configHTML(){
     <div style="padding:0 18px 14px"><div class="set-seg">${langs}</div></div>
     <div class="set-note">O conteúdo das referências (nomes de órgãos, tabelas e citações) permanece em português por enquanto.</div>
 
-    <div class="sec-label" style="margin-top:14px">Conta</div>
-    ${conta}
+    ${(window.CONFIG&&CONFIG.STATIC_MODE) ? '' : `<div class="sec-label" style="margin-top:14px">Conta</div>${conta}`}
 
     <div class="sec-label" style="margin-top:14px">Críticas e Sugestões</div>
     <div class="set-row">
@@ -1627,9 +1625,15 @@ function toggleInList(listId, itemId){
 }
 
 /* ---- BOOT ---- */
-// /app é área de assinante. A sessão é conferida ANTES de montar a tela:
-// renderizar primeiro e checar depois mostraria a casca do app (e o
-// conteúdo em cache) a quem já não tem direito, mesmo que por um instante.
+// Modo ESTÁTICO/ABERTO (padrão do relançamento): sem login e sem backend.
+// O conteúdo já está em memória (window.SEED via initialData), então é só
+// carregar as preferências e montar a tela.
+if(window.CONFIG && CONFIG.STATIC_MODE){
+  loadState();
+  render();
+} else
+// (fase 2) /app como área com login: a sessão é conferida ANTES de montar a
+// tela — renderizar antes mostraria a casca a quem não tem acesso.
 KlugSessao.exigir().then(function(sessao){
   if(!sessao) return;                                  // já redirecionou para /login
   loadState();

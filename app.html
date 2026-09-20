@@ -553,8 +553,9 @@
 
 <script src="/js/i18n.js"></script>
 <script src="/js/config.js"></script>
-<!-- O seed saiu daqui e da pasta js/: eram 200 KB com o acervo inteiro,
-     baixáveis sem login. Agora vive em db/seed.js, que não vai para o ar. -->
+<!-- Modo estático/aberto: o conteúdo (74 itens) é embutido aqui, antes do
+     app.js, que o lê de window.SEED. Sem login e sem backend. -->
+<script src="/js/seed.js"></script>
 <script src="/js/sessao.js"></script>
 <script src="/js/app.js"></script>
 <script src="/js/calc-fetal.js"></script>

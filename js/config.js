@@ -1,23 +1,22 @@
 /* =========================================================================
    KlugRads — configuração pública do cliente.
    ---------------------------------------------------------------------------
-   A chave abaixo é a PUBLISHABLE/ANON do Supabase: é pública por design e
-   PODE ir no client/repositório. A segurança vem do Row Level Security (RLS),
-   que só libera LEITURA da tabela `referencias`. NUNCA coloque aqui a
-   service_role key (essa é secreta).
+   MODO ESTÁTICO (relançamento set/2026): o app é ABERTO e GRATUITO, sem
+   login e sem backend. O conteúdo (74 itens) é embutido em js/seed.js
+   (window.SEED). Não há Supabase, OAuth nem 2FA — nada que possa travar.
+
+   FASE 2 (quando quiser conteúdo editável pelo painel + login): defina
+   STATIC_MODE:false e USE_SUPABASE:true e preencha SUPABASE_URL/ANON_KEY
+   de um projeto novo. As chaves abaixo ficam só como lembrete e não têm
+   efeito enquanto STATIC_MODE for true.
    ========================================================================= */
 window.CONFIG = {
-  SUPABASE_URL: 'https://mcqtxelqgvwomxhslqdq.supabase.co',
-  SUPABASE_ANON_KEY: 'sb_publishable_tKekItUKXUYVnGgZulRmSg_mXDN48fq',
-  TABLE: 'referencias',
-  // O conteúdo vem SÓ do Supabase, com o usuário autenticado e assinatura
-  // vigente. Não há mais seed no cliente: db/seed.js é a fonte da verdade
-  // para popular o banco, e fica fora do que a Vercel publica.
-  USE_SUPABASE: true,
+  STATIC_MODE: true,     // app aberto, conteúdo de js/seed.js, sem backend
+  USE_SUPABASE: false,   // sem chamadas ao Supabase no modo estático
 
-  // Modelo GRÁTIS (set/2026): acesso liberado a qualquer pessoa logada.
-  // A trava de "um aparelho por vez" era proteção de conteúdo pago; no
-  // modelo grátis vira atrito, então fica desligada. Para religar (ex.: se
-  // voltar a cobrar), troque para true — e reverta a migration 007 no banco.
+  // Guardado para a fase 2 (login + conteúdo editável). Sem efeito agora.
+  SUPABASE_URL: '',
+  SUPABASE_ANON_KEY: '',
+  TABLE: 'referencias',
   UM_APARELHO_POR_VEZ: false
 };
