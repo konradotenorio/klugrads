@@ -850,7 +850,7 @@ function detailHTML(){
   const d = state.item; if(!d) return '';
   const faixa = (GROUP_BAND[d.group]||d.group)+' — '+d.region;
   const contextLabel = d.group==='Doppler' ? 'Seção' : 'Faixa etária';
-  let h = `<div class="sec-label">${contextLabel}</div><div class="d-age">${esc(faixa)}</div>`;
+  let h = `<div class="d-name">${esc(d.name)}</div><div class="sec-label">${contextLabel}</div><div class="d-age">${esc(faixa)}</div>`;
   h += referenceCalculatorHTML(d);
   if(d.tables&&d.tables.length){ d.tables.forEach((t,i)=>{ h+=tableHTML(t,d.id+'-'+i); }); }
   else { h+=`<div class="empty"><div class="msg">Sem tabela de referência para este item.</div></div>`; }
@@ -861,6 +861,21 @@ function detailHTML(){
   return `<div class="detail-grid"><div class="detail-main">${h}</div>${detailRailHTML(d)}</div>`;
 }
 function detailRailHTML(d){
+  // Resumo rápido: primeiras linhas da 1ª tabela (só a 1ª linha de cada valor,
+  // como teaser — a tabela completa fica no conteúdo).
+  let resumo='';
+  const tb = d.tables && d.tables[0];
+  if(tb && tb.rows && tb.rows.length){
+    const rows = tb.rows.slice(0,4).filter(r=>r && r[0]!=null && r[1]!=null);
+    if(rows.length){
+      resumo = `<div class="rail-card"><h4>Resumo rápido</h4>`+
+        rows.map(r=>{
+          const val = String(r[1]).split(/\r?\n/)[0].trim();
+          const more = /\r?\n/.test(String(r[1])) ? ' …' : '';
+          return `<div class="rail-stat"><div class="rl">${esc(String(r[0]))}</div><div class="rv">${esc(val)}${more}</div></div>`;
+        }).join('')+`</div>`;
+    }
+  }
   const sib = (typeof DATA!=='undefined'?DATA:[]).filter(x=>x.region===d.region && x.group===d.group && x.id!==d.id).slice(0,8);
   let rel='';
   if(sib.length){
@@ -871,7 +886,7 @@ function detailRailHTML(d){
   const fav = `<div class="rail-card"><h4>Ações</h4>
     <button class="rail-cta" style="${isFav?'background:var(--starSoft);color:var(--star)':''}" onclick="toggleFav('${esc(d.id)}')">${isFav?'★ Nos favoritos':'☆ Favoritar'}</button></div>`;
   const calc = `<div class="rail-card"><h4>Calculadoras</h4><div class="rail-note">Escores e fórmulas de ultrassonografia.</div><button class="rail-cta" onclick="setView('calc')">Abrir calculadoras</button></div>`;
-  return `<aside class="detail-rail">${rel}${fav}${calc}</aside>`;
+  return `<aside class="detail-rail">${resumo}${rel}${fav}${calc}</aside>`;
 }
 function tableHTML(t,key){
   const rows = t.rows||[]; if(!rows.length) return '';
