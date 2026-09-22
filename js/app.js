@@ -388,7 +388,7 @@ function renderStage(keep){
   const v = state.view;
   try{ document.body.dataset.view = v; }catch(_){}   // escopa CSS por view (desktop)
   const hdr = $('hdr');
-  if(v==='home' || v==='modality' || v==='terms'){ hdr.className='hdr hide'; hdr.innerHTML=''; }
+  if(v==='home' || v==='modality' || v==='terms' || v==='inicio'){ hdr.className='hdr hide'; hdr.innerHTML=''; }
   else { hdr.className='hdr'; hdr.innerHTML = translateHTML(headerHTML()); }
   const s = $('scroll');
   const top = keep ? s.scrollTop : 0;
@@ -407,7 +407,7 @@ function sidebarHTML(){
     `<div class="side-item ${state.view==='refs'&&state.specialty===s.id?'on':''}" onclick="openSpecialty('${s.id}')">
        <span class="si">${svgIcon(P.book,19,{sw:1.8})}</span>${esc(s.name)}</div>`).join('');
   const tool=(view,label,icon)=>`<div class="side-item ${state.view===view?'on':''}" onclick="setView('${view}')"><span class="si">${icon}</span>${esc(label)}</div>`;
-  return `<div class="side-top">
+  return `<div class="side-top" onclick="goInicio()">
       <div class="side-brand"><span class="k">KLUG</span><span class="r">RADS</span></div>
       <div class="side-slogan">Sua referência em Radiologia</div>
     </div>
@@ -416,6 +416,7 @@ function sidebarHTML(){
       <input placeholder="Buscar órgão ou medida…" value="${esc(state.query||'')}" oninput="sideSearch(this.value)">
     </div>
     <nav class="side-nav">
+      <div class="side-item ${state.view==='inicio'?'on':''}" onclick="goInicio()"><span class="si">${svgIcon(P.grid,19)}</span>Início</div>
       <div class="side-sec">Ultrassonografia</div>
       ${spItems}
       <div class="side-sec">Ferramentas</div>
@@ -435,6 +436,40 @@ function renderSidebar(){
 }
 function openSpecialty(id){ state.view='refs'; state.specialty=id; state.query=''; render(); }
 function openCalcs(){ state.modalityId='us'; state.calcId=null; state.view='calc'; render(); }
+function isDesktop(){ return !!(window.matchMedia && window.matchMedia('(min-width:900px)').matches); }
+function homeView(){ return isDesktop() ? 'inicio' : 'modality'; }
+function goInicio(){ state.view='inicio'; render(); }
+// Busca do hero: leva ao guia (refs) e passa o foco para a busca da sidebar,
+// que é persistente — assim o usuário continua digitando sem interrupção.
+function dashSearch(v){
+  state.query=v; state.view='refs';
+  if(!state.specialty && typeof SPECIALTIES!=='undefined') state.specialty=SPECIALTIES[0].id;
+  render();
+  var inp=document.querySelector('.side-search input');
+  if(inp){ inp.focus(); inp.value=v; try{ inp.setSelectionRange(v.length,v.length); }catch(_){} }
+}
+function dashboardHTML(){
+  var cards=(typeof SPECIALTIES!=='undefined'?SPECIALTIES:[]).map(function(s){
+    return `<div class="dash-card" onclick="openSpecialty('${s.id}')"><div class="dash-ic">${svgIcon(P.book,22)}</div><div class="dash-t">${esc(s.name)}</div></div>`;
+  }).join('');
+  return `<div class="dash">
+    <div class="dash-hero">
+      <div class="dash-brand">KLUG<span>RADS</span></div>
+      <div class="dash-slogan">Sua referência em Radiologia</div>
+      <div class="dash-sub">Medidas normais, técnica de exame e calculadoras — na hora do laudo.</div>
+      <div class="dash-search"><span class="si">${svgIcon(P.search,18,{sw:2})}</span><input placeholder="Buscar órgão, medida ou calculadora…" oninput="dashSearch(this.value)"></div>
+    </div>
+    <div class="dash-sec">Especialidades</div>
+    <div class="dash-grid">${cards}</div>
+    <div class="dash-sec">Ferramentas</div>
+    <div class="dash-tools">
+      <div class="dash-tool" onclick="openCalcs()">${svgIcon(P.calc,24)}<div><div class="tt">Calculadoras</div><div class="td">TI-RADS, O-RADS, risco fetal…</div></div></div>
+      <div class="dash-tool" onclick="setView('favoritos')">${svgIcon(P.star,24,{fill:'none'})}<div><div class="tt">Favoritos</div><div class="td">O que você marcou</div></div></div>
+      <div class="dash-tool" onclick="setView('ferramentas')">${svgIcon(P.tools,24)}<div><div class="tt">Outras Ferramentas</div><div class="td">TFG e mais</div></div></div>
+    </div>
+    <div class="disc"><b>Ferramenta educacional. Os valores são referências da literatura e não substituem o julgamento clínico.</b></div>
+  </div>`;
+}
 function sideSearch(v){
   state.query = v;
   if(state.view!=='refs'){ state.view='refs'; if(!state.specialty && typeof SPECIALTIES!=='undefined') state.specialty=SPECIALTIES[0].id; renderStage(); }
@@ -488,6 +523,7 @@ function viewHTML(){
     case 'config': return configHTML();
     case 'terms': return termsGateHTML();
     case 'termsRead': return termsReadHTML();
+    case 'inicio': return dashboardHTML();
     default: return modalityHTML();
   }
 }
@@ -642,7 +678,7 @@ function acceptTerms(){
   }
   state.termsAccepted = true;
   try{ localStorage.setItem('radref_terms', TERMS_VERSION); }catch(_){}
-  state.nav=[]; state.view='modality'; render();
+  state.nav=[]; state.view=homeView(); render();
 }
 function rejectTerms(){
   const m = document.getElementById('terms-msg');
@@ -1577,7 +1613,7 @@ function setView(v){
 function goBack(){
   const prev = state.nav.pop();
   if(prev){ NAV_KEYS.forEach(k=>state[k]=prev[k]); render(); return; }
-  state.view='modality'; render();  // fallback: tela inicial
+  state.view=homeView(); render();  // fallback: tela inicial
 }
 function setSpecialty(id){ state.specialty=id; render(); }
 function setSubBand(b){ state.subBand=b; render(); }
@@ -1694,11 +1730,9 @@ function toggleInList(listId, itemId){
 // carregar as preferências e montar a tela.
 if(window.CONFIG && CONFIG.STATIC_MODE){
   loadState();
-  // No desktop, abre direto no guia (referências) — a sidebar é a navegação.
-  // No celular, mantém a tela inicial de modalidades.
-  if(state.termsAccepted && window.matchMedia && window.matchMedia('(min-width:900px)').matches){
-    state.view='refs';
-  }
+  // No desktop, abre na home (dashboard). No celular, mantém a tela inicial
+  // de modalidades. A sidebar é a navegação no desktop.
+  if(state.termsAccepted && isDesktop()){ state.view='inicio'; }
   render();
 } else
 // (fase 2) /app como área com login: a sessão é conferida ANTES de montar a
