@@ -386,6 +386,7 @@ function render(keep){
 // para poder atualizar o conteúdo sem recriar a sidebar (mantém foco da busca).
 function renderStage(keep){
   const v = state.view;
+  try{ document.body.dataset.view = v; }catch(_){}   // escopa CSS por view (desktop)
   const hdr = $('hdr');
   if(v==='home' || v==='modality' || v==='terms'){ hdr.className='hdr hide'; hdr.innerHTML=''; }
   else { hdr.className='hdr'; hdr.innerHTML = translateHTML(headerHTML()); }
@@ -418,7 +419,7 @@ function sidebarHTML(){
       <div class="side-sec">Ultrassonografia</div>
       ${spItems}
       <div class="side-sec">Ferramentas</div>
-      ${tool('calc','Calculadoras', svgIcon(P.calc,19))}
+      <div class="side-item ${state.view==='calc'&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>Calculadoras</div>
       ${tool('ferramentas','Outras Ferramentas', svgIcon(P.tools,19))}
       ${tool('favoritos','Favoritos', svgIcon(P.star,19,{fill:'none'}))}
       ${tool('config','Configurações', svgIcon(P.gear,19))}
@@ -433,6 +434,7 @@ function renderSidebar(){
   el.innerHTML = translateHTML(sidebarHTML());
 }
 function openSpecialty(id){ state.view='refs'; state.specialty=id; state.query=''; render(); }
+function openCalcs(){ state.modalityId='us'; state.calcId=null; state.view='calc'; render(); }
 function sideSearch(v){
   state.query = v;
   if(state.view!=='refs'){ state.view='refs'; if(!state.specialty && typeof SPECIALTIES!=='undefined') state.specialty=SPECIALTIES[0].id; renderStage(); }
@@ -776,7 +778,7 @@ function refsHTML(){
       <div class="rsearch-ic">${svgIcon(P.search,18,{sw:2})}</div>
       <input id="q" value="${esc(state.query)}" oninput="onSearch(this.value)" placeholder="Pesquisar órgão ou medida…">
     </div></div>
-    <div class="sec-label">Especialidades</div>
+    <div class="sec-label spec-label">Especialidades</div>
     <div class="bandzone">
       <div class="bandrow" id="bandrow">${specChips}</div>
       <div class="band-fade"><div class="band-arrow" onclick="scrollBandMore()">»</div></div>
@@ -854,7 +856,22 @@ function detailHTML(){
   else { h+=`<div class="empty"><div class="msg">Sem tabela de referência para este item.</div></div>`; }
   if(d.footnotes&&d.footnotes.length){ h+=`<div class="note">`+d.footnotes.map(f=>nl2br(f)).join('<br>')+`</div>`; }
   h += refsAccHTML(d);
-  return h;
+  // Desktop: conteúdo à esquerda + coluna direita (relacionados/ações). No
+  // celular a coluna direita fica escondida (CSS) e o conteúdo ocupa tudo.
+  return `<div class="detail-grid"><div class="detail-main">${h}</div>${detailRailHTML(d)}</div>`;
+}
+function detailRailHTML(d){
+  const sib = (typeof DATA!=='undefined'?DATA:[]).filter(x=>x.region===d.region && x.group===d.group && x.id!==d.id).slice(0,8);
+  let rel='';
+  if(sib.length){
+    rel = `<div class="rail-card"><h4>Nesta seção</h4><div class="rail-rel">`+
+      sib.map(x=>`<a onclick="openItem('${esc(x.id)}')"><span class="d"></span>${esc(x.name)}</a>`).join('')+`</div></div>`;
+  }
+  const isFav = state.favs.indexOf(d.id)>=0;
+  const fav = `<div class="rail-card"><h4>Ações</h4>
+    <button class="rail-cta" style="${isFav?'background:var(--starSoft);color:var(--star)':''}" onclick="toggleFav('${esc(d.id)}')">${isFav?'★ Nos favoritos':'☆ Favoritar'}</button></div>`;
+  const calc = `<div class="rail-card"><h4>Calculadoras</h4><div class="rail-note">Escores e fórmulas de ultrassonografia.</div><button class="rail-cta" onclick="setView('calc')">Abrir calculadoras</button></div>`;
+  return `<aside class="detail-rail">${rel}${fav}${calc}</aside>`;
 }
 function tableHTML(t,key){
   const rows = t.rows||[]; if(!rows.length) return '';
@@ -1235,7 +1252,7 @@ function calcListHTML(){
   const cards = items.length ? items.map(c=>calcCardHTML(c)).join('')
   : `<div class="empty"><div class="msg">Ainda não há calculadoras nesta especialidade.</div></div>`;
   return `<div class="calc-list-wrap">
-    <div class="sec-label">Especialidades</div>
+    <div class="sec-label spec-label">Especialidades</div>
     <div class="bandzone">
       <div class="bandrow" id="bandrow">${specChips}</div>
       <div class="band-fade"><div class="band-arrow" onclick="scrollBandMore()">»</div></div>
