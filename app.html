@@ -126,6 +126,11 @@
     /* título grande no detalhe; esconde o título pequeno (redundante) do header */
     .d-name{display:block;font-size:30px;font-weight:800;letter-spacing:-.02em;margin:2px 0 8px;line-height:1.12;}
     body[data-view="detail"] .htitle{visibility:hidden;}
+    /* views de formulário/lista não devem esticar: largura de leitura
+       confortável, alinhada à esquerda (igual à lista de referências) */
+    .ti-wrap, .calc-list-wrap, .tfg-wrap, .set-wrap, .lists, .create,
+    .lc-b, .constr-screen, .compose-empty, .calc-intro, .calc-hint,
+    .stub-head, .stub-card, .stub-foot { max-width:760px; }
   }
 
   /* --------- Sidebar (desktop) --------- */
