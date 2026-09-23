@@ -417,8 +417,7 @@ function sidebarHTML(){
     </div>
     <nav class="side-nav">
       <div class="side-item" onclick="goInicio()"><span class="si">${svgIcon(P.back,18,{sw:2})}</span>Métodos de Diagnóstico</div>
-      <div class="side-sec">Ultrassonografia</div>
-      ${spItems}
+      ${state.view!=='calc' ? `<div class="side-sec">Ultrassonografia</div>${spItems}` : ''}
       <div class="side-sec">Ferramentas</div>
       <div class="side-item ${state.view==='calc'&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>Calculadoras</div>
       ${tool('ferramentas','Outras Ferramentas', svgIcon(P.tools,19))}
