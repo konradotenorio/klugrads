@@ -347,8 +347,8 @@ function loadState(){
 /* ---- HELPERS de dados ---- */
 const GROUP_BAND = {'Fetal':'Obstétrico','Pediatria':'Pediátrico','Adultos':'Adulto'};
 
-function specialtyItems(){
-  const sp = SPECIALTIES.find(x=>x.id===state.specialty);
+// Itens de uma especialidade (objeto sp), sem filtrar por faixa etária.
+function itemsForSpec(sp){
   if(!sp) return [];
   let items = sp.regions.length
     ? DATA.filter(d=>sp.regions.includes(d.region) && sp.groups.includes(d.group))
@@ -360,11 +360,29 @@ function specialtyItems(){
   if(sp.excludeNames && sp.excludeNames.length){
     items = items.filter(d=>!sp.excludeNames.includes(d.name));
   }
-  if(sp.hasSub){
+  return items;
+}
+// Qual especialidade contém este item (para breadcrumb / navegação).
+function specialtyOf(d){
+  if(!d || typeof SPECIALTIES==='undefined') return null;
+  return SPECIALTIES.find(function(sp){
+    if(sp.excludeNames && sp.excludeNames.indexOf(d.name)>=0) return false;
+    if(sp.includeNames && sp.includeNames.indexOf(d.name)>=0 && sp.groups.indexOf(d.group)>=0) return true;
+    return sp.regions.indexOf(d.region)>=0 && sp.groups.indexOf(d.group)>=0;
+  }) || null;
+}
+// Itens da especialidade respeitando a faixa etária (Ped/Adu) atual.
+function specialtyItemsFor(sp){
+  let items = itemsForSpec(sp);
+  if(sp && sp.hasSub){
     const grp = state.subBand==='Pediátrico' ? 'Pediatria' : 'Adultos';
     items = items.filter(d=>d.group===grp);
   }
   return items;
+}
+function specialtyItems(){
+  const sp = SPECIALTIES.find(x=>x.id===state.specialty);
+  return specialtyItemsFor(sp);
 }
 function metaOf(d){ return [d.region, d.abbr].filter(Boolean).join(' · '); }
 
@@ -403,23 +421,39 @@ function renderStage(keep){
 
 /* ---- Sidebar persistente (layout web / desktop) ---- */
 function sidebarHTML(){
-  const spItems = (typeof SPECIALTIES!=='undefined'?SPECIALTIES:[]).map(s=>
-    `<div class="side-item ${state.view==='refs'&&state.specialty===s.id?'on':''}" onclick="openSpecialty('${s.id}')">
-       <span class="si">${svgIcon(P.book,19,{sw:1.8})}</span>${esc(s.name)}</div>`).join('');
+  const isCalc = state.view==='calc';
+  const specGroups = (typeof SPECIALTIES!=='undefined'?SPECIALTIES:[]).map(function(s){
+    const open = state.openSpec===s.id;
+    const activeHead = state.view==='refs' && state.specialty===s.id;
+    const items = specialtyItemsFor(s);
+    const children = items.length
+      ? items.map(function(d){ return `<div class="side-subitem ${state.item&&state.item.id===d.id?'on':''}" onclick="openItem('${esc(d.id)}')">${esc(d.name)}</div>`; }).join('')
+      : `<div class="side-subempty">Em breve</div>`;
+    return `<div class="side-group ${open?'open':''}">
+      <div class="side-item side-ghead ${activeHead?'on':''}" onclick="openSpecialty('${s.id}')">
+        <span class="si">${svgIcon(P.book,18,{sw:1.8})}</span>
+        <span class="side-gname">${esc(s.name)}</span>
+        <button class="side-chev" onclick="event.stopPropagation();toggleSpec('${s.id}')" aria-label="Abrir itens de ${esc(s.name)}">${svgIcon(P.chev,15,{sw:2.6})}</button>
+      </div>
+      <div class="side-children">${children}</div>
+    </div>`;
+  }).join('');
   const tool=(view,label,icon)=>`<div class="side-item ${state.view===view?'on':''}" onclick="setView('${view}')"><span class="si">${icon}</span>${esc(label)}</div>`;
+  const searching = !!(state.gquery && state.gquery.trim());
   return `<div class="side-top" onclick="goInicio()">
       <div class="side-brand"><span class="k">KLUG</span><span class="r">RADS</span></div>
       <div class="side-slogan">Sua referência em Radiologia</div>
     </div>
-    <div class="side-search">
+    <div class="side-gsearch">
       <span class="si">${svgIcon(P.search,16,{sw:2})}</span>
-      <input placeholder="Buscar órgão ou medida…" value="${esc(state.query||'')}" oninput="sideSearch(this.value)">
+      <input id="side-q" placeholder="Buscar em todo o site…" value="${esc(state.gquery||'')}" oninput="globalSearch(this.value)" autocomplete="off">
     </div>
-    <nav class="side-nav">
+    <div id="side-results" class="side-results">${searching?globalResultsHTML(state.gquery):''}</div>
+    <nav class="side-nav" id="side-nav" ${searching?'hidden':''}>
       <div class="side-item" onclick="goInicio()"><span class="si">${svgIcon(P.back,18,{sw:2})}</span>Métodos de Diagnóstico</div>
-      ${state.view!=='calc' ? `<div class="side-sec">Ultrassonografia</div>${spItems}` : ''}
+      ${isCalc ? '' : `<div class="side-sec">Ultrassonografia</div>${specGroups}`}
       <div class="side-sec">Ferramentas</div>
-      <div class="side-item ${state.view==='calc'&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>Calculadoras</div>
+      <div class="side-item ${isCalc&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>Calculadoras</div>
       ${tool('ferramentas','Outras Ferramentas', svgIcon(P.tools,19))}
       ${tool('favoritos','Favoritos', svgIcon(P.star,19,{fill:'none'}))}
       ${tool('config','Configurações', svgIcon(P.gear,19))}
@@ -436,7 +470,42 @@ function renderSidebar(){
   el.style.display='';
   el.innerHTML = translateHTML(sidebarHTML());
 }
-function openSpecialty(id){ state.view='refs'; state.specialty=id; state.query=''; render(); }
+function openSpecialty(id){ state.view='refs'; state.specialty=id; state.query=''; state.openSpec=id; render(); }
+// Expande/recolhe os itens de uma especialidade na sidebar (accordion).
+function toggleSpec(id){ state.openSpec = (state.openSpec===id ? null : id); renderSidebar(); }
+// Busca global (topo da sidebar): procura em TODO o acervo (referências) e nas
+// calculadoras. Atualiza só a lista de resultados para não perder o foco.
+function globalSearch(v){
+  state.gquery = v;
+  var res = document.getElementById('side-results');
+  var nav = document.getElementById('side-nav');
+  if(res) res.innerHTML = translateHTML(globalResultsHTML(v));
+  if(nav) nav.hidden = !!(v && v.trim());
+}
+function globalResultsHTML(q){
+  q = (q||'').trim().toLowerCase(); if(!q) return '';
+  var refs = (typeof DATA!=='undefined'?DATA:[]).filter(function(d){
+    return (d.name+' '+(d.abbr||'')+' '+d.region+' '+(GROUP_BAND[d.group]||'')).toLowerCase().indexOf(q)>=0;
+  }).slice(0,25);
+  var calcs = (typeof allCalcs==='function'?allCalcs():[]).filter(function(c){
+    return (c.title+' '+(c.desc||'')).toLowerCase().indexOf(q)>=0;
+  }).slice(0,10);
+  if(!refs.length && !calcs.length) return `<div class="side-empty">Nada encontrado para "${esc(q)}".</div>`;
+  var h='';
+  if(refs.length){
+    h += `<div class="side-sec">Referências</div>` + refs.map(function(d){
+      var band = GROUP_BAND[d.group] || d.group;
+      return `<div class="side-result" onclick="pickResult('item','${esc(d.id)}')"><span class="rn">${esc(d.name)}</span><span class="rm">${esc(band)} · ${esc(d.region)}</span></div>`;
+    }).join('');
+  }
+  if(calcs.length){
+    h += `<div class="side-sec">Calculadoras</div>` + calcs.map(function(c){
+      return `<div class="side-result" onclick="pickResult('calc','${esc(c.id)}')"><span class="rn">${esc(c.title)}</span><span class="rm">${esc(c.desc||'')}</span></div>`;
+    }).join('');
+  }
+  return h;
+}
+function pickResult(kind, id){ state.gquery=''; if(kind==='calc') openFavCalc(id); else openItem(id); }
 function openCalcs(){ state.modalityId='us'; state.calcId=null; state.view='calc'; render(); }
 function isDesktop(){ return !!(window.matchMedia && window.matchMedia('(min-width:900px)').matches); }
 function homeView(){ return 'modality'; }   // tela inicial = Métodos de Diagnóstico
@@ -508,7 +577,7 @@ function headerHTML(){
 
   return `<button class="hbtn" onclick="goBack()" aria-label="Voltar">${svgIcon(P.back,22,{sw:2.2})}</button>
     <div class="htitle-wrap"><div class="htitle">${esc(title)}</div>${sub?`<div class="hsub">${esc(sub)}</div>`:''}</div>
-    <div class="hact">${right}</div>`;
+    <div class="hact">${right}${themeToggleBtn()}</div>`;
 }
 
 function viewHTML(){
@@ -539,6 +608,7 @@ function modalityHTML(){
       ${!m.active?'<div class="mod-badge">Em construção</div>':''}
     </div>`).join('');
   return `<div class="modal-screen">
+    <button class="iconbtn modal-theme" onclick="toggleTheme()" aria-label="Alternar tema dia/noite" title="Tema dia/noite">${state.theme==='light'?'🌙':'☀️'}</button>
     <div class="modal-head">
       <div class="modal-brand">KLUG<span>RADS</span></div>
       <div class="modal-slogan">Sua referência em Radiologia</div>
@@ -625,10 +695,13 @@ function configHTML(){
     ${(window.CONFIG&&CONFIG.STATIC_MODE) ? '' : `<div class="sec-label" style="margin-top:14px">Conta</div>${conta}`}
 
     <div class="sec-label" style="margin-top:14px">Críticas e Sugestões</div>
-    <div class="set-row">
-      <div class="lbl">Envie sua opinião para a nossa equipe<div class="sub">Em construção</div></div>
+    <div class="set-note">Clique abaixo e nos envie sua crítica, sugestão ou solicitação de atualização.</div>
+    <div style="padding:0 18px 16px">
+      <textarea id="fb-msg" class="fb-textarea" rows="4" placeholder="Escreva sua mensagem…"></textarea>
+      <input id="fb-email" class="fb-input" type="email" inputmode="email" placeholder="Seu e-mail (opcional, para resposta)">
+      <div id="fb-status" class="fb-status" hidden></div>
+      <button class="set-btn accent" onclick="enviarSugestao()">Enviar mensagem</button>
     </div>
-    <div style="padding:14px 18px"><button class="set-btn" onclick="enviarSugestao()">Enviar mensagem</button></div>
 
     <div class="sec-label" style="margin-top:14px">${esc(TT().title)}</div>
     <div class="set-row" onclick="setView('termsRead')" style="cursor:pointer">
@@ -697,6 +770,10 @@ function setTheme(t){
   try{ localStorage.setItem('radref_theme', t); }catch(_){}
   applyTheme(); render(true);
 }
+function toggleTheme(){ setTheme(state.theme==='light'?'dark':'light'); }
+function themeToggleBtn(){
+  return `<button class="iconbtn theme-toggle" onclick="event.stopPropagation();toggleTheme()" aria-label="Alternar tema dia/noite" title="Tema dia/noite">${state.theme==='light'?'🌙':'☀️'}</button>`;
+}
 function setLang(l){
   state.lang=l;
   try{ localStorage.setItem('radref_lang', l); }catch(_){}
@@ -716,9 +793,39 @@ function login(){
   // Placeholder — a autenticação real (Supabase/Stripe) entra na etapa de monetização.
   alert(t('Login em breve.'));
 }
+// Destino do feedback. (Obs.: gmail é @gmail.com — não .com.br.)
+var FEEDBACK_EMAIL = 'klugrads@gmail.com';
+function fbStatus(txt, kind){
+  var el=document.getElementById('fb-status'); if(!el) return;
+  el.textContent=txt; el.hidden=!txt; el.className='fb-status'+(kind?(' '+kind):'');
+}
+function fbMailto(msg, email){
+  var body = encodeURIComponent(msg + (email ? ('\n\nContato: '+email) : ''));
+  var subject = encodeURIComponent('KlugRads — Crítica / Sugestão');
+  window.location.href = 'mailto:'+FEEDBACK_EMAIL+'?subject='+subject+'&body='+body;
+}
 function enviarSugestao(){
-  // Placeholder — o e-mail da central ainda será definido.
-  alert(t('Canal de contato em construção — em breve você poderá enviar críticas e sugestões por aqui.'));
+  var msgEl=document.getElementById('fb-msg'), emailEl=document.getElementById('fb-email');
+  var msg=((msgEl&&msgEl.value)||'').trim();
+  var email=((emailEl&&emailEl.value)||'').trim();
+  if(msg.length<3){ fbStatus('Escreva sua mensagem antes de enviar.','err'); if(msgEl) msgEl.focus(); return; }
+  var key=(window.CONFIG&&CONFIG.WEB3FORMS_KEY)||'';
+  if(key){
+    // Envio automático por e-mail (Web3Forms — chave pública, atrelada ao e-mail de destino).
+    fbStatus('Enviando…');
+    fetch('https://api.web3forms.com/submit',{
+      method:'POST', headers:{'Content-Type':'application/json', Accept:'application/json'},
+      body:JSON.stringify({ access_key:key, subject:'KlugRads — Crítica / Sugestão',
+        from_name:'KlugRads', email: email||'app@klugrads', message: msg })
+    }).then(function(r){return r.json();}).then(function(j){
+      if(j&&j.success){ fbStatus('Mensagem enviada. Obrigado! 🙌','ok'); if(msgEl)msgEl.value=''; if(emailEl)emailEl.value=''; }
+      else { fbStatus('Não consegui enviar agora — abrindo seu e-mail…','err'); fbMailto(msg,email); }
+    }).catch(function(){ fbStatus('Sem conexão — abrindo seu e-mail…','err'); fbMailto(msg,email); });
+  } else {
+    // Sem chave configurada ainda: abre o app de e-mail já preenchido.
+    fbMailto(msg,email);
+    fbStatus('Abrindo seu aplicativo de e-mail para enviar a mensagem…');
+  }
 }
 // Busca perfil e assinatura para a area de Conta. Sao dados do proprio
 // usuario: a RLS ja garante que ninguem enxerga os dos outros.
@@ -831,9 +938,8 @@ function refsListHTML(){
   let items = specialtyItems();
   if(q) items = items.filter(d=>(d.name+' '+(d.abbr||'')+' '+d.region).toLowerCase().includes(q));
   if(!items.length){
-    const msg = (sp && !sp.regions.length)
-      ? `${sp.name} — referências em breve.`
-      : q ? `Nenhum resultado para "${state.query}".` : 'Sem itens para esta seleção.';
+    const msg = q ? `Nenhum resultado para "${state.query}".`
+      : (sp ? `${sp.name} — conteúdo em breve.` : 'Conteúdo em breve nesta seção.');
     return `<div class="empty"><div class="big">○</div><div class="msg">${esc(msg)}</div></div>`;
   }
   let html='', last=null;
@@ -888,7 +994,9 @@ function detailHTML(){
   const d = state.item; if(!d) return '';
   const faixa = (GROUP_BAND[d.group]||d.group)+' — '+d.region;
   const contextLabel = d.group==='Doppler' ? 'Seção' : 'Faixa etária';
-  let h = `<div class="d-name">${esc(d.name)}</div><div class="sec-label">${contextLabel}</div><div class="d-age">${esc(faixa)}</div>`;
+  const specObj = specialtyOf(d);
+  const crumb = specObj ? `<div class="d-crumb"><span class="crumb-link" onclick="openSpecialty('${specObj.id}')">‹ ${esc(specObj.name)}</span></div>` : '';
+  let h = crumb + `<div class="d-name">${esc(d.name)}</div><div class="sec-label">${contextLabel}</div><div class="d-age">${esc(faixa)}</div>`;
   h += referenceCalculatorHTML(d);
   if(d.tables&&d.tables.length){ d.tables.forEach((t,i)=>{ h+=tableHTML(t,d.id+'-'+i); }); }
   else { h+=`<div class="empty"><div class="msg">Sem tabela de referência para este item.</div></div>`; }
@@ -1303,7 +1411,7 @@ function calcListHTML(){
   ).join('');
   const items = CALCS.filter(c=>c.spec===state.calcSpec);
   const cards = items.length ? items.map(c=>calcCardHTML(c)).join('')
-  : `<div class="empty"><div class="msg">Ainda não há calculadoras nesta especialidade.</div></div>`;
+  : `<div class="empty"><div class="big">🧮</div><div class="msg">Calculadoras desta especialidade <b>em breve</b>.</div></div>`;
   return `<div class="calc-list-wrap">
     <div class="sec-label spec-label">Especialidades</div>
     <div class="bandzone">

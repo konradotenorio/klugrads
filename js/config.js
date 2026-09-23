@@ -18,5 +18,10 @@ window.CONFIG = {
   SUPABASE_URL: '',
   SUPABASE_ANON_KEY: '',
   TABLE: 'referencias',
-  UM_APARELHO_POR_VEZ: false
+  UM_APARELHO_POR_VEZ: false,
+
+  // Formulário Críticas e Sugestões. Vazio = abre o app de e-mail (mailto)
+  // para klugrads@gmail.com. Para envio AUTOMÁTICO por e-mail, crie uma chave
+  // grátis em web3forms.com (informando klugrads@gmail.com) e cole aqui.
+  WEB3FORMS_KEY: ''
 };
