@@ -6,11 +6,11 @@
    exponencial S = S0·e^(−TE/T2*) por regressão linear de ln(Sinal) × TE:
         b = inclinação  →  T2* = −1/b (ms) ;  R2* = 1000 / T2* (Hz)
    Correção de campo 3,0 T → 1,5 T:  R2*(1,5T) = (R2*(3T) + 11) / 2
-   LIC por calibração selecionável (fórmulas replicadas EXATAMENTE do site
-   do Dr. Ricardo Romano — ricardoromano.com):
+   LIC por calibração selecionável (fórmulas do site do Dr. Ricardo Romano —
+   ricardoromano.com; Hankins corrigido para a fórmula publicada, ver abaixo):
         Garbowski: LIC = 31,94 × T2*^(−1,014)
         Henninger: LIC = 0,024 × R2* + 0,277
-        Hankins:   LIC = 0,028 × R2* × 0,454
+        Hankins:   LIC = 0,028 × R2* − 0,45   (Hankins et al. Blood 2009; o site tinha typo ×0,454)
    LIC em mg/g (peso seco); μmol/g = mg/g × 17,9. Gráfico em SVG próprio
    (dados + curva de ajuste). Layout TI-RADS/O-RADS. Ferramenta educacional.
    ========================================================================= */
@@ -84,7 +84,7 @@ function ferroT2Compute(){
   let lic;
   if(s.ref==='garb') lic = 31.94*Math.pow(t2, -1.014);
   else if(s.ref==='henn') lic = 0.024*r2star + 0.277;
-  else lic = 0.028*r2star*0.454;   // Hankins — replicado exatamente do site
+  else lic = Math.max(0, 0.028*r2star - 0.45);   // Hankins et al. Blood 2009: LIC = 0,028×R2* − 0,45 (corrigido; o site tinha typo ×0,454)
   return {nValid:te.length, te, sn, a:reg.a, b:reg.b, r2fit:reg.r2, t2, r2star, lic};
 }
 
@@ -189,7 +189,7 @@ function calcFerroT2HTML(){
       <div class="tfg-ref-list">
         <div class="tfg-ref-item">Ajuste: ln(Sinal) = a + b × TE (regressão linear) · T2* = −1/b (ms) · R2* = 1000 ÷ T2* (Hz)</div>
         <div class="tfg-ref-item">3,0 T → 1,5 T: R2*(1,5T) = (R2*(3T) + 11) ÷ 2</div>
-        <div class="tfg-ref-item">Garbowski: LIC = 31,94 × T2*^(−1,014) · Henninger: LIC = 0,024 × R2* + 0,277 · Hankins: LIC = 0,028 × R2* × 0,454</div>
+        <div class="tfg-ref-item">Garbowski: LIC = 31,94 × T2*^(−1,014) · Henninger: LIC = 0,024 × R2* + 0,277 · Hankins: LIC = 0,028 × R2* − 0,45</div>
         <div class="tfg-ref-item">μmol/g = mg/g × 17,9</div>
       </div>
     </div>
