@@ -416,7 +416,7 @@ function sidebarHTML(){
       <input placeholder="Buscar órgão ou medida…" value="${esc(state.query||'')}" oninput="sideSearch(this.value)">
     </div>
     <nav class="side-nav">
-      <div class="side-item ${state.view==='inicio'?'on':''}" onclick="goInicio()"><span class="si">${svgIcon(P.grid,19)}</span>Início</div>
+      <div class="side-item" onclick="goInicio()"><span class="si">${svgIcon(P.back,18,{sw:2})}</span>Métodos de Diagnóstico</div>
       <div class="side-sec">Ultrassonografia</div>
       ${spItems}
       <div class="side-sec">Ferramentas</div>
@@ -424,21 +424,24 @@ function sidebarHTML(){
       ${tool('ferramentas','Outras Ferramentas', svgIcon(P.tools,19))}
       ${tool('favoritos','Favoritos', svgIcon(P.star,19,{fill:'none'}))}
       ${tool('config','Configurações', svgIcon(P.gear,19))}
-      <div class="side-item ${state.view==='modality'?'on':''}" onclick="setView('modality')"><span class="si">${svgIcon(P.grid,19)}</span>Métodos de Diagnóstico</div>
     </nav>
     <div class="side-foot"><b>Grátis · sem login</b><br>Ferramenta educacional — não substitui o julgamento clínico.</div>`;
 }
+// A sidebar NÃO aparece nas telas iniciais (Métodos de Diagnóstico / termos):
+// a landing fica limpa e em tela cheia. Ela surge ao entrar num conteúdo,
+// já alimentada com as opções clicáveis.
+var SIDEBAR_HIDDEN_VIEWS = ['terms','modality','inicio'];
 function renderSidebar(){
   const el = $('side'); if(!el) return;
-  if(!state.termsAccepted || state.view==='terms'){ el.style.display='none'; el.innerHTML=''; return; }
+  if(!state.termsAccepted || SIDEBAR_HIDDEN_VIEWS.indexOf(state.view)>=0){ el.style.display='none'; el.innerHTML=''; return; }
   el.style.display='';
   el.innerHTML = translateHTML(sidebarHTML());
 }
 function openSpecialty(id){ state.view='refs'; state.specialty=id; state.query=''; render(); }
 function openCalcs(){ state.modalityId='us'; state.calcId=null; state.view='calc'; render(); }
 function isDesktop(){ return !!(window.matchMedia && window.matchMedia('(min-width:900px)').matches); }
-function homeView(){ return isDesktop() ? 'inicio' : 'modality'; }
-function goInicio(){ state.view='inicio'; render(); }
+function homeView(){ return 'modality'; }   // tela inicial = Métodos de Diagnóstico
+function goInicio(){ state.view='modality'; render(); }
 // Busca do hero: leva ao guia (refs) e passa o foco para a busca da sidebar,
 // que é persistente — assim o usuário continua digitando sem interrupção.
 function dashSearch(v){
@@ -1730,9 +1733,9 @@ function toggleInList(listId, itemId){
 // carregar as preferências e montar a tela.
 if(window.CONFIG && CONFIG.STATIC_MODE){
   loadState();
-  // No desktop, abre na home (dashboard). No celular, mantém a tela inicial
-  // de modalidades. A sidebar é a navegação no desktop.
-  if(state.termsAccepted && isDesktop()){ state.view='inicio'; }
+  // Tela inicial = Métodos de Diagnóstico (com TODOS os métodos, inclusive os
+  // "em construção"), sem sidebar. A sidebar só aparece ao entrar num conteúdo.
+  // (state.view já é 'modality' por padrão.)
   render();
 } else
 // (fase 2) /app como área com login: a sessão é conferida ANTES de montar a
