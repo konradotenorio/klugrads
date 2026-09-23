@@ -1341,18 +1341,28 @@ function calcTFGHTML(){
           <div class="drum-label">Creatinina</div>
           ${drumHTML('cr', CR_VALUES, state.tfgCr)}
           <div class="drum-unit">mg/dL</div>
+          <div class="tfg-step">
+            <button type="button" onclick="tfgStep('cr',-1)" aria-label="Diminuir creatinina">−</button>
+            <input id="tfg-in-cr" type="text" inputmode="decimal" value="${esc(state.tfgCr)}" oninput="tfgInput('cr',this.value)" onchange="tfgCommit('cr',this.value)" aria-label="Creatinina">
+            <button type="button" onclick="tfgStep('cr',1)" aria-label="Aumentar creatinina">+</button>
+          </div>
         </div>
         <div class="drum-col">
           <div class="drum-label">Idade</div>
           ${drumHTML('age', AGE_VALUES, state.tfgAge)}
           <div class="drum-unit">anos</div>
+          <div class="tfg-step">
+            <button type="button" onclick="tfgStep('age',-1)" aria-label="Diminuir idade">−</button>
+            <input id="tfg-in-age" type="text" inputmode="numeric" value="${esc(state.tfgAge)}" oninput="tfgInput('age',this.value)" onchange="tfgCommit('age',this.value)" aria-label="Idade">
+            <button type="button" onclick="tfgStep('age',1)" aria-label="Aumentar idade">+</button>
+          </div>
         </div>
       </div>
       <div class="tfg-field">
         <div class="tfg-field-lbl">Sexo</div>
         <div class="tfg-toggle">
-          <div class="tfg-opt ${sexo==='M'?'on':''}" onclick="state.tfgSexo='M';render();setTimeout(autoCalcTFG,180)">Masculino</div>
-          <div class="tfg-opt ${sexo==='F'?'on':''}" onclick="state.tfgSexo='F';render();setTimeout(autoCalcTFG,180)">Feminino</div>
+          <div class="tfg-opt ${sexo==='M'?'on':''}" onclick="tfgSetSexo('M')">Masculino</div>
+          <div class="tfg-opt ${sexo==='F'?'on':''}" onclick="tfgSetSexo('F')">Feminino</div>
         </div>
       </div>
     </div>
@@ -1659,17 +1669,28 @@ function toggleTableAcc(bodyId,chevId,button){
 function onDrumScroll(id, el){
   const ITEM_H = 44;
   const idx = Math.round(el.scrollTop / ITEM_H);
-  if(id==='cr'){ state.tfgCr = CR_VALUES[Math.max(0,Math.min(idx,CR_VALUES.length-1))]; }
-  else if(id==='age'){ state.tfgAge = AGE_VALUES[Math.max(0,Math.min(idx,AGE_VALUES.length-1))]; }
+  var arr = id==='cr'?CR_VALUES:AGE_VALUES;
+  var val = arr[Math.max(0,Math.min(idx,arr.length-1))];
+  if(id==='cr') state.tfgCr=val; else state.tfgAge=val;
+  var inp=document.getElementById('tfg-in-'+id);
+  if(inp && document.activeElement!==inp) inp.value=val;   // sincroniza o campo sem atrapalhar quem digita
   clearTimeout(_tfgTimer);
-  _tfgTimer = setTimeout(autoCalcTFG, 350);
+  _tfgTimer = setTimeout(autoCalcTFG, 250);
 }
+// Troca o sexo SEM recriar a tela (render recriava os seletores de rolagem
+// e zerava creatinina/idade). Só atualiza o botão ativo e recalcula com os
+// valores atuais dos seletores.
+function tfgSetSexo(s){
+  state.tfgSexo = s;
+  var wrap = document.querySelector('.tfg-toggle');
+  if(wrap){ Array.prototype.forEach.call(wrap.children, function(b){
+    b.classList.toggle('on', b.textContent.trim() === (s==='M'?'Masculino':'Feminino'));
+  }); }
+  autoCalcTFG();
+}
+// Calcula a partir do ESTADO (state.tfgCr/tfgAge), que é mantido em sincronia
+// pela rolagem, pelos botões +/- e pelo campo digitável.
 function autoCalcTFG(){
-  const ITEM_H = 44;
-  const crEl = document.getElementById('drum-cr');
-  const ageEl = document.getElementById('drum-age');
-  if(crEl){ const i=Math.round(crEl.scrollTop/ITEM_H); state.tfgCr=CR_VALUES[Math.max(0,Math.min(i,CR_VALUES.length-1))]; }
-  if(ageEl){ const i=Math.round(ageEl.scrollTop/ITEM_H); state.tfgAge=AGE_VALUES[Math.max(0,Math.min(i,AGE_VALUES.length-1))]; }
   const cr=parseFloat(state.tfgCr), age=parseInt(state.tfgAge);
   if(isNaN(cr)||cr<=0||isNaN(age)||age<=0) return;
   let tfg = 175 * Math.pow(cr,-1.154) * Math.pow(age,-0.203);
@@ -1677,6 +1698,39 @@ function autoCalcTFG(){
   state.tfgResult = tfg;
   const el = document.getElementById('tfg-result-area');
   if(el) el.innerHTML = tfgResultHTML(tfg);
+}
+/* ---- controles unitários da TFG: +/-, digitação, sincronizados com a rolagem ---- */
+function _tfgArr(which){ return which==='cr' ? CR_VALUES : AGE_VALUES; }
+function _tfgNearestIdx(which, num){
+  var arr=_tfgArr(which), best=0, bd=Infinity;
+  for(var i=0;i<arr.length;i++){ var d=Math.abs(parseFloat(arr[i])-num); if(d<bd){ bd=d; best=i; } }
+  return best;
+}
+function _tfgApply(which, idx){
+  var arr=_tfgArr(which); idx=Math.max(0,Math.min(idx,arr.length-1));
+  var val=arr[idx];
+  if(which==='cr') state.tfgCr=val; else state.tfgAge=val;
+  var el=document.getElementById('drum-'+which); if(el) el.scrollTop=idx*44;   // sincroniza rolagem
+  var inp=document.getElementById('tfg-in-'+which); if(inp) inp.value=val;      // sincroniza campo
+  autoCalcTFG();
+}
+function tfgStep(which, dir){
+  var arr=_tfgArr(which), cur = which==='cr'?state.tfgCr:state.tfgAge;
+  var i=arr.indexOf(cur);
+  if(i<0) i=_tfgNearestIdx(which, parseFloat(String(cur).replace(',','.'))||0);
+  _tfgApply(which, i+dir);
+}
+function tfgInput(which, raw){   // enquanto digita: calcula ao vivo com o valor digitado
+  var num=parseFloat(String(raw).replace(',','.'));
+  if(isNaN(num)||num<=0) return;
+  if(which==='cr') state.tfgCr=String(num); else state.tfgAge=String(Math.round(num));
+  autoCalcTFG();
+}
+function tfgCommit(which, raw){  // ao sair/Enter: encaixa no valor válido mais próximo e alinha a rolagem
+  var num=parseFloat(String(raw).replace(',','.'));
+  var inp=document.getElementById('tfg-in-'+which);
+  if(isNaN(num)||num<=0){ if(inp) inp.value = which==='cr'?state.tfgCr:state.tfgAge; return; }
+  _tfgApply(which, _tfgNearestIdx(which, num));
 }
 function initDrums(){
   const ITEM_H = 44;
