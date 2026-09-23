@@ -9,7 +9,7 @@
    stale-while-revalidate entrega o arquivo velho do cache e a correcao
    simplesmente nao chega ao usuario — inclusive correcoes de seguranca.
    ========================================================================= */
-const VERSION = 'v0.17.1';
+const VERSION = 'v0.21.0';
 const APP_CACHE = `ultraref-app-${VERSION}`;
 const DATA_CACHE = `ultraref-data-${VERSION}`;
 
@@ -26,6 +26,10 @@ const APP_SHELL = [
   '/js/app.js',
   '/js/calc-fetal.js',
   '/js/calc-orads.js',
+  '/js/calc-esteatose-rm.js',
+  '/js/calc-esteatose-tc.js',
+  '/js/calc-ferro-r2.js',
+  '/js/calc-ferro-t2.js',
   '/js/calc-trisomias.js',
   '/js/calc-preeclampsia.js',
   '/js/calc-sga.js',

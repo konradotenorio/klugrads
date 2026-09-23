@@ -68,9 +68,9 @@ const MODALITIES = [
    icon:'<circle cx="9" cy="5" r="3"/><circle cx="15" cy="19" r="3"/><path d="M9 8l6 8"/>'},
   {id:'us',   name:'Ultrassonografia',           label:'Ultrassonografia',             active:true,
    icon:'<rect x="9" y="14" width="6" height="7" rx="3"/><path d="M7 12c1-2.5 2.5-4 5-4s4 1.5 5 4"/><path d="M4 10C5.5 5.5 8.5 4 12 4s6.5 1.5 8 6"/>'},
-  {id:'tc',   name:'Tomografia Computadorizada', label:'Tomografia<br>Computadorizada',active:false,
+  {id:'tc',   name:'Tomografia Computadorizada', label:'Tomografia<br>Computadorizada',active:true,
    icon:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/>'},
-  {id:'rm',   name:'Ressonância Magnética',      label:'Ressonância<br>Magnética',     active:false,
+  {id:'rm',   name:'Ressonância Magnética',      label:'Ressonância<br>Magnética',     active:true,
    icon:'<rect x="3" y="7" width="18" height="10" rx="5"/><ellipse cx="12" cy="12" rx="3.5" ry="4"/><path d="M8 7V5M16 7V5M8 17v2M16 17v2"/>'},
 ];
 
@@ -252,7 +252,7 @@ let state = {
   newName:'', composingId:null, modalityId:null,
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
-  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null,
+  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null,
   lang:'pt', fontScale:1, user:null,
   favCalcs:[],
   nav:[],
@@ -558,7 +558,10 @@ function headerHTML(){
   let title='', sub='';
   if(v==='refs'){ title='Referências'; }
   else if(v==='detail'){ title=state.item?state.item.name:''; sub=(state.item&&state.item.abbr)?state.item.abbr:''; }
-  else if(v==='calc'){ const c = state.calcId ? findCalc(state.calcId) : null; title = c ? c.title : 'Calculadoras'; }
+  else if(v==='calc'){ const c = state.calcId ? findCalc(state.calcId) : null;
+    if(c) title=c.title;
+    else if(state.modalityId && state.modalityId!=='us'){ const m=MODALITIES.find(x=>x.id===state.modalityId); title=m?m.name:'Calculadoras'; }
+    else title='Calculadoras'; }
   else if(v==='ferramentas'){ title='Outras Ferramentas'; }
   else if(v==='config'){ title='Configurações'; }
   else if(v==='termsRead'){ title=TT().title; }
@@ -1348,6 +1351,10 @@ function calcViewHTML(){
   if(state.calcId === 'tfg') return calcTFGHTML();
   if(state.calcId === 'tirads') return calcTiradsHTML();
   if(state.calcId === 'orads') return calcOradsHTML();
+  if(state.calcId === 'esteatose-rm') return calcEsteatoseRmHTML();
+  if(state.calcId === 'esteatose-tc') return calcEsteatoseTcHTML();
+  if(state.calcId === 'ferro-r2') return calcFerroR2HTML();
+  if(state.calcId === 'ferro-t2') return calcFerroT2HTML();
   if(state.calcId === 'tri') return calcTrisomiasHTML();
   if(state.calcId === 'pe') return calcPreeclampsiaHTML();
   if(state.calcId === 'sga') return calcSgaHTML();
@@ -1391,11 +1398,36 @@ function toggleFavCalc(id){
 function openFavCalc(id){
   const c = findCalc(id); if(!c) return;
   navPush();
-  if(c.spec){ state.modalityId='us'; state.calcSpec=c.spec; }
+  if(c.modality && c.modality!=='us'){ state.modalityId=c.modality; }
+  else if(c.spec){ state.modalityId='us'; state.calcSpec=c.spec; }
   else { state.modalityId=null; }
   state.calcId=id; state.view='calc'; render();
 }
+/* Subespecialidades por método (fora do US). O US usa SPECIALTIES. */
+const MOD_SPECS = {
+  rm: [ {id:'medint', name:'Medicina Interna'} ],
+  tc: [ {id:'medint', name:'Medicina Interna'} ],
+};
+/* Conteúdo/calculadoras de um método não-US, agrupado por subespecialidade. */
+function calcListModalityHTML(mid){
+  const specs = MOD_SPECS[mid] || [];
+  const mine = allCalcs().filter(c=>c.modality===mid);
+  let h = '';
+  specs.forEach(function(sp){
+    const items = mine.filter(c=>c.subspec===sp.id);
+    h += `<div class="calc-intro-lbl">${esc(sp.name)}</div>`;
+    h += items.length
+      ? items.map(c=>calcCardHTML(c)).join('')
+      : `<div class="empty"><div class="msg">Conteúdo desta subespecialidade <b>em breve</b>.</div></div>`;
+  });
+  const orphans = mine.filter(c=>!c.subspec || !specs.find(s=>s.id===c.subspec));
+  if(orphans.length) h += orphans.map(c=>calcCardHTML(c)).join('');
+  if(!h) h = `<div class="empty"><div class="msg">Conteúdo <b>em breve</b> neste método.</div></div>`;
+  return `<div class="calc-list-wrap">${h}</div>`;
+}
 function calcListHTML(){
+  // Método não-US com conteúdo próprio (ex.: RM): agrupa por subespecialidade.
+  if(state.modalityId && state.modalityId!=='us'){ return calcListModalityHTML(state.modalityId); }
   // Fora da ultrassonografia (Outras Ferramentas): calculadoras gerais.
   if(state.modalityId !== 'us'){
     const gerais = GENERAL_CALCS.length
@@ -1751,6 +1783,10 @@ function openCalc(id){ navPush(); state.calcId=id; render(); }
 function resetCalc(){
   if(state.calcId==='tirads') state.tirads=null;
   else if(state.calcId==='orads') state.orads=null;
+  else if(state.calcId==='esteatose-rm') state.esteatoseRm=null;
+  else if(state.calcId==='esteatose-tc') state.esteatoseTc=null;
+  else if(state.calcId==='ferro-r2') state.ferroR2=null;
+  else if(state.calcId==='ferro-t2') state.ferroT2=null;
   else if(state.calcId==='pe') state.pe=null;
   else if(state.calcId==='sga') state.sga=null;
   else if(state.calcId==='gdm') state.gdm=null;
@@ -1853,8 +1889,10 @@ function openModality(id){
   const m = MODALITIES.find(x=>x.id===id); if(!m) return;
   navPush();
   state.modalityId=id;
-  state.view = m.active ? 'home' : 'construction';
-  render();
+  if(!m.active){ state.view='construction'; render(); return; }
+  if(id==='us'){ state.view='home'; render(); return; }
+  // Métodos não-US (ex.: RM): abrem direto o conteúdo do método, por subespecialidade.
+  state.calcId=null; state.view='calc'; render();
 }
 
 function toggleFav(id){
