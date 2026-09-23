@@ -23,5 +23,5 @@ window.CONFIG = {
   // Formulário Críticas e Sugestões. Vazio = abre o app de e-mail (mailto)
   // para klugrads@gmail.com. Para envio AUTOMÁTICO por e-mail, crie uma chave
   // grátis em web3forms.com (informando klugrads@gmail.com) e cole aqui.
-  WEB3FORMS_KEY: ''
+  WEB3FORMS_KEY: '9be2d61b-c16e-4ac3-b9df-c801c7ff946c'
 };
