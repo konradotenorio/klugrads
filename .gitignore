@@ -25,3 +25,6 @@ Thumbs.db
 npm-debug.log*
 
 commitmsg.txt
+
+# Notas internas do assistente / regras de sessao (fora do repo publico)
+/CLAUDE.md
