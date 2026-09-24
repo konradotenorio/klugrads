@@ -252,7 +252,7 @@ let state = {
   newName:'', composingId:null, modalityId:null,
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
-  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null,
+  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null,
   lang:'pt', fontScale:1, user:null,
   favCalcs:[],
   nav:[],
@@ -1358,6 +1358,11 @@ function calcViewHTML(){
   if(state.calcId === 'adrenal-tc') return calcAdrenalTcHTML();
   if(state.calcId === 'adrenal-rm') return calcAdrenalRmHTML();
   if(state.calcId === 'renal') return calcRenalHTML();
+  if(state.calcId === 'ccls') return calcCclsHTML();
+  if(state.calcId === 'pirads') return calcPiradsHTML();
+  if(state.calcId === 'crads') return calcCradsHTML();
+  if(state.calcId === 'pancr') return calcPancreatiteHTML();
+  if(state.calcId === 'orads-mri') return calcOradsMriHTML();
   if(state.calcId === 'tri') return calcTrisomiasHTML();
   if(state.calcId === 'pe') return calcPreeclampsiaHTML();
   if(state.calcId === 'sga') return calcSgaHTML();
@@ -1793,6 +1798,11 @@ function resetCalc(){
   else if(state.calcId==='adrenal-tc') state.adrenalTc=null;
   else if(state.calcId==='adrenal-rm') state.adrenalRm=null;
   else if(state.calcId==='renal') state.renal=null;
+  else if(state.calcId==='ccls') state.ccls=null;
+  else if(state.calcId==='pirads') state.pirads=null;
+  else if(state.calcId==='crads') state.crads=null;
+  else if(state.calcId==='pancr') state.pancr=null;
+  else if(state.calcId==='orads-mri') state.oradsMri=null;
   else if(state.calcId==='pe') state.pe=null;
   else if(state.calcId==='sga') state.sga=null;
   else if(state.calcId==='gdm') state.gdm=null;
