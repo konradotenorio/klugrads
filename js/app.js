@@ -252,7 +252,7 @@ let state = {
   newName:'', composingId:null, modalityId:null,
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
-  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null,
+  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null,
   lang:'pt', fontScale:1, user:null,
   favCalcs:[],
   nav:[],
@@ -1355,6 +1355,9 @@ function calcViewHTML(){
   if(state.calcId === 'esteatose-tc') return calcEsteatoseTcHTML();
   if(state.calcId === 'ferro-r2') return calcFerroR2HTML();
   if(state.calcId === 'ferro-t2') return calcFerroT2HTML();
+  if(state.calcId === 'adrenal-tc') return calcAdrenalTcHTML();
+  if(state.calcId === 'adrenal-rm') return calcAdrenalRmHTML();
+  if(state.calcId === 'renal') return calcRenalHTML();
   if(state.calcId === 'tri') return calcTrisomiasHTML();
   if(state.calcId === 'pe') return calcPreeclampsiaHTML();
   if(state.calcId === 'sga') return calcSgaHTML();
@@ -1787,6 +1790,9 @@ function resetCalc(){
   else if(state.calcId==='esteatose-tc') state.esteatoseTc=null;
   else if(state.calcId==='ferro-r2') state.ferroR2=null;
   else if(state.calcId==='ferro-t2') state.ferroT2=null;
+  else if(state.calcId==='adrenal-tc') state.adrenalTc=null;
+  else if(state.calcId==='adrenal-rm') state.adrenalRm=null;
+  else if(state.calcId==='renal') state.renal=null;
   else if(state.calcId==='pe') state.pe=null;
   else if(state.calcId==='sga') state.sga=null;
   else if(state.calcId==='gdm') state.gdm=null;

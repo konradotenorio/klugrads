@@ -3,8 +3,8 @@
    ---------------------------------------------------------------------------
    Método: RM (Ressonância Magnética) · Subespecialidade: Medicina Interna.
    Estima a fração de gordura hepática a partir das intensidades de sinal:
-     - Dupla-eco (Dixon):  FF% = 100 × (sinal em fase − sinal fora de fase) / (2 × sinal em fase)
-     - Fat-only:           FF% = 100 × sinal fat-only / sinal em fase       (tem prioridade)
+     - Dupla-eco (Dixon):  FF% = 100 × (sinal in phase − sinal out phase) / (2 × sinal in phase)
+     - Fat-only:           FF% = 100 × sinal fat-only / sinal in phase       (tem prioridade)
    Graduação (Tang A et al., Radiology 2013;267(2):422–431):
      Grau 0 Normal 0–6,4% · I Leve 6,5–17,4% · II Moderada 17,5–22,0% · III Acentuada >22,1%
    Segue o layout do TI-RADS / O-RADS (classes ti-*). Ferramenta educacional.
@@ -81,18 +81,18 @@ function calcEsteatoseRmHTML(){
     <div class="ti-card">
       <div class="tfg-sec-lbl">Parâmetros (intensidade de sinal)</div>
       <div class="ti-fields">
-        ${esteatoseField('ip','Sinal em fase','ex.: 320', s.ip)}
-        ${esteatoseField('op','Sinal fora de fase','ex.: 210', s.op)}
+        ${esteatoseField('ip','Sinal in phase','ex.: 320', s.ip)}
+        ${esteatoseField('op','Sinal out phase','ex.: 210', s.op)}
         ${esteatoseField('fat','Sinal fat-only','opcional', s.fat)}
       </div>
-      <div class="ti-legend-row" style="margin-top:8px"><span class="lt">Informe o <b>sinal em fase</b> com o <b>fora de fase</b> (Dixon 2 ecos), ou com o <b>fat-only</b>. Se o fat-only for preenchido, ele tem prioridade no cálculo.</span></div>
+      <div class="ti-legend-row" style="margin-top:8px"><span class="lt">Informe o <b>sinal in phase</b> com o <b>out phase</b> (Dixon 2 ecos), ou com o <b>fat-only</b>. Se o fat-only for preenchido, ele tem prioridade no cálculo.</span></div>
       <div id="est-res">${esteatoseResultHTML()}</div>
     </div>
     <div class="ti-card">
       <div class="tfg-sec-lbl">Fórmulas</div>
       <div class="tfg-ref-list">
-        <div class="tfg-ref-item">Dupla-eco (Dixon): FF% = 100 × (sinal em fase − sinal fora de fase) ÷ (2 × sinal em fase)</div>
-        <div class="tfg-ref-item">Fat-only: FF% = 100 × sinal fat-only ÷ sinal em fase</div>
+        <div class="tfg-ref-item">Dupla-eco (Dixon): FF% = 100 × (sinal in phase − sinal out phase) ÷ (2 × sinal in phase)</div>
+        <div class="tfg-ref-item">Fat-only: FF% = 100 × sinal fat-only ÷ sinal in phase</div>
       </div>
     </div>
     <div class="ti-card">
