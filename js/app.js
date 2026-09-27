@@ -148,7 +148,11 @@ let _tfgTimer = null;
 
 function tfgResultHTML(r){
   if(r == null) return '';
-  const st = TFG_STAGES.find(s=>r>=s.min && r<=s.max) || TFG_STAGES[TFG_STAGES.length-1];
+  // Só o limite inferior: a TFG é contínua e as faixas estão em ordem
+  // decrescente de min (90/60/45/30/15/0), então a 1ª que bate é a correta.
+  // (Antes usava r<=max com max inteiro — valores como 29,4 caíam no buraco
+  //  entre 29 e 30 e iam para o fallback, mostrando Estágio V por engano.)
+  const st = TFG_STAGES.find(s=>r>=s.min) || TFG_STAGES[TFG_STAGES.length-1];
   return `<div class="tfg-card">
     <div class="tfg-result">
       <div class="tfg-result-num">${r.toFixed(1)}</div>
@@ -237,7 +241,7 @@ function mostrarSemConexao(){
     '#klug-offline .ko-titulo{font-size:19px;font-weight:750;color:var(--tx,#e9eef3);margin-bottom:10px;}'+
     '#klug-offline .ko-texto{font-size:14px;line-height:1.55;color:var(--dim,#8b98a5);margin-bottom:22px;}'+
     '#klug-offline .ko-btn{width:100%;font:inherit;font-weight:700;font-size:15px;border-radius:12px;'+
-      'padding:13px;border:0;cursor:pointer;background:var(--accent,#15b8a6);color:var(--accentInk,#04221f);}';
+      'padding:13px;border:0;cursor:pointer;background:var(--accent,#12a9c9);color:var(--accentInk,#04222b);}';
   document.head.appendChild(css);
   document.body.appendChild(box);
   document.getElementById('ko-tentar').addEventListener('click',()=>window.location.reload());
@@ -681,7 +685,7 @@ function ferramentasHTML(){
     <div class="lc-top">
       <div class="lc-card fill" onclick="openGeneralCalcs()">
         <div class="lc-chip">${svgIcon(P.calc,26)}</div>
-        <div><div class="t">Calculadoras</div><div class="d">Calculadoras gerais, fora da ultrassonografia</div></div>
+        <div><div class="t">Calculadoras</div><div class="d">Demais calculadoras usadas para radiologia</div></div>
       </div>
     </div>
   </div>`;
@@ -1404,7 +1408,7 @@ function calcViewHTML(){
 }
 /* Catálogo de calculadoras por especialidade (mesmos ids de SPECIALTIES). */
 const CALCS = [
-  {id:'tirads', spec:'neurocab',  title:'TI-RADS',              desc:'Classificação de nódulos tireoidianos (ACR)', badge:'TR'},
+  {id:'tirads', spec:'neurocab',  title:'TI-RADS',              desc:'Classificação de Nódulos Tireoideanos - ACR TI-RADS 2017', badge:'TR'},
 ];
 /* Calculadoras gerais (Outras Ferramentas), fora da ultrassonografia. */
 const GENERAL_CALCS = [
@@ -1579,6 +1583,7 @@ const TIRADS_TRC = {
   5:{c:'#cf2020',bg:'#cf202022',name:'Altamente suspeito'},
 };
 const TIRADS_THR = {1:null,2:null,3:{fna:2.5,fu:1.5},4:{fna:1.5,fu:1.0},5:{fna:1.0,fu:0.5}};
+const TIRADS_RISK = {1:'0,3%',2:'1,5%',3:'4,8%',4:'9,1%',5:'35%'};   // risco de malignidade por nível
 const TIRADS_REFS = [
   'Tessler FN, Middleton WD, Grant EG, et al. ACR Thyroid Imaging, Reporting and Data System (TI-RADS): White Paper of the ACR TI-RADS Committee. J Am Coll Radiol. 2017;14(5):587–595.',
   'Grant EG, Tessler FN, Hoang JK, et al. Thyroid Ultrasound Reporting Lexicon: White Paper of the ACR TI-RADS Committee. J Am Coll Radiol. 2015;12(12 Pt A):1272–1279.',
@@ -1611,20 +1616,24 @@ function calcTiradsHTML(){
   const legend = Object.keys(TIRADS_TRC).map(k=>{
     const tc=TIRADS_TRC[k]; const thr=TIRADS_THR[k];
     const cond = thr ? `${t('PAAF ≥')} ${tiradsCm(thr.fna)} · ${t('seguir ≥')} ${tiradsCm(thr.fu)}` : t('Sem PAAF / seguimento');
-    return `<div class="ti-legend-row"><span class="lk" style="background:${tc.c}">TR${k}</span><span class="lt">${esc(t(tc.name))} — ${cond}</span></div>`;
+    const risk = TIRADS_RISK[k] ? ` (malignidade ${TIRADS_RISK[k]})` : '';
+    return `<div class="ti-legend-row"><span class="lk" style="background:${tc.c}">TR${k}</span><span class="lt">${esc(t(tc.name))}${risk} — ${cond}</span></div>`;
   }).join('');
 
   return `<div class="ti-wrap">
     <div id="ti-list">${cards}</div>
     <div class="ti-card">
       <div class="tfg-sec-lbl">Níveis e conduta (por maior eixo)</div>
+      <div style="font-size:12.5px;color:var(--dim);line-height:1.5;margin:-2px 0 12px">Obs.: Os focos ecogênicos somam todos os tipos presentes.</div>
       <div class="ti-legend">${legend}</div>
+    </div>
+    <div class="ti-card" style="text-align:center">
+      <img src="/img/tirads-acr-2017.png" alt="Quadro ACR TI-RADS 2017 (ACR White Paper 2017)" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:10px">
     </div>
     <div class="ti-card">
       <div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${TIRADS_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc"><b>Ferramenta educacional baseada no ACR TI-RADS 2017. Os focos ecogênicos somam todos os tipos presentes. Não substitui o julgamento clínico.</b></div>
   </div>`;
 }
 
@@ -1632,23 +1641,18 @@ function tiradsCardHTML(n,i){
   const ts=tiradsState(); const ns=ts.nodules; const ev=tiradsEval(n);
   const show=ev.complete||ev.auto; const tc=TIRADS_TRC[ev.tr];
   let fields='';
+  // Cada categoria (escolha 1) mostra TODAS as opções como chips clicáveis —
+  // sem dropdown em cascata, pra reduzir cliques. Clicar de novo no chip ativo
+  // desmarca a categoria.
   ['comp','echo','shape','margin'].forEach(key=>{
     const c=TIRADS_CATS[key]; const cur=n[key];
-    const openDD = ts.open===(i+':'+key);
-    const valTxt = cur!=null ? (c.opts[cur][0]+' · '+c.opts[cur][1]+' pt') : 'Selecionar…';
+    const chips = c.opts.map((o,oi)=>
+      `<div class="ti-ftog ${cur===oi?'on':''}" onclick="tiradsPickChip(${i},'${key}',${oi})">${esc(o[0])}<span class="n">${o[1]}</span></div>`
+    ).join('');
     const ptv = cur!=null ? c.opts[cur][1] : '–';
-    let menu='';
-    if(openDD){
-      let rows = `<div class="ti-dd-opt clear" onclick="tiradsPickOpt(${i},'${key}','')">Selecionar…</div>`;
-      c.opts.forEach((o,oi)=>{ rows += `<div class="ti-dd-opt ${cur===oi?'on':''}" onclick="tiradsPickOpt(${i},'${key}',${oi})"><span class="ol">${esc(o[0])}</span><span class="op">${o[1]} pt</span></div>`; });
-      menu = `<div class="ti-dd-menu">${rows}</div>`;
-    }
-    fields += `<div class="ti-field ti-field-dd">
+    fields += `<div class="ti-field ti-field-foci">
       <label>${esc(c.label)}</label>
-      <div class="ti-dd">
-        <div class="ti-dd-trigger ${openDD?'open':''} ${cur==null?'empty':''}" onclick="tiradsToggleDD(${i},'${key}')"><span class="ddv">${esc(valTxt)}</span><span class="ddc">⌄</span></div>
-        ${menu}
-      </div>
+      <div class="ti-foci">${chips}</div>
       <div class="ti-fp">${ptv}</div>
     </div>`;
   });
@@ -1682,8 +1686,8 @@ function tiradsCardHTML(n,i){
 }
 
 function tiradsRerender(){ const s=$('scroll'); if(!s) return; const top=s.scrollTop; s.innerHTML=translateHTML(calcTiradsHTML()); s.scrollTop=top; }
-function tiradsToggleDD(i,key){ const ts=tiradsState(); const id=i+':'+key; ts.open = ts.open===id ? null : id; tiradsRerender(); }
-function tiradsPickOpt(i,key,oi){ const ts=tiradsState(); ts.nodules[i][key] = (oi===''?null:parseInt(oi,10)); ts.open=null; tiradsRerender(); }
+// Seleção única por categoria via chip; clicar no chip já ativo desmarca.
+function tiradsPickChip(i,key,oi){ const ts=tiradsState(); const n=ts.nodules[i]; n[key] = (n[key]===oi ? null : oi); ts.open=null; tiradsRerender(); }
 function tiradsToggleFoci(i,oi){
   const ts=tiradsState(); const n=ts.nodules[i]; let f=(n.foci||[]).slice();
   if(oi===0){ f=[0]; }

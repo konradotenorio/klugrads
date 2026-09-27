@@ -206,7 +206,7 @@ window.KlugSessao = (function () {
       '#klug-tomada .kt-texto{font-size:14px;line-height:1.55;color:var(--dim,#8b98a5);margin-bottom:20px;}' +
       '#klug-tomada .kt-btn{display:block;width:100%;font:inherit;font-weight:700;font-size:15px;' +
         'border-radius:12px;padding:13px;border:1px solid transparent;cursor:pointer;}' +
-      '#klug-tomada .kt-primario{background:var(--accent,#15b8a6);color:var(--accentInk,#04221f);}' +
+      '#klug-tomada .kt-primario{background:var(--accent,#12a9c9);color:var(--accentInk,#04222b);}' +
       '#klug-tomada .kt-secundario{background:transparent;color:var(--dim,#8b98a5);' +
         'border-color:var(--line,#28323d);margin-top:9px;}';
 
