@@ -257,7 +257,7 @@ let state = {
   newName:'', composingId:null, modalityId:null,
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
-  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null,
+  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null,
   lang:'pt', fontScale:1, user:null,
   favCalcs:[],
   nav:[],
@@ -1398,6 +1398,7 @@ function calcViewHTML(){
   if(state.calcId === 'crads') return calcCradsHTML();
   if(state.calcId === 'pancr') return calcPancreatiteHTML();
   if(state.calcId === 'orads-mri') return calcOradsMriHTML();
+  if(state.calcId === 'lung-rads') return calcLungRadsHTML();
   if(state.calcId === 'tri') return calcTrisomiasHTML();
   if(state.calcId === 'pe') return calcPreeclampsiaHTML();
   if(state.calcId === 'sga') return calcSgaHTML();
@@ -1449,7 +1450,7 @@ function openFavCalc(id){
 /* Subespecialidades por método (fora do US). O US usa SPECIALTIES. */
 const MOD_SPECS = {
   rm: [ {id:'medint', name:'Medicina Interna'} ],
-  tc: [ {id:'medint', name:'Medicina Interna'} ],
+  tc: [ {id:'medint', name:'Medicina Interna'}, {id:'torax', name:'Tórax'} ],
 };
 /* Conteúdo/calculadoras de um método não-US, agrupado por subespecialidade. */
 function calcListModalityHTML(mid){
@@ -1838,6 +1839,7 @@ function resetCalc(){
   else if(state.calcId==='crads') state.crads=null;
   else if(state.calcId==='pancr') state.pancr=null;
   else if(state.calcId==='orads-mri') state.oradsMri=null;
+  else if(state.calcId==='lung-rads') state.lungrads=null;
   else if(state.calcId==='pe') state.pe=null;
   else if(state.calcId==='sga') state.sga=null;
   else if(state.calcId==='gdm') state.gdm=null;
