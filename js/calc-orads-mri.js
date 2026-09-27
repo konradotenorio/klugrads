@@ -118,7 +118,6 @@ function calcOradsMriHTML(){
       <div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${ORMR_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc"><b>Ferramenta educacional. O-RADS MRI estratifica o risco de malignidade de lesões anexiais; requer RM adequada (idealmente com DCE). Não substitui o laudo estruturado nem o julgamento clínico.</b></div>
   </div>`;
 }
 

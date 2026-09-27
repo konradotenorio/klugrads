@@ -82,7 +82,6 @@ function calcCradsHTML(){
       <div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${CRADS_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc"><b>Ferramenta educacional. C-RADS classifica separadamente os achados colorretais (C) e extracolônicos (E) na CT colonografia; a conduta segue o laudo estruturado e a prática local. Não substitui o julgamento clínico.</b></div>
   </div>`;
 }
 

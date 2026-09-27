@@ -110,7 +110,6 @@ function calcAdrenalRmHTML(){
       <div class="tfg-sec-lbl">Referência</div>
       <div class="tfg-ref-list"><div class="tfg-ref-item">${esc(ADRM_REF)}</div></div>
     </div>
-    <div class="disc"><b>Ferramenta educacional. O chemical shift caracteriza adenomas pela perda de sinal na fase oposta; nódulos indeterminados ou suspeitos exigem investigação. Não substitui o julgamento clínico.</b></div>
   </div>`;
 }
 

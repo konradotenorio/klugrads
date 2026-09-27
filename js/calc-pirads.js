@@ -103,7 +103,6 @@ function calcPiradsHTML(){
       <div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${PIRADS_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc"><b>Ferramenta educacional. Categoria PI-RADS v2.1 por lesão dominante e zona; requer RM multiparamétrica adequada. Não substitui o laudo estruturado nem o julgamento clínico.</b></div>
   </div>`;
 }
 

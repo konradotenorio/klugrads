@@ -139,7 +139,6 @@ function calcCclsHTML(){
       <div class="tfg-sec-lbl">Referência</div>
       <div class="tfg-ref-list"><div class="tfg-ref-item">${esc(CCLS_REF)}</div></div>
     </div>
-    <div class="disc"><b>Ferramenta educacional. O ccLS estima a probabilidade de carcinoma de células claras em massas renais sólidas indeterminadas na RM (não se aplica a massas císticas). Não substitui o julgamento clínico.</b></div>
   </div>`;
 }
 

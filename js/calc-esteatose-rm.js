@@ -103,7 +103,6 @@ function calcEsteatoseRmHTML(){
       <div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${ESTEAT_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc"><b>Ferramenta educacional. Estima a fração de gordura hepática por RM (método de Dixon / sinal). Não substitui a quantificação por PDFF calibrada (multi-eco) nem o julgamento clínico.</b></div>
   </div>`;
 }
 

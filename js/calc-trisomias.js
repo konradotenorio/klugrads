@@ -237,7 +237,6 @@ function calcTrisomiasHTML(){
     <div class="ti-card"><div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${TRI_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc"><b>Ferramenta educacional baseada nos algoritmos publicados da Fetal Medicine Foundation. Rastreio, não diagnóstico. Não substitui o julgamento clínico.</b></div>
   </div>`;
 }
 function triNumVal(id){ const el=document.getElementById(id); if(!el) return null;

@@ -202,7 +202,6 @@ function calcAdrenalTcHTML(){
       <div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${ADR_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc"><b>Ferramenta educacional. Caracterização de lesão adrenal segundo diretrizes atuais (ESE 2023 / revisão 2025). O washout perdeu papel nos incidentalomas. Não substitui a avaliação hormonal nem o julgamento clínico.</b></div>
   </div>`;
 }
 

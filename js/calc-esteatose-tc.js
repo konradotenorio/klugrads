@@ -74,7 +74,7 @@ function esttcNcResHTML(){
       <div class="b">PDFF estimada · faixa ${esc(c.range)} · TC sem contraste (Pickhardt)</div>
     </div>
     <div class="pts" style="background:${c.c}">${c.rom}</div>
-  </div>`;
+  </div>${esttcFraseHTML('nc')}`;
 }
 
 function esttcCtResHTML(){
@@ -90,7 +90,37 @@ function esttcCtResHTML(){
       <div class="b">Atenuação hepática corrigida (UH) · limiar 104 UH · TC com contraste (Kim)</div>
     </div>
     <div class="pts" style="background:${c.c}">UH</div>
+  </div>${esttcFraseHTML('ct')}`;
+}
+
+/* ---- Frases prontas para o laudo (preenchidas com os valores calculados) ---- */
+const ESTTC_GRAU_TXT = {1:'leve', 2:'moderada', 3:'acentuada'};
+function esttcNcFrase(){
+  const s = esteatoseTcState(); const r = esttcNcCalc(s); if(!r) return '';
+  const hu = String(esttcNum(s.nc)).replace('.', ',');
+  const y  = String(r.pdff).replace('.', ',');
+  const g  = esttcGrade(r.pdff);
+  if(g===0) return `Fígado com densidade parenquimatosa dentro dos limites da normalidade (média de ${hu} UH), com PDFF estimado em ${y}%, sem sinais de esteatose hepática.`;
+  return `Fígado apresentando redução da densidade parenquimatosa, com média de ${hu} UH, com PDFF estimado em ${y}%, compatível com esteatose hepática ${ESTTC_GRAU_TXT[g]}.`;
+}
+function esttcCtFrase(){
+  const s = esteatoseTcState(); const r = esttcCtCalc(s); if(!r) return '';
+  const z = String(r.res).replace('.', ',');
+  if(r.steat) return `Fígado com atenuação parenquimatosa corrigida de ${z} UH em estudo com contraste, compatível com esteatose hepática (limiar ≤ 104 UH).`;
+  return `Fígado com atenuação parenquimatosa corrigida de ${z} UH em estudo com contraste, sem sinais de esteatose hepática (limiar > 104 UH).`;
+}
+function esttcFraseHTML(mode){
+  const f = mode==='ct' ? esttcCtFrase() : esttcNcFrase();
+  if(!f) return '';
+  return `<div class="lau-frase">
+    <div class="lau-frase-lbl">Frase para o laudo</div>
+    <div class="lau-frase-tx">${esc(f)}</div>
+    <button type="button" class="lau-frase-btn" onclick="esttcCopyFrase('${mode}')">${svgIcon(P.copy,16,{sw:2})} Copiar frase</button>
   </div>`;
+}
+function esttcCopyFrase(mode){
+  const f = mode==='ct' ? esttcCtFrase() : esttcNcFrase();
+  if(f) klugCopy(f, 'Frase copiada ✓');
 }
 
 /* Card do método SEM contraste (Pickhardt) */
@@ -102,7 +132,7 @@ function esttcNcBlockHTML(s){
   return `<div class="ti-card">
       <div class="tfg-sec-lbl">Densidade hepática (sem contraste, 120 kV)</div>
       <div class="ti-fields">${esttcField('nc','Densidade hepática','ex.: 45', s.nc)}</div>
-      <div class="ti-legend-row" style="margin-top:8px"><span class="lt">Meça a atenuação do parênquima hepático na TC <b>sem contraste</b>. Estima a fração de gordura (PDFF).</span></div>
+      <div class="ti-legend-row" style="margin-top:8px"><span class="lt">• Meça a atenuação média do parênquima hepático na TC <b>sem contraste</b>.<br>• O cálculo estima a fração lipídica (PDFF).</span></div>
       <div id="est-tc-nc-res">${esttcNcResHTML()}</div>
     </div>
     <div class="ti-card">
@@ -130,7 +160,7 @@ function esttcCtBlockHTML(s){
         ${esttcField('porta','Densidade da veia porta','ex.: 130', s.porta)}
         ${esttcField('aorta','Densidade da aorta','ex.: 140', s.aorta)}
       </div>
-      <div class="ti-legend-row" style="margin-top:8px"><span class="lt">Corrige a atenuação hepática pelo realce vascular. Resultado <b>&gt; 104 UH</b> = ausência; <b>≤ 104 UH</b> = provável esteatose.</span></div>
+      <div class="ti-legend-row" style="margin-top:8px"><span class="lt">• Corrige a atenuação hepática pelo realce vascular.<br>• Resultado: <b>&gt; 104 UH</b> = ausência; <b>≤ 104 UH</b> = provável esteatose.</span></div>
       <div id="est-tc-ct-res">${esttcCtResHTML()}</div>
     </div>
     <div class="ti-card">
@@ -157,11 +187,10 @@ function calcEsteatoseTcHTML(){
   return `<div class="ti-wrap">
     <div class="ti-card">
       <div class="tfg-sec-lbl">Método do exame</div>
-      <div class="ti-foci" style="margin-top:8px">${chip('nc','Sem contraste (Pickhardt)')}${chip('ct','Com contraste (Kim)')}</div>
-      <div class="ti-legend-row" style="margin-top:8px"><span class="lt">Escolha conforme o exame realizado. Só o método selecionado é calculado — sem conflito entre os dois.</span></div>
+      <div class="ti-foci" style="margin-top:8px">${chip('nc','Sem contraste')}${chip('ct','Com contraste')}</div>
+      <div class="ti-legend-row" style="margin-top:8px"><span class="lt">• Escolha acima o método, conforme o exame realizado.<br>• Só um método selecionado é calculado (sem conflito entre ambos).</span></div>
     </div>
     ${bloco}
-    <div class="disc"><b>Ferramenta educacional. Estima a esteatose hepática por TC (atenuação em UH). Não substitui a quantificação por PDFF por RM nem o julgamento clínico.</b></div>
   </div>`;
 }
 
@@ -179,4 +208,4 @@ function esteatoseTcRefresh(){
 /* registra no catálogo (CALCS de app.js) — método TC, subespecialidade Medicina Interna */
 CALCS.push({id:'esteatose-tc', modality:'tc', subspec:'medint', badge:'FF',
   title:'Esteatose Hepática (TC)',
-  desc:'Fração de gordura / atenuação hepática por TC (Pickhardt e Kim)'});
+  desc:'Fração lipídica hepática por TC sem e com contraste'});

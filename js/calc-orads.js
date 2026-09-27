@@ -215,7 +215,6 @@ function calcOradsHTML(){
       <div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${ORADS_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc"><b>Ferramenta educacional baseada no ACR O-RADS US v2022. Sólido = ≥80% sólido; componente sólido = projeção ≥3 mm para a luz; PP = projeção papilar. Contorno irregular da parede interna = menor que 3 mm de altura. Não substitui o julgamento clínico.</b></div>
   </div>`;
 }
 

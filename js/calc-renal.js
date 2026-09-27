@@ -77,7 +77,6 @@ function calcRenalHTML(){
       <div class="tfg-sec-lbl">Referência</div>
       <div class="tfg-ref-list"><div class="tfg-ref-item">${esc(RENAL_REF)}</div></div>
     </div>
-    <div class="disc"><b>Ferramenta educacional. O escore R.E.N.A.L. quantifica a complexidade anatômica da massa renal; não define benignidade/malignidade nem substitui o julgamento clínico.</b></div>
   </div>`;
 }
 

@@ -189,7 +189,6 @@ function calcSgaHTML(){
     <div class="ti-card"><div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${SGA_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc"><b>Ferramenta educacional baseada no modelo de riscos competitivos publicado da Fetal Medicine Foundation. Rastreio, não diagnóstico. Não substitui o julgamento clínico.</b></div>
   </div>`;
 }
 function sgaParousHTML(){

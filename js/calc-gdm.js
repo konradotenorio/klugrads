@@ -68,7 +68,6 @@ function calcGdmHTML(){
     <div class="ti-card"><div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${GDM_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc"><b>Ferramenta educacional baseada no modelo publicado da Fetal Medicine Foundation. Rastreio, não diagnóstico. Não substitui o julgamento clínico.</b></div>
   </div>`;
 }
 function gdmParousHTML(){

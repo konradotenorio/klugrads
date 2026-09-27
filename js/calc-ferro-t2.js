@@ -212,7 +212,6 @@ function calcFerroT2HTML(){
         <div class="tfg-ref-item">${esc(FT2_REFS.hank)}</div>
       </div>
     </div>
-    <div class="disc"><b>Ferramenta educacional. Estima a concentração de ferro hepático (LIC) por ajuste do decaimento T2* em RM. As calibrações têm limites de validade; não substitui o julgamento clínico.</b></div>
   </div>`;
 }
 

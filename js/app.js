@@ -1869,18 +1869,20 @@ function copyCalcResult(){
   const text = (c?c.title+' — ':'') + parts.join(' | ');
   klugCopy(text);
 }
-function klugCopy(t){
+function klugCopy(t, msg){
+  msg = msg || 'Resultado copiado ✓';
   if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(t).then(function(){ klugToast('Resultado copiado ✓'); }).catch(function(){ klugCopyFallback(t); });
-  } else { klugCopyFallback(t); }
+    navigator.clipboard.writeText(t).then(function(){ klugToast(msg); }).catch(function(){ klugCopyFallback(t, msg); });
+  } else { klugCopyFallback(t, msg); }
 }
-function klugCopyFallback(t){
+function klugCopyFallback(t, msg){
+  msg = msg || 'Resultado copiado ✓';
   try{
     const ta=document.createElement('textarea'); ta.value=t;
     ta.style.position='fixed'; ta.style.top='-1000px'; ta.style.opacity='0';
     document.body.appendChild(ta); ta.focus(); ta.select();
     document.execCommand('copy'); document.body.removeChild(ta);
-    klugToast('Resultado copiado ✓');
+    klugToast(msg);
   }catch(e){ klugToast('Não consegui copiar automaticamente.'); }
 }
 function klugToast(msg){

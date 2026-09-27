@@ -74,7 +74,6 @@ function calcPancreatiteHTML(){
       <div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${PANCR_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc"><b>Ferramenta educacional. Nomenclatura das coleções pancreáticas pela Classificação de Atlanta revisada; a infecção (gás/clínica) é avaliada à parte. Não substitui o julgamento clínico.</b></div>
   </div>`;
 }
 

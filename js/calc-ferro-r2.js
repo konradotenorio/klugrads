@@ -131,7 +131,6 @@ function calcFerroR2HTML(){
       <div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${FERRO_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
-    <div class="disc"><b>Ferramenta educacional. Estima a concentração de ferro hepático (LIC) a partir do R2* por RM. As calibrações têm limites de validade; não substitui o julgamento clínico.</b></div>
   </div>`;
 }
 
