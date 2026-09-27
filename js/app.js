@@ -42,6 +42,7 @@ const P = {
   tech:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>',
   tools:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
   reset:'<path d="M3 12a9 9 0 1 0 2.64-6.36"/><polyline points="3 3.5 3 9 8.5 9"/>',
+  copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
   gear:'<circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
 };
 function svgIcon(inner, size, o){
@@ -419,6 +420,24 @@ function renderStage(keep){
   sub.innerHTML='';
 }
 
+/* ---- Métodos ativos no menu lateral (US/TC/RM) ----
+   Deixa a troca de método instantânea de qualquer tela — inclusive de dentro
+   de uma calculadora. O método atual fica destacado e, quando é TC/RM, lista
+   as suas calculadoras direto ali (o US usa o acordeão de Referências abaixo). */
+function methodsNavHTML(){
+  return MODALITIES.filter(function(m){ return m.active; }).map(function(m){
+    const on = (state.modalityId===m.id);
+    let sub='';
+    if(on && m.id!=='us'){
+      const cs = allCalcs().filter(function(c){ return c.modality===m.id; });
+      if(cs.length) sub = `<div class="side-children" style="display:block">`
+        + cs.map(function(c){ return `<div class="side-subitem ${state.calcId===c.id?'on':''}" onclick="openFavCalc('${esc(c.id)}')">${esc(c.title)}</div>`; }).join('')
+        + `</div>`;
+    }
+    return `<div class="side-item ${on?'on':''}" onclick="openModality('${m.id}')"><span class="si">${svgIcon(m.icon,19)}</span>${esc(m.name)}</div>${sub}`;
+  }).join('');
+}
+
 /* ---- Sidebar persistente (layout web / desktop) ---- */
 function sidebarHTML(){
   const isCalc = state.view==='calc';
@@ -450,10 +469,12 @@ function sidebarHTML(){
     </div>
     <div id="side-results" class="side-results">${searching?globalResultsHTML(state.gquery):''}</div>
     <nav class="side-nav" id="side-nav" ${searching?'hidden':''}>
-      <div class="side-item" onclick="goInicio()"><span class="si">${svgIcon(P.back,18,{sw:2})}</span>Métodos de Diagnóstico</div>
-      ${isCalc ? '' : `<div class="side-sec">Ultrassonografia</div>${specGroups}`}
+      <div class="side-item" onclick="goInicio()"><span class="si">${svgIcon(P.back,18,{sw:2})}</span>Início</div>
+      <div class="side-sec">Métodos de Diagnóstico</div>
+      ${methodsNavHTML()}
+      ${(state.modalityId==='us' && !isCalc) ? `<div class="side-sec">Ultrassonografia — Referências</div>${specGroups}` : ''}
       <div class="side-sec">Ferramentas</div>
-      <div class="side-item ${isCalc&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>Calculadoras</div>
+      <div class="side-item ${isCalc&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>Calculadoras (US)</div>
       ${tool('ferramentas','Outras Ferramentas', svgIcon(P.tools,19))}
       ${tool('favoritos','Favoritos', svgIcon(P.star,19,{fill:'none'}))}
       ${tool('config','Configurações', svgIcon(P.gear,19))}
@@ -482,13 +503,22 @@ function globalSearch(v){
   if(res) res.innerHTML = translateHTML(globalResultsHTML(v));
   if(nav) nav.hidden = !!(v && v.trim());
 }
+// Normaliza texto para busca: minúsculas, SEM acentos e SEM hífens/espaços/
+// pontuação. Assim "pancreas" acha "Pâncreas", "utero" acha "Útero" e
+// "tirads"/"orads"/"pirads" acham "TI-RADS"/"O-RADS"/"PI-RADS" — do jeito que
+// o radiologista realmente digita no plantão.
+function searchNorm(s){
+  return String(s==null?'':s).toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g,'')   // remove acentos
+    .replace(/[^a-z0-9]+/g,'');                         // junta hífen/espaço/pontuação
+}
 function globalResultsHTML(q){
-  q = (q||'').trim().toLowerCase(); if(!q) return '';
+  q = searchNorm(q); if(!q) return '';
   var refs = (typeof DATA!=='undefined'?DATA:[]).filter(function(d){
-    return (d.name+' '+(d.abbr||'')+' '+d.region+' '+(GROUP_BAND[d.group]||'')).toLowerCase().indexOf(q)>=0;
+    return searchNorm(d.name+' '+(d.abbr||'')+' '+d.region+' '+(GROUP_BAND[d.group]||'')).indexOf(q)>=0;
   }).slice(0,25);
   var calcs = (typeof allCalcs==='function'?allCalcs():[]).filter(function(c){
-    return (c.title+' '+(c.desc||'')).toLowerCase().indexOf(q)>=0;
+    return searchNorm(c.title+' '+(c.desc||'')).indexOf(q)>=0;
   }).slice(0,10);
   if(!refs.length && !calcs.length) return `<div class="side-empty">Nada encontrado para "${esc(q)}".</div>`;
   var h='';
@@ -571,6 +601,7 @@ function headerHTML(){
 
   let right='';
   if(v==='calc' && state.calcId){
+    right += `<button class="iconbtn" onclick="copyCalcResult()" aria-label="Copiar resultado" title="Copiar resultado">${svgIcon(P.copy,20,{sw:2})}</button>`;
     right += `<button class="iconbtn" onclick="resetCalc()" aria-label="Resetar calculadora" title="Resetar">${svgIcon(P.reset,21,{sw:2})}</button>`;
   }
   if(v==='detail' && state.item){
@@ -637,7 +668,7 @@ function modalityHTML(){
       </div>
       <div class="lc-short" onclick="setView('config')">
         <div class="si acc">${svgIcon(P.gear,23)}</div>
-        <div class="st"><div class="t">Configurações</div><div class="d">Tema, conta, idioma e tamanho da fonte</div></div>
+        <div class="st"><div class="t">Configurações</div><div class="d">Tema, tamanho da fonte e sugestões</div></div>
         <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
       </div>
     </div>
@@ -936,10 +967,10 @@ function refsHTML(){
 }
 function refsListHTML(){
   const sp = SPECIALTIES.find(x=>x.id===state.specialty);
-  const q = state.query.trim().toLowerCase();
+  const q = searchNorm(state.query);   // sem acento/hífen: "figado" acha "Fígado"
   if(sp&&sp.id==='doppler') return dopplerIndexHTML(q);
   let items = specialtyItems();
-  if(q) items = items.filter(d=>(d.name+' '+(d.abbr||'')+' '+d.region).toLowerCase().includes(q));
+  if(q) items = items.filter(d=>searchNorm(d.name+' '+(d.abbr||'')+' '+d.region).includes(q));
   if(!items.length){
     const msg = q ? `Nenhum resultado para "${state.query}".`
       : (sp ? `${sp.name} — conteúdo em breve.` : 'Conteúdo em breve nesta seção.');
@@ -962,7 +993,7 @@ function dopplerIndexHTML(q){
     if(!q) return true;
     const item=entry.item;
     const text=item?(item.name+' '+(item.abbr||'')+' '+entry.region):(entry.name+' '+entry.region);
-    return text.toLowerCase().includes(q);
+    return searchNorm(text).includes(q);
   });
   if(!entries.length){
     return `<div class="empty"><div class="big">○</div><div class="msg">Nenhum resultado para "${esc(state.query)}".</div></div>`;
@@ -1811,6 +1842,49 @@ function resetCalc(){
     state.tfgCr='1.0'; state.tfgAge='45'; state.tfgSexo='M'; state.tfgResult=null;
   }
   render();
+}
+/* ---- Copiar resultado da calculadora (para colar no laudo) ----
+   Junta o texto dos blocos de resultado da calc aberta (.ti-res das RADS/
+   numéricas, .tfg-result da TFG e #fm-out das fetais), sem o selo repetido,
+   e coloca na área de transferência com um aviso rápido. */
+function copyCalcResult(){
+  const scroll = document.getElementById('scroll'); if(!scroll) return;
+  // Esconde o selo numérico (.pts) SÓ durante a leitura: assim o texto sai sem o
+  // número duplicado, e lemos o innerText do elemento vivo (com as quebras de
+  // linha certas entre os blocos, que um clone solto perderia).
+  const badges = scroll.querySelectorAll('.ti-res .pts');
+  badges.forEach(function(b){ b.style.display='none'; });
+  const parts = [];
+  scroll.querySelectorAll('.ti-res, .tfg-result, #fm-out').forEach(function(el){
+    const t = (el.innerText||'').replace(/\s+/g,' ').trim();
+    if(t) parts.push(t);
+  });
+  badges.forEach(function(b){ b.style.display=''; });
+  if(!parts.length){ klugToast('Preencha os campos para gerar um resultado.'); return; }
+  const c = state.calcId ? findCalc(state.calcId) : null;
+  const text = (c?c.title+' — ':'') + parts.join(' | ');
+  klugCopy(text);
+}
+function klugCopy(t){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(function(){ klugToast('Resultado copiado ✓'); }).catch(function(){ klugCopyFallback(t); });
+  } else { klugCopyFallback(t); }
+}
+function klugCopyFallback(t){
+  try{
+    const ta=document.createElement('textarea'); ta.value=t;
+    ta.style.position='fixed'; ta.style.top='-1000px'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    klugToast('Resultado copiado ✓');
+  }catch(e){ klugToast('Não consegui copiar automaticamente.'); }
+}
+function klugToast(msg){
+  let el=document.getElementById('klug-toast');
+  if(!el){ el=document.createElement('div'); el.id='klug-toast'; el.className='klug-toast'; document.body.appendChild(el); }
+  el.textContent=msg;
+  requestAnimationFrame(function(){ el.classList.add('show'); });
+  clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); }, 1900);
 }
 function openGeneralCalcs(){ navPush(); state.modalityId=null; state.calcId=null; state.view='calc'; render(); }
 function setSub(s){ state.sub=s; render(); }

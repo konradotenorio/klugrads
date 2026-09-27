@@ -240,6 +240,17 @@
   }
   .iconbtn:active{opacity:.5;}
 
+  /* Aviso rápido (toast) — ex.: "Resultado copiado" */
+  .klug-toast{
+    position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));
+    transform:translate(-50%,12px);
+    background:var(--tx);color:var(--bg);font-size:13.5px;font-weight:700;
+    padding:10px 16px;border-radius:12px;box-shadow:var(--shadow);
+    opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease;z-index:9999;
+    max-width:calc(100vw - 32px);text-align:center;
+  }
+  .klug-toast.show{opacity:1;transform:translate(-50%,0);}
+
   /* ---------- Scroll body ---------- */
   .scroll{
     flex:1 1 auto;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
