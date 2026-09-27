@@ -2,16 +2,16 @@
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0d1014"/>
-      <stop offset="1" stop-color="#10302e"/>
+      <stop offset="1" stop-color="#0d2a33"/>
     </linearGradient>
     <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#33b3a6"/>
-      <stop offset="1" stop-color="#5aa9e6"/>
+      <stop offset="0" stop-color="#15b3d6"/>
+      <stop offset="1" stop-color="#2f8fd0"/>
     </linearGradient>
   </defs>
   <rect width="512" height="512" fill="url(#bg)"/>
   <!-- cone de varredura (scan cone) -->
-  <path d="M256 92 L398 400 L114 400 Z" fill="#33b3a6" opacity="0.12"/>
+  <path d="M256 92 L398 400 L114 400 Z" fill="#12a9c9" opacity="0.12"/>
   <!-- forma de onda ultrassonográfica, dentro da zona segura (~120..392) -->
   <path d="M150 300 C188 192 224 188 256 286 C282 362 318 210 362 210"
         fill="none" stroke="url(#wave)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
