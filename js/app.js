@@ -257,7 +257,7 @@ let state = {
   newName:'', composingId:null, modalityId:null,
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
-  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null,
+  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null,
   lang:'pt', fontScale:1, user:null,
   favCalcs:[], recents:[],
   nav:[],
@@ -1438,6 +1438,9 @@ function calcViewHTML(){
   if(state.calcId === 'lung-rads') return calcLungRadsHTML();
   if(state.calcId === 'fleischner') return calcFleischnerHTML();
   if(state.calcId === 'cadrads') return calcCadradsHTML();
+  if(state.calcId === 'pi-qual') return calcPiQualHTML();
+  if(state.calcId === 'precise') return calcPreciseHTML();
+  if(state.calcId === 'pi-rr') return calcPiRrHTML();
   if(state.calcId === 'tri') return calcTrisomiasHTML();
   if(state.calcId === 'pe') return calcPreeclampsiaHTML();
   if(state.calcId === 'sga') return calcSgaHTML();
@@ -1890,6 +1893,9 @@ function resetCalc(){
   else if(state.calcId==='lung-rads') state.lungrads=null;
   else if(state.calcId==='fleischner') state.fleischner=null;
   else if(state.calcId==='cadrads') state.cadrads=null;
+  else if(state.calcId==='pi-qual') state.piqual=null;
+  else if(state.calcId==='precise') state.precise=null;
+  else if(state.calcId==='pi-rr') state.pirr=null;
   else if(state.calcId==='pe') state.pe=null;
   else if(state.calcId==='sga') state.sga=null;
   else if(state.calcId==='gdm') state.gdm=null;
