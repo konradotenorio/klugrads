@@ -43,8 +43,12 @@ const P = {
   tools:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
   reset:'<path d="M3 12a9 9 0 1 0 2.64-6.36"/><polyline points="3 3.5 3 9 8.5 9"/>',
   copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
+  dicom:'<rect x="3" y="4" width="18" height="13" rx="2"/><circle cx="12" cy="10.5" r="3.6"/><path d="M12 6.9v7.2M8.4 10.5h7.2"/><path d="M8 21h8M12 17v4"/>',
   gear:'<circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
 };
+// Visualizador DICOM (projeto separado, OHIF local — as imagens não saem do navegador).
+const VIEWER_URL = 'https://viewer.klugrads.com';
+function openViewer(){ window.open(VIEWER_URL, '_blank', 'noopener'); }
 function svgIcon(inner, size, o){
   o = o || {};
   const fill = o.fill || 'none';
@@ -488,6 +492,7 @@ function sidebarHTML(){
       ${methodsNavHTML()}
       ${(state.modalityId==='us' && !isCalc) ? `<div class="side-sec">Ultrassonografia — Referências</div>${specGroups}` : ''}
       <div class="side-sec">Ferramentas</div>
+      <div class="side-item" onclick="openViewer()"><span class="si">${svgIcon(P.dicom,19)}</span>VISUALIZADOR DICOM</div>
       <div class="side-item ${isCalc&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>Calculadoras (US)</div>
       ${tool('ferramentas','Outras Ferramentas', svgIcon(P.tools,19))}
       ${tool('favoritos','Favoritos', svgIcon(P.star,19,{fill:'none'}))}
@@ -596,6 +601,7 @@ function dashboardHTML(){
     <div class="dash-grid">${cards}</div>
     <div class="dash-sec">Ferramentas</div>
     <div class="dash-tools">
+      <div class="dash-tool" onclick="openViewer()">${svgIcon(P.dicom,24)}<div><div class="tt">VISUALIZADOR DICOM</div><div class="td">Abra exames do CD/pendrive no navegador</div></div></div>
       <div class="dash-tool" onclick="openCalcs()">${svgIcon(P.calc,24)}<div><div class="tt">Calculadoras</div><div class="td">TI-RADS, O-RADS, risco fetal…</div></div></div>
       <div class="dash-tool" onclick="setView('favoritos')">${svgIcon(P.star,24,{fill:'none'})}<div><div class="tt">Favoritos</div><div class="td">O que você marcou</div></div></div>
       <div class="dash-tool" onclick="setView('ferramentas')">${svgIcon(P.tools,24)}<div><div class="tt">Outras Ferramentas</div><div class="td">TFG e mais</div></div></div>
@@ -692,6 +698,11 @@ function modalityHTML(){
     </div>
     <div class="modal-grid">${cards}</div>
     <div class="modal-shortcuts">
+      <div class="lc-short" onclick="openViewer()">
+        <div class="si acc">${svgIcon(P.dicom,23)}</div>
+        <div class="st"><div class="t">VISUALIZADOR DICOM</div><div class="d">Abra exames do CD/pendrive direto no navegador</div></div>
+        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
+      </div>
       <div class="lc-short" onclick="setView('ferramentas')">
         <div class="si acc">${svgIcon(P.tools,22)}</div>
         <div class="st"><div class="t">Outras Ferramentas</div><div class="d">Calculadoras e referências por especialidade</div></div>
