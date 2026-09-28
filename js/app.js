@@ -259,7 +259,7 @@ let state = {
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
   tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null,
   lang:'pt', fontScale:1, user:null,
-  favCalcs:[],
+  favCalcs:[], recents:[],
   nav:[],
   termsAccepted:false,
 };
@@ -346,7 +346,16 @@ function loadState(){
   try{ const f=parseFloat(localStorage.getItem('radref_fontscale')); if(FONT_STEPS.includes(f)) state.fontScale=f; }catch(_){}
   try{ const u=JSON.parse(localStorage.getItem('radref_user')||'null'); if(u&&u.email) state.user=u; }catch(_){}
   try{ const c=JSON.parse(localStorage.getItem('radref_favcalcs')||'[]'); if(Array.isArray(c)) state.favCalcs=c; }catch(_){}
+  try{ const rc=JSON.parse(localStorage.getItem('radref_recents')||'[]'); if(Array.isArray(rc)) state.recents=rc; }catch(_){}
   try{ state.termsAccepted = localStorage.getItem('radref_terms')===TERMS_VERSION; }catch(_){}
+}
+/* Registra uma calculadora nas "Recentes" (mais recente primeiro, sem repetir, máx. 6). */
+function pushRecent(id){
+  if(!id) return;
+  const r = (state.recents||[]).filter(x=>x!==id);
+  r.unshift(id);
+  state.recents = r.slice(0,6);
+  persist('radref_recents', state.recents);
 }
 
 /* ---- HELPERS de dados ---- */
@@ -419,6 +428,7 @@ function renderStage(keep){
   s.className = keep ? 'scroll' : 'scroll fade';
   s.scrollTop = top;
   if(v==='calc' && state.calcId==='tfg') setTimeout(initDrums, 0);
+  if(v==='busca') setTimeout(function(){ var el=document.getElementById('busca-q'); if(el) el.focus(); }, 0);
   const sub = $('subtabs');
   sub.className='subtabs hide';
   sub.innerHTML='';
@@ -540,6 +550,24 @@ function globalResultsHTML(q){
   return h;
 }
 function pickResult(kind, id){ state.gquery=''; if(kind==='calc') openFavCalc(id); else openItem(id); }
+/* ---- Busca dedicada (tela cheia) — para o celular e para a landing, onde não há
+   o menu lateral. Reaproveita a busca global (globalResultsHTML/pickResult). ---- */
+function buscaHintHTML(){ return '<div class="busca-hint">Digite para buscar em todo o site — referências e calculadoras.</div>'; }
+function buscaHTML(){
+  const q = state.gquery || '';
+  return `<div class="busca-wrap">
+    <div class="busca-bar">
+      <span class="si">${svgIcon(P.search,18,{sw:2})}</span>
+      <input id="busca-q" placeholder="Buscar referências e calculadoras…" value="${esc(q)}" oninput="buscaSearch(this.value)" autocomplete="off" autofocus>
+    </div>
+    <div id="busca-results" class="busca-results">${q.trim()?globalResultsHTML(q):buscaHintHTML()}</div>
+  </div>`;
+}
+function buscaSearch(v){
+  state.gquery=v;
+  const el=document.getElementById('busca-results');
+  if(el) el.innerHTML = translateHTML(v.trim()?globalResultsHTML(v):buscaHintHTML());
+}
 function openCalcs(){ state.modalityId='us'; state.calcId=null; state.view='calc'; render(); }
 function isDesktop(){ return !!(window.matchMedia && window.matchMedia('(min-width:900px)').matches); }
 function homeView(){ return 'modality'; }   // tela inicial = Métodos de Diagnóstico
@@ -602,8 +630,12 @@ function headerHTML(){
   else if(v==='favoritos'){ title='Favoritos'; }
   else if(v==='novalista'){ const cl=state.lists.find(x=>x.id===state.composingId); title=cl?cl.name:'Minhas listas'; sub=cl?'Lista personalizada':''; }
   else if(v==='construction'){ const m=MODALITIES.find(x=>x.id===state.modalityId)||{}; title=m.name||'Em Construção'; }
+  else if(v==='busca'){ title='Buscar'; }
 
   let right='';
+  if(v!=='busca'){
+    right += `<button class="iconbtn" onclick="setView('busca')" aria-label="Buscar" title="Buscar">${svgIcon(P.search,20,{sw:2})}</button>`;
+  }
   if(v==='calc' && state.calcId){
     right += `<button class="iconbtn" onclick="copyCalcResult()" aria-label="Copiar resultado" title="Copiar resultado">${svgIcon(P.copy,20,{sw:2})}</button>`;
     right += `<button class="iconbtn" onclick="resetCalc()" aria-label="Resetar calculadora" title="Resetar">${svgIcon(P.reset,21,{sw:2})}</button>`;
@@ -632,6 +664,7 @@ function viewHTML(){
     case 'config': return configHTML();
     case 'terms': return termsGateHTML();
     case 'termsRead': return termsReadHTML();
+    case 'busca': return buscaHTML();
     case 'inicio': return dashboardHTML();
     default: return modalityHTML();
   }
@@ -652,6 +685,10 @@ function modalityHTML(){
       <div class="modal-slogan">Sua referência em Radiologia</div>
       <div class="modal-title">Métodos de Diagnóstico</div>
       <div class="modal-sub">Selecione uma modalidade</div>
+    </div>
+    <div class="modal-search" onclick="setView('busca')" role="button" tabindex="0">
+      <span class="si">${svgIcon(P.search,18,{sw:2})}</span>
+      <span class="ph">Buscar referências e calculadoras…</span>
     </div>
     <div class="modal-grid">${cards}</div>
     <div class="modal-shortcuts">
@@ -1447,7 +1484,7 @@ function openFavCalc(id){
   if(c.modality && c.modality!=='us'){ state.modalityId=c.modality; }
   else if(c.spec){ state.modalityId='us'; state.calcSpec=c.spec; }
   else { state.modalityId=null; }
-  state.calcId=id; state.view='calc'; render();
+  state.calcId=id; state.view='calc'; pushRecent(id); render();
 }
 /* Subespecialidades por método (fora do US). O US usa SPECIALTIES. */
 const MOD_SPECS = {
@@ -1708,14 +1745,23 @@ function tiradsSetSize(i,val){
 function favHTML(){
   const refs = state.favs.map(id=>DATA.find(d=>d.id===id)).filter(Boolean);
   const calcs = state.favCalcs.map(id=>findCalc(id)).filter(Boolean);
-  if(!refs.length && !calcs.length){
+  const recents = (state.recents||[]).map(id=>findCalc(id)).filter(Boolean);
+  if(!refs.length && !calcs.length && !recents.length){
     return `<div class="empty">
       <div class="ico" style="color:var(--star)">${svgIcon(P.star,46,{sw:1.4})}</div>
       <div class="msg" style="font-size:16px;font-weight:650;color:var(--tx)">Nada favoritado ainda</div>
-      <div class="msg" style="margin-top:6px">Toque na estrela ★ de qualquer referência ou calculadora para guardá-la aqui.</div>
+      <div class="msg" style="margin-top:6px">Toque na estrela ★ de qualquer referência ou calculadora para guardá-la aqui. As últimas que você usar aparecem em <b>Recentes</b>.</div>
     </div>`;
   }
   let h = '';
+  if(recents.length){
+    h += `<div class="grp">Recentes</div>`;
+    h += recents.map(c=>{ const fav=state.favCalcs.indexOf(c.id)>=0; return `<div class="row" onclick="openFavCalc('${esc(c.id)}')">
+      <div class="ic">${svgIcon(P.calc,19)}</div>
+      <div class="tx"><div class="nm">${esc(c.title)}</div><div class="meta">${esc(c.desc)}</div></div>
+      <div class="star-btn ${fav?'on':''}" onclick="event.stopPropagation();toggleFavCalc('${esc(c.id)}')">${svgIcon(P.star,20,{fill:fav?'currentColor':'none'})}</div>
+    </div>`; }).join('');
+  }
   if(calcs.length){
     h += `<div class="grp">Calculadoras</div>`;
     h += calcs.map(c=>`<div class="row" onclick="openFavCalc('${esc(c.id)}')">
@@ -1823,7 +1869,7 @@ function openItem(id){
   navPush();
   state.item=d; state.view='detail'; state.sub='tabela'; render();
 }
-function openCalc(id){ navPush(); state.calcId=id; render(); }
+function openCalc(id){ navPush(); state.calcId=id; pushRecent(id); render(); }
 /* Limpa a calculadora aberta. As fetais não guardam estado: o render()
    recria os campos vazios e some com o resultado. */
 function resetCalc(){
