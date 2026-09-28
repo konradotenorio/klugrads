@@ -2,9 +2,9 @@
    KlugRads — Esteatose Hepática por RM (fração de gordura)
    ---------------------------------------------------------------------------
    Método: RM (Ressonância Magnética) · Subespecialidade: Medicina Interna.
-   Estima a fração de gordura hepática a partir das intensidades de sinal:
+   Estima a fração lipídica hepática:
      - Dupla-eco (Dixon):  FF% = 100 × (sinal in phase − sinal out phase) / (2 × sinal in phase)
-     - Fat-only:           FF% = 100 × sinal fat-only / sinal in phase       (tem prioridade)
+     - Fat-only:           FF% = valor informado diretamente (%)            (tem prioridade)
    Graduação (Tang A et al., Radiology 2013;267(2):422–431):
      Grau 0 Normal 0–6,4% · I Leve 6,5–17,4% · II Moderada 17,5–22,0% · III Acentuada >22,1%
    Segue o layout do TI-RADS / O-RADS (classes ti-*). Ferramenta educacional.
@@ -25,18 +25,22 @@ const ESTEAT_REFS = [
 function esteatoseState(){ if(!state.esteatoseRm) state.esteatoseRm={ip:'',op:'',fat:''}; return state.esteatoseRm; }
 function esteatoseNum(v){ const n=parseFloat(String(v==null?'':v).replace(',','.')); return isNaN(n)?null:n; }
 
-/* ---- cálculo da fração de gordura ---- */
+/* ---- cálculo da fração lipídica ---- */
 function esteatoseCalc(s){
-  const ip = esteatoseNum(s.ip);
-  if(ip==null || ip<=0) return null;
+  // Fat-only tem PRIORIDADE e é a fração lipídica DIRETA (%): não precisa do in phase.
   const fat = (String(s.fat).trim()!=='') ? esteatoseNum(s.fat) : null;
-  const op  = (String(s.op).trim()!=='')  ? esteatoseNum(s.op)  : null;
-  let ff=null, metodo='';
-  if(fat!=null){ ff = 100 * fat / ip; metodo='fat-only'; }
-  else if(op!=null){ ff = 100 * (ip - op) / (2 * ip); metodo='dupla-eco (Dixon)'; }
-  if(ff==null) return null;
-  ff = Math.round(ff*10)/10;
-  return {ff, metodo};
+  if(fat!=null){
+    const ff = Math.round(Math.max(0, Math.min(100, fat))*10)/10;
+    return {ff, metodo:'fat-only (fração lipídica direta)'};
+  }
+  // Dupla-eco (Dixon): FF% = 100 × (in phase − out phase) ÷ (2 × in phase) — precisa de in e out.
+  const ip = esteatoseNum(s.ip);
+  const op = (String(s.op).trim()!=='') ? esteatoseNum(s.op) : null;
+  if(ip!=null && ip>0 && op!=null){
+    const ff = Math.round((100 * (ip - op) / (2 * ip))*10)/10;
+    return {ff, metodo:'dupla-eco (Dixon)'};
+  }
+  return null;
 }
 function esteatoseGrade(ff){
   if(ff < 6.5)  return 0;
@@ -46,12 +50,12 @@ function esteatoseGrade(ff){
 }
 
 /* ---- UI ---- */
-function esteatoseField(k, label, ph, val){
+function esteatoseField(k, label, ph, val, unit){
   return `<div class="ti-field">
     <label>${esc(label)}</label>
     <div class="ti-szwrap"><div class="ti-szf">
       <input type="text" inputmode="decimal" placeholder="${esc(ph)}" value="${esc(val)}" oninput="esteatoseSet('${k}',this.value)">
-      <span>u.a.</span>
+      <span>${esc(unit||'u.a.')}</span>
     </div></div>
   </div>`;
 }
@@ -65,11 +69,29 @@ function esteatoseResultHTML(){
     <div class="lv" style="color:${c.c}">${ffTxt}%</div>
     <div class="meta">
       <div class="a">${c.rom==='0' ? 'Grau 0 · fígado normal' : 'Grau '+c.rom+' · esteatose '+esc(c.name)}</div>
-      <div class="b">Fração de gordura hepática · faixa ${esc(c.range)} · cálculo por ${esc(r.metodo)}</div>
+      <div class="b">Fração lipídica hepática · faixa ${esc(c.range)} · cálculo por ${esc(r.metodo)}</div>
     </div>
     <div class="pts" style="background:${c.c}">${c.rom}</div>
+  </div>${esteatoseFraseHTML()}`;
+}
+
+/* ---- Frase pronta para o laudo (preenchida com a fração lipídica calculada) ---- */
+function esteatoseFrase(){
+  const r = esteatoseCalc(esteatoseState()); if(!r) return '';
+  const y = String(r.ff).replace('.', ',');
+  return r.ff > 5
+    ? `Fígado apresentando sinais de deposição adiposa parenquimatosa, sendo calculada porcentagem de gordura em ${y}% (normal até 5%).`
+    : `Fígado sem sinais significativos de deposição adiposa parenquimatosa; porcentagem de gordura calculada em ${y}% (normal até 5%).`;
+}
+function esteatoseFraseHTML(){
+  const f = esteatoseFrase(); if(!f) return '';
+  return `<div class="lau-frase">
+    <div class="lau-frase-lbl">Frase para o laudo</div>
+    <div class="lau-frase-tx">${esc(f)}</div>
+    <button type="button" class="lau-frase-btn" onclick="esteatoseCopyFrase()">${svgIcon(P.copy,16,{sw:2})} Copiar frase</button>
   </div>`;
 }
+function esteatoseCopyFrase(){ const f=esteatoseFrase(); if(f) klugCopy(f, 'Frase copiada ✓'); }
 
 function calcEsteatoseRmHTML(){
   const s = esteatoseState();
@@ -83,20 +105,20 @@ function calcEsteatoseRmHTML(){
       <div class="ti-fields">
         ${esteatoseField('ip','Sinal in phase','ex.: 320', s.ip)}
         ${esteatoseField('op','Sinal out phase','ex.: 210', s.op)}
-        ${esteatoseField('fat','Sinal fat-only','opcional', s.fat)}
+        ${esteatoseField('fat','Fat-only (fração lipídica)','ex.: 12', s.fat, '%')}
       </div>
-      <div class="ti-legend-row" style="margin-top:8px"><span class="lt">Informe o <b>sinal in phase</b> com o <b>out phase</b> (Dixon 2 ecos), ou com o <b>fat-only</b>. Se o fat-only for preenchido, ele tem prioridade no cálculo.</span></div>
+      <div class="ti-legend-row" style="margin-top:8px"><span class="lt">• Informe o sinal <b>in</b> e <b>out phase</b> (Dixon 2 ecos), ou apenas o <b>fat-only</b>.<br>• Se o fat-only for preenchido, ele tem prioridade no cálculo.</span></div>
       <div id="est-res">${esteatoseResultHTML()}</div>
     </div>
     <div class="ti-card">
       <div class="tfg-sec-lbl">Fórmulas</div>
       <div class="tfg-ref-list">
         <div class="tfg-ref-item">Dupla-eco (Dixon): FF% = 100 × (sinal in phase − sinal out phase) ÷ (2 × sinal in phase)</div>
-        <div class="tfg-ref-item">Fat-only: FF% = 100 × sinal fat-only ÷ sinal in phase</div>
+        <div class="tfg-ref-item">Fat-only: a fração lipídica (%) é o valor informado diretamente — sem cálculo.</div>
       </div>
     </div>
     <div class="ti-card">
-      <div class="tfg-sec-lbl">Graduação da esteatose (fração de gordura)</div>
+      <div class="tfg-sec-lbl">Graduação da esteatose (fração lipídica)</div>
       <div class="ti-legend">${legend}</div>
     </div>
     <div class="ti-card">
@@ -117,4 +139,4 @@ function esteatoseRefresh(){
 /* registra no catálogo (CALCS de app.js) — método RM, subespecialidade Medicina Interna */
 CALCS.push({id:'esteatose-rm', modality:'rm', subspec:'medint', badge:'FF',
   title:'Esteatose Hepática (RM)',
-  desc:'Fração de gordura hepática por RM (Dixon) e graduação'});
+  desc:'Fração lipídica hepática por RM'});
