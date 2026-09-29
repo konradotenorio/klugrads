@@ -157,12 +157,11 @@ function figoCalcHTML(mod){
         ${figoField(mod,'d1','Diâmetro 1','ex.: 42','mm')}
         ${figoField(mod,'d2','Diâmetro 2','ex.: 38','mm')}
         ${figoField(mod,'d3','Diâmetro 3','ex.: 35','mm')}
-        ${figoField(mod,'im','Porção intramural (espessura)','ex.: 22','mm')}
-        ${figoField(mod,'ped','Largura do pedículo','ex.: 3','mm')}
+        ${mod==='rm' ? figoField(mod,'im','Porção intramural (espessura)','ex.: 22','mm')+figoField(mod,'ped','Largura do pedículo','ex.: 3','mm') : ''}
       </div>
       <div class="ti-field ti-field-foci"><label>Parede</label><div class="ti-foci">${figoChips(mod,'wall',FIGO_WALL)}</div></div>
-      <div class="ti-field ti-field-foci"><label>Posição vertical</label><div class="ti-foci">${figoChips(mod,'vert',FIGO_VERT)}</div></div>
-      <div class="ti-legend-row" style="margin-top:6px"><span class="lt">Com os três diâmetros, a calculadora mostra o diâmetro médio, o volume (elipsoide) e a proporção intramural e do pedículo, para ajudar a escolher o tipo.</span></div>
+      ${mod==='rm' ? `<div class="ti-field ti-field-foci"><label>Posição vertical</label><div class="ti-foci">${figoChips(mod,'vert',FIGO_VERT)}</div></div>` : ''}
+      <div class="ti-legend-row" style="margin-top:6px"><span class="lt">${mod==='rm' ? 'Com os três diâmetros, a calculadora mostra o diâmetro médio, o volume (elipsoide) e a proporção intramural e do pedículo, para ajudar a escolher o tipo.' : 'Com os três diâmetros, a calculadora mostra o diâmetro médio e o volume (elipsoide).'}</span></div>
     </div>
     <div class="ti-card"><div class="tfg-sec-lbl">Tipos FIGO</div>${figoLegendHTML()}</div>
     <div class="ti-card"><div class="tfg-sec-lbl">Referências</div>
