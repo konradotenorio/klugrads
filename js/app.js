@@ -1551,6 +1551,8 @@ function calcViewHTML(){
   if(state.calcId === 'lung-rads') return calcLungRadsHTML();
   if(state.calcId === 'fleischner') return calcFleischnerHTML();
   if(state.calcId === 'cadrads') return calcCadradsHTML();
+  if(state.calcId === 'mesa') return calcMesaHTML();
+  if(state.calcId === 'mesa-cac') return calcMesaCacHTML();
   if(state.calcId === 'pi-qual') return calcPiQualHTML();
   if(state.calcId === 'precise') return calcPreciseHTML();
   if(state.calcId === 'pi-rr') return calcPiRrHTML();
