@@ -29660,6 +29660,142 @@
   ]
  },
  {
+  "id": "adultos-residuogastrico",
+  "group": "Adultos",
+  "region": "Abdome superior",
+  "name": "Resíduo Gástrico",
+  "abbr": "",
+  "iconKey": "organ",
+  "exam": {
+   "prep": "Sem preparo específico: o exame avalia o conteúdo gástrico no momento, por exemplo na avaliação pré-anestésica quando o jejum é incerto ou pode não ser confiável (emergência, falha de comunicação, gastroparesia diabética, disfunção hepática ou renal).",
+   "position": "Decúbito dorsal e decúbito lateral direito (DLD). O DLD desloca o conteúdo para o antro e é a posição que melhor se correlaciona com o volume gástrico. A posição semissentada é uma alternativa.",
+   "technique": "Transdutor convexo de baixa frequência (2-5 MHz), com ajuste abdominal padrão. Em pacientes magros ou pediátricos, o transdutor linear de alta frequência (5-12 MHz) detalha melhor a parede gástrica. Com o transdutor em plano sagital ou parassagital no epigástrio, identifique o antro entre o lobo esquerdo do fígado (anterior) e o pâncreas (posterior), no nível da aorta ou da veia cava inferior e da artéria ou veia mesentérica superior. Meça a área de secção transversal (AST) com o antro em repouso, entre as contrações, de serosa a serosa."
+  },
+  "tables": [
+   {
+    "title": "Valores de Referência",
+    "rows": [
+     [
+      "VOLUME GÁSTRICO BASAL EM JEJUM",
+      "Até 1,5 mL/kg\n(adultos saudáveis, sem risco significativo de aspiração)"
+     ],
+     [
+      "VOLUME GÁSTRICO (Perlas 2013)",
+      "VG (mL) = 27,0 + 14,6 × AST em DLD (cm²) − 1,28 × idade (anos)"
+     ],
+     [
+      "ÁREA DE SECÇÃO TRANSVERSAL DO ANTRO",
+      "AST = (AP × CC × π) / 4\nAP: diâmetro anteroposterior · CC: diâmetro craniocaudal"
+     ]
+    ]
+   },
+   {
+    "title": "Técnica de Exame",
+    "rows": [
+     [
+      "Etapa",
+      "Como fazer"
+     ],
+     [
+      "Transdutor",
+      "Convexo de baixa frequência (2-5 MHz), ajuste abdominal. Linear de alta frequência (5-12 MHz) em pacientes magros ou pediátricos."
+     ],
+     [
+      "Posição",
+      "Decúbito dorsal e decúbito lateral direito (DLD). O DLD melhor se correlaciona com o volume. Semissentado é alternativa."
+     ],
+     [
+      "Plano e referências",
+      "Sagital ou parassagital no epigástrio. Antro entre o lobo esquerdo do fígado (anterior) e o pâncreas (posterior), no nível da aorta ou VCI e da artéria ou veia mesentérica superior."
+     ],
+     [
+      "Medida da AST",
+      "Antro em repouso, entre contrações, de serosa a serosa, pelos diâmetros AP e CC ou por traçado livre."
+     ]
+    ]
+   },
+   {
+    "title": "Graduação Qualitativa do Antro (Perlas)",
+    "rows": [
+     [
+      "Grau",
+      "Achado",
+      "Significado"
+     ],
+     [
+      "Grau 0",
+      "Antro vazio em decúbito dorsal e em DLD",
+      "Sem conteúdo gástrico"
+     ],
+     [
+      "Grau 1",
+      "Antro vazio em decúbito dorsal; líquido claro visível apenas em DLD",
+      "Volume pequeno: < 100 mL em 75% dos casos"
+     ],
+     [
+      "Grau 2",
+      "Líquido claro visível em decúbito dorsal e em DLD",
+      "Volume maior: > 100 mL em 75% dos casos"
+     ]
+    ]
+   },
+   {
+    "title": "Aspecto Ultrassonográfico do Conteúdo",
+    "rows": [
+     [
+      "Conteúdo",
+      "Aspecto"
+     ],
+     [
+      "Vazio",
+      "Antro achatado ou colapsado, ou arredondado (\"olho de boi\"). Parede espessa, com muscular própria proeminente."
+     ],
+     [
+      "Líquido claro",
+      "Conteúdo hipoecoico. Antro arredondado e distendido, com paredes finas. Peristalse geralmente presente."
+     ],
+     [
+      "Leite / suspensões",
+      "Conteúdo hiperecoico."
+     ],
+     [
+      "Sólido",
+      "Conteúdo hiperecoico e heterogêneo, misturado com ar, com padrão em \"vidro fosco\"."
+     ]
+    ]
+   },
+   {
+    "title": "Interpretação Clínica",
+    "rows": [
+     [
+      "Achado",
+      "Interpretação"
+     ],
+     [
+      "Antro vazio (grau 0) ou líquido claro ≤ 1,5 mL/kg",
+      "Compatível com estômago em jejum: risco de aspiração baixo, permite conduta anestésica habitual"
+     ],
+     [
+      "Conteúdo sólido, particulado ou líquido espesso",
+      "Estômago cheio: alto risco de aspiração, indicar precauções"
+     ],
+     [
+      "Líquido claro em volume elevado (> 1,5 mL/kg)",
+      "Volume acima do basal: indicar precauções contra aspiração"
+     ]
+    ]
+   }
+  ],
+  "footnotes": [
+   "Fórmula de Perlas: validada em adultos não gestantes, com IMC de 19 a 40 kg/m², idade de 18 a 85 anos e volumes de até 500 mL (r = 0,86). Não foi validada em crianças nem em gestantes.",
+   "O volume de corte associado a risco de aspiração ainda é controverso. Até 1,5 mL/kg de líquido claro é considerado volume basal em jejum.",
+   "Jejum recomendado pela ASA: 2 h para líquidos claros, 6 h após refeição leve e 8 h após refeição completa, rica em calorias ou gordura."
+  ],
+  "refs": [
+   "Van de Putte P, Perlas A. Ultrasound assessment of gastric content and volume. Br J Anaesth. 2014;113(1):12-22. doi:10.1093/bja/aeu151."
+  ]
+ },
+ {
   "id": "adultos-tratoadulto",
   "group": "Adultos",
   "region": "Abdome superior",

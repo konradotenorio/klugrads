@@ -297,7 +297,18 @@ for curated_path in sorted(glob.glob(os.path.join(CURATED_DIR, '*.json'))):
         if entry_id in known_ids:
             raise ValueError('id duplicado no conteúdo curado: %s' % entry_id)
         known_ids.add(entry_id)
-        items.append(entry)
+        # "insertAfter": id de um item existente. A lista do app agrupa por
+        # região na ordem do array; um item de uma região que já existe
+        # (ex.: Abdome superior) precisa ficar junto dos irmãos, senão a
+        # região aparece duas vezes. Sem o campo, vai para o fim (Doppler).
+        after = entry.pop('insertAfter', None)
+        if after:
+            idx = next((i for i, it in enumerate(items) if it['id'] == after), None)
+            if idx is None:
+                raise ValueError('insertAfter aponta para id inexistente: %s' % after)
+            items.insert(idx + 1, entry)
+        else:
+            items.append(entry)
 
 json.dump(items, open(os.path.join(BASE, 'items.generated.json'), 'w'), ensure_ascii=False, indent=1)
 
@@ -305,7 +316,7 @@ json.dump(items, open(os.path.join(BASE, 'items.generated.json'), 'w'), ensure_a
 SEED_PATH = os.path.join(os.path.dirname(__file__), '..', 'db', 'seed.js')
 header_comment = (
 "/* =========================================================================\n"
-"   RadRef — SEED de dados (fonte da verdade + fallback OFFLINE)\n"
+"   KlugRads — SEED de dados (fonte da verdade + fallback OFFLINE)\n"
 "   GERADO automaticamente por tools/gen_seed.py a partir do conteúdo exato\n"
 "   do app MedUltra (propriedade do usuário). NÃO editar à mão: editar os\n"
 "   recursos/gerador e rodar `python3 tools/gen_seed.py`.\n"
