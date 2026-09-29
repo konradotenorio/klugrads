@@ -8,9 +8,6 @@ db/
 tools/
 samples/
 
-# Protótipos em desenvolvimento (ex.: idade óssea) — não vão ao ar
-proto/
-
 # Migrations e schema do banco (fase 2)
 supabase/
 
