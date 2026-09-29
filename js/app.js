@@ -1624,7 +1624,6 @@ function openFavCalc(id){
 const MOD_SPECS = {
   rm: [ {id:'medint', name:'Medicina Interna'} ],
   tc: [ {id:'medint', name:'Medicina Interna'}, {id:'torax', name:'Tórax'} ],
-  rx: [ {id:'pediatria', name:'Pediatria'} ],
 };
 /* Conteúdo/calculadoras de um método não-US, agrupado por subespecialidade. */
 function calcListModalityHTML(mid){

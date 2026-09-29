@@ -1,14 +1,23 @@
 # Gera o arquivo do modelo de idade óssea (ONNX) sem precisar de Python na sua máquina.
+#
 # Como usar: aba Actions > "Exportar modelo de idade óssea" > Run workflow.
-# Ao terminar, baixe o artefato "modelo-idade-ossea" (zip) e envie os arquivos para o
-# armazenamento escolhido (ver README do projeto / conversa). Nada é publicado automaticamente.
+#  - Sempre gera o artefato "modelo-idade-ossea" (zip) para download.
+#  - Com "publicar" marcado, publica os arquivos no GitHub Pages deste repositório (gratuito,
+#    sem cartão): https://<usuario>.github.io/<repositorio>/  — só a pasta do modelo, nunca o site.
+#    Pré-requisitos: Settings > Pages > Source = "GitHub Actions", e rodar a partir da branch
+#    principal (o ambiente github-pages só aceita a principal por padrão).
 name: Exportar modelo de idade óssea
 
 on:
   workflow_dispatch:
+    inputs:
+      publicar:
+        description: "Publicar no GitHub Pages (gratuito)"
+        type: boolean
+        default: false
 
 permissions:
-  contents: read        # sem acesso de escrita e sem segredos neste job
+  contents: read        # o job que roda o código do modelo não tem escrita nem segredos
 
 jobs:
   exportar:
@@ -31,3 +40,22 @@ jobs:
           name: modelo-idade-ossea
           path: modelo-idade-ossea/
           retention-days: 14
+      - name: Preparar publicação no Pages
+        if: ${{ inputs.publicar }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: modelo-idade-ossea/
+
+  publicar:
+    if: ${{ inputs.publicar }}
+    needs: exportar
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
