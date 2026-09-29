@@ -1,0 +1,71 @@
+[
+ {
+  "id": "adultos-miomas-figo",
+  "insertAfter": "adultos-endometrioadulto",
+  "group": "Adultos",
+  "region": "Trato Genital - Feminino",
+  "name": "Miomas Uterinos (FIGO)",
+  "abbr": "FIGO",
+  "iconKey": "organ",
+  "tables": [
+   {
+    "title": "Classificação FIGO dos Leiomiomas",
+    "rows": [
+     ["Tipo", "Definição"],
+     ["0", "Intracavitário pediculado (pedículo ≤ 10% do diâmetro médio), sem componente miometrial"],
+     ["1", "Submucoso, com menos de 50% do diâmetro médio no miométrio"],
+     ["2", "Submucoso, com 50% ou mais (e menos de 100%) do diâmetro médio no miométrio; deforma focalmente a cavidade"],
+     ["3", "100% intramural, toca o endométrio sem deformar a cavidade"],
+     ["4", "Intramural, totalmente envolto por miométrio, sem contato com endométrio ou serosa"],
+     ["5", "Subseroso, com 50% ou mais do diâmetro médio no miométrio"],
+     ["6", "Subseroso, com menos de 50% do diâmetro médio no miométrio"],
+     ["7", "Subseroso pediculado (pedículo ≤ 10% do diâmetro médio), 100% fora do miométrio"],
+     ["8", "Outros: cervical, ligamento redondo ou largo sem fixação direta ao útero, \"parasita\""],
+     ["Híbrido (X–Y)", "Transmural: toca endométrio e serosa. X = componente submucoso, Y = componente subseroso"]
+    ]
+   },
+   {
+    "title": "Como Classificar",
+    "rows": [
+     ["Critério", "Regra"],
+     ["Proporção intramural", "Parte do diâmetro médio do mioma (média dos três diâmetros) que está dentro do miométrio"],
+     ["Pediculado (tipos 0 e 7)", "Pedículo estreito, ≤ 10% do diâmetro médio do mioma"],
+     ["Tipo 2 × tipo 3", "Pela revisão FIGO de 2018, a distinção é feita pela histeroscopia com baixa pressão intrauterina"],
+     ["Híbridos frequentes", "2–5 e 3–5"],
+     ["Híbridos possíveis, mas incomuns", "2–6, 3–6 e 1–5"]
+    ]
+   },
+   {
+    "title": "Ultrassonografia",
+    "rows": [
+     ["Aspecto", "Recomendação"],
+     ["Papel", "Método de primeira linha. US transabdominal e sobretudo transvaginal: sensibilidade de 90–99%"],
+     ["Aspecto típico (MUSA)", "Contorno uterino regular ou lobulado, paredes assimétricas; nódulo bem definido, redondo ou oval, homogêneo, com sombra de borda; fluxo circunferencial ao Doppler; zona juncional não espessada"],
+     ["Componente submucoso", "Sonohisterografia (soro ou gel), 2D ou 3D: sensibilidade e especificidade de 98–100% para mioma submucoso"],
+     ["Limitações", "Obesidade, útero volumoso, sombra acústica em úteros com múltiplos miomas; não avalia com segurança a irrigação para embolização"]
+    ]
+   },
+   {
+    "title": "O Que Informar no Laudo",
+    "rows": [
+     ["Item", "Detalhe"],
+     ["Útero", "Volume uterino e número de miomas (dados mínimos da FIGO 2018)"],
+     ["Cada mioma relevante", "Tipo FIGO, três diâmetros e localização"],
+     ["Localização", "Parede anterior, posterior, lateral ou central; metade superior, metade inferior ou ambas"],
+     ["Relatório estruturado", "Seguir os termos do MUSA e a classificação FIGO"]
+    ]
+   }
+  ],
+  "footnotes": [
+   "O risco de malignidade em miomas é baixo (0,05–0,81%), maior em pós-menopausa. Leiomiossarcoma e mioma podem ter aspecto semelhante: só a peça cirúrgica dá o diagnóstico final. STUMP não pode ser diagnosticado por imagem.",
+   "Diferencial com adenomiose: zona juncional irregular, cistos miometriais e adenomiomas (lesões mal definidas, com pequenos componentes císticos ou hemorrágicos).",
+   "A RM é reservada para casos complexos e planejamento cirúrgico, como diferenciar tipo 3 de 4 ou tipo 2 profundo de 2–5."
+  ],
+  "refs": [
+   "Lakabi R, Harth S, Meinhold-Heerlein I, Olsthoorn AV, Munro MG, Murji A. Diagnosis and classification of uterine fibroids. Int J Gynecol Obstet. 2025;171:566-573. doi:10.1002/ijgo.70538.",
+   "Munro MG, Critchley HO, Broder MS, Fraser IS. FIGO classification system (PALM-COEIN) for causes of abnormal uterine bleeding in nongravid women of reproductive age. Int J Gynaecol Obstet. 2011;113:3-13. doi:10.1016/j.ijgo.2010.11.011.",
+   "Munro MG, Critchley HOD, Fraser IS; FIGO Menstrual Disorders Committee. The two FIGO systems for normal and abnormal uterine bleeding symptoms and classification of causes of abnormal uterine bleeding in the reproductive years: 2018 revisions. Int J Gynecol Obstet. 2018;143:393-408.",
+   "Van den Bosch T, Dueholm M, Leone FP, et al. Terms, definitions and measurements to describe sonographic features of myometrium and uterine masses: a consensus opinion from the MUSA group. Ultrasound Obstet Gynecol. 2015;46:284-298."
+  ]
+ }
+]
