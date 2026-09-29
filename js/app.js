@@ -261,7 +261,7 @@ let state = {
   newName:'', composingId:null, modalityId:null,
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
-  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null, volgastrico:null, prostMap:null, figo:null,
+  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null, volgastrico:null, prostMap:null, figo:null, mesa:null, mesaCac:null,
   lang:'pt', fontScale:1, user:null,
   favCalcs:[], recents:[],
   nav:[],
@@ -2029,6 +2029,8 @@ function resetCalc(){
   else if(state.calcId==='lung-rads') state.lungrads=null;
   else if(state.calcId==='fleischner') state.fleischner=null;
   else if(state.calcId==='cadrads') state.cadrads=null;
+  else if(state.calcId==='mesa') state.mesa=null;
+  else if(state.calcId==='mesa-cac') state.mesaCac=null;
   else if(state.calcId==='pi-qual') state.piqual=null;
   else if(state.calcId==='precise') state.precise=null;
   else if(state.calcId==='pi-rr') state.pirr=null;
