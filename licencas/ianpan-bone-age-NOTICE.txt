@@ -1,0 +1,19 @@
+Bone Age local browser application
+
+Model: ianpan/bone-age
+Author/publisher: Ian Pan (https://huggingface.co/ianpan)
+Source: https://huggingface.co/ianpan/bone-age
+Pinned revision: 2ab81275b84e9f518f04584177221a1d8c1dc1a5
+Original model license: Apache License 2.0 (see model-license.txt).
+
+Modifications: exported the three ConvNeXtV2-tiny networks to ONNX FP32;
+replaced indexed sex-channel construction with an equivalent broadcast
+for WebAssembly portability; original trained weights are preserved.
+Preprocessing reimplemented in TypeScript for in-browser use.
+
+The model is provided for demonstration and research purposes only and
+has not been approved by a regulatory agency for clinical use.
+This application and its numerical conversion tests do not establish
+clinical validity for a patient or population.
+
+Application code: https://github.com/feliperun/bone-age (MIT License).

@@ -16,3 +16,4 @@ docs/
 .claude/
 *.md
 !index.md
+.github/

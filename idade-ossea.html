@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Idade óssea — KlugRads</title>
 <meta name="robots" content="noindex">
-<!-- Privacidade por construção: a página NÃO pode abrir conexões de rede
-     (connect-src 'none'). Quando o modelo real entrar, só o host dos pesos é
-     liberado aqui e em vercel.json — nunca um endereço que receba imagem ou
-     dado de paciente. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'wasm-unsafe-eval'; worker-src blob:; style-src 'unsafe-inline'; img-src blob: data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<!-- Privacidade por construção: a página só pode conectar em si mesma ('self': runtime
+     WASM) e, quando MODEL_BASE for definido, no host dos PESOS do modelo — adicione a
+     origem dele aqui e em vercel.json (connect-src). Nunca um endereço que receba
+     imagem ou dado de paciente: o navegador bloqueia qualquer outro destino. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'unsafe-inline'; img-src blob: data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
 <style>
   /* Mesmos tokens do app (app.html) */
   :root{--bg:#0e1216;--sf:#161c23;--sf2:#1e2730;--line:#28323d;--tx:#e9eef3;--dim:#8b98a5;
@@ -24,6 +24,8 @@
     padding:0 20px 32px}
   .wrap{max-width:760px;margin:0 auto}
   header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 0 10px}
+  .back{text-decoration:none;color:var(--dim);font-size:12.5px;display:inline-block;margin-bottom:4px}
+  .back:hover{color:var(--tx)}
   h1{font-size:19px;margin:0;letter-spacing:-.015em}
   .sub{color:var(--dim);font-size:12.5px}
   .tools{display:flex;gap:8px;align-items:center}
@@ -94,7 +96,8 @@
 <body>
 <div class="wrap">
   <header>
-    <div><h1><span data-i18n="title">Idade óssea</span> <span class="sub">· <span data-i18n="proto">protótipo</span></span></h1>
+    <div><a class="back" href="/app" data-i18n="back">← KlugRads</a>
+      <h1><span data-i18n="title">Idade óssea</span> <span class="sub">· <span data-i18n="proto">protótipo</span></span></h1>
       <div class="sub" data-i18n="subtitle">Radiografia · mão e punho · método Greulich-Pyle</div></div>
     <div class="tools">
       <button class="iconbtn flag" id="lang-pt" type="button" data-lang="pt" data-i18n-aria="lang_pt" data-i18n-title="lang_pt"></button>
@@ -170,6 +173,9 @@
     <div class="check"><input type="checkbox" id="ok"><label for="ok" data-i18n="consent"></label></div>
     <button class="btn" id="run" type="button" style="margin-top:14px" disabled data-i18n="run"></button>
     <div class="prog hidden" id="prog"><i></i></div>
+    <div class="hint hidden" id="prog-label"></div>
+    <div class="hint" id="run-hint" data-i18n="run_hint"></div>
+    <div class="hint warn hidden" id="run-err"></div>
   </section>
 
   <!-- 4 · RESULTADO -->
@@ -178,7 +184,7 @@
     <div class="sim" id="simtag" data-i18n="sim"></div>
     <div class="big" id="r-main"></div>
     <div class="range" id="r-range"></div>
-    <div id="r-agree" style="margin-top:14px"></div>
+    <div class="range" id="r-agree" style="margin-top:6px"></div>
     <div class="range" id="r-cmp" style="margin-top:14px"></div>
     <div class="row" style="margin-top:14px">
       <button class="btn ghost" id="b-copy" type="button" data-i18n="copy"></button>
@@ -192,7 +198,8 @@
     <ul class="refs">
       <li>Greulich WW, Pyle SI. Radiographic Atlas of Skeletal Development of the Hand and Wrist. 2nd ed. Stanford University Press; 1959.</li>
       <li>Halabi SS, et al. The RSNA Pediatric Bone Age Machine Learning Challenge. Radiology. 2019;290(2):498–503.</li>
-      <li data-i18n="ref_model"></li>
+      <li id="ref-model"></li>
+      <li data-i18n-html="ref_lic"></li>
       <li data-i18n="ref_limits"></li>
     </ul>
   </section>
@@ -214,7 +221,7 @@ const $ = id => document.getElementById(id);
 const D = {
 pt:{
   title:'Idade óssea', proto:'protótipo', subtitle:'Radiografia · mão e punho · método Greulich-Pyle',
-  clear:'Limpar', theme:'Alternar tema', lang_pt:'Português (Brasil)', lang_en:'English (US)',
+  back:'← KlugRads', clear:'Limpar', theme:'Alternar tema', lang_pt:'Português (Brasil)', lang_en:'English (US)',
   n_acad:'<b>Ferramenta acadêmica e educacional.</b> Sem validação médica ou clínica — não substitui o laudo do radiologista nem deve orientar conduta.',
   n_edu:'<b>Uso educativo e de teste.</b> Disponibilizada gratuitamente e sem vínculo com qualquer plano pago do KlugRads.',
   n_priv:'<b>Sua imagem não sai do navegador:</b> nada é enviado, salvo ou hospedado; ao fechar a página, tudo é descartado.',
@@ -237,7 +244,9 @@ pt:{
   copy:'Copiar resumo', copied:'Copiado ✓', copy_fail:'Não foi possível copiar', new_img:'Nova imagem',
   copy_hint:'O resumo copiado <b>não contém a imagem nem dados do paciente</b>.',
   about:'Sobre e referências',
-  ref_model:'Modelo previsto (versão final): código aberto treinado no dataset RSNA 2017, rodando localmente no navegador via ONNX Runtime Web. Créditos e licenças serão exibidos aqui.',
+  ref_model:'Modelo: <b>ianpan/bone-age</b>, de Ian Pan (Apache-2.0) — uma rede (1 das 3 do conjunto original), treinada no dataset RSNA 2017 e executada localmente via ONNX Runtime Web. Pré-processamento adaptado de feliperun/bone-age (MIT).',
+  ref_model_demo:'Modelo previsto: <b>ianpan/bone-age</b>, de Ian Pan (Apache-2.0) — uma rede treinada no dataset RSNA 2017, executada localmente via ONNX Runtime Web. <b>Ainda não carregado nesta versão: os valores mostrados são simulados.</b>',
+  ref_lic:'Licenças: <a href="/licencas/ianpan-bone-age-Apache-2.0.txt">modelo (Apache-2.0)</a> · <a href="/licencas/ianpan-bone-age-NOTICE.txt">aviso</a> · <a href="/licencas/feliperun-bone-age-MIT.txt">pipeline (MIT)</a> · <a href="/vendor/ort/LICENSE.txt">ONNX Runtime (MIT)</a>',
   ref_limits:'Limitações: treinado em população norte-americana, sem validação para a população brasileira, para patologias ósseas ou para imagens fora do padrão (mão esquerda, PA).',
   priv_foot:'Sem cadastro · sem rastreamento · sem armazenamento de imagens',
   e_format:'Formato não suportado. Use PNG, JPG, WebP ou DICOM.', e_open:'Não foi possível abrir a imagem.',
@@ -246,15 +255,20 @@ pt:{
   e_dcm_pix:'Não foi possível ler a imagem deste DICOM (formato de pixel não suportado). Exporte como JPG no visualizador DICOM.',
   w_right:'O DICOM indica lateralidade <b>direita</b>. O modelo espera mão esquerda; espelhar a imagem é uma aproximação sem validação.',
   y:['ano','anos'], mo:['mês','meses'], and:'e',
-  r_range:'Faixa de referência ± {m} meses (erro médio relatado no dataset RSNA; sem validação local).',
-  r_agree:'Concordância entre os 3 modelos', r_model:'Modelo {i}',
+  r_range:'Faixa de referência ± {m} meses: erro médio relatado para o conjunto original de 3 redes no dataset RSNA. Esta versão usa 1 rede e não foi medida localmente.',
+  r_model_info:'Modelo {id} · rede 1 de 3 · revisão {rev}',
+  run_hint:'Na primeira vez, o modelo (cerca de 100 MB) é baixado e guardado no navegador; nas próximas, abre do cache. Nenhuma imagem é enviada.',
+  p_dl:'Baixando o modelo (só na primeira vez)… {p}%', p_cache:'Carregando o modelo do cache…', p_init:'Iniciando o modelo…', p_run:'Calculando…',
+  e_model:'Não foi possível baixar o modelo. Verifique a conexão e tente novamente.', e_integrity:'O arquivo do modelo não passou na verificação de integridade. Tente novamente mais tarde.',
+  e_ort:'Não foi possível iniciar o motor de IA neste navegador. Use um navegador atualizado no computador.',
+  e_crop:'O recorte está pequeno demais. Desenhe o recorte cobrindo a mão inteira.', e_contrast:'A área recortada não tem contraste. Confira o recorte.', e_out:'O modelo retornou um valor inválido. Confira a imagem e o recorte.',
   r_cmp:'Idade cronológica informada: {a} · diferença estimada: {d} meses. Interpretar a diferença é papel do médico.',
   sum:'Idade óssea (GP, estimativa acadêmica{sim}): {v} (~{n} meses), sexo {sx}. {cmp}Ferramenta educacional sem validação clínica; não substitui laudo médico. — klugrads.com',
-  sum_sim:', VALOR SIMULADO — demonstração', sx_M:'masculino', sx_F:'feminino', m_unit:'m',
+  sum_sim:', VALOR SIMULADO — demonstração', sx_M:'masculino', sx_F:'feminino',
 },
 en:{
   title:'Bone age', proto:'prototype', subtitle:'Radiograph · hand and wrist · Greulich-Pyle method',
-  clear:'Clear', theme:'Toggle theme', lang_pt:'Português (Brasil)', lang_en:'English (US)',
+  back:'← KlugRads', clear:'Clear', theme:'Toggle theme', lang_pt:'Português (Brasil)', lang_en:'English (US)',
   n_acad:'<b>Academic and educational tool.</b> Not medically or clinically validated — it does not replace the radiologist\'s report and must not guide management.',
   n_edu:'<b>Educational and testing use.</b> Provided free of charge and not tied to any paid KlugRads plan.',
   n_priv:'<b>Your image never leaves the browser:</b> nothing is uploaded, saved or hosted; when you close the page, everything is discarded.',
@@ -277,7 +291,9 @@ en:{
   copy:'Copy summary', copied:'Copied ✓', copy_fail:'Could not copy', new_img:'New image',
   copy_hint:'The copied summary <b>contains neither the image nor patient data</b>.',
   about:'About and references',
-  ref_model:'Planned model (final version): open source, trained on the RSNA 2017 dataset, running locally in the browser via ONNX Runtime Web. Credits and licenses will be shown here.',
+  ref_model:'Model: <b>ianpan/bone-age</b> by Ian Pan (Apache-2.0) — one network (1 of the 3 in the original ensemble), trained on the RSNA 2017 dataset and run locally via ONNX Runtime Web. Preprocessing adapted from feliperun/bone-age (MIT).',
+  ref_model_demo:'Planned model: <b>ianpan/bone-age</b> by Ian Pan (Apache-2.0) — one network trained on the RSNA 2017 dataset, run locally via ONNX Runtime Web. <b>Not loaded in this version yet: the values shown are simulated.</b>',
+  ref_lic:'Licenses: <a href="/licencas/ianpan-bone-age-Apache-2.0.txt">model (Apache-2.0)</a> · <a href="/licencas/ianpan-bone-age-NOTICE.txt">notice</a> · <a href="/licencas/feliperun-bone-age-MIT.txt">pipeline (MIT)</a> · <a href="/vendor/ort/LICENSE.txt">ONNX Runtime (MIT)</a>',
   ref_limits:'Limitations: trained on a North American population, not validated for the Brazilian population, for bone disease, or for non-standard images (left hand, PA).',
   priv_foot:'No sign-up · no tracking · no image storage',
   e_format:'Unsupported format. Use PNG, JPG, WebP or DICOM.', e_open:'Could not open the image.',
@@ -286,17 +302,26 @@ en:{
   e_dcm_pix:'Could not read the image in this DICOM (unsupported pixel format). Export it as JPG from the DICOM viewer.',
   w_right:'The DICOM indicates <b>right</b> laterality. The model expects a left hand; mirroring the image is an unvalidated approximation.',
   y:['year','years'], mo:['month','months'], and:'and',
-  r_range:'Reference range ± {m} months (mean error reported on the RSNA dataset; not locally validated).',
-  r_agree:'Agreement across the 3 models', r_model:'Model {i}',
+  r_range:'Reference range ± {m} months: mean error reported for the original 3-network ensemble on the RSNA dataset. This version uses 1 network and has not been measured locally.',
+  r_model_info:'Model {id} · network 1 of 3 · revision {rev}',
+  run_hint:'The first time, the model (about 100 MB) is downloaded and kept in the browser; afterwards it opens from cache. No image is uploaded.',
+  p_dl:'Downloading the model (first time only)… {p}%', p_cache:'Loading the model from cache…', p_init:'Starting the model…', p_run:'Computing…',
+  e_model:'Could not download the model. Check your connection and try again.', e_integrity:'The model file failed the integrity check. Please try again later.',
+  e_ort:'Could not start the AI engine in this browser. Use an up-to-date desktop browser.',
+  e_crop:'The crop is too small. Draw the crop to cover the whole hand.', e_contrast:'The cropped area has no contrast. Check the crop.', e_out:'The model returned an invalid value. Check the image and the crop.',
   r_cmp:'Chronological age entered: {a} · estimated difference: {d} months. Interpreting the difference is the physician\'s role.',
   sum:'Bone age (GP, academic estimate{sim}): {v} (~{n} months), {sx}. {cmp}Educational tool without clinical validation; does not replace a medical report. — klugrads.com',
-  sum_sim:', SIMULATED VALUE — demo', sx_M:'male', sx_F:'female', m_unit:'mo',
+  sum_sim:', SIMULATED VALUE — demo', sx_M:'male', sx_F:'female',
 }};
 
 /* ---------- estado ---------- */
-const S = { src:null, rot:0, flip:false, inv:false, crop:null, sex:null, dcm:{sex:false, age:false}, err:null, warn:false, last:null, lang:'pt' };
+const S = { src:null, rot:0, flip:false, inv:false, crop:null, sex:null, dcm:{sex:false, age:false}, err:null, runErr:null, warn:false, last:null, lang:'pt' };
+// Pasta pública com manifest.json, reference.json e o .onnx (gerados por
+// tools/idade-ossea/export_model.py). TERMINA COM '/'. Vazio = modo demonstração
+// (valor simulado). Ao preencher, libere a origem em connect-src (meta CSP acima e vercel.json).
+const MODEL_BASE = '';
+const fail = key => Object.assign(new Error(key), { key });
 const MAX_SIDE = 1600;          // resolução máxima de trabalho (memória)
-const INPUT_SIZE = 512;         // TODO(Q): confirmar o tamanho de entrada do modelo real
 const work = document.createElement('canvas');
 const view = $('view'), stage = $('stage'), cropEl = $('crop');
 
@@ -329,6 +354,8 @@ function applyLang(l){
   document.querySelectorAll('[data-i18n-title]').forEach(n => n.title = tr(n.dataset.i18nTitle));
   document.querySelectorAll('.flag').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === S.lang)));
   if(S.dcm.age && S.dcmAge != null) $('age').value = fmtNum(S.dcmAge, 1);
+  $('ref-model').innerHTML = tr(MODEL_BASE ? 'ref_model' : 'ref_model_demo');
+  $('run-hint').classList.toggle('hidden', !MODEL_BASE);
   renderMsgs(); if(S.last) show(S.last, false);
 }
 $('lang-pt').innerHTML = FLAGS.pt; $('lang-en').innerHTML = FLAGS.en;
@@ -363,6 +390,7 @@ function setErr(key){ S.err = key; renderMsgs(); }
 function renderMsgs(){
   const e = $('err'); e.textContent = S.err ? tr(S.err) : ''; e.classList.toggle('hidden', !S.err);
   const w = $('warn'); if(S.warn) w.innerHTML = tr('w_right'); w.classList.toggle('hidden', !S.warn);
+  const re = $('run-err'); re.textContent = S.runErr ? tr(S.runErr) : ''; re.classList.toggle('hidden', !S.runErr);
 }
 function step(n){
   for(let i=1;i<=4;i++) $('s'+i).classList.toggle('on', i<=n);
@@ -584,45 +612,182 @@ $('age').oninput = () => { S.dcm.age = false; $('tag-age').classList.add('hidden
 $('ok').onchange = gate;
 function gate(){ $('run').disabled = !(S.src && S.sex && $('ok').checked); }
 
-/* ---------- pré-processamento (recorte → cinza → quadrado → tensor) ----------
-   No modelo real, aqui entram: histogram matching e a normalização do treino. */
-function preprocess(){
+/* =============================================================
+   Pré-processamento + motor de inferência (uma rede)
+   Modelo: ianpan/bone-age (Ian Pan, Apache-2.0), rede net0 exportada para ONNX.
+   Pipeline (recorte → cinza 8 bits → casamento de histograma com a imagem de
+   referência → redimensiona e completa até 512×512, valores 0–255) adaptado de
+   feliperun/bone-age (MIT) — ver /licencas. A rede recebe `image` [1,1,512,512]
+   e `female` [1] (0/1) e devolve `months` [1].
+   ============================================================= */
+
+function cropGray(){
   const r = S.crop || { x:0, y:0, w:work.width, h:work.height };
-  const c = document.createElement('canvas'); c.width = c.height = INPUT_SIZE;
-  const g = c.getContext('2d', { willReadFrequently:true });
-  g.fillStyle = '#000'; g.fillRect(0,0,INPUT_SIZE,INPUT_SIZE);
-  const k = INPUT_SIZE / Math.max(r.w, r.h), dw = r.w*k, dh = r.h*k;    // letterbox
-  g.drawImage(work, r.x, r.y, r.w, r.h, (INPUT_SIZE-dw)/2, (INPUT_SIZE-dh)/2, dw, dh);
-  const px = g.getImageData(0,0,INPUT_SIZE,INPUT_SIZE).data, t = new Float32Array(INPUT_SIZE*INPUT_SIZE);
-  for(let i=0;i<t.length;i++){
-    const v = (px[i*4]*0.299 + px[i*4+1]*0.587 + px[i*4+2]*0.114) / 255;
-    t[i] = S.inv ? 1-v : v;
+  const x = Math.max(0, Math.round(r.x)), y = Math.max(0, Math.round(r.y));
+  const w = Math.min(work.width - x, Math.round(r.w)), h = Math.min(work.height - y, Math.round(r.h));
+  if(w < 32 || h < 32) throw fail('e_crop');
+  const px = work.getContext('2d', { willReadFrequently:true }).getImageData(x, y, w, h).data;
+  const g = new Uint8Array(w*h);
+  for(let i=0;i<g.length;i++){
+    const v = Math.round(px[i*4]*0.299 + px[i*4+1]*0.587 + px[i*4+2]*0.114);
+    g[i] = S.inv ? 255 - v : v;
   }
-  c.width = c.height = 0;
-  return t;
+  if(g.every(v => v === g[0])) throw fail('e_contrast');
+  return { pixels:g, width:w, height:h };
 }
 
-/* ---------- motor de inferência (interface trocável) ----------
-   DEMO: valor simulado a partir de estatísticas da imagem — NÃO é um modelo.
-   Versão final: ONNX Runtime Web + 3 modelos (ensemble), pesos em host externo. */
-const Engine = {
-  simulated: true,
-  async load(onProgress){ for(let i=1;i<=10;i++){ await new Promise(r=>setTimeout(r,90)); onProgress(i/10); } },
-  async predict(tensor, sex){
-    let s=0, s2=0; for(let i=0;i<tensor.length;i+=7){ s+=tensor[i]; s2+=tensor[i]*tensor[i]; }
-    const n = Math.ceil(tensor.length/7), mean = s/n, sd = Math.sqrt(Math.max(0,s2/n-mean*mean));
-    const base = 30 + ((mean*9301 + sd*4177) % 1) * 160 + (sex==='F' ? -4 : 0);
-    const per = [-3.1, 0.6, 2.5].map(d => Math.max(0, base + d));
-    return { months: per.reduce((a,b)=>a+b,0)/3, perModel: per };
+// np.unique + quantis acumulados + np.interp, como skimage.match_histograms (feliperun/bone-age, MIT).
+function matchHistogram(pixels, refCounts){
+  if(refCounts.length !== 256 || refCounts.some(n => !(n >= 0) || !isFinite(n))) throw fail('e_model');
+  const counts = new Float64Array(256);
+  for(const v of pixels) counts[v]++;
+  const refTotal = refCounts.reduce((a,b) => a+b, 0);
+  if(!refTotal || !pixels.length) throw fail('e_contrast');
+  const quantiles = [], values = [];
+  let cum = 0;
+  refCounts.forEach((c, v) => { cum += c; if(c){ quantiles.push(cum/refTotal); values.push(v); } });
+  const lookup = new Uint8Array(256);
+  cum = 0; let j = 0;
+  for(let v=0; v<256; v++){
+    if(!counts[v]) continue;
+    cum += counts[v];
+    const q = cum / pixels.length;
+    while(j < quantiles.length-1 && quantiles[j] < q) j++;
+    let interp = values[j];
+    if(j > 0 && q < quantiles[j]){
+      const t = (q - quantiles[j-1]) / (quantiles[j] - quantiles[j-1]);
+      interp = values[j-1] + t * (values[j] - values[j-1]);
+    }
+    lookup[v] = Math.trunc(interp);
   }
+  return Uint8Array.from(pixels, v => lookup[v]);
+}
+const roundEven = x => { const f = Math.floor(x); return x - f === 0.5 ? f + (f % 2) : Math.round(x); };
+// Bilinear com meio pixel (estilo OpenCV), preservando a proporção e centralizando em size×size.
+function resizeAndPad(pixels, width, height, size = 512){
+  const scale = size / Math.max(width, height);
+  const w = roundEven(width*scale), h = roundEven(height*scale);
+  const out = new Float32Array(size*size);
+  const left = Math.floor((size - w)/2), top = Math.floor((size - h)/2);
+  for(let y=0;y<h;y++){
+    const sy = Math.max(0, Math.min(height-1, ((y+0.5)*height)/h - 0.5));
+    const y0 = Math.floor(sy), y1 = Math.min(height-1, y0+1), fy = sy - y0;
+    for(let x=0;x<w;x++){
+      const sx = Math.max(0, Math.min(width-1, ((x+0.5)*width)/w - 0.5));
+      const x0 = Math.floor(sx), x1 = Math.min(width-1, x0+1), fx = sx - x0;
+      const a = pixels[y0*width+x0]*(1-fx) + pixels[y0*width+x1]*fx;
+      const b = pixels[y1*width+x0]*(1-fx) + pixels[y1*width+x1]*fx;
+      out[(y+top)*size + x + left] = Math.round(a*(1-fy) + b*fy);
+    }
+  }
+  return out;
+}
+
+const sha256 = async u8 => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', u8)))
+  .map(x => x.toString(16).padStart(2,'0')).join('');
+
+// Pesos: baixa uma vez, confere tamanho e SHA-256 e guarda no Cache do navegador (só o modelo, nunca imagens).
+async function fetchWeights(base, manifest, entry, onProgress){
+  const url = new URL(`${entry.file}?sha256=${entry.sha256}`, base).href;
+  let cache = null; try{ cache = await caches.open(`idade-ossea-pesos-${manifest.revision}`); }catch(e){}
+  const cached = cache && await cache.match(url);
+  if(cached){
+    const d = new Uint8Array(await cached.arrayBuffer());
+    if(d.byteLength === entry.bytes && await sha256(d) === entry.sha256){ onProgress({ stage:'cache' }); return d; }
+    await cache.delete(url);
+  }
+  const res = await fetch(url);
+  if(!res.ok || !res.body) throw fail('e_model');
+  const data = new Uint8Array(entry.bytes), reader = res.body.getReader();
+  let off = 0, last = 0;
+  for(;;){
+    const { value, done } = await reader.read();
+    if(done) break;
+    if(off + value.length > data.length) throw fail('e_integrity');
+    data.set(value, off); off += value.length;
+    if(performance.now() - last > 120){ onProgress({ stage:'download', fraction: off/entry.bytes }); last = performance.now(); }
+  }
+  if(off !== entry.bytes || await sha256(data) !== entry.sha256) throw fail('e_integrity');
+  try{ if(cache) await cache.put(url, new Response(data, { headers:{ 'Content-Type':'application/octet-stream' } })); }catch(e){}
+  return data;
+}
+
+// Runtime ONNX (WASM) servido pelo próprio site: /vendor/ort. Uma thread: não exige isolamento de origem.
+let ortLoading = null;
+function loadOrt(){
+  if(window.ort) return Promise.resolve();
+  return ortLoading || (ortLoading = new Promise((ok, no) => {
+    const el = document.createElement('script'); el.src = '/vendor/ort/ort.wasm.min.js';
+    el.onload = () => { ort.env.wasm.wasmPaths = '/vendor/ort/'; ort.env.wasm.numThreads = 1; ort.env.wasm.proxy = false; ort.env.logLevel = 'error'; ok(); };
+    el.onerror = () => { ortLoading = null; no(fail('e_ort')); };
+    document.head.appendChild(el);
+  }));
+}
+
+const Real = {
+  simulated:false, session:null, ref:null, info:null,
+  async load(onProgress){
+    if(this.session){ onProgress({ stage:'cache' }); return; }
+    const base = new URL(MODEL_BASE, location.href);
+    const getJson = async name => { const r = await fetch(new URL(name, base), { cache:'no-cache' }); if(!r.ok) throw fail('e_model'); return r.json(); };
+    let manifest, ref;
+    try{ [manifest, ref] = await Promise.all([getJson('manifest.json'), getJson('reference.json')]); }
+    catch(e){ throw e.key ? e : fail('e_model'); }
+    const entry = manifest.models && manifest.models[0];
+    if(!entry || !Array.isArray(ref.counts)) throw fail('e_model');
+    this.ref = ref.counts; this.info = { id:manifest.id, rev:String(manifest.revision).slice(0,7) };
+    const data = await fetchWeights(base, manifest, entry, onProgress);
+    onProgress({ stage:'init' });
+    await loadOrt();
+    try{ this.session = await ort.InferenceSession.create(data, { executionProviders:['wasm'], graphOptimizationLevel:'all' }); }
+    catch(e){ throw fail('e_ort'); }
+  },
+  async predict(crop, sex){
+    const input = resizeAndPad(matchHistogram(crop.pixels, this.ref), crop.width, crop.height);
+    const img = new ort.Tensor('float32', input, [1,1,512,512]);
+    const fem = new ort.Tensor('float32', Float32Array.of(sex === 'F' ? 1 : 0), [1]);
+    let months;
+    try{
+      const out = await this.session.run({ image:img, female:fem });
+      months = Number(out.months.data[0]); out.months.dispose();
+    }catch(e){ throw fail('e_ort'); }
+    finally{ img.dispose(); fem.dispose(); }
+    if(!isFinite(months) || months < 0 || months > 239) throw fail('e_out');
+    return { months };
+  },
 };
+// DEMO: valor simulado a partir de estatísticas da imagem — NÃO é um modelo.
+const Demo = {
+  simulated:true, info:null,
+  async load(onProgress){ for(let i=1;i<=10;i++){ await new Promise(r => setTimeout(r, 90)); onProgress({ stage:'download', fraction:i/10 }); } },
+  async predict(crop, sex){
+    let s=0, s2=0, n=0; const p = crop.pixels;
+    for(let i=0;i<p.length;i+=7){ const v = p[i]/255; s+=v; s2+=v*v; n++; }
+    const mean = s/n, sd = Math.sqrt(Math.max(0, s2/n - mean*mean));
+    return { months: Math.max(0, 30 + ((mean*9301 + sd*4177) % 1) * 160 + (sex === 'F' ? -4 : 0)) };
+  },
+};
+const Engine = MODEL_BASE ? Real : Demo;
+addEventListener('pagehide', () => { try{ if(Real.session) Real.session.release(); }catch(e){} });
+
 $('run').onclick = async () => {
-  const btn = $('run'), prog = $('prog'), bar = prog.firstElementChild;
-  btn.disabled = true; prog.classList.remove('hidden'); bar.style.width = '0';
-  await Engine.load(p => bar.style.width = (p*100)+'%');
-  const out = await Engine.predict(preprocess(), S.sex);
-  prog.classList.add('hidden'); btn.disabled = false;
-  S.last = out; show(out, true);
+  const btn = $('run'), prog = $('prog'), bar = prog.firstElementChild, label = $('prog-label');
+  S.runErr = null; renderMsgs();
+  btn.disabled = true; prog.classList.remove('hidden'); label.classList.remove('hidden'); bar.style.width = '0';
+  const onProgress = ev => {
+    if(ev.stage === 'download'){ const p = Math.round(ev.fraction*100); bar.style.width = p+'%'; label.textContent = tr('p_dl', { p }); }
+    else if(ev.stage === 'cache'){ bar.style.width = '100%'; label.textContent = tr('p_cache'); }
+    else if(ev.stage === 'init'){ bar.style.width = '100%'; label.textContent = tr('p_init'); }
+  };
+  try{
+    const crop = cropGray();                       // valida o recorte antes de baixar qualquer coisa
+    await Engine.load(onProgress);
+    label.textContent = tr('p_run');
+    await new Promise(r => setTimeout(r, 30));     // deixa o texto aparecer antes do cálculo
+    const out = await Engine.predict(crop, S.sex);
+    S.last = out; show(out, true);
+  }catch(e){ S.runErr = e.key || 'e_ort'; renderMsgs(); }
+  finally{ prog.classList.add('hidden'); label.classList.add('hidden'); btn.disabled = false; }
 };
 
 /* ---------- resultado (re-renderiza ao trocar de idioma) ---------- */
@@ -633,14 +798,12 @@ function fmtMonths(m){
 }
 let summary = '';
 function show(o, scroll){
-  const MARGIN = 4.2;     // erro médio relatado em dados RSNA (meses) — não validado localmente
+  const MARGIN = 4.2;     // erro médio do conjunto de 3 redes no RSNA (meses) — a rede única não foi medida
   $('simtag').classList.toggle('hidden', !Engine.simulated);
   $('r-main').innerHTML = ''; $('r-main').append(fmtMonths(o.months) + ' ');
   const sm = document.createElement('small'); sm.textContent = `(${Math.round(o.months)} ${tr('mo')[1]})`; $('r-main').append(sm);
   $('r-range').textContent = tr('r_range', { m: fmtNum(MARGIN,1) });
-  const lo = Math.min(...o.perModel), hi = Math.max(...o.perModel), span = Math.max(12, hi-lo+12), off = lo-6;
-  $('r-agree').innerHTML = `<div class="lbl" style="margin-bottom:2px">${tr('r_agree')}</div>` +
-    o.perModel.map((m,i) => `<div class="bar"><span>${tr('r_model',{i:i+1})}</span><div class="t"><i style="left:${((m-off)/span*100).toFixed(1)}%"></i></div><span style="width:auto">${Math.round(m)} ${tr('m_unit')}</span></div>`).join('');
+  $('r-agree').textContent = Engine.info ? tr('r_model_info', Engine.info) : '';
   const age = parseFloat(String($('age').value).replace(',','.'));
   let cmp = '';
   if(isFinite(age)){
@@ -661,7 +824,7 @@ $('b-copy').onclick = async () => {
 /* ---------- limpar (descarta imagem e estado da memória) ---------- */
 function clearAll(){
   if(S.src && S.src.close) S.src.close();
-  Object.assign(S, { src:null, rot:0, flip:false, inv:false, crop:null, sex:null, dcm:{sex:false, age:false}, err:null, warn:false, last:null });
+  Object.assign(S, { src:null, rot:0, flip:false, inv:false, crop:null, sex:null, dcm:{sex:false, age:false}, err:null, runErr:null, warn:false, last:null });
   work.width = work.height = view.width = view.height = 0;
   $('age').value = ''; $('ok').checked = false; summary = '';
   ['tag-sex','tag-age'].forEach(i => $(i).classList.add('hidden'));
