@@ -1,28 +1,34 @@
-# Gera o arquivo do modelo de idade óssea (ONNX) sem precisar de Python na sua máquina.
+# Gera os modelos de idade óssea (3 redes ONNX, ~340 MB) SEM precisar de Python na sua máquina
+# e, opcionalmente, envia para o Cloudflare R2.
 #
 # Como usar: aba Actions > "Exportar modelo de idade óssea" > Run workflow.
 #  - Sempre gera o artefato "modelo-idade-ossea" (zip) para download.
-#  - Com "publicar" marcado, publica os arquivos no GitHub Pages deste repositório (gratuito,
-#    sem cartão): https://<usuario>.github.io/<repositorio>/  — só a pasta do modelo, nunca o site.
-#    Pré-requisitos: Settings > Pages > Source = "GitHub Actions", e rodar a partir da branch
-#    principal (o ambiente github-pages só aceita a principal por padrão).
+#  - Com "publicar" marcado, envia os arquivos ao bucket R2 (precisa dos 4 segredos abaixo).
+#
+# Segredos (Settings > Secrets and variables > Actions > New repository secret):
+#   R2_ACCOUNT_ID         ID da conta Cloudflare (painel R2, lado direito)
+#   R2_ACCESS_KEY_ID      chave de API do R2 (R2 > Manage R2 API Tokens > Object Read & Write, só neste bucket)
+#   R2_SECRET_ACCESS_KEY  segredo da mesma chave
+#   R2_BUCKET             nome do bucket
+#   R2_PUBLIC_URL         (opcional) endereço público do bucket, para o teste final
 name: Exportar modelo de idade óssea
 
 on:
   workflow_dispatch:
     inputs:
       publicar:
-        description: "Publicar no GitHub Pages (gratuito)"
+        description: "Enviar os arquivos ao Cloudflare R2"
         type: boolean
         default: false
 
 permissions:
-  contents: read        # o job que roda o código do modelo não tem escrita nem segredos
+  contents: read
 
 jobs:
   exportar:
+    # Este job executa código do repositório do modelo (trust_remote_code): por isso NÃO tem segredos.
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -33,29 +39,53 @@ jobs:
           python -m pip install --upgrade pip
           pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cpu
           pip install -r tools/idade-ossea/requirements.txt
-      - name: Exportar e validar a rede contra o PyTorch original
-        run: python tools/idade-ossea/export_model.py --output modelo-idade-ossea
+      - name: Exportar as 3 redes e validar cada uma contra o PyTorch original
+        run: python tools/idade-ossea/export_model.py --output saida/models
+      - name: Resumo (tamanhos e SHA-256)
+        run: |
+          ls -l saida/models
+          cat saida/models/manifest.json
       - uses: actions/upload-artifact@v4
         with:
           name: modelo-idade-ossea
-          path: modelo-idade-ossea/
+          path: saida/
           retention-days: 14
-      - name: Preparar publicação no Pages
-        if: ${{ inputs.publicar }}
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: modelo-idade-ossea/
 
   publicar:
     if: ${{ inputs.publicar }}
     needs: exportar
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+    timeout-minutes: 30
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: auto
+      # awscli recente calcula checksums que o R2 não aceita em todos os casos
+      AWS_REQUEST_CHECKSUM_CALCULATION: WHEN_REQUIRED
+      AWS_RESPONSE_CHECKSUM_VALIDATION: WHEN_REQUIRED
+      R2_ENDPOINT: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+      R2_BUCKET: ${{ secrets.R2_BUCKET }}
+      R2_PUBLIC_URL: ${{ secrets.R2_PUBLIC_URL }}
     steps:
-      - id: deploy
-        uses: actions/deploy-pages@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: modelo-idade-ossea
+          path: saida
+      - name: "Enviar modelos .onnx (cache longo; o app confere o SHA-256)"
+        run: |
+          aws s3 cp saida/models "s3://$R2_BUCKET/models" --recursive --endpoint-url "$R2_ENDPOINT" \
+            --exclude "*" --include "*.onnx" --cache-control "public, max-age=31536000, immutable"
+      - name: "Enviar manifesto e referência (sempre revalidar)"
+        run: |
+          aws s3 cp saida/models "s3://$R2_BUCKET/models" --recursive --endpoint-url "$R2_ENDPOINT" \
+            --exclude "*" --include "*.json" --cache-control "no-cache"
+      - name: Conferir o que ficou publicado
+        if: ${{ env.R2_PUBLIC_URL != '' }}
+        run: |
+          base="${R2_PUBLIC_URL%/}"
+          curl -fsS "$base/models/manifest.json" | python -c "import json,sys;m=json.load(sys.stdin);print('manifesto ok:',len(m['models']),'redes')"
+          for f in bone-age-0 bone-age-1 bone-age-2; do
+            sha=$(curl -fsS "$base/models/$f.onnx" | sha256sum | cut -d' ' -f1)
+            want=$(python -c "import json;print([x['sha256'] for x in json.load(open('saida/models/manifest.json'))['models'] if x['file']=='$f.onnx'][0])")
+            [ "$sha" = "$want" ] && echo "$f.onnx: sha256 confere" || { echo "$f.onnx: sha256 DIFERENTE"; exit 1; }
+          done

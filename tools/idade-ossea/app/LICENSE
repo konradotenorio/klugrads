@@ -1,10 +1,6 @@
-onnxruntime-web 1.22.0 — https://github.com/microsoft/onnxruntime
-Arquivos vendorizados aqui: ort.wasm.min.js, ort-wasm-simd-threaded.mjs, ort-wasm-simd-threaded.wasm
-(copiados sem alteração do pacote npm "onnxruntime-web@1.22.0", pasta dist/).
-
 MIT License
 
-Copyright (c) Microsoft Corporation
+Copyright (c) 2026
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
