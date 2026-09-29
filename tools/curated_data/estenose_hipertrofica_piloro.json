@@ -38,10 +38,10 @@
     "title": "Sinais Ultrassonográficos",
     "rows": [
      ["Sinal", "Descrição"],
-     ["Alvo (\"donut\")", "Corte transverso: anel hipoecoico de músculo espessado ao redor da mucosa ecogênica."],
-     ["Colo uterino (\"cervix\")", "Corte longitudinal: músculo espessado projetando-se para dentro do antro distendido por líquido."],
-     ["Mamilo antral", "Mucosa pilórica redundante que protrui para o antro."],
-     ["Duplo trilho", "Pregas mucosas comprimidas no canal alongado, com fina lâmina de líquido entre elas."],
+     ["Sinal do alvo (\"donut\")", "Corte transverso: anel hipoecoico de músculo espessado ao redor da mucosa ecogênica."],
+     ["Sinal da cérvix", "Corte longitudinal: músculo espessado projetando-se para dentro do antro distendido por líquido, com aspecto semelhante ao colo uterino."],
+     ["Sinal do mamilo antral", "Mucosa pilórica redundante que protrui para o antro."],
+     ["Sinal do duplo trilho", "Pregas mucosas comprimidas no canal alongado, com fina lâmina de líquido entre elas."],
      ["Hiperperistalse gástrica", "Ondas peristálticas vigorosas no antro que não vencem o piloro."]
     ]
    },
