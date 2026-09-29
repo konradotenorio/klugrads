@@ -9,7 +9,7 @@
    stale-while-revalidate entrega o arquivo velho do cache e a correcao
    simplesmente nao chega ao usuario — inclusive correcoes de seguranca.
    ========================================================================= */
-const VERSION = 'v0.57.0';
+const VERSION = 'v0.59.0';
 const APP_CACHE = `ultraref-app-${VERSION}`;
 const DATA_CACHE = `ultraref-data-${VERSION}`;
 

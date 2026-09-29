@@ -55,6 +55,26 @@ function mesaComplete(s){
     && mesaNum(s.idade)!=null && mesaNum(s.colesterol)!=null && mesaNum(s.hdl)!=null && mesaNum(s.pas)!=null);
 }
 
+/* limites de PLAUSIBILIDADE da entrada (não são limites do estudo): fora deles
+   não se calcula, para não devolver um risco sem sentido (ex.: idade 200 → 100%) */
+const MESA_LIM = {idade:[18,110], colesterol:[50,700], hdl:[5,200], pas:[60,300], cac:[0,100000]};
+function mesaValidate(s){
+  const erros = [];
+  const chk = (k, label, unit)=>{
+    const v = mesaNum(s[k]), lim = MESA_LIM[k];
+    if(v==null || v<lim[0] || v>lim[1]) erros.push(`${label}: informe um valor entre ${lim[0]} e ${lim[1]} ${unit}.`);
+  };
+  chk('idade','Idade','anos'); chk('colesterol','Colesterol total','mg/dL'); chk('hdl','HDL','mg/dL'); chk('pas','Pressão sistólica','mmHg');
+  const cacTxt = String(s.cac==null?'':s.cac).trim();
+  if(cacTxt !== ''){
+    const v = mesaNum(s.cac);
+    if(v==null || v<MESA_LIM.cac[0] || v>MESA_LIM.cac[1]) erros.push(`Escore de cálcio (CAC): informe um número entre ${MESA_LIM.cac[0]} e ${MESA_LIM.cac[1]} ou deixe em branco.`);
+  }
+  const tc = mesaNum(s.colesterol), h = mesaNum(s.hdl);
+  if(tc!=null && h!=null && h>tc) erros.push('O HDL não pode ser maior que o colesterol total.');
+  return erros;
+}
+
 /* soma linear do modelo de Cox (variáveis em unidades originais, sem centralização) */
 function mesaSum(coef, s, cacVal){
   const idade=mesaNum(s.idade), tc=mesaNum(s.colesterol), hdl=mesaNum(s.hdl), pas=mesaNum(s.pas);
@@ -105,6 +125,8 @@ function mesaChipField(k, label, opts, s){
 function mesaResHTML(){
   const s = mesaState();
   if(!mesaComplete(s)) return `<div class="ti-legend-row" style="margin-top:12px"><span class="lt">Preencha todos os campos obrigatórios para calcular o risco em 10 anos. O escore de cálcio (CAC) é opcional.</span></div>`;
+  const erros = mesaValidate(s);
+  if(erros.length) return `<div class="ti-legend-row" style="margin-top:12px"><span class="lt"><b>Confira os valores informados:</b><br>• ${erros.map(esc).join('<br>• ')}</span></div>`;
   const cacVal = mesaNum(s.cac);
   const usaCAC = cacVal!=null && cacVal>=0;
   const coefPrincipal = usaCAC ? MESA_COM_CAC : MESA_SEM_CAC;
