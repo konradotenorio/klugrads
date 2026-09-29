@@ -11,16 +11,22 @@ no navegador. Créditos e licenças: rodapé da página, `licencas/` e `app/LICE
 - `weights-base.txt` — endereço público dos pesos (R2). `build.sh` embute esse endereço no app.
 - `pagina-klugrads/` — a primeira página própria (sem uso hoje), guardada para reaproveitar ideias (leitura de DICOM, etc.).
 
-## Adaptações em relação ao original (tudo o mais é idêntico)
+## Adaptações em relação ao original (a lógica de cálculo é idêntica; testado com o mesmo roteiro nos dois)
+**Funcionais**
 1. **Sem imagem de exemplo**: botão "Analisar um exemplo", o código dele e a cópia de `example.tif` foram removidos
    (nenhuma imagem médica é hospedada). Testes e2e removidos por dependerem dela.
-2. **Rodando em `/idade-ossea/`**: `main.ts` usa `import.meta.env.BASE_URL` para a base; favicon e link da marca usam `%BASE_URL%`.
+2. **Rodando em `/idade-ossea/`**: `main.ts` usa `import.meta.env.BASE_URL`; favicon usa `%BASE_URL%`.
 3. **Só computador**: `src/klugrads.ts` + CSS escondem o app em celular/tablet e mostram a explicação; o service worker não é registrado lá.
-4. **Barra do KlugRads** (voltar ao app + aviso de uso educativo/de teste) e **crédito no rodapé** (`klug.*` em `i18n.ts`, pt/en).
-5. **Link "Código aberto" do topo removido** (o crédito fica no rodapé).
-6. **PDF**: endereço/nome do site → `klugrads.com`; linha de crédito do código reescrita; chamada "GRATUITO · SEM CADASTRO" → "USO EDUCATIVO".
-7. **FAQ** "Funciona sem internet?": os pesos vêm do servidor de arquivos do KlugRads (não do GitHub).
-8. `vercel.json`: rota `/idade-ossea` com CSP própria + rewrite para o `index.html`.
+4. **Nomes de cache/armazenamento** no namespace `klugrads-idade-ossea-*`; idioma na chave `radref_lang` e tema na `radref_theme` (as mesmas do app).
+5. **vercel.json**: rota `/idade-ossea` com CSP própria e rewrite para o `index.html`.
+
+**Visuais / textos (a "cara" do KlugRads)**
+6. `src/tokens.css`: paleta do app (escuro padrão + claro); todas as cores do CSS viraram variáveis (`style.css`); bloco "Pele KlugRads" no fim do `style.css`.
+7. Barra superior com marca KLUG|RADS, trilha "Radiografia › Calculadoras › Idade óssea (IA)", bandeiras BR/EUA (SVG) e botão sol/lua.
+8. Aviso de uso educativo/de teste, créditos no rodapé (Ian Pan, @feliperun, licenças) e rodapé do KlugRads.
+9. Textos: título da aba, "Sem cadastro" removido da apresentação, rodapé, nome do PDF.
+10. PDF: paleta teal do KlugRads, nome "KlugRads · idade óssea", endereço `klugrads.com/idade-ossea`; chamada "GRATUITO · SEM CADASTRO" → "USO EDUCATIVO".
+11. Link "Código aberto" do topo removido (o crédito fica no rodapé); chaves de i18n do exemplo removidas.
 
 ## Trocar o endereço dos pesos / recompilar
 1. Edite `weights-base.txt` (termina com `/`; os arquivos ficam em `<base>models/…`).
@@ -28,6 +34,6 @@ no navegador. Créditos e licenças: rodapé da página, `licencas/` e `app/LICE
 3. Coloque a **origem** do endereço no `connect-src` das regras `/idade-ossea` de `vercel.json`.
 4. Commit.
 
-## Ainda sem "cara" do KlugRads (de propósito, primeiro igual ao original)
-Marca "bone age", cores/tipografia, textos como "Sem cadastro. Sem rastreamento." na página inicial e o nome do
-cache/SW (`bone-age-…`). Ao ajustar textos que digam "gratuito/sem cadastro", ver a pendência dos Termos (site pago).
+## Ideias para depois
+Marca própria no cabeçalho do PDF, barra lateral de navegação como no app, tamanho de fonte ajustável (como em Configurações do app)
+e revisar textos do FAQ/"Como funciona" com a voz do KlugRads. Ao mexer em qualquer texto que fale de "gratuito", ver a pendência dos Termos (site pago).

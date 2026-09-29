@@ -502,17 +502,17 @@ type Rgb = readonly [number, number, number];
 
 // The page palette, an extension of tokens.css into the darker greens the
 // printed page can afford.
-const INK: Rgb = [0.153, 0.212, 0.173]; // --ink    #27362c
-const GREEN: Rgb = [0.157, 0.333, 0.278]; // --green  #285547
-const DEEP: Rgb = [0.063, 0.184, 0.145]; // masthead #102f25
-const MID: Rgb = [0.184, 0.404, 0.333]; // masthead #2f6755
-const MINT: Rgb = [0.635, 0.784, 0.722]; // on green #a2c8b8
-const PALE: Rgb = [0.804, 0.878, 0.843]; // on green #cde0d7
-const MUTED: Rgb = [0.467, 0.506, 0.443]; // --muted  #778171
-const RULE: Rgb = [0.875, 0.894, 0.851]; // --line   #dfe4d9
-const SOFT: Rgb = [0.945, 0.957, 0.933]; // card fill #f1f4ee
+const INK: Rgb = [0.086, 0.125, 0.165]; // KlugRads #16202a
+const GREEN: Rgb = [0.055, 0.533, 0.651]; // KlugRads #0e88a6
+const DEEP: Rgb = [0.043, 0.184, 0.231]; // KlugRads #0b2f3b
+const MID: Rgb = [0.055, 0.373, 0.471]; // KlugRads #0e5f78
+const MINT: Rgb = [0.604, 0.851, 0.918]; // KlugRads #9ad9ea
+const PALE: Rgb = [0.804, 0.918, 0.949]; // KlugRads #cdeaf2
+const MUTED: Rgb = [0.369, 0.424, 0.478]; // KlugRads #5e6c7a
+const RULE: Rgb = [0.894, 0.914, 0.937]; // KlugRads #e4e9ef
+const SOFT: Rgb = [0.953, 0.965, 0.976]; // KlugRads #f3f6f9
 const WHITE: Rgb = [1, 1, 1];
-const CANVAS: Rgb = [0.075, 0.11, 0.098]; // plate     #131c19
+const CANVAS: Rgb = [0.043, 0.067, 0.086]; // KlugRads #0b1116
 const WARN_FILL: Rgb = [0.957, 0.941, 0.89]; // badge bg     #f4f0e3
 const WARN_LINE: Rgb = [0.863, 0.843, 0.776]; // badge border #dcd7c6
 const WARN_INK: Rgb = [0.514, 0.447, 0.29]; // badge ink    #83724a

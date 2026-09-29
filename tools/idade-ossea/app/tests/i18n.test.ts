@@ -83,9 +83,9 @@ describe("t", () => {
 
   it("gives the report a language-specific file name", () => {
     setLang("pt");
-    expect(t("report.filename")).toBe("idade-ossea");
+    expect(t("report.filename")).toBe("klugrads-idade-ossea");
     setLang("en");
-    expect(t("report.filename")).toBe("bone-age");
+    expect(t("report.filename")).toBe("klugrads-bone-age");
     setLang("pt");
   });
 });

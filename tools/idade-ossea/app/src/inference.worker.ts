@@ -13,7 +13,7 @@ const sha256 = async (data: Uint8Array) =>
 
 // Model metadata can live on another origin, outside the service worker precache.
 // Revalidate when online, fall back to the copy kept for offline use.
-const METADATA_CACHE = "bone-age-model-metadata";
+const METADATA_CACHE = "klugrads-idade-ossea-metadata";
 async function loadMetadata(url: URL) {
   let cache: Cache | undefined;
   try {
@@ -49,7 +49,7 @@ async function loadWeights(
   ).href;
   let cache: Cache | undefined;
   try {
-    cache = await caches.open(`bone-age-weights-${manifest.revision}`);
+    cache = await caches.open(`klugrads-idade-ossea-pesos-${manifest.revision}`);
   } catch {
     tell({
       type: "notice",

@@ -3,16 +3,16 @@
 // Values marked "html" keep the exact markup of the element they replace.
 export type Lang = "pt" | "en";
 export const LANGUAGES: Lang[] = ["pt", "en"];
-export const LANG_STORAGE = "bone-age-lang";
+export const LANG_STORAGE = "radref_lang";  // mesma chave do app KlugRads
 
 const pt = {
-  "app.title": "Bone Age — idade óssea, localmente",
+  "app.title": "Idade óssea (IA) — KlugRads",
   "app.description":
     "Estimativa experimental de idade óssea com processamento local no navegador. Suas radiografias permanecem no seu dispositivo.",
   "app.htmlLang": "pt-BR",
   "app.locale": "pt-BR",
 
-  "nav.brand": "Bone Age, início",
+  "nav.brand": "KlugRads, voltar ao app",
   "nav.label": "Navegação",
   "nav.how": "Como funciona",
   "nav.source": 'Código aberto <span aria-hidden="true">↗</span>',
@@ -26,7 +26,7 @@ const pt = {
     "Da radiografia à estimativa de maturação óssea. <br />Seus arquivos ficam com você, do início ao fim.",
   "hero.localTitle": "Seu dispositivo. Seus dados.",
   "hero.localText":
-    "Sem upload para servidores. <br />Sem cadastro. Sem rastreamento.",
+    "Sem upload para servidores. <br />Sem rastreamento das suas imagens.",
 
   "workspace.title": "Nova análise",
   "workspace.badge": "USO EXPERIMENTAL",
@@ -181,10 +181,15 @@ const pt = {
   "credits.role":
     "Este site não treinou nem ajustou nada: ele converte os pesos públicos para ONNX e os executa no seu navegador. O mérito da estimativa é do autor do modelo.",
 
-  "footer.tagline": "/ uma ferramenta aberta de pesquisa",
+  "footer.tagline": "Ferramenta educacional — não substitui o julgamento clínico",
   "footer.by": "por",
   "footer.license": "Modelo Apache-2.0 · Código MIT",
   "klug.back": "← KlugRads",
+  "klug.brandAria": "KlugRads — voltar ao app",
+  "klug.crumb.rx": "Radiografia",
+  "klug.crumb.calc": "Calculadoras",
+  "klug.crumb.tool": "Idade óssea (IA)",
+  "klug.theme": "Alternar tema claro/escuro",
   "klug.notice": "<b>Uso educativo e de teste.</b> Sem validação clínica e sem vínculo com qualquer plano pago do KlugRads. Sua imagem não sai do navegador.",
   "klug.mobile.title": "Disponível apenas em computador",
   "klug.mobile.p1": "Esta ferramenta usa <b>inteligência artificial que roda dentro do seu próprio navegador</b>. É assim que a sua imagem nunca sai do seu aparelho: não existe servidor que a receba.",
@@ -202,12 +207,6 @@ const pt = {
   "sex.male": "masculino",
   "sex.female": "feminino",
 
-  "demo.hint": "Sem uma radiografia agora?",
-  "demo.button": "Analisar um exemplo",
-  "msg.demoLoaded":
-    "Exemplo do repositório: mão esquerda, sexo feminino, nascimento em {dob}, exame em {exam}. As três redes vão rodar neste navegador; no primeiro uso, isso inclui baixar ~340 MB de pesos.",
-  "msg.demoFailed":
-    "Não foi possível carregar a radiografia de exemplo. Verifique a conexão e tente novamente.",
   "msg.checkDates": "Verifique as datas",
   "msg.dicomFilled":
     "Os campos disponíveis foram preenchidos pelo DICOM. Confira os dados e selecione a mão esquerda antes de calcular.",
@@ -284,7 +283,7 @@ const pt = {
   "processing.tooOld":
     "O modelo é pediátrico. Verifique as datas (idade até 20 anos).",
 
-  "pdf.productName": "bone age",
+  "pdf.productName": "KlugRads · idade óssea",
   "pdf.title": "Relatório de idade óssea",
   "pdf.subtitle":
     "Estimativa gerada localmente no navegador, a partir de uma radiografia de mão esquerda.",
@@ -335,7 +334,7 @@ const pt = {
   "msg.reportFailed":
     "Não foi possível gerar o PDF. Tente novamente ou use outra aba do navegador.",
 
-  "report.filename": "idade-ossea",
+  "report.filename": "klugrads-idade-ossea",
   "report.notComputed": "não calculada",
   "report.monthsValue": "{months} meses",
   "report.disclaimer":
@@ -346,13 +345,13 @@ const pt = {
 export type Key = keyof typeof pt;
 
 const en: Record<Key, string> = {
-  "app.title": "Bone Age — bone age, locally",
+  "app.title": "Bone age (AI) — KlugRads",
   "app.description":
     "Experimental bone age estimation processed locally in the browser. Your radiographs stay on your device.",
   "app.htmlLang": "en",
   "app.locale": "en-US",
 
-  "nav.brand": "Bone Age, home",
+  "nav.brand": "KlugRads, back to the app",
   "nav.label": "Navigation",
   "nav.how": "How it works",
   "nav.source": 'Open source <span aria-hidden="true">↗</span>',
@@ -365,7 +364,7 @@ const en: Record<Key, string> = {
   "hero.description":
     "From the radiograph to a bone maturation estimate. <br />Your files stay with you, start to finish.",
   "hero.localTitle": "Your device. Your data.",
-  "hero.localText": "No server uploads. <br />No sign-up. No tracking.",
+  "hero.localText": "No server uploads. <br />No tracking of your images.",
 
   "workspace.title": "New analysis",
   "workspace.badge": "EXPERIMENTAL USE",
@@ -521,10 +520,15 @@ const en: Record<Key, string> = {
   "credits.role":
     "This site trained and tuned nothing: it converts the public weights to ONNX and runs them in your browser. Credit for the estimate belongs to the model's author.",
 
-  "footer.tagline": "/ an open research tool",
+  "footer.tagline": "Educational tool — does not replace clinical judgment",
   "footer.by": "by",
   "footer.license": "Model Apache-2.0 · Code MIT",
   "klug.back": "← KlugRads",
+  "klug.brandAria": "KlugRads — back to the app",
+  "klug.crumb.rx": "Radiography",
+  "klug.crumb.calc": "Calculators",
+  "klug.crumb.tool": "Bone age (AI)",
+  "klug.theme": "Toggle light/dark theme",
   "klug.notice": "<b>Educational and testing use.</b> Not clinically validated and not tied to any paid KlugRads plan. Your image never leaves the browser.",
   "klug.mobile.title": "Available on computers only",
   "klug.mobile.p1": "This tool uses <b>artificial intelligence that runs inside your own browser</b>. That is how your image never leaves your device: there is no server that receives it.",
@@ -542,12 +546,6 @@ const en: Record<Key, string> = {
   "sex.male": "male",
   "sex.female": "female",
 
-  "demo.hint": "No radiograph at hand?",
-  "demo.button": "Analyse a sample",
-  "msg.demoLoaded":
-    "Repository sample: left hand, female, born on {dob}, examined on {exam}. The three networks will run in this browser; on first use that includes downloading about 340 MB of weights.",
-  "msg.demoFailed":
-    "The sample radiograph could not be loaded. Check your connection and try again.",
   "msg.checkDates": "Check the dates",
   "msg.dicomFilled":
     "The available fields were filled in from the DICOM. Check the data and select the left hand before estimating.",
@@ -623,7 +621,7 @@ const en: Record<Key, string> = {
   "processing.tooOld":
     "The model is paediatric. Check the dates (age up to 20 years).",
 
-  "pdf.productName": "bone age",
+  "pdf.productName": "KlugRads · bone age",
   "pdf.title": "Bone age report",
   "pdf.subtitle":
     "Estimate produced locally in the browser, from a left-hand radiograph.",
@@ -674,7 +672,7 @@ const en: Record<Key, string> = {
   "msg.reportFailed":
     "The PDF could not be generated. Try again, or use another browser tab.",
 
-  "report.filename": "bone-age",
+  "report.filename": "klugrads-bone-age",
   "report.notComputed": "not computed",
   "report.monthsValue": "{months} months",
   "report.disclaimer":

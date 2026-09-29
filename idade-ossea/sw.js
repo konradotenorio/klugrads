@@ -1,6 +1,6 @@
 // Public app/model metadata only. Images and examination data never enter caches.
-const CACHE = "bone-age-app-258ec98689f2c5ab";
-const FILES = ["./","./assets/index-4ifJESps.css","./assets/index-Dei2Wr_o.js","./assets/inference.worker-ChvjbgoQ.js","./favicon.svg","./index.html","./model-license.txt","./model-notice.txt","./runtime/ort-wasm-simd-threaded.mjs","./runtime/ort-wasm-simd-threaded.wasm"];
+const CACHE = "klugrads-idade-ossea-app-28ff76424120ceb7";
+const FILES = ["./","./assets/index-DYPb65nH.css","./assets/index-JSf6IGUn.js","./assets/inference.worker-Bz8jLu6W.js","./favicon.svg","./index.html","./model-license.txt","./model-notice.txt","./runtime/ort-wasm-simd-threaded.mjs","./runtime/ort-wasm-simd-threaded.wasm"];
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(FILES)));
 });
@@ -13,7 +13,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
       for (const key of await caches.keys()) {
-        if (key.startsWith("bone-age-app-") && key !== CACHE)
+        if (key.startsWith("klugrads-idade-ossea-app-") && key !== CACHE)
           await caches.delete(key);
       }
       await self.clients.claim();

@@ -1,5 +1,5 @@
 // Public app/model metadata only. Images and examination data never enter caches.
-const CACHE = "bone-age-app-__VERSION__";
+const CACHE = "klugrads-idade-ossea-app-__VERSION__";
 const FILES = __PRECACHE__;
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(FILES)));
@@ -13,7 +13,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
       for (const key of await caches.keys()) {
-        if (key.startsWith("bone-age-app-") && key !== CACHE)
+        if (key.startsWith("klugrads-idade-ossea-app-") && key !== CACHE)
           await caches.delete(key);
       }
       await self.clients.claim();

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f5f6f2" />
+    <meta name="theme-color" content="#0e1216" />
     <meta
       name="description"
       data-i18n-content="app.description"
@@ -18,52 +18,29 @@
     <title data-i18n="app.title">Bone Age — idade óssea, localmente</title>
   </head>
   <body>
-    <div class="klug-bar wrap">
-      <a href="/app" data-i18n="klug.back">← KlugRads</a>
-      <span data-i18n-html="klug.notice"
-        ><b>Uso educativo e de teste.</b></span
-      >
-    </div>
-    <header class="site-header wrap">
-      <a
-        class="brand"
-        href="%BASE_URL%"
-        data-i18n-aria-label="nav.brand"
-        aria-label="Bone Age, início"
-        ><span class="brand-mark" aria-hidden="true">b<span>°</span></span
-        >bone age<span class="brand-tag">LOCAL</span></a
-      >
-      <nav data-i18n-aria-label="nav.label" aria-label="Navegação">
-        <a href="#sobre" data-i18n="nav.how">Como funciona</a
+    <header class="topbar">
+      <div class="topbar-in wrap">
+        <a class="kr-brand" href="/app" data-i18n-aria-label="klug.brandAria" aria-label="KlugRads — voltar ao app"
+          ><span class="k">KLUG</span><span class="r">RADS</span></a
         >
-        <div
-          class="lang-switch"
-          role="group"
-          data-i18n-aria-label="nav.language"
-          aria-label="Idioma"
-        >
-          <button
-            type="button"
-            id="lang-pt"
-            data-lang="pt"
-            data-i18n-title="nav.langPt"
-            title="Português"
-            aria-pressed="true"
-          >
-            PT</button
-          ><button
-            type="button"
-            id="lang-en"
-            data-lang="en"
-            data-i18n-title="nav.langEn"
-            title="English"
-            aria-pressed="false"
-          >
-            EN
-          </button>
+        <nav class="crumbs" data-i18n-aria-label="nav.label" aria-label="Navegação">
+          <a href="/app" data-i18n="klug.crumb.rx">Radiografia</a><i aria-hidden="true">›</i>
+          <a href="/app" data-i18n="klug.crumb.calc">Calculadoras</a><i aria-hidden="true">›</i>
+          <b data-i18n="klug.crumb.tool">Idade óssea (IA)</b>
+        </nav>
+        <div class="top-tools">
+          <a class="top-link" href="#sobre" data-i18n="nav.how">Como funciona</a>
+          <div class="lang-switch" role="group" data-i18n-aria-label="nav.language" aria-label="Idioma">
+            <button type="button" id="lang-pt" data-lang="pt" data-i18n-title="nav.langPt" title="Português" aria-pressed="true"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#009c3b"/><path d="M14 2.2 25.4 10 14 17.8 2.6 10z" fill="#ffdf00"/><circle cx="14" cy="10" r="4.1" fill="#002776"/><path d="M10.2 9.2c2.6-.7 5.4-.3 7.7 1.2" stroke="#fff" stroke-width=".9" fill="none"/></svg></button
+            ><button type="button" id="lang-en" data-lang="en" data-i18n-title="nav.langEn" title="English" aria-pressed="false"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#fff"/><rect y="0.00" width="28" height="1.54" fill="#b22234"/><rect y="3.08" width="28" height="1.54" fill="#b22234"/><rect y="6.15" width="28" height="1.54" fill="#b22234"/><rect y="9.23" width="28" height="1.54" fill="#b22234"/><rect y="12.31" width="28" height="1.54" fill="#b22234"/><rect y="15.38" width="28" height="1.54" fill="#b22234"/><rect y="18.46" width="28" height="1.54" fill="#b22234"/><rect width="12" height="10.77" fill="#3c3b6e"/><circle cx="1.6" cy="1.8" r=".45" fill="#fff"/><circle cx="1.6" cy="4.2" r=".45" fill="#fff"/><circle cx="1.6" cy="6.6" r=".45" fill="#fff"/><circle cx="1.6" cy="9" r=".45" fill="#fff"/><circle cx="4.4" cy="1.8" r=".45" fill="#fff"/><circle cx="4.4" cy="4.2" r=".45" fill="#fff"/><circle cx="4.4" cy="6.6" r=".45" fill="#fff"/><circle cx="4.4" cy="9" r=".45" fill="#fff"/><circle cx="7.2" cy="1.8" r=".45" fill="#fff"/><circle cx="7.2" cy="4.2" r=".45" fill="#fff"/><circle cx="7.2" cy="6.6" r=".45" fill="#fff"/><circle cx="7.2" cy="9" r=".45" fill="#fff"/><circle cx="10" cy="1.8" r=".45" fill="#fff"/><circle cx="10" cy="4.2" r=".45" fill="#fff"/><circle cx="10" cy="6.6" r=".45" fill="#fff"/><circle cx="10" cy="9" r=".45" fill="#fff"/></svg></button>
+          </div>
+          <button type="button" id="theme-toggle" class="icon-btn" data-i18n-aria-label="klug.theme" aria-label="Alternar tema"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button>
         </div>
-      </nav>
+      </div>
     </header>
+    <div class="klug-bar" role="note">
+      <span data-i18n-html="klug.notice"><b>Uso educativo e de teste.</b></span>
+    </div>
     <section class="klug-gate wrap" aria-labelledby="klug-gate-title">
       <h2 id="klug-gate-title" data-i18n="klug.mobile.title">
         Disponível apenas em computador
@@ -684,21 +661,9 @@
       </section>
     </main>
     <footer class="site-footer wrap">
-      <span
-        >bone age
-        <span class="muted" data-i18n="footer.tagline"
-          >/ uma ferramenta aberta de pesquisa</span
-        ></span
-      ><span
-        ><span data-i18n="footer.by">por</span>
-        <a
-          href="https://github.com/feliperun"
-          target="_blank"
-          rel="noreferrer"
-          class="footer-link"
-          >@feliperun <span aria-hidden="true">↗</span></a
-        ></span
-      ><span data-i18n="footer.license">Modelo Apache-2.0 · Código MIT</span>
+      <span class="foot-brand"><span class="k">KLUG</span><span class="r">RADS</span></span>
+      <span class="muted" data-i18n="footer.tagline">Ferramenta educacional — não substitui o julgamento clínico</span>
+      <span class="muted" data-i18n="footer.license">Modelo Apache-2.0 · Código MIT</span>
     </footer>
     <p class="klug-credit wrap" data-i18n-html="klug.credit"></p>
     <script type="module" src="/src/main.ts"></script>

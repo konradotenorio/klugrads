@@ -149,12 +149,12 @@ function syncCrop() {
 function draw() {
   if (!image) return;
   ctx.drawImage(source, 0, 0);
-  ctx.fillStyle = "#08130ba8";
+  ctx.fillStyle = "#04090ea8";
   ctx.fillRect(0, 0, image.width, crop.y0);
   ctx.fillRect(0, crop.y1, image.width, image.height - crop.y1);
   ctx.fillRect(0, crop.y0, crop.x0, crop.y1 - crop.y0);
   ctx.fillRect(crop.x1, crop.y0, image.width - crop.x1, crop.y1 - crop.y0);
-  ctx.strokeStyle = "#d5e7b8";
+  ctx.strokeStyle = "#5fd3ec";
   ctx.lineWidth = Math.max(2, image.width / 350);
   ctx.setLineDash([image.width / 100, image.width / 150]);
   ctx.strokeRect(crop.x0, crop.y0, crop.x1 - crop.x0, crop.y1 - crop.y0);
@@ -425,8 +425,8 @@ el("clear-cache").addEventListener("click", async () => {
   try {
     for (const key of await caches.keys())
       if (
-        key.startsWith("bone-age-weights-") ||
-        key === "bone-age-model-metadata"
+        key.startsWith("klugrads-idade-ossea-pesos-") ||
+        key === "klugrads-idade-ossea-metadata"
       )
         await caches.delete(key);
     status("model.cleared");
