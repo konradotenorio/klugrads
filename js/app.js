@@ -628,7 +628,7 @@ function headerHTML(){
   else if(v==='detail'){ title=state.item?state.item.name:''; sub=(state.item&&state.item.abbr)?state.item.abbr:''; }
   else if(v==='calc'){ const c = state.calcId ? findCalc(state.calcId) : null;
     if(c) title=c.title;
-    else if(state.modalityId && state.modalityId!=='us'){ const m=MODALITIES.find(x=>x.id===state.modalityId); title=m?m.name:'Calculadoras'; }
+    else if(state.modalityId && state.modalityId!=='us'){ const m=MODALITIES.find(x=>x.id===state.modalityId); title=(m?m.name:'Calculadoras')+(state.calcKind==='ref'?' — Referências':' — Calculadoras'); }
     else title='Calculadoras'; }
   else if(v==='ferramentas'){ title='Outras Ferramentas'; }
   else if(v==='config'){ title='Configurações'; }
@@ -969,22 +969,36 @@ function logout(){
 }
 
 /* ---- 1b. LAUNCHER (home) ---- */
+/* Textos do launcher (dois cartões) por método — US usa o sistema de
+   Referências próprio (órgãos/medidas); TC/RM filtram o mesmo catálogo de
+   calculadoras (CALCS) por kind:'calc'|'ref'. */
+const HOME_CARDS = {
+  us: {calcD:'TI-RADS, BI-RADS, escores e fórmulas', refD:'Medidas normais por órgão e idade'},
+  tc: {calcD:'CAD-RADS, Lung-RADS, MESA, escores e fórmulas', refD:'Nomenclaturas e protocolos de apoio'},
+  rm: {calcD:'PI-RADS, O-RADS, PI-QUAL, escores e fórmulas', refD:'Nomenclaturas e protocolos de apoio'},
+};
 function homeHTML(){
+  const mid = state.modalityId;
+  const isUS = mid==='us';
+  const m = MODALITIES.find(x=>x.id===mid);
+  const t = HOME_CARDS[mid] || HOME_CARDS.us;
+  const calcOnclick = isUS ? "setView('calc')" : "openModCalcs('calc')";
+  const refOnclick  = isUS ? "setView('refs')" : "openModCalcs('ref')";
   return `<div class="lc">
     <button class="iconbtn lc-back" onclick="goBack()" aria-label="Voltar">${svgIcon(P.back,22,{sw:2.2})}</button>
     <div class="lc-head">
       <div class="lc-brand">KLUG<span>RADS</span></div>
-      <div class="lc-greet">Ultrassonografia</div>
+      <div class="lc-greet">${esc(m?m.name:'')}</div>
     </div>
     <div class="lc-b">
       <div class="lc-top">
-        <div class="lc-card" onclick="setView('calc')">
+        <div class="lc-card" onclick="${calcOnclick}">
           <div class="lc-chip">${svgIcon(P.calc,26)}</div>
-          <div><div class="t">Calculadoras</div><div class="d">TI-RADS, BI-RADS, escores e fórmulas</div></div>
+          <div><div class="t">Calculadoras</div><div class="d">${esc(t.calcD)}</div></div>
         </div>
-        <div class="lc-card fill" onclick="setView('refs')">
+        <div class="lc-card fill" onclick="${refOnclick}">
           <div class="lc-chip">${svgIcon(P.book,26)}</div>
-          <div><div class="t">Referências</div><div class="d">Medidas normais por órgão e idade</div></div>
+          <div><div class="t">Referências</div><div class="d">${esc(t.refD)}</div></div>
         </div>
       </div>
     </div>
@@ -1599,7 +1613,7 @@ function toggleFavCalc(id){
 function openFavCalc(id){
   const c = findCalc(id); if(!c) return;
   navPush();
-  if(c.modality && c.modality!=='us'){ state.modalityId=c.modality; }
+  if(c.modality && c.modality!=='us'){ state.modalityId=c.modality; state.calcKind=c.kind||'calc'; }
   else if(c.spec){ state.modalityId='us'; state.calcSpec=c.spec; }
   else { state.modalityId=null; }
   state.calcId=id; state.view='calc'; pushRecent(id); render();
@@ -1612,18 +1626,21 @@ const MOD_SPECS = {
 /* Conteúdo/calculadoras de um método não-US, agrupado por subespecialidade. */
 function calcListModalityHTML(mid){
   const specs = MOD_SPECS[mid] || [];
-  const mine = allCalcs().filter(c=>c.modality===mid);
+  const kind = state.calcKind || 'calc';
+  const mine = allCalcs().filter(c=>c.modality===mid && (c.kind||'calc')===kind);
+  if(!mine.length){
+    const label = kind==='ref' ? 'Referências' : 'Calculadoras';
+    return `<div class="calc-list-wrap"><div class="empty"><div class="msg">${esc(label)} deste método <b>em breve</b>.</div></div></div>`;
+  }
   let h = '';
   specs.forEach(function(sp){
     const items = mine.filter(c=>c.subspec===sp.id);
+    if(!items.length) return;   // omite subespecialidade sem itens deste tipo (calc/ref)
     h += `<div class="calc-intro-lbl">${esc(sp.name)}</div>`;
-    h += items.length
-      ? items.map(c=>calcCardHTML(c)).join('')
-      : `<div class="empty"><div class="msg">Conteúdo desta subespecialidade <b>em breve</b>.</div></div>`;
+    h += items.map(c=>calcCardHTML(c)).join('');
   });
   const orphans = mine.filter(c=>!c.subspec || !specs.find(s=>s.id===c.subspec));
   if(orphans.length) h += orphans.map(c=>calcCardHTML(c)).join('');
-  if(!h) h = `<div class="empty"><div class="msg">Conteúdo <b>em breve</b> neste método.</div></div>`;
   return `<div class="calc-list-wrap">${h}</div>`;
 }
 function calcListHTML(){
@@ -1961,7 +1978,7 @@ function listsHTML(){
    AÇÕES
    ========================================================================= */
 /* ---- Navegação: pilha de telas, para o Voltar sempre desfazer o último passo ---- */
-const NAV_KEYS = ['view','calcId','calcSpec','modalityId','item','sub','composingId','specialty','subBand','query'];
+const NAV_KEYS = ['view','calcId','calcKind','calcSpec','modalityId','item','sub','composingId','specialty','subBand','query'];
 function navSnapshot(){ const s={}; NAV_KEYS.forEach(k=>s[k]=state[k]); return s; }
 function navPush(){
   state.nav.push(navSnapshot());
@@ -2162,11 +2179,15 @@ function openModality(id){
   const m = MODALITIES.find(x=>x.id===id); if(!m) return;
   navPush();
   state.modalityId=id;
+  state.calcKind=null;
   if(!m.active){ state.view='construction'; render(); return; }
-  if(id==='us'){ state.view='home'; render(); return; }
-  // Métodos não-US (ex.: RM): abrem direto o conteúdo do método, por subespecialidade.
-  state.calcId=null; state.view='calc'; render();
+  // Todo método ativo (US/TC/RM) abre o launcher de dois cartões: Calculadoras e Referências.
+  state.view='home'; render();
 }
+/* Cartões "Calculadoras"/"Referências" do launcher para TC/RM (US usa
+   setView('calc')/setView('refs'), que abrem o sistema próprio de
+   Referências por órgão). Filtra o mesmo catálogo (CALCS) por kind. */
+function openModCalcs(kind){ navPush(); state.calcKind=kind; state.calcId=null; state.view='calc'; render(); }
 
 function toggleFav(id){
   const i = state.favs.indexOf(id);
