@@ -261,7 +261,7 @@ let state = {
   newName:'', composingId:null, modalityId:null,
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
-  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null, volgastrico:null, prostMap:null,
+  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null, volgastrico:null, prostMap:null, figo:null,
   lang:'pt', fontScale:1, user:null,
   favCalcs:[], recents:[],
   nav:[],
@@ -1530,6 +1530,9 @@ function calcViewHTML(){
   if(state.calcId === 'tfg') return calcTFGHTML();
   if(state.calcId === 'tirads') return calcTiradsHTML();
   if(state.calcId === 'orads') return calcOradsHTML();
+  if(state.calcId === 'figo-us') return figoCalcHTML('us');
+  if(state.calcId === 'figo-rm') return figoCalcHTML('rm');
+  if(state.calcId === 'figo-rm-ref') return figoRmRefHTML();
   if(state.calcId === 'doppler-renais') return calcDopplerRenaisHTML();
   if(state.calcId === 'volgastrico') return calcVolumeGastricoHTML();
   if(state.calcId === 'esteatose-rm') return calcEsteatoseRmHTML();
@@ -1988,6 +1991,8 @@ function openCalc(id){ navPush(); state.calcId=id; pushRecent(id); render(); }
 function resetCalc(){
   if(state.calcId==='tirads') state.tirads=null;
   else if(state.calcId==='orads') state.orads=null;
+  else if(state.calcId==='figo-us'){ if(state.figo) state.figo.us=null; }
+  else if(state.calcId==='figo-rm'){ if(state.figo) state.figo.rm=null; }
   else if(state.calcId==='volgastrico') state.volgastrico=null;
   else if(state.calcId==='esteatose-rm') state.esteatoseRm=null;
   else if(state.calcId==='esteatose-tc') state.esteatoseTc=null;
