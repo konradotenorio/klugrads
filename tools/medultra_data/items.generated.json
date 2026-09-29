@@ -33037,6 +33037,252 @@
   ]
  },
  {
+  "id": "doppler-arterias-renais",
+  "group": "Doppler",
+  "region": "Aorta e vasos abdominais",
+  "name": "Doppler de Artérias Renais",
+  "abbr": "DAR",
+  "iconKey": "drop",
+  "calculator": {
+   "kind": "renal-artery-stenosis",
+   "title": "Estenose de artéria renal",
+   "source": "Critérios diretos e intrarrenais — Granata 2009 / StatPearls"
+  },
+  "tables": [
+   {
+    "title": "Valores normais",
+    "source": "StatPearls 2023 / Granata et al. 2009",
+    "collapsible": true,
+    "defaultOpen": true,
+    "rows": [
+     [
+      "Parâmetro",
+      "Valor normal"
+     ],
+     [
+      "VPS da artéria renal principal",
+      "60–100 cm/s habitualmente; < 120 cm/s"
+     ],
+     [
+      "Razão renal/aorta (RAR)",
+      "< 3,5"
+     ],
+     [
+      "Índice de resistividade (IR) intrarrenal",
+      "0,5–0,7"
+     ],
+     [
+      "Tempo de aceleração (TA) intrarrenal",
+      "< 70 ms"
+     ],
+     [
+      "Índice de aceleração (IA) intrarrenal",
+      "> 3 m/s²"
+     ],
+     [
+      "Diferença de IR entre os rins",
+      "≤ 0,05"
+     ]
+    ]
+   },
+   {
+    "title": "Critérios diretos de estenose (artéria renal principal)",
+    "source": "Granata et al. 2009 / StatPearls 2023",
+    "collapsible": true,
+    "defaultOpen": true,
+    "rows": [
+     [
+      "Critério",
+      "Limiar",
+      "Sugere",
+      "Acurácia relatada"
+     ],
+     [
+      "VPS",
+      "≥ 180 cm/s",
+      "Estenose > 60%",
+      "S 96,7% · E 98%"
+     ],
+     [
+      "VPS",
+      "≥ 200 cm/s",
+      "Estenose ≥ 60%",
+      "S 97% · E 72%"
+     ],
+     [
+      "RAR (VPS renal / VPS aórtica)",
+      "≥ 3,5",
+      "Estenose hemodinamicamente significativa (≥ 60%)",
+      "S 91–92% · E 75–95%"
+     ],
+     [
+      "VDF",
+      "> 150 cm/s",
+      "Estenose > 80%",
+      "—"
+     ],
+     [
+      "Razão renal/segmentar",
+      "≥ 4,0",
+      "Estenose ≥ 50%",
+      "S 93,3% · E 89,5%"
+     ],
+     [
+      "Razão renal/interlobar",
+      "≥ 5,5",
+      "Estenose ≥ 50%",
+      "S 88% · E 88%"
+     ]
+    ]
+   },
+   {
+    "title": "Critérios indiretos (intrarrenais) — padrão tardus-parvus",
+    "source": "Granata et al. 2009 / StatPearls 2023",
+    "collapsible": true,
+    "defaultOpen": true,
+    "rows": [
+     [
+      "Critério",
+      "Achado anormal"
+     ],
+     [
+      "Tempo de aceleração (TA)",
+      "≥ 70 ms (0,07 s)"
+     ],
+     [
+      "Índice de aceleração (IA)",
+      "< 3 m/s²"
+     ],
+     [
+      "Pico sistólico precoce",
+      "Ausente (S 95% · E 97% para estenose > 60%)"
+     ],
+     [
+      "IR no rim afetado",
+      "Reduzido (< 0,5 no padrão tardus-parvus)"
+     ],
+     [
+      "Diferença de IR entre os rins",
+      "> 0,05 (menor IR do lado estenótico)"
+     ],
+     [
+      "Diferença de IP entre os rins",
+      "> 0,12"
+     ]
+    ]
+   },
+   {
+    "title": "Índice de resistividade (IR)",
+    "source": "Granata 2009 / StatPearls 2023 / Aagaard et al. 2026",
+    "collapsible": true,
+    "defaultOpen": false,
+    "rows": [
+     [
+      "Situação",
+      "Interpretação"
+     ],
+     [
+      "IR 0,5–0,7",
+      "Normal"
+     ],
+     [
+      "IR > 0,7",
+      "Aumento da resistência vascular intrarrenal (doença do parênquima, nefropatia, obstrução, entre outras)"
+     ],
+     [
+      "IR > 0,80",
+      "Associado a pior resposta à revascularização, mas não a exclui: em uma série, 29% dos pacientes com insuficiência renal e IR > 0,80 melhoraram a função renal e 50% melhoraram a hipertensão"
+     ],
+     [
+      "Local de amostragem",
+      "IR hilar e IR interlobar são comparáveis (viés ≈ 0, limites de concordância −0,07 a +0,08)"
+     ]
+    ]
+   },
+   {
+    "title": "Reestenose intra-stent",
+    "source": "Granata et al. 2009",
+    "collapsible": true,
+    "defaultOpen": false,
+    "rows": [
+     [
+      "Critério",
+      "Limiar",
+      "Acurácia relatada"
+     ],
+     [
+      "VPS intra-stent",
+      "> 180 cm/s",
+      "S 100% · E 74%"
+     ],
+     [
+      "VPS intra-stent",
+      "> 226 cm/s",
+      "S 100% · E 90%"
+     ],
+     [
+      "RAR",
+      "> 2,7",
+      "S 100% · E 84%"
+     ],
+     [
+      "RAR",
+      "> 3,5",
+      "S 50% · E 89%"
+     ]
+    ]
+   },
+   {
+    "title": "Técnica de exame",
+    "source": "Granata et al. 2009 / StatPearls 2023",
+    "collapsible": true,
+    "defaultOpen": false,
+    "rows": [
+     [
+      "Etapa",
+      "Como fazer"
+     ],
+     [
+      "Preparo",
+      "Jejum de 12 horas (noite anterior) para reduzir os gases intestinais."
+     ],
+     [
+      "Transdutor",
+      "Convexo de baixa frequência (2,5–5 MHz)."
+     ],
+     [
+      "Posições e janelas",
+      "Decúbito dorsal, com acesso anterior para a aorta e os óstios. Decúbito lateral, com acesso pelo flanco (corte em \"casca de banana\") e acesso posterior para o trajeto médio e distal."
+     ],
+     [
+      "Ângulo Doppler",
+      "Sempre ≤ 60°."
+     ],
+     [
+      "Pontos de medida",
+      "Aorta no nível das artérias renais (para a RAR). Óstio e terços proximal, médio e distal de cada artéria renal. Segmentares ou interlobares nos polos superior, médio e inferior de cada rim."
+     ],
+     [
+      "Artérias acessórias",
+      "Presentes em 20–30% dos pacientes: procurar ativamente."
+     ]
+    ]
+   }
+  ],
+  "footnotes": [
+   "A literatura usa limiares de VPS de 180 ou 200 cm/s para estenose ≥ 60%. O limiar mais alto é mais específico, e o mais baixo é mais sensível.",
+   "O Doppler visualiza as artérias renais em cerca de 90% dos pacientes (as duas artérias principais em 84%). Estenose significativa isolada em artéria acessória ocorre em 1–1,5%.",
+   "Na displasia fibromuscular, a lesão costuma ser nos terços médio e distal: examinar toda a extensão da artéria.",
+   "Reversão do fluxo diastólico na artéria renal principal sugere trombose da veia renal.",
+   "O ultrassom com contraste aumentou a sensibilidade de 85% para 94% e a especificidade de 79% para 88%."
+  ],
+  "refs": [
+   "Trunz LM, Balasubramanya R. Renal Doppler Ultrasonography. In: StatPearls. Treasure Island (FL): StatPearls Publishing; 2023 (atualização de 5 jun. 2023). Disponível em: https://www.ncbi.nlm.nih.gov/books/NBK572135/.",
+   "Granata A, Fiorini F, Andrulli S, Logias F, Gallieni M, Romano G, Sicurezza E, Fiore CE. Doppler ultrasound and renal artery stenosis: An overview. J Ultrasound. 2009;12:133-143.",
+   "Aagaard R, Hermansen JL, Christiansen SK, Juhl-Olsen P. Renal doppler ultrasound: comparison of measurements sampled in different anatomical locations. J Clin Monit Comput. 2026. doi:10.1007/s10877-026-01413-3."
+  ]
+ },
+ {
   "id": "doppler-carotidas-vertebrais",
   "group": "Doppler",
   "region": "Cervical",
