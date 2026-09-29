@@ -1224,17 +1224,19 @@ function customCalculatorHTML(calc){
     </div>`;
   }
   if(calc.kind==='renal-artery-stenosis'){
+    const side=(k,nome)=>`<div class="ras-side">
+        <div class="ras-side-title">${nome}</div>
+        ${calcFieldHTML('ras-'+k+'-psv','VPS da artéria renal (maior)','cm/s')}
+        ${calcFieldHTML('ras-'+k+'-edv','VDF da artéria renal (opcional)','cm/s')}
+        ${calcFieldHTML('ras-'+k+'-at','TA intrarrenal (opcional)','ms')}
+        ${calcFieldHTML('ras-'+k+'-ri','IR intrarrenal (opcional)','')}
+      </div>`;
     return `<div class="calc-wrap refcalc">
       <div class="calc-title">${esc(calc.title)}</div>
       <div class="calc-source">${esc(calc.source||'')}</div>
-      <div class="refcalc-grid">
-        ${calcFieldHTML('ras-psv','VPS da artéria renal (maior)','cm/s')}
-        ${calcFieldHTML('ras-aorta','VPS da aorta (nível das renais)','cm/s')}
-        ${calcFieldHTML('ras-edv','VDF da artéria renal (opcional)','cm/s')}
-        ${calcFieldHTML('ras-at','TA intrarrenal (opcional)','ms')}
-        ${calcFieldHTML('ras-ri-d','IR rim direito (opcional)','')}
-        ${calcFieldHTML('ras-ri-e','IR rim esquerdo (opcional)','')}
-      </div>
+      <div class="refcalc-grid ras-aorta">${calcFieldHTML('ras-aorta','VPS da aorta (nível das renais)','cm/s')}</div>
+      <div class="refcalc-grid ras-grid">${side('d','Rim direito')}${side('e','Rim esquerdo')}</div>
+      <div class="refcalc-result-note">Preencha um lado ou os dois. A VPS da aorta é comum aos dois lados.</div>
       <button class="calc-btn refcalc-btn" onclick="runReferenceCalculator('renal-artery-stenosis')">Calcular</button>
       <div id="reference-calc-output"></div>
     </div>`;
@@ -1291,15 +1293,12 @@ function renderReferenceCalc(html){
 function calcErrorHTML(message){
   return `<div class="refcalc-result error"><div class="refcalc-result-title">Revise os dados</div><div class="refcalc-result-note">${esc(message)}</div></div>`;
 }
-/* Estenose de artéria renal (Granata 2009 / StatPearls). Função pura — sem DOM.
-   Diretos: VPS >= 180/200 cm/s e RAR >= 3,5 -> >= 60%; VDF > 150 cm/s -> > 80%.
-   Indiretos: TA >= 70 ms; diferença de IR entre os rins > 0,05. */
-function renalArteryCalc(v){
-  const psv=v.psv, aorta=v.aorta;
-  if(psv===null||aorta===null||psv<=0||aorta<=0) return {error:'Preencha a VPS da artéria renal e a VPS da aorta com valores maiores que zero.'};
-  for(const k of ['edv','at','riD','riE']) if(v[k]!==null&&v[k]<0) return {error:'Os campos opcionais não podem ser negativos.'};
-  if((v.riD!==null&&v.riD>1)||(v.riE!==null&&v.riE>1)) return {error:'O IR varia de 0 a 1 (ex.: 0,65).'};
-  const rar=psv/aorta, edv=v.edv, at=v.at;
+/* Estenose de artéria renal (Granata 2009 / StatPearls). Funções puras — sem DOM.
+   Por lado — diretos: VPS >= 180/200 cm/s e RAR >= 3,5 -> >= 60%; VDF > 150 cm/s -> > 80%.
+   Indireto por lado: TA >= 70 ms. Bilateral: diferença de IR > 0,05 (menor IR do lado estenótico). */
+function renalSideCalc(s, aorta){
+  const psv=s.psv, edv=s.edv, at=s.at;
+  const rar=psv/aorta;
   const psvHigh=psv>=200, psvBorder=psv>=180&&psv<200, rarHigh=rar>=3.5;
   let title, note, tone='ok';
   if(edv!==null&&edv>150&&(psv>=180||rarHigh)){
@@ -1307,24 +1306,41 @@ function renalArteryCalc(v){
   } else if((psvHigh||psvBorder)&&rarHigh){
     title='Estenose ≥ 60%'; note=(psvHigh?'VPS ≥ 200 cm/s':'VPS entre 180 e 199 cm/s (limiar mais sensível)')+' e RAR ≥ 3,5: critérios diretos concordantes.';
   } else if(psv<180&&!rarHigh){
-    title='Sem critérios diretos de estenose ≥ 60%'; note='VPS < 180 cm/s e RAR < 3,5. Confira os critérios intrarrenais e a presença de artérias acessórias.';
+    title='Sem critérios diretos de estenose ≥ 60%'; note='VPS < 180 cm/s e RAR < 3,5.';
   } else {
     title='Critérios diretos discordantes'; tone='warn';
     note=rarHigh
-      ? 'RAR ≥ 3,5 com VPS < 180 cm/s: confira a VPS aórtica e a correção de ângulo, e confronte com os critérios intrarrenais.'
-      : 'VPS elevada com RAR < 3,5: pode ocorrer com fluxo aórtico alto ou estado hiperdinâmico. Confronte com os critérios intrarrenais.';
+      ? 'RAR ≥ 3,5 com VPS < 180 cm/s: confira a VPS aórtica e a correção de ângulo.'
+      : 'VPS elevada com RAR < 3,5: pode ocorrer com fluxo aórtico alto ou estado hiperdinâmico.';
   }
-  let riDiff=null, indirect=null;
-  if(v.riD!==null&&v.riE!==null) riDiff=Math.abs(v.riD-v.riE);
-  if(at!==null||riDiff!==null){
-    const achados=[];
-    if(at!==null&&at>=70) achados.push('TA ≥ 70 ms (tardus-parvus)');
-    if(riDiff!==null&&riDiff>0.05) achados.push('diferença de IR > 0,05 (menor IR do lado '+(v.riD<v.riE?'direito':'esquerdo')+')');
-    indirect = achados.length
-      ? {title:'Sinais indiretos presentes', note:'Achados: '+achados.join('; ')+'. Sugerem estenose hemodinamicamente significativa a montante.', tone:'warn'}
-      : {title:'Sem sinais indiretos', note:'TA < 70 ms e/ou diferença de IR ≤ 0,05 nos dados informados. Critérios indiretos têm menor sensibilidade que os diretos.', tone:'ok'};
+  if(at!==null&&at>=70){ note+=' TA ≥ 70 ms: padrão tardus-parvus, sinal indireto de estenose a montante.'; if(tone==='ok'&&title.indexOf('Sem')===0) tone='warn'; }
+  return {psv, rar, edv, at, ri:s.ri, title, note, tone};
+}
+function renalArteryCalc(v){
+  const aorta=v.aorta;
+  if(aorta===null||aorta<=0) return {error:'Informe a VPS da aorta com valor maior que zero.'};
+  const sides={};
+  for(const k of ['d','e']){
+    const x=v[k]||{};
+    const vals=[x.psv,x.edv,x.at,x.ri];
+    if(vals.some(n=>n!==null&&n<0)) return {error:'Os valores não podem ser negativos.'};
+    if(x.ri!==null&&x.ri>1) return {error:'O IR varia de 0 a 1 (ex.: 0,65).'};
+    if(x.psv===null||x.psv===0){
+      if(vals.slice(1).some(n=>n!==null)) return {error:'Informe a VPS da artéria renal do lado '+(k==='d'?'direito':'esquerdo')+' para calcular esse lado.'};
+      continue;
+    }
+    sides[k]=renalSideCalc(x, aorta);
   }
-  return {psv, rar, edv, at, riDiff, title, note, tone, indirect};
+  if(!sides.d&&!sides.e) return {error:'Informe a VPS da artéria renal de pelo menos um lado.'};
+  let compare=null;
+  const riD=v.d&&v.d.ri, riE=v.e&&v.e.ri;
+  if(riD!==null&&riD!==undefined&&riE!==null&&riE!==undefined){
+    const diff=Math.abs(riD-riE);
+    compare = diff>0.05
+      ? {diff, title:'Assimetria de IR', note:'Diferença > 0,05: o menor IR, do lado '+(riD<riE?'direito':'esquerdo')+', sugere estenose desse lado.', tone:'warn'}
+      : {diff, title:'IR simétrico', note:'Diferença ≤ 0,05 entre os rins.', tone:'ok'};
+  }
+  return {sides, compare};
 }
 function runReferenceCalculator(kind){
   if(kind==='carotid-brazil-2023'){
@@ -1428,20 +1444,24 @@ function runReferenceCalculator(kind){
     return;
   }
   if(kind==='renal-artery-stenosis'){
-    const r=renalArteryCalc({psv:calcNumber('ras-psv'), aorta:calcNumber('ras-aorta'), edv:calcNumber('ras-edv'),
-      at:calcNumber('ras-at'), riD:calcNumber('ras-ri-d'), riE:calcNumber('ras-ri-e')});
+    const side=k=>({psv:calcNumber('ras-'+k+'-psv'), edv:calcNumber('ras-'+k+'-edv'), at:calcNumber('ras-'+k+'-at'), ri:calcNumber('ras-'+k+'-ri')});
+    const r=renalArteryCalc({aorta:calcNumber('ras-aorta'), d:side('d'), e:side('e')});
     if(r.error){ renderReferenceCalc(calcErrorHTML(r.error)); return; }
-    const metrics=[calcMetricHTML('VPS renal',calcFmt(r.psv,0)+' cm/s'), calcMetricHTML('RAR',calcFmt(r.rar,2))];
-    if(r.edv!==null) metrics.push(calcMetricHTML('VDF renal',calcFmt(r.edv,0)+' cm/s'));
-    if(r.at!==null) metrics.push(calcMetricHTML('TA intrarrenal',calcFmt(r.at,0)+' ms'));
-    if(r.riDiff!==null) metrics.push(calcMetricHTML('Diferença de IR',calcFmt(r.riDiff,2)));
-    let html=`<div class="refcalc-result ${r.tone}">
-      <div class="refcalc-result-kicker">Critérios diretos — artéria renal principal</div>
-      <div class="refcalc-result-title">${esc(r.title)}</div>
-      <div class="refcalc-metrics">${metrics.join('')}</div>
-      <div class="refcalc-result-note">${esc(r.note)}</div>
-    </div>`;
-    if(r.indirect) html+=calcSourceResultHTML('Critérios indiretos — intrarrenais',r.indirect.title,r.indirect.note,r.indirect.tone);
+    let html='';
+    [['d','Rim direito'],['e','Rim esquerdo']].forEach(([k,nome])=>{
+      const x=r.sides[k]; if(!x) return;
+      const m=[calcMetricHTML('VPS renal',calcFmt(x.psv,0)+' cm/s'), calcMetricHTML('RAR',calcFmt(x.rar,2))];
+      if(x.edv!==null) m.push(calcMetricHTML('VDF',calcFmt(x.edv,0)+' cm/s'));
+      if(x.at!==null) m.push(calcMetricHTML('TA',calcFmt(x.at,0)+' ms'));
+      if(x.ri!==null) m.push(calcMetricHTML('IR',calcFmt(x.ri,2)));
+      html+=`<div class="refcalc-result ${x.tone}">
+        <div class="refcalc-result-kicker">${nome}</div>
+        <div class="refcalc-result-title">${esc(x.title)}</div>
+        <div class="refcalc-metrics">${m.join('')}</div>
+        <div class="refcalc-result-note">${esc(x.note)}</div>
+      </div>`;
+    });
+    if(r.compare) html+=calcSourceResultHTML('Comparação entre os rins — IR', r.compare.title+' ('+calcFmt(r.compare.diff,2)+')', r.compare.note, r.compare.tone);
     renderReferenceCalc(html);
     return;
   }
