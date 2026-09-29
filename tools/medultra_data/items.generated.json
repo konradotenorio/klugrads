@@ -27080,28 +27080,139 @@
   "group": "Pediatria",
   "region": "Abdome superior",
   "name": "Piloro (estenose hipertrófica)",
-  "abbr": "",
+  "abbr": "EHP",
   "iconKey": "organ",
+  "exam": {
+   "prep": "Gel aquecido. Se possível, oferecer líquido (água glicosada ou leite) durante o exame para distender o antro e avaliar a passagem pelo piloro.",
+   "position": "Decúbito dorsal e oblíquo posterior direito (lado direito para baixo).",
+   "technique": "Transdutor linear de alta frequência (7 MHz ou mais). Identifique a vesícula biliar em corte transverso: o piloro fica medial e ligeiramente posterior a ela. Obtenha o eixo longitudinal verdadeiro do canal pilórico para medir a espessura muscular (parede única, só a camada muscular hipoecoica) e o comprimento do canal, e observe por alguns minutos se há abertura do canal e passagem de líquido."
+  },
   "tables": [
    {
-    "title": null,
+    "title": "Critérios Ultrassonográficos",
     "rows": [
      [
-      "COMPRIMENTO DO CANAL PILÓRICO",
-      "≥ 15 mm"
+      "ESPESSURA DO MÚSCULO PILÓRICO (parede única)",
+      "≥ 3 mm\n(critério principal)"
      ],
      [
-      "ESPESSURA MUSCULAR DO PILORO",
-      "≥ 3 mm"
+      "COMPRIMENTO DO CANAL PILÓRICO",
+      "≥ 15 mm\n(na literatura, de 14 a 17 mm)"
+     ],
+     [
+      "DIÂMETRO TRANSVERSO DO PILORO",
+      "> 12 mm\n(critério auxiliar)"
+     ],
+     [
+      "AVALIAÇÃO DINÂMICA",
+      "Canal persistentemente fechado, sem passagem ou com passagem mínima de líquido ao longo de vários minutos"
+     ]
+    ]
+   },
+   {
+    "title": "Técnica de Exame",
+    "rows": [
+     [
+      "Etapa",
+      "Como fazer"
+     ],
+     [
+      "Transdutor",
+      "Linear de alta frequência (7 MHz ou mais)."
+     ],
+     [
+      "Posição",
+      "Decúbito dorsal e oblíquo posterior direito: o líquido enche o antro e o gás sobe para o fundo gástrico."
+     ],
+     [
+      "Referência anatômica",
+      "Piloro medial e ligeiramente posterior à vesícula biliar. Não confundir com a junção esofagogástrica, que pode simular o piloro."
+     ],
+     [
+      "Espessura",
+      "Corte longitudinal verdadeiro, parede única, medindo só a camada muscular hipoecoica (sem a mucosa)."
+     ],
+     [
+      "Comprimento",
+      "Ao longo do canal pilórico, no mesmo corte longitudinal."
+     ],
+     [
+      "Dinâmica",
+      "Oferecer líquido e observar por alguns minutos se o canal abre e se há passagem para o duodeno."
+     ]
+    ]
+   },
+   {
+    "title": "Sinais Ultrassonográficos",
+    "rows": [
+     [
+      "Sinal",
+      "Descrição"
+     ],
+     [
+      "Alvo (\"donut\")",
+      "Corte transverso: anel hipoecoico de músculo espessado ao redor da mucosa ecogênica."
+     ],
+     [
+      "Colo uterino (\"cervix\")",
+      "Corte longitudinal: músculo espessado projetando-se para dentro do antro distendido por líquido."
+     ],
+     [
+      "Mamilo antral",
+      "Mucosa pilórica redundante que protrui para o antro."
+     ],
+     [
+      "Duplo trilho",
+      "Pregas mucosas comprimidas no canal alongado, com fina lâmina de líquido entre elas."
+     ],
+     [
+      "Hiperperistalse gástrica",
+      "Ondas peristálticas vigorosas no antro que não vencem o piloro."
+     ]
+    ]
+   },
+   {
+    "title": "Valores Limítrofes e Armadilhas",
+    "rows": [
+     [
+      "Situação",
+      "Como lidar"
+     ],
+     [
+      "Espessura entre 2 e 3 mm",
+      "Limítrofe, principalmente em prematuros e nas primeiras semanas de vida: valorizar a avaliação dinâmica e considerar repetir o exame."
+     ],
+     [
+      "Piloroespasmo",
+      "Espessamento transitório que muda durante o exame e relaxa com a passagem de líquido. Observar por alguns minutos antes de concluir."
+     ],
+     [
+      "Estômago muito distendido",
+      "Desloca o piloro para trás e dificulta a visualização: reposicionar o paciente ou esvaziar por sonda."
+     ],
+     [
+      "Estômago vazio",
+      "Dificulta encontrar o piloro: oferecer líquido."
+     ],
+     [
+      "Medida oblíqua",
+      "Superestima espessura e comprimento: medir sempre no eixo longitudinal verdadeiro do canal."
      ]
     ]
    }
   ],
-  "exam": {
-   "prep": "Gel aquecido\r\nSe possível, realizar o exame após o neonato ter mamado.",
-   "position": "Paciente em decubito dorsal e/ou obliquo posterior direito",
-   "technique": "Utilizando um transdutor linear de alta freqüência (7-10MHz) em um corte transverso e com ligeira rotação anti-horária, identifique a vesícula biliar. O piloro geralmente está localizado ligeiramente medial e posterior em relação à vesícula biliar."
-  }
+  "footnotes": [
+   "Regra do número π (3,14): espessura muscular ≥ 3 mm e comprimento do canal ≥ 14 mm sugerem estenose hipertrófica do piloro.",
+   "Quadro típico: lactente de 2 a 12 semanas (pico entre 3 e 6 semanas), predomínio masculino (cerca de 4:1), incidência de cerca de 3 por 1.000 nascidos vivos. Vômitos em jato não biliosos e alcalose metabólica hipoclorêmica e hipocalêmica.",
+   "A ultrassonografia é o método de escolha, com sensibilidade e especificidade próximas de 100%, mas é operador-dependente.",
+   "Vômito bilioso não é típico de EHP e sugere outra causa, como má rotação com volvo. Outros diferenciais: piloroespasmo, refluxo gastroesofágico, erro alimentar, membrana antral e estenose duodenal."
+  ],
+  "refs": [
+   "Blumhagen JD, Maclin L, Krauter D, Rosenbaum DM, Weinberger E. Sonographic diagnosis of hypertrophic pyloric stenosis. AJR Am J Roentgenol. 1988;150(6):1367-1370. doi:10.2214/ajr.150.6.1367.",
+   "Piotto L, et al. Ultrasound diagnosis of hypertrophic pyloric stenosis – Time to change the criteria. Australas J Ultrasound Med. 2022. doi:10.1002/ajum.12305.",
+   "Hernanz-Schulman M. Infantile hypertrophic pyloric stenosis. Radiology. 2003;227(2):319-331.",
+   "Radiopaedia. Hypertrophic pyloric stenosis. Disponível em: radiopaedia.org/articles/hypertrophic-pyloric-stenosis."
+  ]
  },
  {
   "id": "pediatria-suprarrenalpediatrico",

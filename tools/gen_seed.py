@@ -295,6 +295,12 @@ for curated_path in sorted(glob.glob(os.path.join(CURATED_DIR, '*.json'))):
         if not entry_id:
             raise ValueError('Item curado sem id: %s' % curated_path)
         if entry_id in known_ids:
+            # "replace": true — reescreve um item histórico no mesmo lugar e
+            # com o mesmo id (preserva favoritos e a ordem da lista).
+            if entry.pop('replace', False):
+                idx = next(i for i, it in enumerate(items) if it['id'] == entry_id)
+                items[idx] = entry
+                continue
             raise ValueError('id duplicado no conteúdo curado: %s' % entry_id)
         known_ids.add(entry_id)
         # "insertAfter": id de um item existente. A lista do app agrupa por
