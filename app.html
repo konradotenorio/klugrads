@@ -471,6 +471,20 @@
   .refcalc-metric span{font-size:10.5px;color:var(--dim);line-height:1.25;}
   .refcalc-metric b{font-size:14px;}
   .refcalc-result-note{font-size:11.5px;color:var(--dim);line-height:1.45;margin-top:10px;}
+  /* mapa de setores da próstata */
+  .pmap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:8px;}
+  .pmap-slice{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 6px 4px;}
+  .pmap-slice-t{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);text-align:center;}
+  .pmap-svg{width:100%;height:auto;display:block;}
+  .pmap-sec{cursor:pointer;transition:fill-opacity .12s;}
+  .pmap-sec:hover{fill-opacity:.7;stroke:var(--accent);stroke-width:1.6;}
+  .pmap-lbl{font-size:8px;font-weight:700;fill:var(--dim);text-anchor:middle;pointer-events:none;}
+  .pmap-lbl.on{fill:#fff;font-size:11px;}
+  .pmap-side{font-size:11px;font-weight:800;fill:var(--accent);}
+  .pmap-ori{font-size:8px;fill:var(--dim);text-anchor:middle;font-style:italic;}
+  .pmap-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+  .pmap-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+  .pmap-tag{font-size:12px;font-weight:650;padding:4px 9px;border:1.5px solid;border-radius:999px;cursor:pointer;background:var(--sf2);}
   .ras-aorta{grid-template-columns:1fr;}
   .ras-side{display:flex;flex-direction:column;gap:10px;min-width:0;}
   .ras-side-title{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-top:2px;}
@@ -773,6 +787,7 @@
 <script src="/js/calc-renal.js"></script>
 <script src="/js/calc-ccls.js"></script>
 <script src="/js/calc-pirads.js"></script>
+<script src="/js/calc-prostata-setores.js"></script>
 <script src="/js/calc-crads.js"></script>
 <script src="/js/calc-pancreatite.js"></script>
 <script src="/js/calc-orads-mri.js"></script>
