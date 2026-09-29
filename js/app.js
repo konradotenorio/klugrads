@@ -1530,6 +1530,7 @@ function calcViewHTML(){
   if(state.calcId === 'tfg') return calcTFGHTML();
   if(state.calcId === 'tirads') return calcTiradsHTML();
   if(state.calcId === 'orads') return calcOradsHTML();
+  if(state.calcId === 'doppler-renais') return calcDopplerRenaisHTML();
   if(state.calcId === 'volgastrico') return calcVolumeGastricoHTML();
   if(state.calcId === 'esteatose-rm') return calcEsteatoseRmHTML();
   if(state.calcId === 'esteatose-tc') return calcEsteatoseTcHTML();

@@ -6,11 +6,6 @@
   "name": "Doppler de Artérias Renais",
   "abbr": "DAR",
   "iconKey": "drop",
-  "calculator": {
-   "kind": "renal-artery-stenosis",
-   "title": "Estenose de artéria renal",
-   "source": "Critérios diretos e intrarrenais — Granata 2009 / StatPearls"
-  },
   "tables": [
    {
     "title": "Valores normais",
