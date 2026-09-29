@@ -29666,6 +29666,10 @@
   "name": "Resíduo Gástrico",
   "abbr": "",
   "iconKey": "organ",
+  "calcLink": {
+   "id": "volgastrico",
+   "label": "Calcular volume gástrico"
+  },
   "exam": {
    "prep": "Sem preparo específico: o exame avalia o conteúdo gástrico no momento, por exemplo na avaliação pré-anestésica quando o jejum é incerto ou pode não ser confiável (emergência, falha de comunicação, gastroparesia diabética, disfunção hepática ou renal).",
    "position": "Decúbito dorsal e decúbito lateral direito (DLD). O DLD desloca o conteúdo para o antro e é a posição que melhor se correlaciona com o volume gástrico. A posição semissentada é uma alternativa.",

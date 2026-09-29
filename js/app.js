@@ -261,7 +261,7 @@ let state = {
   newName:'', composingId:null, modalityId:null,
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
-  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null,
+  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null, volgastrico:null,
   lang:'pt', fontScale:1, user:null,
   favCalcs:[], recents:[],
   nav:[],
@@ -1084,6 +1084,7 @@ function detailHTML(){
   const crumb = specObj ? `<div class="d-crumb"><span class="crumb-link" onclick="openSpecialty('${specObj.id}')">‹ ${esc(specObj.name)}</span></div>` : '';
   let h = crumb + `<div class="d-name">${esc(d.name)}</div><div class="sec-label">${contextLabel}</div><div class="d-age">${esc(faixa)}</div>`;
   h += referenceCalculatorHTML(d);
+  h += calcLinkHTML(d);
   if(d.tables&&d.tables.length){ d.tables.forEach((t,i)=>{ h+=tableHTML(t,d.id+'-'+i); }); }
   else { h+=`<div class="empty"><div class="msg">Sem tabela de referência para este item.</div></div>`; }
   if(d.footnotes&&d.footnotes.length){ h+=`<div class="note">`+d.footnotes.map(f=>nl2br(f)).join('<br>')+`</div>`; }
@@ -1235,6 +1236,12 @@ function customCalculatorHTML(calc){
     </div>`;
   }
   return '';
+}
+/* Atalho do tópico para uma calculadora do catálogo (campo opcional calcLink
+   {id, label} no item). Ex.: Resíduo Gástrico -> Volume Gástrico. */
+function calcLinkHTML(d){
+  const l = d.calcLink; if(!l || !l.id || !findCalc(l.id)) return '';
+  return `<div class="calc-wrap"><button class="calc-btn refcalc-btn" onclick="openFavCalc('${esc(l.id)}')">${svgIcon(P.calc,16)} ${esc(l.label||'Abrir calculadora')}</button></div>`;
 }
 function referenceCalculatorHTML(d){
   if(d.calculator) return customCalculatorHTML(d.calculator);
@@ -1434,6 +1441,7 @@ function calcViewHTML(){
   if(state.calcId === 'tfg') return calcTFGHTML();
   if(state.calcId === 'tirads') return calcTiradsHTML();
   if(state.calcId === 'orads') return calcOradsHTML();
+  if(state.calcId === 'volgastrico') return calcVolumeGastricoHTML();
   if(state.calcId === 'esteatose-rm') return calcEsteatoseRmHTML();
   if(state.calcId === 'esteatose-tc') return calcEsteatoseTcHTML();
   if(state.calcId === 'ferro-r2') return calcFerroR2HTML();
@@ -1889,6 +1897,7 @@ function openCalc(id){ navPush(); state.calcId=id; pushRecent(id); render(); }
 function resetCalc(){
   if(state.calcId==='tirads') state.tirads=null;
   else if(state.calcId==='orads') state.orads=null;
+  else if(state.calcId==='volgastrico') state.volgastrico=null;
   else if(state.calcId==='esteatose-rm') state.esteatoseRm=null;
   else if(state.calcId==='esteatose-tc') state.esteatoseTc=null;
   else if(state.calcId==='ferro-r2') state.ferroR2=null;
