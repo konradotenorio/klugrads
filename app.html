@@ -171,7 +171,7 @@
   .side-result .rm{font-size:11.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .side-empty,.side-subempty{font-size:12.5px;color:var(--dim);padding:8px 12px;font-style:italic;}
   /* Busca dedicada (view 'busca') + barra de busca da tela inicial */
-  .busca-wrap{max-width:760px;margin:0 auto;padding:14px 16px 24px;}
+  .busca-wrap{width:100%;max-width:760px;margin:0 auto;padding:14px 16px 24px;}
   .busca-bar{position:relative;}
   .busca-bar input{width:100%;background:var(--sf2);border:1px solid var(--line);color:var(--tx);border-radius:12px;padding:13px 14px 13px 40px;font-size:16px;outline:none;font-family:inherit;}
   .busca-bar input:focus{border-color:var(--accent);}
@@ -374,6 +374,17 @@
 
   .disc{margin:18px 16px;padding:13px 15px;background:var(--accentSoft);border-radius:14px;font-size:12.5px;color:var(--dim);line-height:1.5;}
   .disc b{color:var(--tx);}
+  /* Rodapé padrão de todas as telas (footerHTML em app.js) */
+  /* .scroll vira coluna para o rodapé (margin-top:auto) ficar no fim da tela mesmo em páginas curtas; flex:none mantém o tamanho natural dos demais filhos */
+  .scroll{display:flex;flex-direction:column;}
+  .scroll > *{flex:none;}
+  .kr-foot{margin-top:auto;padding-top:26px;}
+  .kr-foot-in{margin:0 16px;padding:20px 0 32px;border-top:1px solid var(--line);text-align:center;font-size:12.5px;line-height:1.55;color:var(--dim);}
+  .kr-foot-in p{margin:0 auto;max-width:46rem;}
+  .kr-foot-in p + p{margin-top:10px;}
+  .kr-foot-in b{color:var(--tx);}
+  .kr-foot-in a{color:var(--accent);font-weight:600;text-decoration:none;}
+  .kr-foot-in a:hover{text-decoration:underline;}
   /* ---------- Configurações ---------- */
   .set-wrap{padding:6px 0 30px;}
   .set-row{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);}

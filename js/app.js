@@ -472,7 +472,7 @@ function renderStage(keep){
   const s = $('scroll');
   const top = keep ? s.scrollTop : 0;
   if(v==='calc' && state.calcId==='tfg') _drumLock = true;   // antes do innerHTML: o scroll "fantasma" das rodas pode vir já no 1º quadro
-  s.innerHTML = translateHTML(viewHTML());
+  s.innerHTML = translateHTML(viewHTML()) + footerHTML();
   s.className = keep ? 'scroll' : 'scroll fade';
   s.scrollTop = top;
   if(v==='calc' && state.calcId==='tfg') setTimeout(initDrums, 0);
@@ -480,6 +480,16 @@ function renderStage(keep){
   const sub = $('subtabs');
   sub.className='subtabs hide';
   sub.innerHTML='';
+}
+
+/* ---- Rodapé padrão (fim de TODAS as telas) ----
+   Mesmas duas mensagens do rodapé da landing (index.html). Anexado por
+   renderStage(), então vale para qualquer tela nova sem mexer nela. */
+function footerHTML(){
+  return `<div class="kr-foot"><div class="kr-foot-in">
+    <p><b>KLUGRADS - Ferramenta Educacional.</b> Acervo de informações baseados nos principais artigos da literatura radiológica. Métodos de maior produtividade não substituem o julgamento clínico. Confirme sempre e garanta sua excelência diagnóstica.</p>
+    <p>Dúvidas, críticas e sugestões: Entre em contato via e-mail: <a href="mailto:${FEEDBACK_EMAIL}">${FEEDBACK_EMAIL}</a> ou envie-nos uma mensagem direto dentro do setor de Configurações</p>
+  </div></div>`;
 }
 
 /* ---- Métodos ativos no menu lateral (US/TC/RM) ----
@@ -650,7 +660,6 @@ function dashboardHTML(){
       <div class="dash-tool" onclick="setView('favoritos')">${svgIcon(P.star,24,{fill:'none'})}<div><div class="tt">Favoritos</div><div class="td">O que você marcou</div></div></div>
       <div class="dash-tool" onclick="setView('ferramentas')">${svgIcon(P.tools,24)}<div><div class="tt">Outras Ferramentas</div><div class="td">TFG e mais</div></div></div>
     </div>
-    <div class="disc"><b>Ferramenta educacional. Os valores são referências da literatura e não substituem o julgamento clínico.</b></div>
   </div>`;
 }
 function sideSearch(v){
@@ -1103,7 +1112,6 @@ function refsListHTML(){
     if(d.region!==last){ html+=`<div class="grp">${esc(d.region)}</div>`; last=d.region; }
     html += rowHTML(d);
   });
-  html += `<div class="disc"><b>Ferramenta educacional. Os valores são referências da literatura e não substituem o julgamento clínico.</b></div>`;
   return html;
 }
 function dopplerIndexHTML(q){
