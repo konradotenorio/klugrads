@@ -316,3 +316,11 @@ body.kbd .tabbar{display:none;}
 
 /* ícone de calculadora nos Favoritos: traço (o .ic.star preenchia de sólido) */
 .row .ic.star.calc svg{fill:none;stroke:currentColor;stroke-width:1.6;}
+
+/* alvos de toque de 40 px */
+.rec-chip{min-height:40px;}
+.set-step button{width:40px;height:40px;}
+
+/* métodos no início: 1 coluna (celular), 2 (tablet/desktop estreito), 4 (desktop largo) — sem cartão sozinho */
+@media (min-width:600px){ .mod2-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
+@media (min-width:1200px){ .mod2-grid{grid-template-columns:repeat(4,minmax(0,1fr));} }
