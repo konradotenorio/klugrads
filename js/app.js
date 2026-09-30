@@ -994,17 +994,17 @@ function homeHTML(){
     </div>
     <div class="lc-b">
       <div class="lc-top">
-        <div class="lc-card" onclick="${calcOnclick}">
-          <div class="lc-chip">${svgIcon(P.calc,26)}</div>
-          <div><div class="t">Calculadoras</div><div class="d">${esc(t.calcD)}</div></div>
+        <div class="lc-card" onclick="${protoOnclick}">
+          <div class="lc-chip">${svgIcon(P.table,26)}</div>
+          <div><div class="t">Protocolos</div><div class="d">${esc(t.protoD)}</div></div>
         </div>
         <div class="lc-card fill" onclick="${refOnclick}">
           <div class="lc-chip">${svgIcon(P.book,26)}</div>
           <div><div class="t">Referências</div><div class="d">${esc(t.refD)}</div></div>
         </div>
-        <div class="lc-card wide" onclick="${protoOnclick}">
-          <div class="lc-chip">${svgIcon(P.table,26)}</div>
-          <div><div class="t">Protocolos</div><div class="d">${esc(t.protoD)}</div></div>
+        <div class="lc-card wide" onclick="${calcOnclick}">
+          <div class="lc-chip">${svgIcon(P.calc,26)}</div>
+          <div><div class="t">Calculadoras</div><div class="d">${esc(t.calcD)}</div></div>
         </div>
       </div>
     </div>
