@@ -65,7 +65,7 @@ const $ = id=>document.getElementById(id);
 
 /* ---- Modalidades de diagnóstico por imagem ---- */
 const MODALITIES = [
-  {id:'rx',   name:'Radiografia',                label:'Radiografia',                  active:false,
+  {id:'rx',   name:'Radiografia',                label:'Radiografia',                  active:true,
    icon:'<rect x="5" y="2" width="14" height="20" rx="1.5"/><path d="M9 7h6M8 11h3M8 15h3M13 11h3M13 15h3"/>'},
   {id:'mamo', name:'Mamografia',                 label:'Mamografia',                   active:false,
    icon:'<path d="M6 19C6 12 9 5 12 5s6 7 6 14"/><line x1="3" y1="19" x2="21" y2="19"/><path d="M7.5 19c.8-3.5 2.5-5.5 4.5-5.5s3.7 2 4.5 5.5"/>'},
@@ -977,6 +977,7 @@ const HOME_CARDS = {
   us: {calcD:'TI-RADS, BI-RADS, escores e fórmulas', refD:'Medidas normais por órgão e idade', protoD:'Preparo e técnica de exame'},
   tc: {calcD:'CAD-RADS, Lung-RADS, MESA, escores e fórmulas', refD:'Nomenclaturas e conteúdo de apoio', protoD:'Aquisição, contraste e reconstrução'},
   rm: {calcD:'PI-RADS, O-RADS, PI-QUAL, escores e fórmulas', refD:'Nomenclaturas e conteúdo de apoio', protoD:'Sequências, contraste e indicação'},
+  rx: {calcD:'Idade óssea (IA) e ferramentas de apoio', refD:'Nomenclaturas e conteúdo de apoio', protoD:'Posicionamento e técnica'},
 };
 function homeHTML(){
   const mid = state.modalityId;
@@ -1618,6 +1619,7 @@ function toggleFavCalc(id){
 }
 function openFavCalc(id){
   const c = findCalc(id); if(!c) return;
+  if(goCalcPage(id)) return;
   navPush();
   if(c.modality && c.modality!=='us'){ state.modalityId=c.modality; state.calcKind=c.kind||'calc'; }
   else if(c.spec){ state.modalityId='us'; state.calcSpec=c.spec; }
@@ -2012,7 +2014,10 @@ function openItem(id){
   navPush();
   state.item=d; state.view='detail'; state.sub='tabela'; render();
 }
-function openCalc(id){ navPush(); state.calcId=id; pushRecent(id); render(); }
+/* Calculadora que é uma página própria do site (c.href, ex.: /idade-ossea):
+   navega em vez de renderizar dentro do app. */
+function goCalcPage(id){ const c=findCalc(id); if(c && c.href){ pushRecent(id); location.href=c.href; return true; } return false; }
+function openCalc(id){ if(goCalcPage(id)) return; navPush(); state.calcId=id; pushRecent(id); render(); }
 /* Limpa a calculadora aberta. As fetais não guardam estado: o render()
    recria os campos vazios e some com o resultado. */
 function resetCalc(){

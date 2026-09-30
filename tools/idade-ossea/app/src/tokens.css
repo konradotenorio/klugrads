@@ -1,0 +1,60 @@
+/* Tokens do KlugRads (os mesmos de app.html): tema escuro padrão e tema claro via [data-theme="light"].
+   O tema é compartilhado com o app pela chave localStorage "radref_theme". */
+:root {
+  --bg: #0e1216;
+  --sf: #161c23;
+  --sf2: #1e2730;
+  --sf3: #26313c;
+  --line: #28323d;
+  --line2: #38444f;
+  --tx: #e9eef3;
+  --dim: #8b98a5;
+  --accent: #12a9c9;
+  --accentInk: #04222b;
+  --accentSoft: #12a9c924;
+  --accentBorder: #12a9c959;
+  --accentMid: #12a9c94d;
+  --accentHover: #3dbdd9;
+  --plate: #05090c;
+  --overlay: #04090ed9;
+  --warn: #f5a524;
+  --warnSoft: #f5a52422;
+  --warnBorder: #f5a52455;
+  --danger: #ff8b7a;
+  --dangerSoft: #ff6b5622;
+  --dangerBorder: #ff6b5655;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --focus-ring: 0 0 0 4px var(--accentSoft);
+  --mono: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+  /* nomes usados pelo CSS original */
+  --ink: var(--tx);
+  --green: var(--accent);
+  --muted: var(--dim);
+}
+[data-theme="light"] {
+  --bg: #eceff3;
+  --sf: #ffffff;
+  --sf2: #f3f6f9;
+  --sf3: #e8edf2;
+  --line: #e4e9ef;
+  --line2: #cfd7df;
+  --tx: #16202a;
+  --dim: #5e6c7a;
+  --accent: #0e88a6;
+  --accentInk: #ffffff;
+  --accentSoft: #0e88a624;
+  --accentBorder: #0e88a659;
+  --accentMid: #0e88a640;
+  --accentHover: #0b6f88;
+  --plate: #0b1116;
+  --overlay: #0b1116d9;
+  --warn: #8a5f0b;
+  --warnSoft: #f5a52426;
+  --warnBorder: #d9a52080;
+  --danger: #a63a2a;
+  --dangerSoft: #fbeae6;
+  --dangerBorder: #efc7bf;
+  --shadow: 0 8px 24px rgba(20, 40, 60, 0.07);
+  color-scheme: light;
+}
