@@ -1,6 +1,6 @@
 // Public app/model metadata only. Images and examination data never enter caches.
-const CACHE = "klugrads-idade-ossea-app-28ff76424120ceb7";
-const FILES = ["./","./assets/index-DYPb65nH.css","./assets/index-JSf6IGUn.js","./assets/inference.worker-Bz8jLu6W.js","./favicon.svg","./index.html","./model-license.txt","./model-notice.txt","./runtime/ort-wasm-simd-threaded.mjs","./runtime/ort-wasm-simd-threaded.wasm"];
+const CACHE = "klugrads-idade-ossea-app-ac8dd266ed13d1ac";
+const FILES = ["./","./assets/index-DYPb65nH.css","./assets/index-tQfZbzq2.js","./assets/inference.worker-Bz8jLu6W.js","./favicon.svg","./index.html","./model-license.txt","./model-notice.txt","./runtime/ort-wasm-simd-threaded.mjs","./runtime/ort-wasm-simd-threaded.wasm"];
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(FILES)));
 });
