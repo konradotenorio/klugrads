@@ -261,7 +261,7 @@ let state = {
   newName:'', composingId:null, modalityId:null,
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
-  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null, volgastrico:null, prostMap:null, figo:null, mesa:null, mesaCac:null, cacDrs:null,
+  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null, volgastrico:null, prostMap:null, figo:null, mesaCac:null,
   lang:'pt', fontScale:1, user:null,
   favCalcs:[], recents:[],
   nav:[],
@@ -352,6 +352,12 @@ function loadState(){
   try{ const c=JSON.parse(localStorage.getItem('radref_favcalcs')||'[]'); if(Array.isArray(c)) state.favCalcs=c; }catch(_){}
   try{ const rc=JSON.parse(localStorage.getItem('radref_recents')||'[]'); if(Array.isArray(rc)) state.recents=rc; }catch(_){}
   try{ state.termsAccepted = localStorage.getItem('radref_terms')===TERMS_VERSION; }catch(_){}
+  // Calculadoras aposentadas: tira o id dos favoritos/recentes guardados no aparelho
+  // (senão ficam órfãos, e reapareceriam se o id fosse reutilizado no futuro).
+  const RETIRED_CALCS = ['mesa','cac-drs'];
+  const keep = id => RETIRED_CALCS.indexOf(id)<0;
+  if(state.favCalcs.some(id=>!keep(id))){ state.favCalcs = state.favCalcs.filter(keep); persist('radref_favcalcs', state.favCalcs); }
+  if(state.recents.some(id=>!keep(id))){ state.recents = state.recents.filter(keep); persist('radref_recents', state.recents); }
 }
 /* Registra uma calculadora nas "Recentes" (mais recente primeiro, sem repetir, máx. 6). */
 function pushRecent(id){
@@ -1572,9 +1578,7 @@ function calcViewHTML(){
   if(state.calcId === 'lung-rads') return calcLungRadsHTML();
   if(state.calcId === 'fleischner') return calcFleischnerHTML();
   if(state.calcId === 'cadrads') return calcCadradsHTML();
-  if(state.calcId === 'mesa') return calcMesaHTML();
   if(state.calcId === 'mesa-cac') return calcMesaCacHTML();
-  if(state.calcId === 'cac-drs') return calcCacDrsHTML();
   if(state.calcId === 'pi-qual') return calcPiQualHTML();
   if(state.calcId === 'precise') return calcPreciseHTML();
   if(state.calcId === 'pi-rr') return calcPiRrHTML();
@@ -2043,9 +2047,7 @@ function resetCalc(){
   else if(state.calcId==='lung-rads') state.lungrads=null;
   else if(state.calcId==='fleischner') state.fleischner=null;
   else if(state.calcId==='cadrads') state.cadrads=null;
-  else if(state.calcId==='mesa') state.mesa=null;
   else if(state.calcId==='mesa-cac') state.mesaCac=null;
-  else if(state.calcId==='cac-drs') state.cacDrs=null;
   else if(state.calcId==='pi-qual') state.piqual=null;
   else if(state.calcId==='precise') state.precise=null;
   else if(state.calcId==='pi-rr') state.pirr=null;
