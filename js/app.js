@@ -628,6 +628,7 @@ function headerHTML(){
   else if(v==='detail'){ title=state.item?state.item.name:''; sub=(state.item&&state.item.abbr)?state.item.abbr:''; }
   else if(v==='calc'){ const c = state.calcId ? findCalc(state.calcId) : null;
     if(c) title=c.title;
+    else if(state.modalityId && state.calcKind==='proto'){ const m=MODALITIES.find(x=>x.id===state.modalityId); title=(m?m.name:'Protocolos')+' — Protocolos'; }
     else if(state.modalityId && state.modalityId!=='us'){ const m=MODALITIES.find(x=>x.id===state.modalityId); title=(m?m.name:'Calculadoras')+(state.calcKind==='ref'?' — Referências':' — Calculadoras'); }
     else title='Calculadoras'; }
   else if(v==='ferramentas'){ title='Outras Ferramentas'; }
@@ -973,17 +974,18 @@ function logout(){
    Referências próprio (órgãos/medidas); TC/RM filtram o mesmo catálogo de
    calculadoras (CALCS) por kind:'calc'|'ref'. */
 const HOME_CARDS = {
-  us: {calcD:'TI-RADS, BI-RADS, escores e fórmulas', refD:'Medidas normais por órgão e idade'},
-  tc: {calcD:'CAD-RADS, Lung-RADS, MESA, escores e fórmulas', refD:'Nomenclaturas e protocolos de apoio'},
-  rm: {calcD:'PI-RADS, O-RADS, PI-QUAL, escores e fórmulas', refD:'Nomenclaturas e protocolos de apoio'},
+  us: {calcD:'TI-RADS, BI-RADS, escores e fórmulas', refD:'Medidas normais por órgão e idade', protoD:'Preparo e técnica de exame'},
+  tc: {calcD:'CAD-RADS, Lung-RADS, MESA, escores e fórmulas', refD:'Nomenclaturas e conteúdo de apoio', protoD:'Aquisição, contraste e reconstrução'},
+  rm: {calcD:'PI-RADS, O-RADS, PI-QUAL, escores e fórmulas', refD:'Nomenclaturas e conteúdo de apoio', protoD:'Sequências, contraste e indicação'},
 };
 function homeHTML(){
   const mid = state.modalityId;
   const isUS = mid==='us';
   const m = MODALITIES.find(x=>x.id===mid);
   const t = HOME_CARDS[mid] || HOME_CARDS.us;
-  const calcOnclick = isUS ? "setView('calc')" : "openModCalcs('calc')";
-  const refOnclick  = isUS ? "setView('refs')" : "openModCalcs('ref')";
+  const calcOnclick  = isUS ? "setView('calc')" : "openModCalcs('calc')";
+  const refOnclick   = isUS ? "setView('refs')" : "openModCalcs('ref')";
+  const protoOnclick = "openModCalcs('proto')";
   return `<div class="lc">
     <button class="iconbtn lc-back" onclick="goBack()" aria-label="Voltar">${svgIcon(P.back,22,{sw:2.2})}</button>
     <div class="lc-head">
@@ -992,13 +994,17 @@ function homeHTML(){
     </div>
     <div class="lc-b">
       <div class="lc-top">
-        <div class="lc-card" onclick="${calcOnclick}">
-          <div class="lc-chip">${svgIcon(P.calc,26)}</div>
-          <div><div class="t">Calculadoras</div><div class="d">${esc(t.calcD)}</div></div>
+        <div class="lc-card" onclick="${protoOnclick}">
+          <div class="lc-chip">${svgIcon(P.table,26)}</div>
+          <div><div class="t">Protocolos</div><div class="d">${esc(t.protoD)}</div></div>
         </div>
         <div class="lc-card fill" onclick="${refOnclick}">
           <div class="lc-chip">${svgIcon(P.book,26)}</div>
           <div><div class="t">Referências</div><div class="d">${esc(t.refD)}</div></div>
+        </div>
+        <div class="lc-card wide" onclick="${calcOnclick}">
+          <div class="lc-chip">${svgIcon(P.calc,26)}</div>
+          <div><div class="t">Calculadoras</div><div class="d">${esc(t.calcD)}</div></div>
         </div>
       </div>
     </div>
@@ -1629,7 +1635,7 @@ function calcListModalityHTML(mid){
   const kind = state.calcKind || 'calc';
   const mine = allCalcs().filter(c=>c.modality===mid && (c.kind||'calc')===kind);
   if(!mine.length){
-    const label = kind==='ref' ? 'Referências' : 'Calculadoras';
+    const label = kind==='ref' ? 'Referências' : kind==='proto' ? 'Protocolos' : 'Calculadoras';
     return `<div class="calc-list-wrap"><div class="empty"><div class="msg">${esc(label)} deste método <b>em breve</b>.</div></div></div>`;
   }
   let h = '';
@@ -1645,7 +1651,9 @@ function calcListModalityHTML(mid){
 }
 function calcListHTML(){
   // Método não-US com conteúdo próprio (ex.: RM): agrupa por subespecialidade.
-  if(state.modalityId && state.modalityId!=='us'){ return calcListModalityHTML(state.modalityId); }
+  // Protocolos (kind:'proto') usa o mesmo catálogo genérico em qualquer método,
+  // inclusive US — que, fora isso, tem seu próprio sistema de Calculadoras/Referências.
+  if(state.modalityId && (state.modalityId!=='us' || state.calcKind==='proto')){ return calcListModalityHTML(state.modalityId); }
   // Fora da ultrassonografia (Outras Ferramentas): calculadoras gerais.
   if(state.modalityId !== 'us'){
     const gerais = GENERAL_CALCS.length

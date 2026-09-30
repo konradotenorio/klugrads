@@ -106,7 +106,7 @@ function esttcNcFrase(){
 function esttcCtFrase(){
   const s = esteatoseTcState(); const r = esttcCtCalc(s); if(!r) return '';
   const z = String(r.res).replace('.', ',');
-  if(r.steat) return `Fígado com atenuação parenquimatosa corrigida de ${z} UH em estudo com contraste, compatível com esteatose hepática (limiar ≤ 104 UH).`;
+  if(r.steat) return `Fígado com atenuação parenquimatosa corrigida de ${z} UH em estudo com contraste, sugestivo para esteatose hepática (limiar ≤ 104 UH).`;
   return `Fígado com atenuação parenquimatosa corrigida de ${z} UH em estudo com contraste, sem sinais de esteatose hepática (limiar > 104 UH).`;
 }
 function esttcFraseHTML(mode){
