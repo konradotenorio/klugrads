@@ -16,4 +16,6 @@ docs/
 .claude/
 *.md
 !index.md
+
+# Automação do GitHub (workflows): não precisa ir ao ar
 .github/
