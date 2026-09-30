@@ -122,7 +122,7 @@ function iconForItem(d){
 const SPEC_ICON = {neurocab:'head', torax:'lung', abdome:'liver', musculo:'bone', obstetrico:'baby', doppler:'drop'};
 function specIcon(id,size){
   const k=SPEC_ICON[id];
-  const inner = RICON[k] || (k==='baby' ? '<circle cx="12" cy="8" r="4"/><path d="M6 21c0-4 3-6 6-6s6 2 6 6"/>' : P.drop);
+  const inner = RICON[k] || (k==='baby' ? '<circle cx="12" cy="8" r="4"/><path d="M6 21c0-4 3-6 6-6s6 2 6 6"/>' : '<path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/>');
   return svgIcon(inner,size||18,{sw:1.8});
 }
 
@@ -363,7 +363,7 @@ let state = {
   perfil:null, assinatura:null,     // preenchidos por carregarDadosDaConta()
   favs:[], lists:[],
   newName:'', composingId:null, modalityId:null,
-  calcId:null,
+  calcId:null, calcsFilter:'all', calcsQ:'', gquery:'',
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
   tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null, volgastrico:null, prostMap:null, figo:null, mesaCac:null,
   lang:'pt', fontScale:1, user:null,
@@ -519,7 +519,10 @@ function metaOf(d){ return [d.region, d.abbr].filter(Boolean).join(' · '); }
    render(keep): keep=true preserva o scroll (atualizações in-place);
    sem keep, reinicia o scroll ao topo (navegação) com fade.
    ========================================================================= */
+let _prevView = null;
 function render(keep){
+  if(state.view==='modality' && _prevView!=='modality') state.gquery='';   // voltar ao início limpa a busca anterior
+  _prevView = state.view;
   applyTheme();
   applyFontScale();
   // Enquanto os termos não forem aceitos, o app abre na tela de aceite (bloqueia
@@ -527,6 +530,7 @@ function render(keep){
   if(!state.termsAccepted && state.view!=='terms'){ state.view='terms'; }
   renderSidebar();
   renderStage(keep);
+  if(typeof uxAfterRender==='function') uxAfterRender(keep);   // histórico, barra inferior, dock (js/ux.js)
 }
 // Palco = tudo dentro de #app (header + corpo + subtabs). Separado da sidebar
 // para poder atualizar o conteúdo sem recriar a sidebar (mantém foco da busca).
@@ -534,7 +538,7 @@ function renderStage(keep){
   const v = state.view;
   try{ document.body.dataset.view = v; }catch(_){}   // escopa CSS por view (desktop)
   const hdr = $('hdr');
-  if(v==='home' || v==='modality' || v==='terms' || v==='inicio'){ hdr.className='hdr hide'; hdr.innerHTML=''; }
+  if(v==='modality' || v==='terms'){ hdr.className='hdr hide'; hdr.innerHTML=''; }
   else { hdr.className='hdr'; hdr.innerHTML = translateHTML(headerHTML()); }
   const s = $('scroll');
   const top = keep ? s.scrollTop : 0;
@@ -569,7 +573,7 @@ function methodsNavHTML(){
 
 /* ---- Sidebar persistente (layout web / desktop) ---- */
 function sidebarHTML(){
-  const isCalc = state.view==='calc';
+  const isCalc = state.view==='calc' || state.view==='calcs';
   const specGroups = (typeof SPECIALTIES!=='undefined'?SPECIALTIES:[]).map(function(s){
     const open = state.openSpec===s.id;
     const activeHead = state.view==='refs' && state.specialty===s.id;
@@ -586,7 +590,8 @@ function sidebarHTML(){
       <div class="side-children">${children}</div>
     </div>`;
   }).join('');
-  const tool=(view,label,icon)=>`<div class="side-item ${state.view===view?'on':''}" onclick="setView('${view}')"><span class="si">${icon}</span>${esc(label)}</div>`;
+  const item=(label,icon,act,on,extra)=>`<div class="side-item ${on?'on':''}" onclick="${act}"><span class="si">${icon}</span>${label}${extra||''}</div>`;
+  const v = state.view;
   const searching = !!(state.gquery && state.gquery.trim());
   return `<div class="side-top" onclick="goInicio()">
       <div class="side-brand"><span class="k">KLUG</span><span class="r">RADS</span></div>
@@ -594,27 +599,28 @@ function sidebarHTML(){
     </div>
     <div class="side-gsearch">
       <span class="si">${svgIcon(P.search,16,{sw:2})}</span>
-      <input id="side-q" placeholder="Buscar em todo o site…" value="${esc(state.gquery||'')}" oninput="globalSearch(this.value)" autocomplete="off">
+      <input id="side-q" placeholder="Buscar em todo o site…   ( / )" value="${esc(state.gquery||'')}" oninput="globalSearch(this.value)" autocomplete="off" aria-label="Buscar em todo o site">
     </div>
     <div id="side-results" class="side-results">${searching?globalResultsHTML(state.gquery):''}</div>
     <nav class="side-nav" id="side-nav" ${searching?'hidden':''}>
-      <div class="side-item" onclick="goInicio()"><span class="si">${svgIcon(P.home,19,{sw:1.8})}</span>Início</div>
+      ${item('Início',svgIcon(P.home,19,{sw:1.8}),'goInicio()',false)}
       <div class="side-sec">Métodos de Diagnóstico</div>
       ${methodsNavHTML()}
       ${(state.modalityId==='us' && !isCalc) ? `<div class="side-sec">Ultrassonografia — Referências</div>${specGroups}` : ''}
       <div class="side-sec">Ferramentas</div>
-      <div class="side-item" onclick="openViewer()"><span class="si">${svgIcon(P.dicom,19)}</span>Visualizador DICOM<span class="side-ext">${svgIcon(P.ext,13,{sw:2})}</span></div>
-      <div class="side-item ${isCalc&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>Calculadoras (US)</div>
-      ${tool('ferramentas','Outras Ferramentas', svgIcon(P.tools,19))}
-      ${tool('favoritos','Favoritos', svgIcon(P.star,19,{fill:'none'}))}
-      ${tool('config','Configurações', svgIcon(P.gear,19))}
+      ${item('Calculadoras',svgIcon(P.calc,19),"openCalcsView('all')", v==='calcs' || (v==='calc'&&state.calcId&&!state.modalityId))}
+      ${item('Outras Ferramentas',svgIcon(P.tools,19),"setView('ferramentas')", v==='ferramentas'||v==='contraste'||v==='contrasteItem')}
+      ${item('Visualizador DICOM',svgIcon(P.dicom,19),'openViewer()',false,`<span class="side-ext">${svgIcon(P.ext,13,{sw:2})}</span>`)}
+      ${item('Favoritos',svgIcon(P.star,19,{fill:'none'}),"setView('favoritos')", v==='favoritos')}
+      ${item('Listas',svgIcon(P.listplus,19),"setView('novalista')", v==='novalista')}
+      ${item('Configurações',svgIcon(P.gear,19),"setView('config')", v==='config'||v==='termsRead')}
     </nav>
     <div class="side-foot"><b>Grátis · sem login</b><br>Ferramenta educacional — não substitui o julgamento clínico.</div>`;
 }
 // A sidebar NÃO aparece nas telas iniciais (Métodos de Diagnóstico / termos):
 // a landing fica limpa e em tela cheia. Ela surge ao entrar num conteúdo,
 // já alimentada com as opções clicáveis.
-var SIDEBAR_HIDDEN_VIEWS = ['terms','modality','inicio'];
+var SIDEBAR_HIDDEN_VIEWS = ['terms','modality'];
 function renderSidebar(){
   const el = $('side'); if(!el) return;
   if(!state.termsAccepted || SIDEBAR_HIDDEN_VIEWS.indexOf(state.view)>=0){ el.style.display='none'; el.innerHTML=''; return; }
@@ -684,47 +690,17 @@ function buscaSearch(v){
   const el=document.getElementById('busca-results');
   if(el) el.innerHTML = translateHTML(v.trim()?globalResultsHTML(v):buscaHintHTML());
 }
-function openCalcs(){ state.modalityId='us'; state.calcId=null; state.view='calc'; render(); }
+/* Lista única de calculadoras (todas as modalidades) com filtro por método. */
+function openCalcsView(f){
+  f = f || 'all';
+  state.calcsFilter = f; state.calcsQ = '';
+  state.modalityId = (f==='all' || f==='geral') ? null : f;
+  state.calcKind = null; state.calcId = null; state.view = 'calcs'; render();
+}
+function openCalcs(){ openCalcsView('us'); }
 function isDesktop(){ return !!(window.matchMedia && window.matchMedia('(min-width:900px)').matches); }
 function homeView(){ return 'modality'; }   // tela inicial = Métodos de Diagnóstico
 function goInicio(){ state.view='modality'; render(); }
-// Busca do hero: leva ao guia (refs) e passa o foco para a busca da sidebar,
-// que é persistente — assim o usuário continua digitando sem interrupção.
-function dashSearch(v){
-  state.query=v; state.view='refs';
-  if(!state.specialty && typeof SPECIALTIES!=='undefined') state.specialty=SPECIALTIES[0].id;
-  render();
-  var inp=document.querySelector('.side-search input');
-  if(inp){ inp.focus(); inp.value=v; try{ inp.setSelectionRange(v.length,v.length); }catch(_){} }
-}
-function dashboardHTML(){
-  var cards=(typeof SPECIALTIES!=='undefined'?SPECIALTIES:[]).map(function(s){
-    return `<div class="dash-card" onclick="openSpecialty('${s.id}')"><div class="dash-ic">${svgIcon(P.book,22)}</div><div class="dash-t">${esc(s.name)}</div></div>`;
-  }).join('');
-  return `<div class="dash">
-    <div class="dash-hero">
-      <div class="dash-brand">KLUG<span>RADS</span></div>
-      <div class="dash-slogan">Sua referência em Radiologia</div>
-      <div class="dash-sub">Medidas normais, técnica de exame e calculadoras — na hora do laudo.</div>
-      <div class="dash-search"><span class="si">${svgIcon(P.search,18,{sw:2})}</span><input placeholder="Buscar órgão, medida ou calculadora…" oninput="dashSearch(this.value)"></div>
-    </div>
-    <div class="dash-sec">Especialidades</div>
-    <div class="dash-grid">${cards}</div>
-    <div class="dash-sec">Ferramentas</div>
-    <div class="dash-tools">
-      <div class="dash-tool" onclick="openViewer()">${svgIcon(P.dicom,24)}<div><div class="tt">VISUALIZADOR DICOM</div><div class="td">Abra exames do CD/pendrive no navegador</div></div></div>
-      <div class="dash-tool" onclick="openCalcs()">${svgIcon(P.calc,24)}<div><div class="tt">Calculadoras</div><div class="td">TI-RADS, O-RADS, risco fetal…</div></div></div>
-      <div class="dash-tool" onclick="setView('favoritos')">${svgIcon(P.star,24,{fill:'none'})}<div><div class="tt">Favoritos</div><div class="td">O que você marcou</div></div></div>
-      <div class="dash-tool" onclick="setView('ferramentas')">${svgIcon(P.tools,24)}<div><div class="tt">Outras Ferramentas</div><div class="td">TFG e mais</div></div></div>
-    </div>
-    <div class="disc"><b>Ferramenta educacional. Os valores são referências da literatura e não substituem o julgamento clínico.</b></div>
-  </div>`;
-}
-function sideSearch(v){
-  state.query = v;
-  if(state.view!=='refs'){ state.view='refs'; if(!state.specialty && typeof SPECIALTIES!=='undefined') state.specialty=SPECIALTIES[0].id; renderStage(); }
-  const el=$('reflist'); if(el) el.innerHTML = translateHTML(refsListHTML());
-}
 function applyTheme(){
   document.documentElement.setAttribute('data-theme', state.theme==='light'?'light':'dark');
   const m = document.querySelector('meta[name=theme-color]');
@@ -732,10 +708,27 @@ function applyTheme(){
 }
 function renderHeader(){ $('hdr').innerHTML = headerHTML(); }
 
-function headerHTML(){
+/* Trilha (desktop): de onde a tela veio. Some no celular via CSS. */
+function crumbsFor(){
+  const v = state.view, out = [];
+  const m = state.modalityId && MODALITIES.find(x=>x.id===state.modalityId);
+  if(v==='calc' && state.calcId){
+    if(m) out.push({l:m.name, a:`openModality('${m.id}')`});
+    out.push({l:'Calculadoras', a:`openCalcsView('${m?m.id:'all'}')`});
+  } else if((v==='refs' || v==='calc' || v==='calcs') && m){
+    out.push({l:m.name, a:`openModality('${m.id}')`});
+  } else if(v==='contraste' || v==='contrasteItem'){
+    out.push({l:'Outras Ferramentas', a:"setView('ferramentas')"});
+    if(v==='contrasteItem') out.push({l:'Meios de Contraste', a:'openContrasteList()'});
+  }
+  return out;
+}
+function viewTitle(){
   const v = state.view;
   let title='', sub='';
   if(v==='refs'){ title='Referências'; }
+  else if(v==='home'){ const m=MODALITIES.find(x=>x.id===state.modalityId); title=m?m.name:''; }
+  else if(v==='calcs'){ title='Calculadoras'; }
   else if(v==='detail'){ title=state.item?state.item.name:''; sub=(state.item&&state.item.abbr)?state.item.abbr:''; }
   else if(v==='calc'){ const c = state.calcId ? findCalc(state.calcId) : null;
     if(c) title=c.title;
@@ -751,22 +744,25 @@ function headerHTML(){
   else if(v==='novalista'){ const cl=state.lists.find(x=>x.id===state.composingId); title=cl?cl.name:'Listas'; sub=cl?'Lista personalizada':''; }
   else if(v==='construction'){ const m=MODALITIES.find(x=>x.id===state.modalityId)||{}; title=m.name||'Em Construção'; }
   else if(v==='busca'){ title='Buscar'; }
-
+  return {title:title, sub:sub};
+}
+function headerHTML(){
+  const v = state.view;
+  const tt = viewTitle(), title = tt.title, sub = tt.sub;
+  // Ações do contexto (no celular só estas; busca e tema ficam na barra inferior / menu Mais)
   let right='';
-  if(v!=='busca'){
-    right += `<button class="iconbtn" onclick="setView('busca')" aria-label="Buscar" title="Buscar">${svgIcon(P.search,20,{sw:2})}</button>`;
-  }
   if(v==='calc' && state.calcId){
     right += `<button class="iconbtn" onclick="copyCalcResult()" aria-label="Copiar resultado" title="Copiar resultado">${svgIcon(P.copy,20,{sw:2})}</button>`;
-    right += `<button class="iconbtn" onclick="resetCalc()" aria-label="Resetar calculadora" title="Resetar">${svgIcon(P.reset,21,{sw:2})}</button>`;
+    right += `<button class="iconbtn" onclick="resetCalc()" aria-label="Limpar calculadora" title="Limpar">${svgIcon(P.reset,21,{sw:2})}</button>`;
   }
   if(v==='detail' && state.item){
     const isFav = state.favs.indexOf(state.item.id)>=0;
-    right += `<button class="iconbtn" style="color:${isFav?'var(--star)':'var(--dim)'}" onclick="toggleFav('${esc(state.item.id)}')" aria-label="Favoritar">${svgIcon(P.star,22,{fill:isFav?'currentColor':'none'})}</button>`;
+    right += `<button class="iconbtn" style="color:${isFav?'var(--star)':'var(--dim)'}" onclick="toggleFav('${esc(state.item.id)}')" aria-label="${isFav?'Remover dos favoritos':'Favoritar'}" aria-pressed="${isFav}">${svgIcon(P.star,22,{fill:isFav?'currentColor':'none'})}</button>`;
   }
-
-  return `<button class="hbtn" onclick="goBack()" aria-label="Voltar">${svgIcon(P.back,22,{sw:2.2})}</button>
-    <div class="htitle-wrap"><div class="htitle">${esc(title)}</div>${sub?`<div class="hsub">${esc(sub)}</div>`:''}</div>
+  const crumbs = crumbsFor();
+  const crumbHTML = crumbs.length ? `<div class="hcrumb">${crumbs.map(c=>`<a onclick="${c.a}">${esc(c.l)}</a>`).join(`<span class="sep">${svgIcon(P.chev,11,{sw:2.6})}</span>`)}</div>` : '';
+  return `<button class="hbtn" onclick="goBack()" aria-label="Voltar" title="Voltar (Esc)">${svgIcon(P.back,22,{sw:2.2})}</button>
+    <div class="htitle-wrap">${crumbHTML}<div class="htitle">${esc(title)}</div>${sub?`<div class="hsub">${esc(sub)}</div>`:''}</div>
     <div class="hact">${right}${themeToggleBtn()}</div>`;
 }
 
@@ -787,74 +783,84 @@ function viewHTML(){
     case 'terms': return termsGateHTML();
     case 'termsRead': return termsReadHTML();
     case 'busca': return buscaHTML();
-    case 'inicio': return dashboardHTML();
+    case 'calcs': return calcsViewHTML();
     default: return modalityHTML();
   }
 }
 
+/* ---- helpers de contagem (início e lançador) ---- */
+function calcsOf(mid, kind){
+  kind = kind || 'calc';
+  return allCalcs().filter(function(c){
+    const g = c.modality || (c.spec ? 'us' : 'geral');
+    return g===mid && (c.kind||'calc')===kind;
+  });
+}
+function plural(n, um, varios){ return n+' '+(n===1?um:varios); }
+function methodSummary(id){
+  const n = calcsOf(id,'calc').length, calc = plural(n,'calculadora','calculadoras');
+  if(id==='us') return plural(DATA.length,'referência','referências')+' · '+calc;
+  const r = calcsOf(id,'ref').length;
+  return r ? calc+' · '+plural(r,'referência','referências') : calc;
+}
+
 /* ---- 0. MODALIDADES (tela inicial) ---- */
 function modalityHTML(){
-  const cards = MODALITIES.map(m=>`
-    <div class="mod-card ${m.active?'active':'locked'}" onclick="openModality('${m.id}')">
-      <div class="mod-icon">${svgIcon(m.icon,22)}</div>
-      <div class="mod-name">${m.label}</div>
-      ${!m.active?'<div class="mod-badge">Em construção</div>':''}
+  const act = MODALITIES.filter(m=>m.active), soon = MODALITIES.filter(m=>!m.active);
+  const cards = act.map(m=>`<div class="mod2" onclick="openModality('${m.id}')">
+      <div class="mod-icon">${svgIcon(m.icon,26)}</div>
+      <div class="mod2-tx"><div class="mod-name">${esc(m.name)}</div><div class="mod2-n">${esc(methodSummary(m.id))}</div></div>
+      <span class="chev">${svgIcon(P.chev,18,{sw:2})}</span>
     </div>`).join('');
-  return `<div class="modal-screen">
-    <button class="iconbtn modal-theme" onclick="toggleTheme()" aria-label="Alternar tema dia/noite" title="Tema dia/noite">${themeIcon(20)}</button>
-    <div class="modal-head">
+  const soonHTML = soon.length ? `<div class="soon-row"><span class="soon-lbl">Em breve</span>${soon.map(m=>`<span class="soon-pill">${svgIcon(m.icon,14)}${esc(m.name)}</span>`).join('')}</div>` : '';
+  const rec = (state.recents||[]).map(findCalc).filter(Boolean).slice(0,6);
+  const recHTML = rec.length ? `<div class="home-sec">Recentes</div><div class="rec-row hscroll">${rec.map(c=>`<button type="button" class="rec-chip" onclick="openFavCalc('${esc(c.id)}')">${c.badge?`<b>${esc(c.badge)}</b>`:svgIcon(P.calc,14)}${esc(c.title)}</button>`).join('')}</div>` : '';
+  const sc = (icon,t,d,act,ext)=>`<div class="sc" onclick="${act}"><div class="sc-ic">${icon}</div><div class="sc-tx"><div class="t">${t}${ext||''}</div><div class="d">${d}</div></div></div>`;
+  return `<div class="home">
+    <button class="iconbtn home-theme" onclick="toggleTheme()" aria-label="Alternar tema dia/noite" title="Tema dia/noite">${themeIcon(20)}</button>
+    <div class="home-head">
       <div class="modal-brand">KLUG<span>RADS</span></div>
       <div class="modal-slogan">Sua referência em Radiologia</div>
-      <div class="modal-title">Métodos de Diagnóstico</div>
-      <div class="modal-sub">Selecione uma modalidade</div>
     </div>
-    <div class="modal-search" onclick="setView('busca')" role="button" tabindex="0">
-      <span class="si">${svgIcon(P.search,18,{sw:2})}</span>
-      <span class="ph">Buscar referências e calculadoras…</span>
+    <div class="home-search"><span class="si">${svgIcon(P.search,18,{sw:2})}</span>
+      <input id="home-q" placeholder="Buscar referências e calculadoras…" value="${esc(state.gquery||'')}" oninput="homeSearch(this.value)" autocomplete="off" enterkeyhint="search" aria-label="Buscar referências e calculadoras">
     </div>
-    <div class="modal-grid">${cards}</div>
-    <div class="modal-shortcuts">
-      <div class="lc-short" onclick="openViewer()">
-        <div class="si acc">${svgIcon(P.dicom,23)}</div>
-        <div class="st"><div class="t">Visualizador DICOM</div><div class="d">Abra exames do CD/pendrive direto no navegador</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-      <div class="lc-short" onclick="setView('ferramentas')">
-        <div class="si acc">${svgIcon(P.tools,22)}</div>
-        <div class="st"><div class="t">Outras Ferramentas</div><div class="d">Calculadoras e referências por especialidade</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-      <div class="lc-short" onclick="setView('favoritos')">
-        <div class="si star">${svgIcon(P.star,23,{fill:'currentColor',noStroke:true})}</div>
-        <div class="st"><div class="t">Favoritos</div><div class="d">Acesso rápido ao que você marcou</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-      <div class="lc-short" onclick="setView('novalista')">
-        <div class="si acc">${svgIcon(P.listplus,23)}</div>
-        <div class="st"><div class="t">Listas</div><div class="d">Monte pacotes para o plantão</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-      <div class="lc-short" onclick="setView('config')">
-        <div class="si acc">${svgIcon(P.gear,23)}</div>
-        <div class="st"><div class="t">Configurações</div><div class="d">Tema, tamanho da fonte e sugestões</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
+    <div id="home-results" class="home-results">${(state.gquery||'').trim()?globalResultsHTML(state.gquery):''}</div>
+    <div id="home-body" ${(state.gquery||'').trim()?'hidden':''}>
+      ${recHTML}
+      <div class="home-sec">Métodos de diagnóstico</div>
+      <div class="mod2-grid">${cards}</div>
+      ${soonHTML}
+      <div class="home-sec">Ferramentas</div>
+      <div class="sc-grid">
+        ${sc(svgIcon(P.dicom,22),'Visualizador DICOM','Abra exames do CD/pendrive no navegador','openViewer()',`<span class="ext">${svgIcon(P.ext,12,{sw:2})}</span>`)}
+        ${sc(svgIcon(P.tools,22),'Outras Ferramentas','Meios de contraste, TFG e mais',"setView('ferramentas')")}
+        ${sc(svgIcon(P.star,22,{fill:'none'}),'Favoritos','O que você marcou',"setView('favoritos')")}
+        ${sc(svgIcon(P.listplus,22),'Listas','Pacotes para o plantão',"setView('novalista')")}
+        ${sc(svgIcon(P.gear,22),'Configurações','Tema, fonte e sugestões',"setView('config')")}
       </div>
     </div>
   </div>`;
 }
+// Busca da tela inicial: resultados aparecem ali mesmo (sem trocar de tela).
+function homeSearch(v){
+  state.gquery = v;
+  const q = (v||'').trim();
+  const res = $('home-results'), body = $('home-body');
+  if(!res || !body) return;
+  res.innerHTML = q ? translateHTML(globalResultsHTML(v)) : '';
+  body.hidden = !!q;
+}
 
 /* ---- 1a. OUTRAS FERRAMENTAS ---- */
 function ferramentasHTML(){
-  return `<div class="lc-b">
-    <div class="lc-top">
-      <div class="lc-card fill" onclick="openGeneralCalcs()">
-        <div class="lc-chip">${svgIcon(P.calc,26)}</div>
-        <div><div class="t">Calculadoras</div><div class="d">Demais calculadoras usadas para radiologia</div></div>
-      </div>
-      <div class="lc-card" onclick="openContrasteList()">
-        <div class="lc-chip">${svgIcon(P.book,26)}</div>
-        <div><div class="t">Meios de Contraste</div><div class="d">Reações adversas, tratamento, fatores de risco, extravasamento e FSN</div></div>
-      </div>
+  const row = (icon,t,d,act,end)=>`<div class="lc-short" onclick="${act}"><div class="si acc">${icon}</div><div class="st"><div class="t">${t}</div><div class="d">${d}</div></div><div class="chev">${end||svgIcon(P.chev,18,{sw:2})}</div></div>`;
+  return `<div class="calc-list-wrap">
+    <div class="calc-intro-lbl">Ferramentas</div>
+    <div class="cgrid">
+      ${row(svgIcon(P.book,22),'Meios de Contraste','Reações adversas, tratamento, fatores de risco, extravasamento e FSN','openContrasteList()')}
+      ${row(svgIcon(P.calc,22),'Taxa de Filtração Glomerular','Fórmula MDRD — estimativa da função renal',"openFavCalc('tfg')")}
+      ${row(svgIcon(P.dicom,22),'Visualizador DICOM','Abra exames do CD/pendrive direto no navegador','openViewer()',svgIcon(P.ext,16,{sw:2}))}
     </div>
   </div>`;
 }
@@ -959,7 +965,9 @@ function acceptTerms(){
   }
   state.termsAccepted = true;
   try{ localStorage.setItem('radref_terms', TERMS_VERSION); }catch(_){}
-  state.nav=[]; state.view=homeView(); render();
+  state.nav=[]; state.view=homeView();
+  if(typeof uxApplyPending==='function' && uxApplyPending()) return;   // link direto pedido antes do aceite
+  render();
 }
 function rejectTerms(){
   const m = document.getElementById('terms-msg');
@@ -1089,46 +1097,32 @@ function logout(){
   });
 }
 
-/* ---- 1b. LAUNCHER (home) ---- */
-/* Textos do launcher (dois cartões) por método — US usa o sistema de
-   Referências próprio (órgãos/medidas); TC/RM filtram o mesmo catálogo de
-   calculadoras (CALCS) por kind:'calc'|'ref'. */
+/* ---- 1b. LAUNCHER (home de um método) ---- */
+/* Textos dos cartões do launcher por método. */
 const HOME_CARDS = {
-  us: {calcD:'TI-RADS, BI-RADS, escores e fórmulas', refD:'Medidas normais por órgão e idade', protoD:'Preparo e técnica de exame'},
+  us: {calcD:'TI-RADS, O-RADS, risco fetal, escores e fórmulas', refD:'Medidas normais por órgão e idade', protoD:'Preparo e técnica de exame'},
   tc: {calcD:'CAD-RADS, Lung-RADS, MESA, escores e fórmulas', refD:'Nomenclaturas e conteúdo de apoio', protoD:'Aquisição, contraste e reconstrução'},
   rm: {calcD:'PI-RADS, O-RADS, PI-QUAL, escores e fórmulas', refD:'Nomenclaturas e conteúdo de apoio', protoD:'Sequências, contraste e indicação'},
   rx: {calcD:'Idade óssea (IA) e ferramentas de apoio', refD:'Nomenclaturas e conteúdo de apoio', protoD:'Posicionamento e técnica'},
 };
+function launchItem(icon,title,desc,count,act,fill){
+  const off = !count;
+  return `<div class="lx${fill?' fill':''}${off?' off':''}" ${off?'aria-disabled="true"':`onclick="${act}"`}>
+    <div class="lx-ic">${svgIcon(icon,26)}</div>
+    <div class="lx-tx"><div class="t">${esc(title)}</div><div class="d">${esc(desc)}</div></div>
+    ${off?'<span class="soon-badge">Em breve</span>':`<span class="lx-n">${count}</span><span class="chev">${svgIcon(P.chev,18,{sw:2})}</span>`}
+  </div>`;
+}
 function homeHTML(){
-  const mid = state.modalityId;
-  const isUS = mid==='us';
-  const m = MODALITIES.find(x=>x.id===mid);
+  const mid = state.modalityId, isUS = mid==='us';
   const t = HOME_CARDS[mid] || HOME_CARDS.us;
-  const calcOnclick  = isUS ? "setView('calc')" : "openModCalcs('calc')";
-  const refOnclick   = isUS ? "setView('refs')" : "openModCalcs('ref')";
-  const protoOnclick = "openModCalcs('proto')";
-  return `<div class="lc">
-    <button class="iconbtn lc-back" onclick="goBack()" aria-label="Voltar">${svgIcon(P.back,22,{sw:2.2})}</button>
-    <div class="lc-head">
-      <div class="lc-brand">KLUG<span>RADS</span></div>
-      <div class="lc-greet">${esc(m?m.name:'')}</div>
-    </div>
-    <div class="lc-b">
-      <div class="lc-top">
-        <div class="lc-card" onclick="${protoOnclick}">
-          <div class="lc-chip">${svgIcon(P.checklist,26)}</div>
-          <div><div class="t">Protocolos</div><div class="d">${esc(t.protoD)}</div></div>
-        </div>
-        <div class="lc-card fill" onclick="${refOnclick}">
-          <div class="lc-chip">${svgIcon(P.book,26)}</div>
-          <div><div class="t">Referências</div><div class="d">${esc(t.refD)}</div></div>
-        </div>
-        <div class="lc-card wide" onclick="${calcOnclick}">
-          <div class="lc-chip">${svgIcon(P.calc,26)}</div>
-          <div><div class="t">Calculadoras</div><div class="d">${esc(t.calcD)}</div></div>
-        </div>
-      </div>
-    </div>
+  const nCalc = calcsOf(mid,'calc').length;
+  const nRef = isUS ? DATA.length : calcsOf(mid,'ref').length;
+  const nProto = calcsOf(mid,'proto').length;
+  return `<div class="lx-wrap">
+    ${launchItem(P.book,'Referências',t.refD,nRef, isUS?"setView('refs')":"openModCalcs('ref')", true)}
+    ${launchItem(P.calc,'Calculadoras',t.calcD,nCalc,`openCalcsView('${mid}')`)}
+    ${launchItem(P.checklist,'Protocolos',t.protoD,nProto,"openModCalcs('proto')")}
   </div>`;
 }
 
@@ -1264,10 +1258,12 @@ function detailRailHTML(d){
     rel = `<div class="rail-card"><h4>Nesta seção</h4><div class="rail-rel">`+
       sib.map(x=>`<a onclick="openItem('${esc(x.id)}')"><span class="d"></span>${esc(x.name)}</a>`).join('')+`</div></div>`;
   }
+  const pinned = (typeof uxPinned==='function') && uxPinned()===d.id;
+  const pin = (typeof uxPin==='function') ? `<button class="rail-cta ghost pin-btn" onclick="uxPin('${esc(d.id)}')">${ic('pin',16,{sw:2})} ${pinned?'Desafixar do lado':'Fixar ao lado'}</button>` : '';
   const isFav = state.favs.indexOf(d.id)>=0;
   const fav = `<div class="rail-card"><h4>Ações</h4>
-    <button class="rail-cta" style="${isFav?'background:var(--starSoft);color:var(--star)':''}" onclick="toggleFav('${esc(d.id)}')">${ic('star',16,{fill:isFav?'currentColor':'none',sw:2})} ${isFav?'Nos favoritos':'Favoritar'}</button></div>`;
-  const calc = `<div class="rail-card"><h4>Calculadoras</h4><div class="rail-note">Escores e fórmulas de ultrassonografia.</div><button class="rail-cta" onclick="setView('calc')">Abrir calculadoras</button></div>`;
+    <button class="rail-cta" style="${isFav?'background:var(--starSoft);color:var(--star)':''}" onclick="toggleFav('${esc(d.id)}')">${ic('star',16,{fill:isFav?'currentColor':'none',sw:2})} ${isFav?'Nos favoritos':'Favoritar'}</button>${pin}</div>`;
+  const calc = `<div class="rail-card"><h4>Calculadoras</h4><div class="rail-note">Escores e fórmulas de ultrassonografia.</div><button class="rail-cta" onclick="openCalcsView('us')">Abrir calculadoras</button></div>`;
   return `<aside class="detail-rail">${resumo}${rel}${fav}${calc}</aside>`;
 }
 function tableHTML(t,key){
@@ -1278,14 +1274,14 @@ function tableHTML(t,key){
   // rolam na horizontal, com a primeira coluna fixa (classe .wide). Se as células
   // têm texto corrido, cada coluna ganha mais largura (120 px).
   const longText = rows.some(r=>r.some(c=>String(c==null?'':c).length>28));
-  const minWidth = ncols > 3 ? Math.max(300, ncols*(longText?120:84)) : 0;
+  const minWidth = (ncols > 3 || (ncols===3 && longText)) ? Math.max(300, ncols*(longText?120:84)) : 0;
   table+=`<div class="table-scroll"><table class="mtable${minWidth?' wide':''}"${minWidth?` style="min-width:${minWidth}px"`:''}><tbody>`;
   rows.forEach((r,ri)=>{
     const head = ri===0 && rows.length>1;
     table+=`<tr>`;
     for(let c=0;c<ncols;c++){
       const cell = r[c]==null?'':r[c];
-      const cls = head ? 'head' : (c===0 ? 'lbl' : '');
+      const cls = head ? 'head' : ((c===0 ? 'lbl' : '') + (String(cell).length>40 ? ' txt' : ''));
       table+=`<td class="${cls}">${nl2br(cell)}</td>`;
     }
     table+=`</tr>`;
@@ -1320,7 +1316,7 @@ function chartCalculatorHTML(d){
   const ch = d.chart;
   if(!ch||!ch.rows||!ch.rows.length) return '';
   const label = 'Informe '+((ch.header&&ch.header[0])||'o valor');
-  return `<div class="calc-wrap">
+  return `<div class="calc-wrap chart-consult">
     <div class="calc-title">Consulta rápida</div>
     <div class="calc-label">${esc(label)}</div>
     <div class="calc-in">
@@ -1675,6 +1671,11 @@ function runReferenceCalculator(kind){
       <div class="refcalc-result-title">${esc(String(match.row[0]))}</div>
       <div class="refcalc-metrics">${metrics}</div>
     </div>`);
+    // destaca a linha encontrada na tabela (e leva até ela)
+    const key=String(match.row[0]).trim();
+    document.querySelectorAll('.detail-main .mtable tr.hl').forEach(function(tr){ tr.classList.remove('hl'); });
+    const tr=Array.prototype.slice.call(document.querySelectorAll('.detail-main .mtable tr')).find(function(t){ const td=t.querySelector('td'); return td && td.textContent.trim()===key; });
+    if(tr){ tr.classList.add('hl'); try{ tr.scrollIntoView({block:'center',behavior:'smooth'}); }catch(_){ tr.scrollIntoView(); } }
   }
 }
 
@@ -1729,7 +1730,7 @@ function calcCardHTML(c){
     ? `<div class="si acc" style="font-weight:800;font-size:13px;letter-spacing:-.01em">${esc(c.badge)}</div>`
     : `<div class="si acc">${svgIcon(P.calc,22)}</div>`;
   const isFav = state.favCalcs.indexOf(c.id)>=0;
-  return `<div class="lc-short" onclick="openCalc('${esc(c.id)}')">
+  return `<div class="lc-short" onclick="openFavCalc('${esc(c.id)}')">
     ${icon}
     <div class="st">
       <div class="t">${esc(c.title)}</div>
@@ -1813,6 +1814,54 @@ function calcListHTML(){
     ${cards}
   </div>`;
 }
+/* ---- 4c. LISTA ÚNICA DE CALCULADORAS (todas as modalidades) ---- */
+const CALC_FILTERS = [['all','Todas'],['us','Ultrassom'],['tc','TC'],['rm','RM'],['rx','RX'],['geral','Gerais']];
+const CALC_GROUPS = [['us','Ultrassonografia'],['tc','Tomografia Computadorizada'],['rm','Ressonância Magnética'],['rx','Radiografia'],['geral','Gerais']];
+function calcsViewHTML(){
+  const f = state.calcsFilter || 'all';
+  const chips = CALC_FILTERS.map(function(x){
+    const n = x[0]==='all' ? CALC_GROUPS.reduce((a,g)=>a+calcsOf(g[0],'calc').length,0) : calcsOf(x[0],'calc').length;
+    if(!n) return '';
+    return `<button type="button" class="chip ${f===x[0]?'on':''}" onclick="setCalcsFilter('${x[0]}')">${x[1]} <span class="cnt">${n}</span></button>`;
+  }).join('');
+  return `<div class="calcs-wrap">
+    <div class="calcs-tools">
+      <div class="calcs-search"><span class="si">${svgIcon(P.search,16,{sw:2})}</span>
+        <input id="calcs-q" placeholder="Filtrar calculadoras…" value="${esc(state.calcsQ||'')}" oninput="calcsFilterText(this.value)" autocomplete="off" aria-label="Filtrar calculadoras"></div>
+      <div class="chiprow hscroll">${chips}</div>
+    </div>
+    <div id="calcs-list">${calcsListHTML()}</div>
+  </div>`;
+}
+function calcsListHTML(){
+  const f = state.calcsFilter || 'all', q = searchNorm(state.calcsQ || '');
+  const match = c => !q || searchNorm(c.title+' '+(c.desc||'')+' '+(c.badge||'')).indexOf(q)>=0;
+  let h = '';
+  CALC_GROUPS.forEach(function(g){
+    if(f!=='all' && f!==g[0]) return;
+    const items = calcsOf(g[0],'calc').filter(match);
+    if(!items.length) return;
+    let subs;
+    if(g[0]==='us') subs = SPECIALTIES.map(sp=>[sp.name, items.filter(c=>c.spec===sp.id)]);
+    else if(MOD_SPECS[g[0]]){
+      const ms = MOD_SPECS[g[0]];
+      subs = ms.map(sp=>[sp.name, items.filter(c=>c.subspec===sp.id)]).concat([['', items.filter(c=>!ms.some(sp=>sp.id===c.subspec))]]);
+    } else subs = [['', items]];
+    h += `<section class="cg"><h3 class="cg-h">${esc(g[1])}<span class="cnt">${items.length}</span></h3>`;
+    subs.forEach(function(sb){
+      if(!sb[1].length) return;
+      h += (sb[0] ? `<div class="cg-sub">${esc(sb[0])}</div>` : '') + `<div class="cgrid">${sb[1].map(calcCardHTML).join('')}</div>`;
+    });
+    h += '</section>';
+  });
+  return h || `<div class="empty"><div class="msg">Nenhuma calculadora encontrada.</div></div>`;
+}
+function setCalcsFilter(f){ state.calcsFilter = f; state.modalityId = (f==='all'||f==='geral') ? null : f; render(true); }
+function calcsFilterText(v){
+  state.calcsQ = v;
+  const el = $('calcs-list'); if(el) el.innerHTML = translateHTML(calcsListHTML());
+}
+
 function setCalcSpec(id){ state.calcSpec=id; render(); }
 
 /* ---- 4b. TFG (MDRD) com drum picker ---- */
@@ -2041,7 +2090,7 @@ function favHTML(){
   if(calcs.length){
     h += `<div class="grp">Calculadoras</div>`;
     h += calcs.map(c=>`<div class="row" onclick="openFavCalc('${esc(c.id)}')">
-      <div class="ic star">${svgIcon(P.calc,19)}</div>
+      <div class="ic star calc">${svgIcon(P.calc,19)}</div>
       <div class="tx"><div class="nm">${esc(c.title)}</div><div class="meta">${esc(c.desc)}</div></div>
       <div class="star-btn on" onclick="event.stopPropagation();toggleFavCalc('${esc(c.id)}')">${svgIcon(P.star,20,{fill:'currentColor'})}</div>
     </div>`).join('');
@@ -2119,21 +2168,17 @@ function listsHTML(){
    AÇÕES
    ========================================================================= */
 /* ---- Navegação: pilha de telas, para o Voltar sempre desfazer o último passo ---- */
-const NAV_KEYS = ['contrasteId','view','calcId','calcKind','calcSpec','modalityId','item','sub','composingId','specialty','subBand','query'];
+const NAV_KEYS = ['calcsFilter','contrasteId','view','calcId','calcKind','calcSpec','modalityId','item','sub','composingId','specialty','subBand','query'];
 function navSnapshot(){ const s={}; NAV_KEYS.forEach(k=>s[k]=state[k]); return s; }
-function navPush(){
-  state.nav.push(navSnapshot());
-  if(state.nav.length>40) state.nav.shift();
-}
+function navPush(){}   // legado: o histórico do navegador (js/ux.js) agora empilha as telas
 function setView(v){
   navPush();
   state.view=v; state.composingId=null; if(v!=='calc') state.calcId=null;
   render();
 }
 function goBack(){
-  const prev = state.nav.pop();
-  if(prev){ NAV_KEYS.forEach(k=>state[k]=prev[k]); render(); return; }
-  state.view=homeView(); render();  // fallback: tela inicial
+  if(typeof uxBack==='function' && uxBack()) return;   // volta uma tela no histórico
+  state.view=homeView(); render();                      // sem histórico (link direto): início
 }
 function setSpecialty(id){ state.specialty=id; render(); }
 function setSubBand(b){ state.subBand=b; render(); }
@@ -2190,11 +2235,11 @@ function resetCalc(){
    Junta o texto dos blocos de resultado da calc aberta (.ti-res das RADS/
    numéricas, .tfg-result da TFG e #fm-out das fetais), sem o selo repetido,
    e coloca na área de transferência com um aviso rápido. */
-function copyCalcResult(){
-  const scroll = document.getElementById('scroll'); if(!scroll) return;
-  // Esconde o selo numérico (.pts) SÓ durante a leitura: assim o texto sai sem o
-  // número duplicado, e lemos o innerText do elemento vivo (com as quebras de
-  // linha certas entre os blocos, que um clone solto perderia).
+/* Texto dos blocos de resultado da calculadora aberta (sem o selo numérico repetido). */
+function collectResultParts(){
+  const scroll = document.getElementById('scroll'); if(!scroll) return [];
+  // Esconde o selo (.pts) SÓ durante a leitura: o texto sai sem o número duplicado e
+  // lemos o innerText do elemento vivo (com as quebras de linha certas entre os blocos).
   const badges = scroll.querySelectorAll('.ti-res .pts');
   badges.forEach(function(b){ b.style.display='none'; });
   const parts = [];
@@ -2203,6 +2248,10 @@ function copyCalcResult(){
     if(t) parts.push(t);
   });
   badges.forEach(function(b){ b.style.display=''; });
+  return parts;
+}
+function copyCalcResult(){
+  const parts = collectResultParts();
   if(!parts.length){ klugToast('Preencha os campos para gerar um resultado.'); return; }
   const c = state.calcId ? findCalc(state.calcId) : null;
   const text = (c?c.title+' — ':'') + parts.join(' | ');
@@ -2231,7 +2280,7 @@ function klugToast(msg){
   requestAnimationFrame(function(){ el.classList.add('show'); });
   clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); }, 1900);
 }
-function openGeneralCalcs(){ navPush(); state.modalityId=null; state.calcId=null; state.view='calc'; render(); }
+function openGeneralCalcs(){ openCalcsView('geral'); }
 function setSub(s){ state.sub=s; render(); }
 function toggleAcc(bodyId, chevId){
   const b = $(bodyId); if(!b) return;
@@ -2349,7 +2398,10 @@ function openModality(id){
 /* Cartões "Calculadoras"/"Referências" do launcher para TC/RM (US usa
    setView('calc')/setView('refs'), que abrem o sistema próprio de
    Referências por órgão). Filtra o mesmo catálogo (CALCS) por kind. */
-function openModCalcs(kind){ navPush(); state.calcKind=kind; state.calcId=null; state.view='calc'; render(); }
+function openModCalcs(kind){
+  if(kind==='calc'){ openCalcsView(state.modalityId||'all'); return; }
+  navPush(); state.calcKind=kind; state.calcId=null; state.view='calc'; render();
+}
 
 function toggleFav(id){
   const i = state.favs.indexOf(id);
