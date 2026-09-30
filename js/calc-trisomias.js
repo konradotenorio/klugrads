@@ -233,7 +233,7 @@ function calcTrisomiasHTML(){
       </div>
       <div id="tri-out"></div>
     </div>
-    <div class="note" style="margin:0 2px 12px">⚠️ <span>Rastreio do 1º trimestre — não é diagnóstico. Calcula o risco para Trissomias 21, 18 e 13. Resultado a validar contra a fonte antes do uso clínico.</span></div>
+    <div class="note note-ic" style="margin:0 2px 12px">${ic('warn',16)} <span>Rastreio do 1º trimestre — não é diagnóstico. Calcula o risco para Trissomias 21, 18 e 13. Resultado a validar contra a fonte antes do uso clínico.</span></div>
     <div class="ti-card"><div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${TRI_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>

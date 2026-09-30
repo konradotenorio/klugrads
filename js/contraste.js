@@ -245,7 +245,7 @@ function contrasteListHTML(){
 /* ---- tópico ---- */
 function contrasteItemHTML(){
   const t = contrasteTopic(state.contrasteId); if(!t) return contrasteListHTML();
-  const alert = t.alert ? `<div class="ti-card" style="border-color:${t.pending?'#c68432':'var(--accent)'}"><div class="ti-legend-row"><span class="lt"><b>${t.pending?'⚠️ ':''}${esc(t.alert)}</b></span></div></div>` : '';
+  const alert = t.alert ? `<div class="ti-card" style="border-color:${t.pending?'#c68432':'var(--accent)'}"><div class="ti-legend-row"><span class="lt"><b>${t.pending?ic('warn',15)+' ':''}${esc(t.alert)}</b></span></div></div>` : '';
   const secs = t.sections.map((s,i)=>`<div class="ti-card">${tableHTML({title:s.title, rows:s.rows}, 'ctr-'+t.id+'-'+i)}${s.note?`<div class="ti-legend-row" style="margin-top:8px"><span class="lt">${esc(s.note)}</span></div>`:''}</div>`).join('');
   const refs = (t.refs||[]).map(k=>`<div class="tfg-ref-item">${esc(CONTRASTE_REFS[k])}</div>`).join('');
   return `<div class="ti-wrap">

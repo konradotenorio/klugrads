@@ -120,7 +120,7 @@ function esttcFraseHTML(mode){
 }
 function esttcCopyFrase(mode){
   const f = mode==='ct' ? esttcCtFrase() : esttcNcFrase();
-  if(f) klugCopy(f, 'Frase copiada ✓');
+  if(f) klugCopy(f, 'Frase copiada');
 }
 
 /* Card do método SEM contraste (Pickhardt) */
@@ -206,6 +206,6 @@ function esteatoseTcRefresh(){
 }
 
 /* registra no catálogo (CALCS de app.js) — método TC, subespecialidade Medicina Interna */
-CALCS.push({id:'esteatose-tc', modality:'tc', subspec:'medint', badge:'FF',
+CALCS.push({id:'esteatose-tc', modality:'tc', subspec:'medint', badge:'UH',
   title:'Esteatose Hepática (TC)',
   desc:'Fração lipídica hepática por TC sem e com contraste'});

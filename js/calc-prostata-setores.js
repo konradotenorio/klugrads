@@ -189,7 +189,7 @@ function pmapActiveHTML(){
   const s=pmapState(), L=s.lesions[s.active];
   const cats=[3,4,5].map(c=>`<div class="ti-ftog ${L.cat===c?'on':''}" onclick="pmapSetCat(${c})">PI-RADS ${c}</div>`).join('');
   const lista = L.sectors.length
-    ? L.sectors.slice().sort(pmapOrder).map(id=>`<span class="pmap-tag" style="border-color:${PMAP_COLORS[s.active]}" onclick="pmapToggle('${id}')" title="Remover">${esc(pmapCode(id))} ✕</span>`).join('')
+    ? L.sectors.slice().sort(pmapOrder).map(id=>`<span class="pmap-tag" style="border-color:${PMAP_COLORS[s.active]}" onclick="pmapToggle('${id}')" title="Remover">${esc(pmapCode(id))} ${ic('close',11,{sw:2.6})}</span>`).join('')
     : '<span class="lt">Toque nos setores do esquema para marcar a lesão.</span>';
   return `<div class="ti-field ti-field-foci"><label>Categoria (opcional)</label><div class="ti-foci">${cats}</div></div>
     <div class="ti-field"><label>Maior eixo (opcional)</label>
@@ -244,7 +244,7 @@ function pmapSetSize(v){
   pmapState().lesions[pmapState().active].size=v;
   const el=document.getElementById('pmap-frase'); if(el) el.innerHTML=translateHTML(pmapFraseHTML());
 }
-function pmapCopy(){ const f=pmapFrase(); if(f) klugCopy(f,'Frase copiada ✓'); }
+function pmapCopy(){ const f=pmapFrase(); if(f) klugCopy(f,'Frase copiada'); }
 
 /* registra no catálogo (CALCS de app.js) — método RM, subespecialidade Medicina Interna */
 CALCS.push({id:'prostata-setores', modality:'rm', subspec:'medint', badge:'MS',

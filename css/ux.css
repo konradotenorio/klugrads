@@ -1,0 +1,19 @@
+/* =========================================================================
+   KlugRads — camada de UX (navegação, responsivo, ícones).
+   Carregada DEPOIS do <style> de app.html, então pode refinar regras de lá.
+   Organização: 1) ícones e glifos · 2) foco e teclado · 3) celular/tablet ·
+   4) desktop. Tokens (--bg, --sf, --accent…) vêm de app.html.
+   ========================================================================= */
+
+/* ---------- 1) ícones e glifos ---------- */
+.ico{display:inline-flex;vertical-align:-.2em;flex:none;}
+.chv{display:inline-flex;align-items:center;transition:transform .15s ease;}
+.chv.open{transform:rotate(180deg);}
+.set-seg button,.rail-cta{display:inline-flex;align-items:center;justify-content:center;gap:7px;}
+.rail-cta{display:flex;}
+.note-ic{display:flex;gap:9px;align-items:flex-start;}
+.note-ic .ico{margin-top:1px;color:#c68432;}
+.band-arrow{display:flex;align-items:center;}
+.empty .ico{display:flex;justify-content:center;margin-bottom:14px;}
+.side-ext{margin-left:auto;color:var(--dim);display:flex;}
+.side-item .si{flex:none;}

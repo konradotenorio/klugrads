@@ -22,6 +22,24 @@ const ICONS = {
   baby:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 21c0-4 3-6 6-6s6 2 6 6"/></svg>',
   ruler:'<svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="1"/><path d="M7 8v3M11 8v4M15 8v3M19 8v4"/></svg>',
 };
+/* ---- Ícones de região (chip das referências; traço, 24x24) ---- */
+const RICON = {
+  liver:'<path d="M3 10.5C3 8 5.5 6 9 6h7.5c2.5 0 4.5 1.6 4.5 4 0 4.2-3.6 8-8.5 8-2.4 0-4.3-.8-6-2.2C4 14.5 3 12.8 3 10.5z"/><path d="M10 11.5c1.6-.3 3 .3 3.8 1.6"/>',
+  kidney:'<path d="M15.5 4.2C12 3.2 8.6 5 8.6 8.6c0 1.7.8 2.6 1.4 3.4.7.9.7 2.2.1 3.4-.9 2 .3 4.4 3 4.6 3.5.3 6-2.4 6-7.3 0-4.4-1.4-7.6-3.6-8.5z"/><path d="M12 12c-1.2-.8-2.3-.6-3.2 0"/>',
+  bladder:'<path d="M8.5 3c0 3-1.2 4.2-1.2 7M15.5 3c0 3 1.2 4.2 1.2 7"/><path d="M5.4 14.2a6.6 6.6 0 0 1 13.2 0c0 3.6-2.6 6-6.6 6s-6.6-2.4-6.6-6z"/>',
+  uterus:'<path d="M12 8.2c-2.5 0-3.9 1.7-3.9 4.1 0 2.4 1.3 3.5 1.7 6.2h4.4c.4-2.7 1.7-3.8 1.7-6.2 0-2.4-1.4-4.1-3.9-4.1z"/><path d="M8.3 10.6C5.9 10.6 4.4 9 4.4 6.9M15.7 10.6c2.4 0 3.9-1.6 3.9-3.7"/><circle cx="4.3" cy="5.1" r="1.4"/><circle cx="19.7" cy="5.1" r="1.4"/>',
+  testis:'<ellipse cx="11" cy="13.5" rx="5.6" ry="6.5"/><path d="M14.8 7.4c2.6.1 4.7 1.7 4.7 4.6 0 2-1 3.6-2 4.6"/>',
+  thyroid:'<path d="M12 6.5v11"/><path d="M12 9C9.5 5 4 6 4 10.4c0 4 2.7 7.6 5.8 7.6 1.6 0 2.2-1.2 2.2-3M12 9c2.5-4 8-3 8 1.4 0 4-2.7 7.6-5.8 7.6-1.6 0-2.2-1.2-2.2-3"/>',
+  bowel:'<path d="M5 5.5h10a3.5 3.5 0 0 1 0 7H8.5a3 3 0 0 0 0 6H19"/>',
+  stomach:'<path d="M9 4c0 3 .4 4 3 5.2 3.4 1.6 6.2 2.5 6.2 6 0 2.8-2 4.3-4.4 4.3-3.6 0-7.3-2.6-7.3-7 0-2.6 1.2-3.6 1.2-5.4"/><path d="M9 4h3"/>',
+  lung:'<path d="M12 4v7"/><path d="M12 8c-.3 1-1 1.7-2.3 2.4M9.3 8.3C6.6 9 4 12.4 4 16.6c0 2 1.3 3 3 3 2 0 3-1.5 3-3.5V9.8c0-1-.3-1.5-.7-1.5zM14.7 8.3c2.7.7 5.3 4.1 5.3 8.3 0 2-1.3 3-3 3-2 0-3-1.5-3-3.5V9.8c0-1 .3-1.5.7-1.5z"/>',
+  vessel:'<path d="M12 21v-9"/><path d="M12 12c0-2.6-2.6-4-6-4M12 12c0-2.6 2.6-4 6-4"/><path d="M6 8V3.5M18 8V3.5"/>',
+  bone:'<path d="M8.6 8.6l6.8 6.8"/><circle cx="6.9" cy="6.3" r="1.9"/><circle cx="5.3" cy="9" r="1.9"/><circle cx="17.1" cy="17.7" r="1.9"/><circle cx="18.7" cy="15" r="1.9"/>',
+  head:'<path d="M8 20.5v-3.2C5.8 16.2 4.5 14 4.5 11A7.5 7.5 0 0 1 12 3.5c4 0 7 3 7 6.8 0 2-.8 3-1.8 4-.7.7-1 1.4-1 2.7v3.5z"/><path d="M12 8.5c1.5 0 2.5 1 2.5 2.3"/>',
+  spleen:'<path d="M15.5 4.5c-4.5-.6-9 1.5-10 6-1 4.6 2.2 8.5 6.2 9 3.6.4 6.3-1.8 6.3-5 0-2.6-2-4-2-6 0-1.7.3-3.3-.5-4z"/>',
+  pancreas:'<path d="M4 15.5c1.5 2.5 5 3 8 1.5 2.6-1.3 4.6-1.5 6.5-.5 1.4.7 2.2-.6 1.7-2-.8-2.2-3.4-3.2-6.2-2.6-2.3.5-3.9 1.7-6.2 1.4-1.6-.2-3-1.2-4.3-.6-1.2.6-1.1 1.9.5 2.8z"/>',
+};
+Object.keys(RICON).forEach(k=>{ ICONS[k] = '<svg viewBox="0 0 24 24">'+RICON[k]+'</svg>'; });
 
 /* ---- Ícones de UI (traço; stroke=currentColor) ---- */
 const P = {
@@ -45,6 +63,17 @@ const P = {
   copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
   dicom:'<rect x="3" y="4" width="18" height="13" rx="2"/><circle cx="12" cy="10.5" r="3.6"/><path d="M12 6.9v7.2M8.4 10.5h7.2"/><path d="M8 21h8M12 17v4"/>',
   gear:'<circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  warn:'<path d="M12 3.6l9.4 16.2H2.6z"/><path d="M12 10v4.4M12 17.4v.1"/>',
+  check:'<polyline points="4.5 12.5 9.8 17.8 19.5 7"/>',
+  close:'<path d="M6 6l12 12M18 6L6 18"/>',
+  home:'<path d="M4 11.2l8-7 8 7"/><path d="M6 9.8V20h4.5v-5.5h3V20H18V9.8"/>',
+  ext:'<path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+  more:'<path d="M5 12h.1M12 12h.1M19 12h.1" stroke-width="3.2"/>',
+  chevd:'<polyline points="6 9.5 12 15.5 18 9.5"/>',
+  checklist:'<path d="M10.5 6h9.5M10.5 12h9.5M10.5 18h9.5"/><path d="M3.5 6.2l1.5 1.5 2.6-3M3.5 12.2l1.5 1.5 2.6-3M3.5 18.2l1.5 1.5 2.6-3"/>',
+  link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  pin:'<path d="M9 4h6l-1 6 3 3H7l3-3z"/><path d="M12 13v7.5"/>',
+  ruler:'<rect x="3" y="8" width="18" height="8" rx="1"/><path d="M7 8v3M11 8v4M15 8v3M19 8v4"/>',
 };
 // Visualizador DICOM (projeto separado, OHIF local — as imagens não saem do navegador).
 const VIEWER_URL = 'https://viewer.klugrads.com';
@@ -56,6 +85,45 @@ function svgIcon(inner, size, o){
   const sw = o.sw || 1.7;
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${fill}" stroke="${stroke}" `
     + `stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+}
+
+/* Ícone inline (em texto/botão) a partir de P ou RICON: ic('warn',15). */
+function ic(name,size,o){
+  return '<span class="ico">'+svgIcon(P[name]||RICON[name]||'',size||16,o)+'</span>';
+}
+/* Ícone da referência por região/nome (antes: 63 de 77 usavam o mesmo). */
+function iconForItem(d){
+  const n=(d.name||'').toLowerCase(), g=d.group;
+  let k=null;
+  if(g==='Doppler') k='drop';
+  else if(g==='Fetal'){
+    if(/úmero|umero|rádio|radio|ulna|tíbia|tibia|fíbula|fibula|fêmur|femur/.test(n)) k='bone';
+    else if(/biparietal|cefálica|ventrículo|cerebelar|binocular|nasal|nucal|translucência/.test(n)) k='head';
+    else if(/frequência/.test(n)) k='heart';
+    else if(/artéria|arteria/.test(n)) k='drop';
+    else k='baby';
+  }
+  else if(/tireóide|tireoide|paratireóide|paratireoide/.test(n)) k='thyroid';
+  else if(/derrame pleural/.test(n)) k='lung';
+  else if(/transfontanela/.test(n)) k='head';
+  else if(/baço|baco/.test(n)) k='spleen';
+  else if(/pâncreas|pancreas/.test(n)) k='pancreas';
+  else if(/fígado|figado|vesícula|vesicula|trato biliar|veia porta/.test(n)) k='liver';
+  else if(/\brim\b|suprarrenal/.test(n)) k='kidney';
+  else if(/bexiga/.test(n)) k='bladder';
+  else if(/útero|utero|ovário|ovario|endométrio|endometrio|mioma/.test(n)) k='uterus';
+  else if(/próstata|prostata|testículo|testiculo|epidídimo|epididimo|varicocele/.test(n)) k='testis';
+  else if(/alças|alcas|apêndice|apendice|piloro/.test(n)) k='bowel';
+  else if(/resíduo gástrico|residuo gastrico/.test(n)) k='stomach';
+  else if(/aorta|vci|veias/.test(n)) k='vessel';
+  return ICONS[k] || ICONS[d.iconKey] || ICONS.organ;
+}
+/* Ícone de cada especialidade de US (barra lateral / listas). */
+const SPEC_ICON = {neurocab:'head', torax:'lung', abdome:'liver', musculo:'bone', obstetrico:'baby', doppler:'drop'};
+function specIcon(id,size){
+  const k=SPEC_ICON[id];
+  const inner = RICON[k] || (k==='baby' ? '<circle cx="12" cy="8" r="4"/><path d="M6 21c0-4 3-6 6-6s6 2 6 6"/>' : P.drop);
+  return svgIcon(inner,size||18,{sw:1.8});
 }
 
 const ESC_MAP = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
@@ -207,7 +275,7 @@ function hydrate(items){
   return (items||[]).map(src=>{
     let d; try{ d=JSON.parse(JSON.stringify(src)); }catch(_){ d=Object.assign({},src); }
     d.tables = tidyTables(d.tables);
-    d.icon = ICONS[d.iconKey] || ICONS.organ;
+    d.icon = iconForItem(d);
     return d;
   });
 }
@@ -511,7 +579,7 @@ function sidebarHTML(){
       : `<div class="side-subempty">Em breve</div>`;
     return `<div class="side-group ${open?'open':''}">
       <div class="side-item side-ghead ${activeHead?'on':''}" onclick="openSpecialty('${s.id}')">
-        <span class="si">${svgIcon(P.book,18,{sw:1.8})}</span>
+        <span class="si">${specIcon(s.id,18)}</span>
         <span class="side-gname">${esc(s.name)}</span>
         <button class="side-chev" onclick="event.stopPropagation();toggleSpec('${s.id}')" aria-label="Abrir itens de ${esc(s.name)}">${svgIcon(P.chev,15,{sw:2.6})}</button>
       </div>
@@ -530,12 +598,12 @@ function sidebarHTML(){
     </div>
     <div id="side-results" class="side-results">${searching?globalResultsHTML(state.gquery):''}</div>
     <nav class="side-nav" id="side-nav" ${searching?'hidden':''}>
-      <div class="side-item" onclick="goInicio()"><span class="si">${svgIcon(P.back,18,{sw:2})}</span>Início</div>
+      <div class="side-item" onclick="goInicio()"><span class="si">${svgIcon(P.home,19,{sw:1.8})}</span>Início</div>
       <div class="side-sec">Métodos de Diagnóstico</div>
       ${methodsNavHTML()}
       ${(state.modalityId==='us' && !isCalc) ? `<div class="side-sec">Ultrassonografia — Referências</div>${specGroups}` : ''}
       <div class="side-sec">Ferramentas</div>
-      <div class="side-item" onclick="openViewer()"><span class="si">${svgIcon(P.dicom,19)}</span>VISUALIZADOR DICOM</div>
+      <div class="side-item" onclick="openViewer()"><span class="si">${svgIcon(P.dicom,19)}</span>Visualizador DICOM<span class="side-ext">${svgIcon(P.ext,13,{sw:2})}</span></div>
       <div class="side-item ${isCalc&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>Calculadoras (US)</div>
       ${tool('ferramentas','Outras Ferramentas', svgIcon(P.tools,19))}
       ${tool('favoritos','Favoritos', svgIcon(P.star,19,{fill:'none'}))}
@@ -733,7 +801,7 @@ function modalityHTML(){
       ${!m.active?'<div class="mod-badge">Em construção</div>':''}
     </div>`).join('');
   return `<div class="modal-screen">
-    <button class="iconbtn modal-theme" onclick="toggleTheme()" aria-label="Alternar tema dia/noite" title="Tema dia/noite">${state.theme==='light'?'🌙':'☀️'}</button>
+    <button class="iconbtn modal-theme" onclick="toggleTheme()" aria-label="Alternar tema dia/noite" title="Tema dia/noite">${themeIcon(20)}</button>
     <div class="modal-head">
       <div class="modal-brand">KLUG<span>RADS</span></div>
       <div class="modal-slogan">Sua referência em Radiologia</div>
@@ -748,7 +816,7 @@ function modalityHTML(){
     <div class="modal-shortcuts">
       <div class="lc-short" onclick="openViewer()">
         <div class="si acc">${svgIcon(P.dicom,23)}</div>
-        <div class="st"><div class="t">VISUALIZADOR DICOM</div><div class="d">Abra exames do CD/pendrive direto no navegador</div></div>
+        <div class="st"><div class="t">Visualizador DICOM</div><div class="d">Abra exames do CD/pendrive direto no navegador</div></div>
         <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
       </div>
       <div class="lc-short" onclick="setView('ferramentas')">
@@ -817,8 +885,8 @@ function configHTML(){
     <div class="set-row">
       <div class="lbl">Tema<div class="sub">Layout dia ou noite</div></div>
       <div class="set-seg">
-        <button class="${state.theme==='light'?'on':''}" onclick="setTheme('light')">☀️ Dia</button>
-        <button class="${state.theme==='dark'?'on':''}" onclick="setTheme('dark')">🌙 Noite</button>
+        <button class="${state.theme==='light'?'on':''}" onclick="setTheme('light')">${svgIcon(P.sun,16,{sw:2})} Dia</button>
+        <button class="${state.theme==='dark'?'on':''}" onclick="setTheme('dark')">${svgIcon(P.moon,16,{sw:2})} Noite</button>
       </div>
     </div>
     <div class="set-row">
@@ -878,7 +946,7 @@ function termsReadHTML(){
   const T = TT();
   return `<div class="terms-wrap" style="padding-top:12px">
     ${termsItemsHTML()}
-    <div class="set-note" style="text-align:center">✓ ${esc(T.accepted)}</div>
+    <div class="set-note" style="text-align:center">${ic('check',15,{sw:2.4})} ${esc(T.accepted)}</div>
     <div style="padding:6px 2px"><button class="set-btn" onclick="revokeTerms()">${esc(T.revoke)}</button></div>
   </div>`;
 }
@@ -908,9 +976,10 @@ function setTheme(t){
   try{ localStorage.setItem('radref_theme', t); }catch(_){}
   applyTheme(); render(true);
 }
+function themeIcon(size){ return svgIcon(state.theme==='light'?P.moon:P.sun,size||20,{sw:1.9}); }
 function toggleTheme(){ setTheme(state.theme==='light'?'dark':'light'); }
 function themeToggleBtn(){
-  return `<button class="iconbtn theme-toggle" onclick="event.stopPropagation();toggleTheme()" aria-label="Alternar tema dia/noite" title="Tema dia/noite">${state.theme==='light'?'🌙':'☀️'}</button>`;
+  return `<button class="iconbtn theme-toggle" onclick="event.stopPropagation();toggleTheme()" aria-label="Alternar tema dia/noite" title="Tema dia/noite">${themeIcon(20)}</button>`;
 }
 function setLang(l){
   state.lang=l;
@@ -956,7 +1025,7 @@ function enviarSugestao(){
       body:JSON.stringify({ access_key:key, subject:'KlugRads — Crítica / Sugestão',
         from_name:'KlugRads', email: email||'app@klugrads', message: msg })
     }).then(function(r){return r.json();}).then(function(j){
-      if(j&&j.success){ fbStatus('Mensagem enviada. Obrigado! 🙌','ok'); if(msgEl)msgEl.value=''; if(emailEl)emailEl.value=''; }
+      if(j&&j.success){ fbStatus('Mensagem enviada. Obrigado!','ok'); if(msgEl)msgEl.value=''; if(emailEl)emailEl.value=''; }
       else { fbStatus('Não consegui enviar agora — abrindo seu e-mail…','err'); fbMailto(msg,email); }
     }).catch(function(){ fbStatus('Sem conexão — abrindo seu e-mail…','err'); fbMailto(msg,email); });
   } else {
@@ -1047,7 +1116,7 @@ function homeHTML(){
     <div class="lc-b">
       <div class="lc-top">
         <div class="lc-card" onclick="${protoOnclick}">
-          <div class="lc-chip">${svgIcon(P.table,26)}</div>
+          <div class="lc-chip">${svgIcon(P.checklist,26)}</div>
           <div><div class="t">Protocolos</div><div class="d">${esc(t.protoD)}</div></div>
         </div>
         <div class="lc-card fill" onclick="${refOnclick}">
@@ -1084,7 +1153,7 @@ function refsHTML(){
     <div class="sec-label spec-label">Especialidades</div>
     <div class="bandzone">
       <div class="bandrow" id="bandrow">${specChips}</div>
-      <div class="band-fade"><div class="band-arrow" onclick="scrollBandMore()">»</div></div>
+      <div class="band-fade"><div class="band-arrow" onclick="scrollBandMore()" aria-label="Mais especialidades">${svgIcon(P.chev,16,{sw:2.6})}</div></div>
     </div>
     ${subRow}
     <div id="reflist">${refsListHTML()}</div>`;
@@ -1197,7 +1266,7 @@ function detailRailHTML(d){
   }
   const isFav = state.favs.indexOf(d.id)>=0;
   const fav = `<div class="rail-card"><h4>Ações</h4>
-    <button class="rail-cta" style="${isFav?'background:var(--starSoft);color:var(--star)':''}" onclick="toggleFav('${esc(d.id)}')">${isFav?'★ Nos favoritos':'☆ Favoritar'}</button></div>`;
+    <button class="rail-cta" style="${isFav?'background:var(--starSoft);color:var(--star)':''}" onclick="toggleFav('${esc(d.id)}')">${ic('star',16,{fill:isFav?'currentColor':'none',sw:2})} ${isFav?'Nos favoritos':'Favoritar'}</button></div>`;
   const calc = `<div class="rail-card"><h4>Calculadoras</h4><div class="rail-note">Escores e fórmulas de ultrassonografia.</div><button class="rail-cta" onclick="setView('calc')">Abrir calculadoras</button></div>`;
   return `<aside class="detail-rail">${resumo}${rel}${fav}${calc}</aside>`;
 }
@@ -1237,14 +1306,14 @@ function tableHTML(t,key){
         <span class="table-acc-source">${esc(t.source||'Critério')}</span>
         <span class="table-acc-title">${esc(t.title||'Tabela')}</span>
       </span>
-      <span class="table-acc-chev" id="${chevId}">${open?'⌃':'⌄'}</span>
+      <span class="table-acc-chev chv${open?' open':''}" id="${chevId}">${svgIcon(P.chevd,18,{sw:2.4})}</span>
     </button>
     <div class="table-acc-body ${open?'open':''}" id="${bodyId}">${table}</div>
   </section>`;
 }
 function refsAccHTML(d){
   if(!d.refs||!d.refs.length) return '';
-  return `<div class="acc-head" onclick="toggleAcc('refsbody','refchev')"><span>Referências</span><span id="refchev">⌄</span></div>
+  return `<div class="acc-head" onclick="toggleAcc('refsbody','refchev')"><span>Referências</span><span class="chv" id="refchev">${svgIcon(P.chevd,18,{sw:2.4})}</span></div>
     <div class="acc-body" id="refsbody">`+d.refs.map(r=>`<div class="ref">${nl2br(r)}</div>`).join('')+`</div>`;
 }
 function chartCalculatorHTML(d){
@@ -1733,12 +1802,12 @@ function calcListHTML(){
   ).join('');
   const items = CALCS.filter(c=>c.spec===state.calcSpec);
   const cards = items.length ? items.map(c=>calcCardHTML(c)).join('')
-  : `<div class="empty"><div class="big">🧮</div><div class="msg">Calculadoras desta especialidade <b>em breve</b>.</div></div>`;
+  : `<div class="empty"><div class="ico" style="color:var(--dim)">${svgIcon(P.calc,40,{sw:1.4})}</div><div class="msg">Calculadoras desta especialidade <b>em breve</b>.</div></div>`;
   return `<div class="calc-list-wrap">
     <div class="sec-label spec-label">Especialidades</div>
     <div class="bandzone">
       <div class="bandrow" id="bandrow">${specChips}</div>
-      <div class="band-fade"><div class="band-arrow" onclick="scrollBandMore()">»</div></div>
+      <div class="band-fade"><div class="band-arrow" onclick="scrollBandMore()" aria-label="Mais especialidades">${svgIcon(P.chev,16,{sw:2.6})}</div></div>
     </div>
     <div class="calc-intro-lbl">Calculadoras disponíveis</div>
     ${cards}
@@ -1957,7 +2026,7 @@ function favHTML(){
     return `<div class="empty">
       <div class="ico" style="color:var(--star)">${svgIcon(P.star,46,{sw:1.4})}</div>
       <div class="msg" style="font-size:16px;font-weight:650;color:var(--tx)">Nada favoritado ainda</div>
-      <div class="msg" style="margin-top:6px">Toque na estrela ★ de qualquer referência ou calculadora para guardá-la aqui. As últimas que você usar aparecem em <b>Recentes</b>.</div>
+      <div class="msg" style="margin-top:6px">Toque na estrela (${ic('star',13,{sw:2})}) de qualquer referência ou calculadora para guardá-la aqui. As últimas que você usar aparecem em <b>Recentes</b>.</div>
     </div>`;
   }
   let h = '';
@@ -2019,7 +2088,7 @@ function listsHTML(){
     h += DATA.map(d=>{
       const inside = inIds.indexOf(d.id)>=0;
       return `<div class="pick-row" onclick="toggleInList('${cl.id}','${esc(d.id)}')">
-        <div class="pick-box ${inside?'on':''}">${inside?'✓':''}</div>
+        <div class="pick-box ${inside?'on':''}">${inside?svgIcon(P.check,14,{sw:3}):''}</div>
         <div class="tx" style="flex:1;min-width:0"><div class="nm">${esc(d.name)}</div><div class="meta">${esc(metaOf(d))}</div></div>
       </div>`;
     }).join('');
@@ -2140,13 +2209,13 @@ function copyCalcResult(){
   klugCopy(text);
 }
 function klugCopy(t, msg){
-  msg = msg || 'Resultado copiado ✓';
+  msg = msg || 'Resultado copiado';
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(t).then(function(){ klugToast(msg); }).catch(function(){ klugCopyFallback(t, msg); });
   } else { klugCopyFallback(t, msg); }
 }
 function klugCopyFallback(t, msg){
-  msg = msg || 'Resultado copiado ✓';
+  msg = msg || 'Resultado copiado';
   try{
     const ta=document.createElement('textarea'); ta.value=t;
     ta.style.position='fixed'; ta.style.top='-1000px'; ta.style.opacity='0';
@@ -2167,12 +2236,12 @@ function setSub(s){ state.sub=s; render(); }
 function toggleAcc(bodyId, chevId){
   const b = $(bodyId); if(!b) return;
   const open = b.classList.toggle('open');
-  const c = $(chevId); if(c) c.textContent = open ? '⌃' : '⌄';
+  const c = $(chevId); if(c) c.classList.toggle('open', open);
 }
 function toggleTableAcc(bodyId,chevId,button){
   const b=$(bodyId); if(!b) return;
   const open=b.classList.toggle('open');
-  const c=$(chevId); if(c) c.textContent=open?'⌃':'⌄';
+  const c=$(chevId); if(c) c.classList.toggle('open', open);
   if(button) button.setAttribute('aria-expanded',open?'true':'false');
 }
 let _drumLock = false;   // true enquanto initDrums posiciona as rodas: ignora o scroll "fantasma" do navegador

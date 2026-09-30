@@ -50,7 +50,7 @@ function fmRefs(refs){
     + refs.map(r=>`<div class="ref">${r}</div>`).join('');
 }
 function fmReview(){
-  return `<div class="note" style="margin-top:12px">⚠️ Curva de referência aproximada de tabela publicada — <b>validar antes do uso clínico</b>.</div>`;
+  return `<div class="note" style="margin-top:12px">${ic('warn',15)} Curva de referência aproximada de tabela publicada — <b>validar antes do uso clínico</b>.</div>`;
 }
 
 /* ---- Datação da gestação (fórmulas da FMF) ---- */
@@ -409,7 +409,7 @@ FETAL_CALCS.forEach(c=>{ FETAL_CALC_MAP[c.id]=c; });
 /* registra no catálogo geral (CALCS definido em app.js) */
 FETAL_CALCS.forEach(c=>CALCS.push({
   id:c.id, spec:'obstetrico', title:c.title, badge:c.badge,
-  desc:(c.wip?'🚧 Em construção — ':'')+c.desc
+  desc:(c.wip?'Em construção — ':'')+c.desc
 }));
 
 /* ---- página da calculadora ---- */
@@ -418,7 +418,7 @@ function fetalCalcHTML(id){
   if(c.wip){
     return `<div class="calc-wrap">
       <div class="prose-label">${c.title}</div>
-      <div class="note" style="margin-top:10px">🚧 <b>Em construção.</b> Esta calculadora usa algoritmo de risco proprietário da Fetal Medicine Foundation
+      <div class="note" style="margin-top:10px">${ic('tools',15)} <b>Em construção.</b> Esta calculadora usa algoritmo de risco proprietário da Fetal Medicine Foundation
       (não publicado na íntegra) e será ajustada e validada antes de ser liberada.</div>
       <div class="prose" style="margin-top:10px">Enquanto isso, o cálculo pode ser feito diretamente no site da FMF:</div>
       <div style="margin-top:8px"><a href="https://fetalmedicine.org/research/assess" target="_blank" rel="noopener" style="color:#0891b2">fetalmedicine.org → Calculators</a></div>

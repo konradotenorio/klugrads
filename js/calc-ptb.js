@@ -91,7 +91,7 @@ function calcPtbHTML(){
       </div>
       <div id="ptb-out"></div>
     </div>
-    <div class="note" style="margin:0 2px 12px">⚠️ <span>Rastreio do 2º trimestre — não é diagnóstico. Estima o risco de parto prematuro espontâneo a partir da história materna e do comprimento do colo. Resultado a validar contra a fonte antes do uso clínico.</span></div>
+    <div class="note note-ic" style="margin:0 2px 12px">${ic('warn',16)} <span>Rastreio do 2º trimestre — não é diagnóstico. Estima o risco de parto prematuro espontâneo a partir da história materna e do comprimento do colo. Resultado a validar contra a fonte antes do uso clínico.</span></div>
     <div class="ti-card"><div class="tfg-sec-lbl">Referências</div>
       <div class="tfg-ref-list">${PTB_REFS.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>

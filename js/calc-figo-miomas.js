@@ -95,7 +95,7 @@ function figoResHTML(mod){
       <div class="pts" style="background:${c.c}">FIGO</div>
     </div>`;
     const notas=[];
-    if(r.aviso) notas.push('⚠️ '+r.aviso);
+    if(r.aviso) notas.push(ic('warn',14)+' '+r.aviso);
     if(mod==='rm'){
       const t=r.type;
       if(/^(4|5)$/.test(t)||/–5$/.test(t)) notas.push('Informe a <b>margem livre interna</b> (IFM, distância ao endométrio) — recomendada para os tipos 4 e 5.');
@@ -110,7 +110,7 @@ function figoResHTML(mod){
     const mt=[`Diâmetro médio ${figoFmt(m.mean,1)} mm`, `Volume ≈ ${figoFmt(m.vol,1)} cm³`];
     if(m.imPct!==null) mt.push(`Porção intramural ${figoFmt(m.imPct,0)}% (${m.imPct>=50?'≥':'<'} 50%)`);
     if(m.pedPct!==null) mt.push(`Pedículo ${figoFmt(m.pedPct,0)}% (${m.pedPct<=10?'pediculado':'não pediculado'})`);
-    h+=`<div class="ti-legend-row" style="margin-top:8px"><span class="lt">📏 ${mt.join(' · ')}</span></div>`;
+    h+=`<div class="ti-legend-row" style="margin-top:8px"><span class="lt">${ic('ruler',14)} ${mt.join(' · ')}</span></div>`;
   }
   return h+figoFraseHTML(mod);
 }
@@ -229,13 +229,13 @@ function figoInput(mod,k,v){
   figoState(mod)[k]=v;
   const el=document.getElementById('figo-res-'+mod); if(el) el.innerHTML=translateHTML(figoResHTML(mod));
 }
-function figoCopy(mod){ const f=figoFrase(mod); if(f) klugCopy(f,'Frase copiada ✓'); }
+function figoCopy(mod){ const f=figoFrase(mod); if(f) klugCopy(f,'Frase copiada'); }
 
 /* registra no catálogo (CALCS de app.js) */
 CALCS.push({id:'figo-us', spec:'abdome', badge:'FIGO',
   title:'Miomas — FIGO (US)',
   desc:'Classificação FIGO dos leiomiomas (0–8 e híbridos) no ultrassom'});
-CALCS.push({id:'figo-rm', modality:'rm', subspec:'medint', badge:'FIGO',
+CALCS.push({id:'figo-rm', modality:'rm', subspec:'medint', badge:'F-RM',
   title:'Miomas — FIGO (RM)',
   desc:'Classificação FIGO dos leiomiomas na RM, com IFM/OFM'});
 CALCS.push({id:'figo-rm-ref', modality:'rm', subspec:'medint', badge:'REF', kind:'ref',
