@@ -1,0 +1,237 @@
+[
+ {
+  "id": "doppler-aorta-iliacas",
+  "group": "Doppler", "region": "Aorta e vasos abdominais",
+  "name": "Doppler de Aorta Abdominal e Artérias Ilíacas", "abbr": "AO", "iconKey": "drop",
+  "tables": [
+   {"title": "Diâmetro da aorta abdominal", "source": "StatPearls 2026", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Situação", "Diâmetro"],
+    ["Aneurisma de aorta abdominal", "≥ 30 mm"],
+    ["Diâmetro subaneurismático", "25–29 mm"],
+    ["Variação normal", "O calibre diminui do diafragma até a bifurcação e é menor em mulheres"]
+   ]},
+   {"title": "Velocidades e ondas normais", "source": "StatPearls 2026", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Parâmetro", "Valor / padrão"],
+    ["VPS da aorta — adolescentes", "110–120 cm/s"],
+    ["VPS da aorta — adultos mais velhos", "70–100 cm/s (diminui com a idade)"],
+    ["Onda acima da artéria mesentérica inferior", "Trifásica: subida rápida, reversão diastólica breve e fluxo anterógrado baixo no restante da diástole"],
+    ["Onda abaixo da artéria mesentérica inferior", "Bifásica, de alta resistência"]
+   ]},
+   {"title": "Achados anormais", "source": "StatPearls 2026", "collapsible": true, "defaultOpen": false, "rows": [
+    ["Achado", "Significado"],
+    ["VPS focal > 200 cm/s", "Estenose (ex.: síndrome da aorta média)"],
+    ["Onda tardus-parvus", "Lesão estenótica proximal grave (ex.: coarctação)"],
+    ["Onda monofásica e VPS reduzida nas femorais comuns", "Oclusão ilíaca proximal"],
+    ["Endoleak com velocidade no nicho > 100 cm/s", "Pouca chance de fechamento espontâneo"]
+   ]},
+   {"title": "Técnica", "source": "StatPearls 2026", "collapsible": true, "defaultOpen": false, "rows": [
+    ["Etapa", "Como fazer"],
+    ["Preparo", "Jejum noturno; evitar fumar e mascar chiclete antes do exame"],
+    ["Transdutor", "Convexo 2,5–5,0 MHz no adulto (até 10 MHz em pediatria)"],
+    ["Extensão", "Do hiato diafragmático à bifurcação (L4), avaliando as ilíacas comuns"],
+    ["Medida do diâmetro", "Nos planos transversal e longitudinal, adotando uma convenção fixa de parede (a fonte cita parede externa a externa, interna a interna ou borda anterior a borda posterior)"],
+    ["Ângulo Doppler", "< 60°"],
+    ["Cuidados", "Evitar pressão excessiva do transdutor em aneurismas; gás, obesidade, ascite e calcificação parietal limitam o exame"]
+   ]}
+  ],
+  "footnotes": ["A referência indicada não traz valores normais de diâmetro por segmento da aorta nem das artérias ilíacas comum, externa e interna."],
+  "refs": ["Nouh MR, Tafti D. Doppler Abdominal Aorta Assessment, Protocols, and Interpretation. In: StatPearls. Treasure Island (FL): StatPearls Publishing; 2026. NBK621195."]
+ },
+ {
+  "id": "doppler-mesentericas",
+  "group": "Doppler", "region": "Aorta e vasos abdominais",
+  "name": "Doppler de Artérias Mesentéricas", "abbr": "AMI", "iconKey": "drop",
+  "tables": [
+   {"title": "Artéria mesentérica inferior — valores normais", "source": "Mirk et al. 1998", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Parâmetro", "Valor normal (média ± DP)"],
+    ["Padrão de onda", "Alta resistência periférica"],
+    ["VPS", "1,41 ± 0,48 m/s"],
+    ["Velocidade diastólica mínima", "0,10 ± 0,16 m/s"],
+    ["Índice de pulsatilidade", "3,49 ± 0,49"],
+    ["Volume de fluxo", "0,13 ± 0,06 L/min"],
+    ["Idade ≥ 50 anos", "Velocidade média maior e resistência menor que nos mais jovens"]
+   ]}
+  ],
+  "footnotes": ["Exame tecnicamente adequado em 88,8% dos casos (103 de 116).", "Valores do tronco celíaco e da artéria mesentérica superior serão incluídos após a leitura da segunda referência (PMC3553331)."],
+  "refs": ["Mirk P, Palazzoni G, Cotroneo AR, di Stasi C, Fileni A. Sonographic and Doppler assessment of the inferior mesenteric artery: normal morphologic and hemodynamic features. Abdom Imaging. 1998;23(4):364-369. PMID 9663270."]
+ },
+ {
+  "id": "doppler-nutcracker",
+  "group": "Doppler", "region": "Aorta e vasos abdominais",
+  "name": "Doppler na Síndrome de Nutcracker", "abbr": "SQN", "iconKey": "drop",
+  "tables": [
+   {"title": "Critérios ao Doppler (veia renal esquerda)", "source": "Kim 2019", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Parâmetro", "Limiar / valor", "Desempenho"],
+    ["Razão de VPS: segmento aortomesentérico / hilo — adulto", "≥ 5,0", "S 80% · E 94%"],
+    ["Razão de VPS: segmento aortomesentérico / hilo — criança", "≥ 4,7", "S 100% · E 90%"],
+    ["Razão de diâmetro: hilo / segmento aortomesentérico", "Síndrome: 5,0 ± 2,3 (2,6–11,0) · Normal: 3,3 ± 1,1 (2,0–6,0)", "Há sobreposição; sem limiar definido"],
+    ["Ângulo aortomesentérico", "Normal 45–90°; menor na síndrome", "Varia entre decúbito e ortostase"],
+    ["Gradiente veia renal esquerda–VCI (invasivo)", "Normal < 1 mmHg; > 3 mmHg confirma", "Padrão diagnóstico"]
+   ]},
+   {"title": "Achados e armadilhas", "source": "Kim 2019 / Marchini 2026", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Aspecto", "Detalhe"],
+    ["Achados típicos", "Dilatação da veia renal esquerda antes da compressão, estreitamento focal no segmento aortomesentérico e aumento da VPS no segmento estreitado"],
+    ["Técnica", "Ângulo Doppler de 30–60°; volume de amostra largo o bastante para incluir o segmento entre a aorta e a AMS em todo o ciclo"],
+    ["Aliasing", "O jato após a compressão gera aliasing ao Doppler colorido"],
+    ["Fenômeno × síndrome", "Compressão é comum em assintomáticos: só se fala em síndrome quando há sintomas"],
+    ["Colaterais", "Veias gonadais funcionam como via descompressiva"]
+   ]}
+  ],
+  "refs": [
+   "Kim SH. Doppler US and CT Diagnosis of Nutcracker Syndrome. Korean J Radiol. 2019;20(12):1627-1637. doi:10.3348/kjr.2019.0084.",
+   "Marchini M, Trezzi M. Doppler ultrasound diagnosis of anterior nutcracker syndrome presenting with isolated urinary abnormalities. Radiol Case Rep. 2026;21(10):4527-4530. doi:10.1016/j.radcr.2026.06.118."
+  ]
+ },
+ {
+  "id": "doppler-may-thurner",
+  "group": "Doppler", "region": "Aorta e vasos abdominais",
+  "name": "Doppler na Síndrome de May-Thurner", "abbr": "MTS", "iconKey": "drop",
+  "tables": [
+   {"title": "Achados e diagnóstico", "source": "Dwivedi 2024 / Ifzaal 2025", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Aspecto", "Detalhe"],
+    ["Velocidade na veia ilíaca comum esquerda", "Aumento sugere compressão venosa ilíaca"],
+    ["Refluxo venoso profundo (Valsalva)", "Sinal de obstrução proximal"],
+    ["Critérios numéricos", "Não há critérios diagnósticos padronizados"],
+    ["Angio-TC venosa", "Sensibilidade e especificidade próximas de 95%"],
+    ["Padrão-ouro", "Venografia com ultrassom intravascular (IVUS)"]
+   ]},
+   {"title": "Epidemiologia e armadilhas", "source": "Dwivedi 2024", "collapsible": true, "defaultOpen": false, "rows": [
+    ["Aspecto", "Detalhe"],
+    ["Prevalência da compressão", "14–32% em assintomáticos; cerca de 1/3 com compressão hemodinamicamente significativa"],
+    ["Participação na TVP", "Cerca de 2–5% de todas as TVP"],
+    ["Limitação do Doppler", "Dificuldade técnica para avaliar a VCI e as veias ilíacas"],
+    ["Armadilha na TC", "Paciente desidratado pode ter veia achatada sem compressão real"]
+   ]}
+  ],
+  "refs": [
+   "Dwivedi A, Singh SN, Sharma A, Sharma R, Mishra T. A Systematic Review of Radiological Diagnosis and Management of May–Thurner Syndrome. J Pharm Bioallied Sci. 2024;16(Suppl 2):S1012-S1016. doi:10.4103/jpbs.jpbs_1135_23.",
+   "Ifzaal M, Bawan SB, Dsouza DL, et al. May-Thurner Syndrome: Is It on Our Radar? Cureus. 2025;17(4):e82638. doi:10.7759/cureus.82638."
+  ]
+ },
+ {
+  "id": "doppler-compressao-tronco-celiaco",
+  "group": "Doppler", "region": "Aorta e vasos abdominais",
+  "name": "Doppler na Compressão do Tronco Celíaco", "abbr": "MALS", "iconKey": "drop",
+  "tables": [
+   {"title": "VPS do tronco celíaco — adultos", "source": "Römer et al. 2020", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Manobra", "Com compressão (mediana)", "Sem compressão (mediana)"],
+    ["Inspiração (apneia)", "239 cm/s (IIQ 159–327)", "138 cm/s (IIQ 116–152)"],
+    ["Expiração (apneia)", "287 cm/s (IIQ 191–412)", "133 cm/s (IIQ 115–194)"]
+   ]},
+   {"title": "VPS do tronco celíaco — crianças e adolescentes", "source": "Aschenbach et al. 2011", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Grupo", "VPS (média ± DP)"],
+    ["Com compressão, antes da cirurgia", "304 ± 49 cm/s"],
+    ["Depois da cirurgia", "163 ± 29 cm/s"],
+    ["Controles", "140 ± 25 cm/s"]
+   ]},
+   {"title": "Interpretação", "source": "Römer 2020 / Aschenbach 2011", "collapsible": true, "defaultOpen": false, "rows": [
+    ["Aspecto", "Detalhe"],
+    ["Ponto de corte", "Os resultados sobre o melhor valor de corte são inconsistentes; combinar a VPS em inspiração e em expiração ajuda a confirmar ou afastar"],
+    ["Papel do Doppler", "Triagem de estenose do tronco celíaco"],
+    ["Morfologia", "Tronco celíaco em gancho com estreitamento focal (descrito na angio-RM)"]
+   ]}
+  ],
+  "refs": [
+   "Römer C, Fischer T, Haase O, Möckel M, Hamm B, Lerchbaumer MH. Assessment of celiac artery compression using color-coded duplex sonography. Clin Hemorheol Microcirc. 2020;76(3):413-423. doi:10.3233/CH-200903.",
+   "Aschenbach R, Basche S, Vogl TJ. Compression of the celiac trunk caused by median arcuate ligament in children and adolescent subjects: evaluation with contrast-enhanced MR angiography and comparison with Doppler US evaluation. J Vasc Interv Radiol. 2011;22(4):556-561. doi:10.1016/j.jvir.2010.11.007."
+  ]
+ },
+ {
+  "id": "doppler-hepatico",
+  "group": "Doppler", "region": "Fígado e sistema portal",
+  "name": "Doppler Hepático", "abbr": "DH", "iconKey": "drop",
+  "tables": [
+   {"title": "Valores normais", "source": "StatPearls 2026", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Vaso", "Parâmetro", "Normal"],
+    ["Veia porta", "Diâmetro", "7–15 mm"],
+    ["Veia porta", "Direção do fluxo", "Hepatopetal, com leve variação respiratória"],
+    ["Veia porta", "Velocidade", "Cerca de 30 cm/s"],
+    ["Artéria hepática", "Índice de resistividade", "0,5–0,7"],
+    ["Artéria hepática", "Subida sistólica", "Rápida, até 80 ms"],
+    ["Veias hepáticas", "Diâmetro", "5–7 mm"],
+    ["Veias hepáticas e VCI", "Onda", "Fásica, acompanhando o ciclo cardíaco"],
+    ["VCI", "Diâmetro", "13–22 mm, colapsável à compressão"]
+   ]},
+   {"title": "Achados anormais", "source": "StatPearls 2026", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Achado", "Significado"],
+    ["Fluxo portal hepatofugal", "Fluxo afastando-se do fígado (retrógrado): anormal"],
+    ["Ausência de sinal ao Doppler colorido na porta", "Trombose (atenção a falso positivo com ajuste de baixa frequência inadequado)"],
+    ["Veias hepáticas não visualizadas, cordão fibroso, colaterais em teia", "Síndrome de Budd-Chiari"],
+    ["Pressão portal", "Normal < 6 mmHg; hipertensão portal clínica > 12 mmHg"],
+    ["Velocidades no TIPS", "Habitualmente 90–190 cm/s"]
+   ]},
+   {"title": "Técnica", "source": "StatPearls 2026", "collapsible": true, "defaultOpen": false, "rows": [
+    ["Etapa", "Como fazer"],
+    ["Preparo", "Jejum de 4–6 horas (o estado pós-prandial aumenta a pressão e o calibre portal)"],
+    ["Posição", "Decúbito dorsal ou lateral esquerdo"]
+   ]}
+  ],
+  "refs": ["El-Nakeep S, Tafti D. Hepatic Doppler Ultrasonography. In: StatPearls. Treasure Island (FL): StatPearls Publishing; 2026. NBK567725; PMID 33620802."]
+ },
+ {
+  "id": "doppler-figado-transplantado",
+  "group": "Doppler", "region": "Fígado e sistema portal",
+  "name": "Doppler do Fígado Transplantado", "abbr": "TxH", "iconKey": "drop",
+  "tables": [
+   {"title": "Critérios de patência das anastomoses", "source": "Minciuna et al. 2023", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Vaso", "Normal (patente)"],
+    ["Artéria hepática", "Sem padrão tardus-parvus e IR > 0,5 em todos os pontos"],
+    ["Veia porta", "Fluxo hepatopetal, sem material intraluminal e aceleração pós/pré-anastomose < 3 vezes"],
+    ["Veias hepáticas e cavo-cavostomia", "Fluxo nas três veias e na cavo-cavostomia, onda trifásica ou bifásica, diâmetro das veias < 10 mm"]
+   ]},
+   {"title": "Protocolo e resultados", "source": "Minciuna et al. 2023", "collapsible": true, "defaultOpen": false, "rows": [
+    ["Aspecto", "Detalhe"],
+    ["Protocolo", "Doppler no dia 0 (em geral até 1 h após a cirurgia), dia 1 e dia 7"],
+    ["Complicações na série (708 transplantes)", "Trombose da artéria hepática 7,1%; trombose portal 8,2%; obstrução do fluxo venoso hepático 3,1%"],
+    ["Desempenho do Doppler de rotina", "Detectou eventos precoces, mas com valor preditivo positivo baixo (53,8%)"]
+   ]}
+  ],
+  "refs": ["Minciuna I, den Hoed C, van der Meer AJ, et al. The Yield of Routine Post-Operative Doppler Ultrasound to Detect Early Post-Liver Transplantation Vascular Complications. Transpl Int. 2023;36:11611. doi:10.3389/ti.2023.11611."]
+ },
+ {
+  "id": "doppler-rim-transplantado",
+  "group": "Doppler", "region": "Rim",
+  "name": "Doppler do Rim Transplantado", "abbr": "TxR", "iconKey": "drop",
+  "tables": [
+   {"title": "Índice de resistividade intrarrenal", "source": "Habibi et al. 2024 (meta-análise)", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Grupo", "IR médio (IC 95%)"],
+    ["Enxerto com função normal", "0,71 (0,67–0,75)"],
+    ["Enxerto com disfunção", "0,73 (0,68–0,78)"]
+   ]}
+  ],
+  "footnotes": ["A diferença entre os grupos é pequena (P = 0,05): o IR isolado não substitui a biópsia no diagnóstico da disfunção do enxerto.", "Limiares de estenose da artéria renal do enxerto, razão renal/ilíaca e tempo de aceleração serão incluídos após a leitura do texto completo de Galgano et al. 2018."],
+  "refs": [
+   "Habibi S, Bagheri SM, Ghadamzadeh M, Saadat Mostafavi SR, Dadkhah A. Assessment of renal transplant dysfunction by doppler sonography: a systematic review and meta-analysis. Caspian J Intern Med. 2024;15(3):374-381.",
+   "Galgano SJ, Lockhart ME, Fananapazir G, Sanyal R. Optimizing renal transplant Doppler ultrasound. Abdom Radiol (NY). 2018;43(10):2564-2573. doi:10.1007/s00261-018-1731-9."
+  ]
+ },
+ {
+  "id": "doppler-fav",
+  "group": "Doppler", "region": "Hemodiálise",
+  "name": "Doppler de Fístula Arteriovenosa para Hemodiálise", "abbr": "FAV", "iconKey": "drop",
+  "tables": [
+   {"title": "Maturação e vigilância", "source": "Polavarapu et al. 2025", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Parâmetro", "Valor"],
+    ["Maturação (\"regra dos 6\"), em 4 semanas", "Fluxo ≥ 600 mL/min e veia de drenagem > 6 mm, com profundidade que permita a punção"],
+    ["Fluxo ótimo", "700–1.300 mL/min"],
+    ["Fluxo baixo", "< 500 mL/min: investigar"],
+    ["Risco de trombose iminente", "< 300 mL/min: intervir"],
+    ["Diâmetro venoso para punção", "≥ 4 mm associado a sucesso"]
+   ]},
+   {"title": "Mapeamento pré-operatório", "source": "Polavarapu et al. 2025", "collapsible": true, "defaultOpen": false, "rows": [
+    ["Vaso", "Associado a sucesso", "Associado a falha"],
+    ["Veia", "≥ 2,5 mm", "< 1,6 mm (risco 3 vezes maior)"],
+    ["Artéria", "≥ 2 mm", "Radial < 1,5 mm"]
+   ]},
+   {"title": "Técnica", "source": "Polavarapu et al. 2025", "collapsible": true, "defaultOpen": false, "rows": [
+    ["Etapa", "Como fazer"],
+    ["Onde medir o fluxo", "Artéria braquial logo acima da prega do cotovelo"],
+    ["Cálculo", "Volume = área × velocidade média × 60"],
+    ["Ângulo Doppler", "≤ 60°"],
+    ["Transdutor", "Linear de alta frequência"]
+   ]}
+  ],
+  "footnotes": ["Critérios de estenose da fístula serão incluídos após a leitura da referência PMC6732112."],
+  "refs": ["Polavarapu P, Patil SD, Patil S, Patil S. Role of Doppler Ultrasound in the Evaluation of Arteriovenous Fistula Maturation and Detection of Complications in Hemodialysis Patients. Cureus. 2025;17(5):e84681. doi:10.7759/cureus.84681."]
+ }
+]

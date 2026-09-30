@@ -107,25 +107,25 @@ const DOPPLER_INDEX = [
   {region:'Membros superiores', id:'doppler-desfiladeiro-toracico'},
   {region:'Membros superiores', id:'doppler-mapeamento-venoso-mmss'},
 
-  {region:'Aorta e vasos abdominais', name:'Doppler de aorta abdominal e artérias ilíacas'},
+  {region:'Aorta e vasos abdominais', id:'doppler-aorta-iliacas'},
   {region:'Aorta e vasos abdominais', name:'Doppler para controle de endoprótese de aorta'},
   {region:'Aorta e vasos abdominais', id:'doppler-arterias-renais'},
-  {region:'Aorta e vasos abdominais', name:'Doppler de artérias mesentéricas'},
+  {region:'Aorta e vasos abdominais', id:'doppler-mesentericas'},
   {region:'Aorta e vasos abdominais', name:'Doppler de veia cava inferior e veias ilíacas'},
-  {region:'Aorta e vasos abdominais', name:'Doppler para síndrome de May–Thurner'},
-  {region:'Aorta e vasos abdominais', name:'Doppler para síndrome de Nutcracker'},
-  {region:'Aorta e vasos abdominais', name:'Doppler para compressão do tronco celíaco'},
+  {region:'Aorta e vasos abdominais', id:'doppler-may-thurner'},
+  {region:'Aorta e vasos abdominais', id:'doppler-nutcracker'},
+  {region:'Aorta e vasos abdominais', id:'doppler-compressao-tronco-celiaco'},
 
-  {region:'Fígado e sistema portal', name:'Doppler hepático'},
+  {region:'Fígado e sistema portal', id:'doppler-hepatico'},
   {region:'Fígado e sistema portal', name:'Doppler para hipertensão portal'},
   {region:'Fígado e sistema portal', name:'Doppler para trombose portal'},
   {region:'Fígado e sistema portal', name:'Doppler de TIPS e derivações portossistêmicas'},
-  {region:'Fígado e sistema portal', name:'Doppler do fígado transplantado'},
+  {region:'Fígado e sistema portal', id:'doppler-figado-transplantado'},
 
-  {region:'Rim', name:'Doppler do rim transplantado'},
+  {region:'Rim', id:'doppler-rim-transplantado'},
 
   {region:'Hemodiálise', name:'Mapeamento pré-operatório para fístula arteriovenosa'},
-  {region:'Hemodiálise', name:'Doppler de fístula arteriovenosa para hemodiálise'},
+  {region:'Hemodiálise', id:'doppler-fav'},
   {region:'Hemodiálise', name:'Doppler de prótese arteriovenosa para hemodiálise'},
 ];
 
