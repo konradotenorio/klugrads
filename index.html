@@ -40,12 +40,12 @@
     font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
     -webkit-font-smoothing:antialiased; line-height:1.5;
   }
-  .wrap{max-width:1080px;margin:0 auto;padding:0 22px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;}
+  .wrap{max-width:1440px;margin:0 auto;padding:0 22px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;}
 
   /* ---------- topo ---------- */
   header{padding:40px 0 8px;}
   .bar{display:flex;align-items:center;justify-content:center;}
-  .logo{font-size:clamp(34px,8vw,60px);font-weight:800;letter-spacing:.14em;line-height:1.1;
+  .logo{font-size:clamp(34px,8vw,46px);font-weight:800;letter-spacing:.14em;line-height:1.1;
     margin-right:-.14em;}  /* o letter-spacing sobra depois da última letra; compensa para centralizar de fato */
   .logo .k{color:var(--accent);}
   .btn{
@@ -57,14 +57,15 @@
   .btn:active{transform:translateY(1px);}
   .btn-primary{background:var(--accent);color:var(--accentInk);}
   .btn-primary:hover{opacity:.9;}
-  .btn-xl{font-size:clamp(20px,4.2vw,26px);font-weight:800;letter-spacing:.02em;
+  .btn-xl{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);  /* branco sobre o azul: a sombra leve segura a leitura */
+    font-size:clamp(20px,4.2vw,26px);font-weight:800;letter-spacing:.02em;
     padding:22px clamp(32px,7vw,64px);border-radius:16px;}
   .btn-block{width:100%;}
 
   /* ---------- herói ---------- */
   .hero{padding:40px 0 40px;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;}
   .hero h1{
-    font-size:clamp(26px,5vw,46px);line-height:1.15;margin:0 0 18px;
+    font-size:clamp(26px,4.4vw,64px);line-height:1.15;margin:0 0 18px;
     font-weight:800;letter-spacing:-.01em;text-transform:uppercase;
   }
   .hero h1 .hl{color:var(--accent);}
@@ -93,7 +94,7 @@
     border-top:1px solid var(--line);margin-top:10px;padding:22px 0 34px;
     font-size:12.5px;color:var(--dim);text-align:center;
   }
-  .aviso p{margin:0 auto;max-width:46rem;}
+  .aviso p{margin:0 auto;max-width:88rem;}
   .aviso p + p{margin-top:10px;}
   .aviso strong{color:var(--tx);}
   .aviso a{color:var(--accent);font-weight:600;text-decoration:none;}
