@@ -269,9 +269,11 @@ function uxToResult(){ const els = uxResultEls(); if(els[0]) els[0].scrollIntoVi
 
 /* ============================ 4. TECLADO E FOCO ============================ */
 var UX_NATIVE = {BUTTON:1, A:1, INPUT:1, SELECT:1, TEXTAREA:1, LABEL:1, SUMMARY:1};
+// <a onclick> sem href não é focável nem ativa com Enter: trata como botão
+function uxIsNative(el){ return !!UX_NATIVE[el.tagName] && !(el.tagName==='A' && !el.hasAttribute('href')); }
 function uxEnhance(root){
   (root || document).querySelectorAll('[onclick]').forEach(function(el){
-    if(UX_NATIVE[el.tagName]) return;
+    if(uxIsNative(el)) return;
     if(!el.hasAttribute('role')) el.setAttribute('role','button');
     if(!el.hasAttribute('tabindex')) el.tabIndex = 0;
     if(el.classList.contains('ti-ftog') || el.classList.contains('tfg-opt') || el.classList.contains('chip') || el.classList.contains('pick-box'))
@@ -282,7 +284,7 @@ function uxTyping(t){ return t && (t.tagName==='INPUT' || t.tagName==='TEXTAREA'
 document.addEventListener('keydown', function(e){
   const t = e.target;
   // Enter / Espaço ativam cartões, linhas e chips (elementos com role=button que não são <button>)
-  if((e.key==='Enter' || e.key===' ') && t && t.getAttribute && t.getAttribute('role')==='button' && !UX_NATIVE[t.tagName]){
+  if((e.key==='Enter' || e.key===' ') && t && t.getAttribute && t.getAttribute('role')==='button' && !uxIsNative(t)){
     e.preventDefault(); t.click(); return;
   }
   if(e.key==='Escape'){

@@ -156,9 +156,11 @@ body.kbd .tabbar{display:none;}
 
 .lx-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px;padding:14px 16px 24px;max-width:1040px;}
 .lx{
-  display:flex;align-items:center;gap:14px;background:var(--sf);border:1px solid var(--line);border-radius:18px;
+  display:flex;flex-direction:column;gap:12px;background:var(--sf);border:1px solid var(--line);border-radius:18px;
   padding:16px;cursor:pointer;box-shadow:var(--shadow);min-width:0;
 }
+.lx-head{display:flex;align-items:center;gap:14px;min-width:0;}
+.lx-list{display:none;}
 .lx:hover{border-color:var(--accent);}
 .lx:active{opacity:.75;}
 .lx.fill{background:var(--accent);color:var(--accentInk);border-color:transparent;}
@@ -324,3 +326,22 @@ body.kbd .tabbar{display:none;}
 /* métodos no início: 1 coluna (celular), 2 (tablet/desktop estreito), 4 (desktop largo) — sem cartão sozinho */
 @media (min-width:600px){ .mod2-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
 @media (min-width:1200px){ .mod2-grid{grid-template-columns:repeat(4,minmax(0,1fr));} }
+
+/* ---------- lançador no desktop: painéis com o conteúdo à vista ---------- */
+@media (min-width:900px){
+  .lx-wrap{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;gap:16px;padding:20px 8px 32px;max-width:1120px;}
+  .lx{padding:20px;gap:14px;}
+  .lx-list{display:flex;flex-direction:column;gap:2px;border-top:1px solid var(--line);padding-top:10px;}
+  .lx.fill .lx-list{border-top-color:rgba(255,255,255,.28);}
+  .lx-li{display:flex;align-items:center;gap:10px;padding:8px 8px;border-radius:10px;font-size:13.5px;font-weight:600;line-height:1.25;cursor:pointer;}
+  .lx-li:hover{background:var(--sf2);}
+  .lx.fill .lx-li:hover{background:rgba(255,255,255,.2);}
+  .lx-li b{flex:none;min-width:34px;height:26px;padding:0 6px;border-radius:8px;background:var(--accentSoft);color:var(--accent);
+    display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;letter-spacing:-.01em;}
+  .lx.fill .lx-li b{background:rgba(255,255,255,.24);color:var(--accentInk);}
+  .lx-li span{flex:1;min-width:0;}
+  .lx-li em{flex:none;font-style:normal;font-size:12px;font-weight:700;color:var(--dim);font-variant-numeric:tabular-nums;}
+  .lx.fill .lx-li em{color:var(--accentInk);opacity:.8;}
+  .lx-more{display:flex;align-items:center;gap:4px;padding:8px 8px 2px;font-size:12.5px;font-weight:750;color:var(--accent);}
+  .lx.fill .lx-more{color:var(--accentInk);}
+}

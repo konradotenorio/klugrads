@@ -1105,25 +1105,41 @@ const HOME_CARDS = {
   rm: {calcD:'PI-RADS, O-RADS, PI-QUAL, escores e fórmulas', refD:'Nomenclaturas e conteúdo de apoio', protoD:'Sequências, contraste e indicação'},
   rx: {calcD:'Idade óssea (IA) e ferramentas de apoio', refD:'Nomenclaturas e conteúdo de apoio', protoD:'Posicionamento e técnica'},
 };
-function launchItem(icon,title,desc,count,act,fill){
+/* Painel do lançador. No celular é uma linha (ícone, título, contagem); no desktop vira um
+   painel com o conteúdo à vista (`list`), para não abrir só cartões vazios. */
+function launchItem(icon,title,desc,count,act,opts){
+  opts = opts || {};
   const off = !count;
-  return `<div class="lx${fill?' fill':''}${off?' off':''}" ${off?'aria-disabled="true"':`onclick="${act}"`}>
-    <div class="lx-ic">${svgIcon(icon,26)}</div>
-    <div class="lx-tx"><div class="t">${esc(title)}</div><div class="d">${esc(desc)}</div></div>
-    ${off?'<span class="soon-badge">Em breve</span>':`<span class="lx-n">${count}</span><span class="chev">${svgIcon(P.chev,18,{sw:2})}</span>`}
+  const list = (!off && opts.list) ? `<div class="lx-list">${opts.list}</div>` : '';
+  return `<div class="lx${opts.fill&&!off?' fill':''}${off?' off':''}" ${off?'aria-disabled="true"':`onclick="${act}"`}>
+    <div class="lx-head">
+      <div class="lx-ic">${svgIcon(icon,26)}</div>
+      <div class="lx-tx"><div class="t">${esc(title)}</div><div class="d">${esc(desc)}</div></div>
+      ${off?'<span class="soon-badge">Em breve</span>':`<span class="lx-n">${count}</span><span class="chev">${svgIcon(P.chev,18,{sw:2})}</span>`}
+    </div>
+    ${list}
   </div>`;
 }
 function homeHTML(){
   const mid = state.modalityId, isUS = mid==='us';
   const t = HOME_CARDS[mid] || HOME_CARDS.us;
-  const nCalc = calcsOf(mid,'calc').length;
+  const calcs = calcsOf(mid,'calc');
   const nRef = isUS ? DATA.length : calcsOf(mid,'ref').length;
   const nProto = calcsOf(mid,'proto').length;
-  return `<div class="lx-wrap">
-    ${launchItem(P.book,'Referências',t.refD,nRef, isUS?"setView('refs')":"openModCalcs('ref')", true)}
-    ${launchItem(P.calc,'Calculadoras',t.calcD,nCalc,`openCalcsView('${mid}')`)}
-    ${launchItem(P.checklist,'Protocolos',t.protoD,nProto,"openModCalcs('proto')")}
-  </div>`;
+  const stop = 'event.stopPropagation();';
+  // Desktop: o que tem dentro de cada painel (atalhos diretos)
+  const calcList = calcs.slice(0,7).map(c=>`<a class="lx-li" onclick="${stop}openFavCalc('${esc(c.id)}')">${c.badge?`<b>${esc(c.badge)}</b>`:`<b>${svgIcon(P.calc,14)}</b>`}<span>${esc(c.title)}</span></a>`).join('')
+    + (calcs.length>7 ? `<span class="lx-more">Ver todas (${calcs.length}) ${svgIcon(P.chev,13,{sw:2.4})}</span>` : '');
+  const refList = isUS ? SPECIALTIES.map(sp=>{ const n=itemsForSpec(sp).length; return n?`<a class="lx-li" onclick="${stop}openSpecialty('${sp.id}')"><b>${specIcon(sp.id,15)}</b><span>${esc(sp.name)}</span><em>${n}</em></a>`:''; }).join('') : '';
+  const refItems = !isUS ? calcsOf(mid,'ref') : [];
+  const refList2 = refItems.map(c=>`<a class="lx-li" onclick="${stop}openFavCalc('${esc(c.id)}')"><b>${c.badge?esc(c.badge):''}</b><span>${esc(c.title)}</span></a>`).join('');
+  const items = [
+    {icon:P.book, title:'Referências', desc:t.refD, count:nRef, act: isUS?"setView('refs')":"openModCalcs('ref')", list: isUS?refList:refList2},
+    {icon:P.calc, title:'Calculadoras', desc:t.calcD, count:calcs.length, act:`openCalcsView('${mid}')`, list: calcList},
+    {icon:P.checklist, title:'Protocolos', desc:t.protoD, count:nProto, act:"openModCalcs('proto')", list:''},
+  ];
+  const first = items.findIndex(x=>x.count>0);      // o primeiro painel ativo ganha o destaque
+  return `<div class="lx-wrap">${items.map((x,i)=>launchItem(x.icon,x.title,x.desc,x.count,x.act,{fill:i===first,list:x.list})).join('')}</div>`;
 }
 
 /* ---- 2. REFERÊNCIAS (lista) ---- */
@@ -2475,4 +2491,4 @@ KlugSessao.exigir().then(function(sessao){
   }
   carregarDadosDaConta();
 });
-if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{})); }
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').then(r=>{ try{ r.update(); }catch(_){} }).catch(()=>{})); }   // update(): checa o sw.js a cada abertura (o navegador só checa a cada 24 h por conta própria)
