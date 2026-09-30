@@ -37,3 +37,32 @@ no navegador. Créditos e licenças: rodapé da página, `licencas/` e `app/LICE
 ## Ideias para depois
 Marca própria no cabeçalho do PDF, barra lateral de navegação como no app, tamanho de fonte ajustável (como em Configurações do app)
 e revisar textos do FAQ/"Como funciona" com a voz do KlugRads. Ao mexer em qualquer texto que fale de "gratuito", ver a pendência dos Termos (site pago).
+
+## Operação (como está em produção)
+**Pesos do modelo** — Cloudflare R2, conta `klugrads@gmail.com`, bucket `klugrads-modelos`, pasta `models/`:
+`manifest.json`, `reference.json`, `bone-age-0.onnx`, `bone-age-1.onnx`, `bone-age-2.onnx` (~340 MB no total).
+O endereço público (`r2.dev`, provisório e com limite de requisições) está em `weights-base.txt` e no `connect-src` de `vercel.json`.
+O app confere o tamanho e o SHA-256 de cada arquivo (vindos do `manifest.json`) e guarda os pesos no cache do navegador.
+
+**CORS do bucket** (R2 › bucket › Settings › CORS Policy):
+```json
+[{"AllowedOrigins":["https://klugrads.com","https://www.klugrads.com","https://klugrads-chi.vercel.app"],
+  "AllowedMethods":["GET","HEAD"],"AllowedHeaders":["*"],"MaxAgeSeconds":86400}]
+```
+Para testar numa prévia da Vercel, some o endereço exato dela em `AllowedOrigins`.
+
+**Segredos do GitHub** (Settings › Secrets and variables › Actions): `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`
+(token do R2 com "Object Read & Write" só neste bucket), `R2_BUCKET`, `R2_PUBLIC_URL`.
+
+**Regerar/reenviar os modelos**: Actions › "Exportar modelo de idade óssea" › Run workflow, com "publicar" marcado.
+Só é preciso se a revisão do modelo mudar; o app lê o `manifest.json` em tempo de execução, então não precisa recompilar.
+
+**Trocar o endereço dos pesos** (recomendado antes de muito uso, pois o `r2.dev` é limitado):
+1. R2 › bucket › Settings › Custom Domains › adicionar, por exemplo, `modelos.klugrads.com` (o domínio precisa estar no DNS do Cloudflare).
+2. Editar `weights-base.txt` (termina com `/`), rodar `tools/idade-ossea/build.sh` e trocar a origem no `connect-src` das duas regras `/idade-ossea` de `vercel.json`.
+3. Commit e PR.
+
+**Custos**: o R2 tem 10 GB, 1 M de escritas e 10 M de leituras grátis por mês e não cobra a saída de dados; não há limite rígido de gasto,
+então vale manter um alerta de cobrança no Cloudflare. Nunca colocar no bucket nada além dos arquivos do modelo (o acesso é público).
+
+**Verificação feita (30/09/2026)**: com os pesos reais, o resultado na página do KlugRads foi idêntico ao do aplicativo original para a mesma imagem.
