@@ -561,13 +561,13 @@
     position:relative;padding-top:calc(env(safe-area-inset-top) + 16px);
     padding-bottom:24px;display:flex;flex-direction:column;min-height:100%;
   }
-  .modal-head{padding:14px 24px 20px;}
+  .modal-head{padding:14px 24px 14px;}
   .modal-brand{
     font-size:34px;letter-spacing:.18em;text-transform:uppercase;font-weight:800;
     color:var(--accent);text-align:center;display:block;margin-bottom:2px;
   }
   .modal-brand span{color:var(--dim);}
-  .modal-slogan{font-size:13px;font-style:italic;color:var(--dim);text-align:center;margin-top:0;margin-bottom:18px;}
+  .modal-slogan{font-size:13px;font-style:italic;color:var(--dim);text-align:center;margin-top:0;margin-bottom:6px;}
   .modal-title{font-size:22px;font-weight:750;letter-spacing:-.02em;line-height:1.1;text-align:left;}
   .modal-sub{color:var(--dim);font-size:14px;margin-top:5px;text-align:left;}
   .modal-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 18px 14px;}
@@ -803,6 +803,22 @@
     .mod-badge{margin-left:auto;flex:none;}
     .modal-grid{gap:12px;}
     .modal-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  }
+
+  /* ===== Tela inicial: Busca Geral · Métodos · Ferramentas · Visualizador/Configurações ===== */
+  .home-find{display:flex;align-items:center;gap:14px;padding:4px 18px 26px;}
+  .home-lbl{flex:none;font-size:16px;font-weight:750;letter-spacing:-.01em;white-space:nowrap;}
+  .home-find .modal-search{flex:1;min-width:0;margin:0;padding:13px 16px;}
+  .home-sec{padding:0 18px 12px;}
+  .modal-grid{padding-bottom:26px;}
+  .modal-shortcuts{padding-bottom:12px;}
+  .modal-shortcuts.cols2{padding-bottom:18px;}
+  @media(max-width:599px){
+    .home-find{flex-direction:column;align-items:stretch;gap:8px;padding-bottom:22px;}
+  }
+  @media(min-width:900px){
+    .modal-shortcuts.cols3{grid-template-columns:repeat(3,minmax(0,1fr));}
+    .modal-shortcuts.cols2{grid-template-columns:repeat(2,minmax(0,1fr));}
   }
 </style>
 </head>

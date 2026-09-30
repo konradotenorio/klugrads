@@ -733,46 +733,44 @@ function modalityHTML(){
       <div class="mod-name">${m.label}</div>
       ${!m.active?'<div class="mod-badge">Em construção</div>':''}
     </div>`).join('');
+  const short = (icon,iconCls,t,d,act)=>`
+      <div class="lc-short" onclick="${act}">
+        <div class="si ${iconCls}">${icon}</div>
+        <div class="st"><div class="t">${t}</div><div class="d">${d}</div></div>
+        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
+      </div>`;
+  // Ordem da tela: Busca Geral → Métodos de Diagnóstico → (Outras Ferramentas · Favoritos · Nova Lista) → (Visualizador DICOM · Configurações)
   return `<div class="modal-screen">
     <button class="iconbtn modal-theme" onclick="toggleTheme()" aria-label="Alternar tema dia/noite" title="Tema dia/noite">${state.theme==='light'?'🌙':'☀️'}</button>
     <div class="modal-head">
       <div class="modal-brand">KLUG<span>RADS</span></div>
       <div class="modal-slogan">Sua referência em Radiologia</div>
+    </div>
+
+    <div class="home-find">
+      <div class="home-lbl">Busca Geral:</div>
+      <div class="modal-search" onclick="setView('busca')" role="button" tabindex="0">
+        <span class="si">${svgIcon(P.search,18,{sw:2})}</span>
+        <span class="ph">Buscar referências e calculadoras…</span>
+      </div>
+    </div>
+
+    <div class="home-sec">
       <div class="modal-title">Métodos de Diagnóstico</div>
       <div class="modal-sub">Selecione uma modalidade</div>
     </div>
-    <div class="modal-search" onclick="setView('busca')" role="button" tabindex="0">
-      <span class="si">${svgIcon(P.search,18,{sw:2})}</span>
-      <span class="ph">Buscar referências e calculadoras…</span>
-    </div>
     <div class="modal-grid">${cards}</div>
-    <div class="modal-shortcuts">
-      <div class="lc-short" onclick="openViewer()">
-        <div class="si acc">${svgIcon(P.dicom,23)}</div>
-        <div class="st"><div class="t">VISUALIZADOR DICOM</div><div class="d">Abra exames do CD/pendrive direto no navegador</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-      <div class="lc-short" onclick="setView('ferramentas')">
-        <div class="si acc">${svgIcon(P.tools,22)}</div>
-        <div class="st"><div class="t">Outras Ferramentas</div><div class="d">Calculadoras e referências por especialidade</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-      <div class="lc-short" onclick="setView('favoritos')">
-        <div class="si star">${svgIcon(P.star,23,{fill:'currentColor',noStroke:true})}</div>
-        <div class="st"><div class="t">Favoritos</div><div class="d">Acesso rápido ao que você marcou</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-      <div class="lc-short" onclick="setView('novalista')">
-        <div class="si acc">${svgIcon(P.listplus,23)}</div>
-        <div class="st"><div class="t">Nova lista</div><div class="d">Monte um pacote para o plantão</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-      <div class="lc-short" onclick="setView('config')">
-        <div class="si acc">${svgIcon(P.gear,23)}</div>
-        <div class="st"><div class="t">Configurações</div><div class="d">Tema, tamanho da fonte e sugestões</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-    </div>
+
+    <div class="modal-shortcuts cols3">${
+      short(svgIcon(P.tools,22),'acc','Outras Ferramentas','Calculadoras e referências por especialidade',"setView('ferramentas')")
+    + short(svgIcon(P.star,23,{fill:'currentColor',noStroke:true}),'star','Favoritos','Acesso rápido ao que você marcou',"setView('favoritos')")
+    + short(svgIcon(P.listplus,23),'acc','Nova Lista','Editável: crie e edite pacotes para o plantão',"setView('novalista')")
+    }</div>
+
+    <div class="modal-shortcuts cols2">${
+      short(svgIcon(P.dicom,23),'acc','VISUALIZADOR DICOM','Abra exames do CD/pendrive direto no navegador','openViewer()')
+    + short(svgIcon(P.gear,23),'acc','Configurações','Tema, tamanho da fonte e sugestões',"setView('config')")
+    }</div>
   </div>`;
 }
 
