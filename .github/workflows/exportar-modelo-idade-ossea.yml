@@ -27,7 +27,7 @@ permissions:
 jobs:
   exportar:
     # Este job executa código do repositório do modelo (trust_remote_code): por isso NÃO tem segredos.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -54,7 +54,7 @@ jobs:
   publicar:
     if: ${{ inputs.publicar }}
     needs: exportar
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
