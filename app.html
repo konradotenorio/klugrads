@@ -806,19 +806,32 @@
   }
 
   /* ===== Tela inicial: Busca Geral · Métodos · Ferramentas · Visualizador/Configurações ===== */
-  .home-find{display:flex;align-items:center;gap:14px;padding:4px 18px 26px;}
-  .home-lbl{flex:none;font-size:16px;font-weight:750;letter-spacing:-.01em;white-space:nowrap;}
-  .home-find .modal-search{flex:1;min-width:0;margin:0;padding:13px 16px;}
-  .home-sec{padding:0 18px 12px;}
-  .modal-grid{padding-bottom:26px;}
-  .modal-shortcuts{padding-bottom:12px;}
-  .modal-shortcuts.cols2{padding-bottom:18px;}
-  @media(max-width:599px){
-    .home-find{flex-direction:column;align-items:stretch;gap:8px;padding-bottom:22px;}
+  .home-find{display:flex;align-items:center;gap:16px;padding:4px 18px 34px;}
+  .home-lbl{flex:none;font-size:17px;font-weight:750;letter-spacing:-.01em;white-space:nowrap;}
+  .home-find .modal-search{flex:1;min-width:0;margin:0;padding:14px 16px;}
+  .home-sec{padding:0 18px 16px;}
+  /* mais respiro entre os blocos e entre as seções */
+  .modal-grid{gap:16px;padding-bottom:34px;}
+  .modal-shortcuts{gap:16px;padding-bottom:16px;}
+  .modal-shortcuts.cols2{padding-bottom:22px;}
+  /* nomes dos métodos maiores */
+  .mod-card{min-height:124px;gap:10px;}
+  .mod-icon{width:52px;height:52px;border-radius:15px;}
+  .mod-name{font-size:15px;font-weight:700;line-height:1.25;}
+  .mod-badge{font-size:9.5px;}
+  @media(max-width:899px){   /* abaixo de 900 px o app é uma coluna de até 440 px */
+    .home-find{flex-direction:column;align-items:stretch;gap:10px;padding-bottom:28px;}
+    .modal-grid{grid-template-columns:1fr 1fr;}      /* 2 colunas: cabe o nome maior sem quebrar palavras */
   }
   @media(min-width:900px){
+    .modal-grid{gap:20px;padding-bottom:40px;}
+    .modal-shortcuts{gap:20px;padding-bottom:20px;}
     .modal-shortcuts.cols3{grid-template-columns:repeat(3,minmax(0,1fr));}
-    .modal-shortcuts.cols2{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .modal-shortcuts.cols2{grid-template-columns:repeat(2,minmax(0,1fr));padding-bottom:26px;}
+    .mod-card{min-height:96px;gap:16px;padding:20px 22px;}
+    .mod-card .mod-name{font-size:18px;}
+    .mod-icon{width:56px;height:56px;border-radius:16px;}
+    .modal-shortcuts .lc-short{padding:18px 20px;}
   }
 </style>
 </head>

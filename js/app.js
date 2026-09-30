@@ -757,7 +757,6 @@ function modalityHTML(){
 
     <div class="home-sec">
       <div class="modal-title">Métodos de Diagnóstico</div>
-      <div class="modal-sub">Selecione uma modalidade</div>
     </div>
     <div class="modal-grid">${cards}</div>
 
