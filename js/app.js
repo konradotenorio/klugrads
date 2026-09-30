@@ -638,6 +638,8 @@ function headerHTML(){
     else if(state.modalityId && state.modalityId!=='us'){ const m=MODALITIES.find(x=>x.id===state.modalityId); title=(m?m.name:'Calculadoras')+(state.calcKind==='ref'?' — Referências':' — Calculadoras'); }
     else title='Calculadoras'; }
   else if(v==='ferramentas'){ title='Outras Ferramentas'; }
+  else if(v==='contraste'){ title='Meios de Contraste'; }
+  else if(v==='contrasteItem'){ const t=contrasteTopic(state.contrasteId); title=t?t.title:'Meios de Contraste'; sub='Meios de Contraste'; }
   else if(v==='config'){ title='Configurações'; }
   else if(v==='termsRead'){ title=TT().title; }
   else if(v==='favoritos'){ title='Favoritos'; }
@@ -674,6 +676,8 @@ function viewHTML(){
     case 'novalista': return listsHTML();
     case 'construction': return constructionHTML();
     case 'ferramentas': return ferramentasHTML();
+    case 'contraste': return contrasteListHTML();
+    case 'contrasteItem': return contrasteItemHTML();
     case 'config': return configHTML();
     case 'terms': return termsGateHTML();
     case 'termsRead': return termsReadHTML();
@@ -741,6 +745,10 @@ function ferramentasHTML(){
       <div class="lc-card fill" onclick="openGeneralCalcs()">
         <div class="lc-chip">${svgIcon(P.calc,26)}</div>
         <div><div class="t">Calculadoras</div><div class="d">Demais calculadoras usadas para radiologia</div></div>
+      </div>
+      <div class="lc-card" onclick="openContrasteList()">
+        <div class="lc-chip">${svgIcon(P.book,26)}</div>
+        <div><div class="t">Meios de Contraste</div><div class="d">Reações adversas, tratamento, fatores de risco, extravasamento e FSN</div></div>
       </div>
     </div>
   </div>`;
@@ -1993,7 +2001,7 @@ function listsHTML(){
    AÇÕES
    ========================================================================= */
 /* ---- Navegação: pilha de telas, para o Voltar sempre desfazer o último passo ---- */
-const NAV_KEYS = ['view','calcId','calcKind','calcSpec','modalityId','item','sub','composingId','specialty','subBand','query'];
+const NAV_KEYS = ['contrasteId','view','calcId','calcKind','calcSpec','modalityId','item','sub','composingId','specialty','subBand','query'];
 function navSnapshot(){ const s={}; NAV_KEYS.forEach(k=>s[k]=state[k]); return s; }
 function navPush(){
   state.nav.push(navSnapshot());
