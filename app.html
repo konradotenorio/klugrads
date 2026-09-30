@@ -730,6 +730,17 @@
   .ti-szf{display:flex;align-items:center;gap:5px;background:var(--sf2);border:1px solid var(--line);border-radius:11px;padding:8px 12px;}
   .ti-szf input{flex:1;width:100%;border:0;background:transparent;color:var(--tx);font-size:16px;font-weight:700;font-family:inherit;outline:none;min-width:0;}
   .ti-szf span{font-size:12px;color:var(--dim);}
+  /* Escore de cálcio (Agatston/CAC-DRS) — lista de lesões por artéria */
+  .cac-vessel{border-top:1px solid var(--line);padding:10px 0 4px;}
+  .cac-vh{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;font-size:13px;}
+  .cac-vh span{color:var(--dim);font-size:12px;}
+  .cac-vh .cac-vt{margin-left:auto;font-weight:800;font-size:13px;color:var(--tx);}
+  .cac-lrow{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .cac-lrow .ti-szf{flex:1;min-width:0;}
+  .cac-lsc{min-width:76px;text-align:right;font-size:12px;font-weight:700;color:var(--dim);}
+  .cac-x{border:0;background:transparent;color:var(--dim);font-size:22px;line-height:1;cursor:pointer;padding:2px 6px;font-family:inherit;}
+  .cac-add{border:1px dashed var(--line);background:transparent;color:var(--tx);font:inherit;font-size:12.5px;font-weight:700;padding:8px 12px;border-radius:10px;cursor:pointer;margin-bottom:6px;}
+  .cac-add:active{opacity:.7;}
   /* Ferro T2* — linhas editáveis de eco (TE/Sinal) */
   .ft2-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
   .ft2-idx{width:50px;flex:none;color:var(--dim);font-size:12.5px;font-weight:650;}
@@ -799,6 +810,7 @@
 <script src="/js/calc-cadrads.js"></script>
 <script src="/js/calc-mesa.js"></script>
 <script src="/js/calc-mesa-cac.js"></script>
+<script src="/js/calc-cac-drs.js"></script>
 <script src="/js/calc-pi-qual.js"></script>
 <script src="/js/calc-precise.js"></script>
 <script src="/js/calc-pi-rr.js"></script>

@@ -261,7 +261,7 @@ let state = {
   newName:'', composingId:null, modalityId:null,
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
-  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null, volgastrico:null, prostMap:null, figo:null, mesa:null, mesaCac:null,
+  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null, volgastrico:null, prostMap:null, figo:null, mesa:null, mesaCac:null, cacDrs:null,
   lang:'pt', fontScale:1, user:null,
   favCalcs:[], recents:[],
   nav:[],
@@ -1574,6 +1574,7 @@ function calcViewHTML(){
   if(state.calcId === 'cadrads') return calcCadradsHTML();
   if(state.calcId === 'mesa') return calcMesaHTML();
   if(state.calcId === 'mesa-cac') return calcMesaCacHTML();
+  if(state.calcId === 'cac-drs') return calcCacDrsHTML();
   if(state.calcId === 'pi-qual') return calcPiQualHTML();
   if(state.calcId === 'precise') return calcPreciseHTML();
   if(state.calcId === 'pi-rr') return calcPiRrHTML();
@@ -2044,6 +2045,7 @@ function resetCalc(){
   else if(state.calcId==='cadrads') state.cadrads=null;
   else if(state.calcId==='mesa') state.mesa=null;
   else if(state.calcId==='mesa-cac') state.mesaCac=null;
+  else if(state.calcId==='cac-drs') state.cacDrs=null;
   else if(state.calcId==='pi-qual') state.piqual=null;
   else if(state.calcId==='precise') state.precise=null;
   else if(state.calcId==='pi-rr') state.pirr=null;
