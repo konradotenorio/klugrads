@@ -70,7 +70,7 @@ function vgResHTML(){
     ? `AST ${vgFmt(r.ast,2)} cm² · informe o peso para calcular mL/kg`
     : `${vgFmt(r.mlkg,2)} mL/kg · AST ${vgFmt(r.ast,2)} cm² · limite ${vgFmt(VG_LIMIT,1)} mL/kg`;
   const avisos = r.avisos.length
-    ? `<div class="ti-legend-row" style="margin-top:8px"><span class="lt">${ic('warn',14)} ${r.avisos.map(esc).join('<br>'+ic('warn',14)+' ')}</span></div>` : '';
+    ? `<div class="ti-legend-row" style="margin-top:8px"><span class="lt">⚠️ ${r.avisos.map(esc).join('<br>⚠️ ')}</span></div>` : '';
   return `<div class="ti-res" style="background:${t.bg};margin-top:12px">
     <div class="lv" style="color:${t.c}">${vgFmt(Math.round(r.vol),0)} mL</div>
     <div class="meta"><div class="a">${esc(titulo)}</div><div class="b">${linhaB}</div></div>
@@ -97,7 +97,7 @@ function vgFraseHTML(){
     <button type="button" class="lau-frase-btn" onclick="vgCopyFrase()">${svgIcon(P.copy,16,{sw:2})} Copiar frase</button>
   </div>`;
 }
-function vgCopyFrase(){ const f=vgFrase(); if(f) klugCopy(f, 'Frase copiada'); }
+function vgCopyFrase(){ const f=vgFrase(); if(f) klugCopy(f, 'Frase copiada ✓'); }
 
 function calcVolumeGastricoHTML(){
   const s = vgState();

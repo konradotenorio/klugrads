@@ -9,7 +9,7 @@
   "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "fullscreen", "minimal-ui"],
-  "orientation": "any",
+  "orientation": "portrait",
   "background_color": "#0d1014",
   "theme_color": "#0d1014",
   "categories": ["medical", "education", "reference", "health"],

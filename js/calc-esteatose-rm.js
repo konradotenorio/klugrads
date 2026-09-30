@@ -91,7 +91,7 @@ function esteatoseFraseHTML(){
     <button type="button" class="lau-frase-btn" onclick="esteatoseCopyFrase()">${svgIcon(P.copy,16,{sw:2})} Copiar frase</button>
   </div>`;
 }
-function esteatoseCopyFrase(){ const f=esteatoseFrase(); if(f) klugCopy(f, 'Frase copiada'); }
+function esteatoseCopyFrase(){ const f=esteatoseFrase(); if(f) klugCopy(f, 'Frase copiada ✓'); }
 
 function calcEsteatoseRmHTML(){
   const s = esteatoseState();

@@ -2,15 +2,14 @@
    KlugRads — Service Worker (PWA, offline-first)
    ---------------------------------------------------------------------------
    Estratégias:
-   - App shell: precache. JS/CSS/dados/manifesto: network-first (nunca JS velho com HTML novo);
-     imagens/ícones: stale-while-revalidate.
+   - App shell (HTML/JS/ícones/manifesto): precache + stale-while-revalidate.
    - Navegações: network-first com fallback para o index em cache (offline).
-   - Ao ATUALIZAR (novo SW ativando com cache antigo presente), as abas abertas são recarregadas.
    - API do Supabase (/rest/v1): network-first; em falha, último bom cache.
-   SUBA A VERSAO A CADA PUBLICACAO QUE MEXA EM JS/HTML/CSS: e a mudanca de bytes do sw.js que
-   dispara a atualizacao (instala o novo cache e recarrega as abas abertas).
+   SUBA A VERSAO A CADA PUBLICACAO QUE MEXA EM JS/HTML. Sem isso o
+   stale-while-revalidate entrega o arquivo velho do cache e a correcao
+   simplesmente nao chega ao usuario — inclusive correcoes de seguranca.
    ========================================================================= */
-const VERSION = 'v0.68.0';
+const VERSION = 'v0.64.1';
 const APP_CACHE = `ultraref-app-${VERSION}`;
 const DATA_CACHE = `ultraref-data-${VERSION}`;
 
@@ -24,7 +23,6 @@ const APP_SHELL = [
   '/js/i18n.js',
   '/js/config.js',
   '/js/seed.js',
-  '/css/ux.css',
   '/js/app.js',
   '/js/contraste.js',
   '/js/calc-fetal.js',
@@ -58,7 +56,6 @@ const APP_SHELL = [
   '/js/calc-sga.js',
   '/js/calc-gdm.js',
   '/js/calc-ptb.js',
-  '/js/ux.js',
   '/manifest.webmanifest',
   '/icons/icon.svg',
   '/icons/favicon-32.png',
@@ -77,19 +74,11 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil((async () => {
-    const keys = await caches.keys();
-    // Existia um cache de versão anterior? Então isto é uma ATUALIZAÇÃO (não a 1ª instalação).
-    const atualizacao = keys.some((k) => k.startsWith('ultraref-app-') && k !== APP_CACHE);
-    await Promise.all(keys.filter((k) => k !== APP_CACHE && k !== DATA_CACHE).map((k) => caches.delete(k)));
-    await self.clients.claim();
-    // Abas abertas na atualização podem estar com HTML novo + JS antigo (o SW antigo
-    // entregava o JS do cache). Recarrega cada uma para ficar tudo na mesma versão.
-    if (atualizacao) {
-      const abas = await self.clients.matchAll({ type: 'window' });
-      abas.forEach((c) => { try { c.navigate(c.url); } catch (_) {} });
-    }
-  })());
+  event.waitUntil(
+    caches.keys().then((keys) => Promise.all(
+      keys.filter((k) => k !== APP_CACHE && k !== DATA_CACHE).map((k) => caches.delete(k))
+    )).then(() => self.clients.claim())
+  );
 });
 
 self.addEventListener('fetch', (event) => {
@@ -129,23 +118,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Código (JS/CSS/dados/manifesto): NETWORK-FIRST. O HTML novo nunca pode rodar com JS
-  // velho do cache (era o stale-while-revalidate: 1ª visita após um deploy = tela quebrada).
-  // O Vercel serve com max-age=0 + must-revalidate, então é um 304 barato; offline usa o cache.
-  if (/\.(?:js|css|json|webmanifest)$/.test(url.pathname) || req.destination === 'script' || req.destination === 'style') {
-    event.respondWith(
-      fetch(req).then((res) => {
-        if (res && res.status === 200) {
-          const copy = res.clone();
-          caches.open(APP_CACHE).then((c) => c.put(req, copy)).catch(() => {});
-        }
-        return res;
-      }).catch(() => caches.match(req, { ignoreSearch: true }))
-    );
-    return;
-  }
-
-  // Imagens e ícones: stale-while-revalidate.
+  // Estáticos: stale-while-revalidate.
   event.respondWith(
     caches.match(req).then((cached) => {
       const network = fetch(req).then((res) => {

@@ -121,6 +121,6 @@ function adrenalRmRefresh(){
 }
 
 /* registra no catálogo (CALCS de app.js) — método RM, subespecialidade Medicina Interna */
-CALCS.push({id:'adrenal-rm', modality:'rm', subspec:'medint', badge:'CSI',
+CALCS.push({id:'adrenal-rm', modality:'rm', subspec:'medint', badge:'AD',
   title:'Nódulo Adrenal (RM)',
   desc:'Chemical shift — índice de sinal (IIS) e razão adrenal:baço (ASR)'});

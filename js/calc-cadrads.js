@@ -131,6 +131,6 @@ function cadradsToggleMod(m){
 }
 
 /* registra no catálogo (CALCS de app.js) — método TC, subespecialidade Tórax */
-CALCS.push({id:'cadrads', modality:'tc', subspec:'torax', badge:'CAD',
+CALCS.push({id:'cadrads', modality:'tc', subspec:'torax', badge:'CR',
   title:'CAD-RADS 2.0',
   desc:'Angio-TC de coronárias — estenose, carga de placa e modificadores (SCCT 2022)'});
