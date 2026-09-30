@@ -41,6 +41,7 @@ const P = {
   exam:'<circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/>',
   tech:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>',
   tools:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  checklist:'<path d="M10.5 6h9.5M10.5 12h9.5M10.5 18h9.5"/><path d="M3.5 6.2l1.5 1.5 2.6-3M3.5 12.2l1.5 1.5 2.6-3M3.5 18.2l1.5 1.5 2.6-3"/>',
   reset:'<path d="M3 12a9 9 0 1 0 2.64-6.36"/><polyline points="3 3.5 3 9 8.5 9"/>',
   copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
   dicom:'<rect x="3" y="4" width="18" height="13" rx="2"/><circle cx="12" cy="10.5" r="3.6"/><path d="M12 6.9v7.2M8.4 10.5h7.2"/><path d="M8 21h8M12 17v4"/>',
@@ -1047,7 +1048,7 @@ function homeHTML(){
     <div class="lc-b">
       <div class="lc-top">
         <div class="lc-card" onclick="${protoOnclick}">
-          <div class="lc-chip">${svgIcon(P.table,26)}</div>
+          <div class="lc-chip">${svgIcon(P.checklist,26)}</div>
           <div><div class="t">Protocolos</div><div class="d">${esc(t.protoD)}</div></div>
         </div>
         <div class="lc-card fill" onclick="${refOnclick}">
