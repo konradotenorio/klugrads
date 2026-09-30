@@ -414,6 +414,8 @@
   .mtable td.head{background:var(--sf2);color:var(--dim);font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;text-align:center;}
   .tb-title{font-size:11.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;padding:14px 18px 6px;font-weight:700;}
   .tb-source{font-size:11px;color:var(--accent);padding:0 18px 7px;font-weight:700;}
+  /* textos longos (URLs, referências) quebram em vez de alargar a tela */
+  .tfg-ref-item, .ref, .note, .disc, .ti-legend-row .lt, .lau-frase-tx{overflow-wrap:anywhere;}
   .note{margin:14px 16px;padding:12px 15px;background:var(--sf);border:1px solid var(--line);border-radius:12px;font-size:12.5px;color:var(--dim);line-height:1.55;}
 
   /* tabelas alternativas por fonte (carótidas) */
@@ -444,7 +446,7 @@
   .calc-source{font-size:11px;color:var(--accent);font-weight:750;letter-spacing:.06em;text-transform:uppercase;margin-top:4px;}
   .calc-label{font-size:11.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:10px;}
   .calc-in{display:flex;gap:10px;align-items:center;}
-  .calc-in input{flex:1;background:var(--sf);border:1px solid var(--line);color:var(--tx);padding:13px 14px;border-radius:12px;font-size:17px;outline:none;font-family:inherit;}
+  .calc-in input{flex:1;min-width:0;background:var(--sf);border:1px solid var(--line);color:var(--tx);padding:13px 14px;border-radius:12px;font-size:17px;outline:none;font-family:inherit;}
   .calc-in input:focus{border-color:var(--accent);}
   .calc-btn{background:var(--accent);color:var(--accentInk);border:0;padding:13px 22px;border-radius:12px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit;}
   .calc-btn:active{opacity:.8;}
@@ -601,9 +603,11 @@
   .constr-badge{margin-top:20px;padding:9px 22px;border-radius:12px;background:var(--sf);border:1px solid var(--line);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
 
   /* Pré-eclâmpsia — linhas de fator materno (rótulo + segmento) */
-  .pe-row{display:flex;align-items:center;gap:10px;padding:7px 0;}
-  .pe-row .pe-lbl{flex:1;font-size:13px;color:var(--dim);font-weight:650;line-height:1.2;}
-  .pe-seg{flex:none;flex-wrap:wrap;justify-content:flex-end;}
+  .pe-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:7px 0;}
+  .pe-row .pe-lbl{flex:1 1 130px;min-width:0;font-size:13px;color:var(--dim);font-weight:650;line-height:1.2;}
+  .pe-seg{flex:0 1 auto;min-width:0;flex-wrap:wrap;justify-content:flex-end;}
+  /* grupos com 3+ opções (ex.: origem étnica) descem para a linha de baixo e ocupam a largura toda */
+  .pe-seg:has(button:nth-child(3)){flex:1 1 100%;justify-content:flex-start;}
   .pe-seg button{padding:7px 11px;font-size:12.5px;}
 
   /* Termos de uso — tela de aceite e leitura */
@@ -657,7 +661,7 @@
 
   /* ---- Drum / Wheel Picker (iOS-style) ---- */
   .drum-row{display:flex;gap:12px;margin-bottom:14px;}
-  .drum-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .drum-col{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px;}
   .drum-label{font-size:12px;font-weight:650;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;}
   .drum-shell{position:relative;height:220px;width:100%;overflow:hidden;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);}
   .drum-scroller{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
@@ -672,7 +676,7 @@
   .tfg-step{display:flex;align-items:center;gap:8px;margin-top:10px;width:100%;}
   .tfg-step button{flex:none;width:40px;height:42px;border:1.5px solid var(--line);background:var(--bg);color:var(--accent);border-radius:11px;font-size:22px;font-weight:700;line-height:1;cursor:pointer;font-family:inherit;}
   .tfg-step button:active{background:var(--accentSoft);}
-  .tfg-step input{flex:1;min-width:0;text-align:center;background:var(--bg);border:1.5px solid var(--line);border-radius:11px;padding:9px 4px;font-size:17px;font-weight:700;color:var(--tx);outline:none;font-family:inherit;-webkit-appearance:none;}
+  .tfg-step input{flex:1;width:0;min-width:0;text-align:center;background:var(--bg);border:1.5px solid var(--line);border-radius:11px;padding:9px 4px;font-size:17px;font-weight:700;color:var(--tx);outline:none;font-family:inherit;-webkit-appearance:none;}
   .tfg-step input:focus{border-color:var(--accent);}
 
   /* Calc list */
@@ -768,44 +772,44 @@
   </div>
 </noscript>
 
-<script src="/js/i18n.js"></script>
-<script src="/js/config.js"></script>
+<script src="/js/i18n.js?v=0.69.0"></script>
+<script src="/js/config.js?v=0.69.0"></script>
 <!-- Modo estático/aberto: o conteúdo (74 itens) é embutido aqui, antes do
      app.js, que o lê de window.SEED. Sem login e sem backend. -->
-<script src="/js/seed.js"></script>
-<script src="/js/sessao.js"></script>
-<script src="/js/app.js"></script>
-<script src="/js/contraste.js"></script>
-<script src="/js/calc-fetal.js"></script>
-<script src="/js/calc-orads.js"></script>
-<script src="/js/calc-volume-gastrico.js"></script>
-<script src="/js/calc-figo-miomas.js"></script>
-<script src="/js/calc-doppler-renais.js"></script>
-<script src="/js/calc-esteatose-rm.js"></script>
-<script src="/js/calc-esteatose-tc.js"></script>
-<script src="/js/calc-ferro-r2.js"></script>
-<script src="/js/calc-ferro-t2.js"></script>
-<script src="/js/calc-adrenal-tc.js"></script>
-<script src="/js/calc-adrenal-rm.js"></script>
-<script src="/js/calc-renal.js"></script>
-<script src="/js/calc-ccls.js"></script>
-<script src="/js/calc-pirads.js"></script>
-<script src="/js/calc-prostata-setores.js"></script>
-<script src="/js/calc-crads.js"></script>
-<script src="/js/calc-pancreatite.js"></script>
-<script src="/js/calc-orads-mri.js"></script>
-<script src="/js/calc-lung-rads.js"></script>
-<script src="/js/calc-fleischner.js"></script>
-<script src="/js/calc-idade-ossea.js"></script>
-<script src="/js/calc-cadrads.js"></script>
-<script src="/js/calc-mesa-cac.js"></script>
-<script src="/js/calc-pi-qual.js"></script>
-<script src="/js/calc-precise.js"></script>
-<script src="/js/calc-pi-rr.js"></script>
-<script src="/js/calc-trisomias.js"></script>
-<script src="/js/calc-preeclampsia.js"></script>
-<script src="/js/calc-sga.js"></script>
-<script src="/js/calc-gdm.js"></script>
-<script src="/js/calc-ptb.js"></script>
+<script src="/js/seed.js?v=0.69.0"></script>
+<script src="/js/sessao.js?v=0.69.0"></script>
+<script src="/js/app.js?v=0.69.0"></script>
+<script src="/js/contraste.js?v=0.69.0"></script>
+<script src="/js/calc-fetal.js?v=0.69.0"></script>
+<script src="/js/calc-orads.js?v=0.69.0"></script>
+<script src="/js/calc-volume-gastrico.js?v=0.69.0"></script>
+<script src="/js/calc-figo-miomas.js?v=0.69.0"></script>
+<script src="/js/calc-doppler-renais.js?v=0.69.0"></script>
+<script src="/js/calc-esteatose-rm.js?v=0.69.0"></script>
+<script src="/js/calc-esteatose-tc.js?v=0.69.0"></script>
+<script src="/js/calc-ferro-r2.js?v=0.69.0"></script>
+<script src="/js/calc-ferro-t2.js?v=0.69.0"></script>
+<script src="/js/calc-adrenal-tc.js?v=0.69.0"></script>
+<script src="/js/calc-adrenal-rm.js?v=0.69.0"></script>
+<script src="/js/calc-renal.js?v=0.69.0"></script>
+<script src="/js/calc-ccls.js?v=0.69.0"></script>
+<script src="/js/calc-pirads.js?v=0.69.0"></script>
+<script src="/js/calc-prostata-setores.js?v=0.69.0"></script>
+<script src="/js/calc-crads.js?v=0.69.0"></script>
+<script src="/js/calc-pancreatite.js?v=0.69.0"></script>
+<script src="/js/calc-orads-mri.js?v=0.69.0"></script>
+<script src="/js/calc-lung-rads.js?v=0.69.0"></script>
+<script src="/js/calc-fleischner.js?v=0.69.0"></script>
+<script src="/js/calc-idade-ossea.js?v=0.69.0"></script>
+<script src="/js/calc-cadrads.js?v=0.69.0"></script>
+<script src="/js/calc-mesa-cac.js?v=0.69.0"></script>
+<script src="/js/calc-pi-qual.js?v=0.69.0"></script>
+<script src="/js/calc-precise.js?v=0.69.0"></script>
+<script src="/js/calc-pi-rr.js?v=0.69.0"></script>
+<script src="/js/calc-trisomias.js?v=0.69.0"></script>
+<script src="/js/calc-preeclampsia.js?v=0.69.0"></script>
+<script src="/js/calc-sga.js?v=0.69.0"></script>
+<script src="/js/calc-gdm.js?v=0.69.0"></script>
+<script src="/js/calc-ptb.js?v=0.69.0"></script>
 </body>
 </html>

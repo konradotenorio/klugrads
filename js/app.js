@@ -168,9 +168,45 @@ function tfgResultHTML(r){
 }
 
 /* ---- DADOS (seed offline; sync opcional com Supabase) ---- */
+/* ---- Limpeza das tabelas de referência ----
+   O seed traz linhas com centenas de células vazias no fim (ex.: ACM e Artéria
+   Umbilical com 567 colunas → tabela de 71.442 px) e, nos itens fetais, uma
+   "tabela-legenda" só com rótulos de percentil ("50th / 5th / 95th"). Aqui
+   removemos colunas e linhas 100% vazias (sem perder nenhum dado) e
+   transformamos a legenda numa linha de fonte acima da tabela seguinte. */
+const PCT_TOKEN = /^\d+(st|nd|rd|th)$/i;
+function tblBlank(c){ return String(c==null?'':c).trim()===''; }
+function tblClean(rows){
+  let out = (rows||[]).map(r=>Array.isArray(r)?r.slice():[]);
+  const w = out.reduce((m,r)=>Math.max(m,r.length),0), keep=[];
+  for(let c=0;c<w;c++){ if(out.some(r=>!tblBlank(r[c]))) keep.push(c); }
+  out = out.map(r=>keep.map(c=>r[c]==null?'':r[c]));
+  return out.filter(r=>r.some(c=>!tblBlank(c)));
+}
+function tidyTables(tables){
+  if(!Array.isArray(tables)) return tables;
+  const out=[]; let carry='';
+  tables.forEach((t,i)=>{
+    const rows = tblClean(t && t.rows);
+    if(!rows.length) return;                       // tabela sem nenhum dado
+    const cells = [].concat.apply([],rows).map(x=>String(x).trim()).filter(Boolean);
+    const pct = cells.filter(x=>PCT_TOKEN.test(x));
+    const legend = i<tables.length-1 && rows.length<=3 && pct.length && cells.every(x=>PCT_TOKEN.test(x)||!/\d/.test(x));
+    if(legend){
+      const labels = cells.filter(x=>!PCT_TOKEN.test(x) && !/^IG \(s\)$/i.test(x));
+      carry = labels.join(' · ') + (pct.length?' — percentis: '+pct.join(', '):'');
+      return;
+    }
+    const nt = Object.assign({}, t, {rows});
+    if(carry){ nt.source = nt.source ? nt.source+' · '+carry : carry; carry=''; }
+    out.push(nt);
+  });
+  return out;
+}
 function hydrate(items){
   return (items||[]).map(src=>{
     let d; try{ d=JSON.parse(JSON.stringify(src)); }catch(_){ d=Object.assign({},src); }
+    d.tables = tidyTables(d.tables);
     d.icon = ICONS[d.iconKey] || ICONS.organ;
     return d;
   });
@@ -434,6 +470,7 @@ function renderStage(keep){
   else { hdr.className='hdr'; hdr.innerHTML = translateHTML(headerHTML()); }
   const s = $('scroll');
   const top = keep ? s.scrollTop : 0;
+  if(v==='calc' && state.calcId==='tfg') _drumLock = true;   // antes do innerHTML: o scroll "fantasma" das rodas pode vir já no 1º quadro
   s.innerHTML = translateHTML(viewHTML());
   s.className = keep ? 'scroll' : 'scroll fade';
   s.scrollTop = top;
@@ -2126,7 +2163,9 @@ function toggleTableAcc(bodyId,chevId,button){
   const c=$(chevId); if(c) c.textContent=open?'⌃':'⌄';
   if(button) button.setAttribute('aria-expanded',open?'true':'false');
 }
+let _drumLock = false;   // true enquanto initDrums posiciona as rodas: ignora o scroll "fantasma" do navegador
 function onDrumScroll(id, el){
+  if(_drumLock) return;
   const ITEM_H = 44;
   const idx = Math.round(el.scrollTop / ITEM_H);
   var arr = id==='cr'?CR_VALUES:AGE_VALUES;
@@ -2192,14 +2231,29 @@ function tfgCommit(which, raw){  // ao sair/Enter: encaixa no valor válido mais
   if(isNaN(num)||num<=0){ if(inp) inp.value = which==='cr'?state.tfgCr:state.tfgAge; return; }
   _tfgApply(which, _tfgNearestIdx(which, num));
 }
+/* Posiciona as rodas nos valores do estado (padrão: 1,0 mg/dL e 45 anos).
+   Logo após o primeiro layout o Chrome devolve a rolagem das rodas ao topo
+   (encaixe de rolagem), o que disparava onDrumScroll e gravava 0,1 / 1 no
+   estado ("2494,8 mL/min"). Por isso a posição só é aplicada depois do layout
+   assentar (~350 ms), conferida e reaplicada se preciso, e os eventos de
+   rolagem são ignorados (_drumLock) até terminar. */
 function initDrums(){
   const ITEM_H = 44;
-  const crEl = document.getElementById('drum-cr');
-  if(crEl){ crEl.scrollTop = Math.max(0, CR_VALUES.indexOf(state.tfgCr)) * ITEM_H; }
-  const ageEl = document.getElementById('drum-age');
-  if(ageEl){ ageEl.scrollTop = Math.max(0, AGE_VALUES.indexOf(state.tfgAge)) * ITEM_H; }
+  _drumLock = true;
+  let tries = 0;
+  const apply = ()=>{
+    let ok = true;
+    [['drum-cr',CR_VALUES,state.tfgCr],['drum-age',AGE_VALUES,state.tfgAge]].forEach(([id,arr,val])=>{
+      const el = document.getElementById(id); if(!el) return;
+      const target = Math.max(0, arr.indexOf(val)) * ITEM_H;
+      el.scrollTop = target;
+      if(Math.abs(el.scrollTop - target) > 2) ok = false;
+    });
+    if(!ok && ++tries < 6){ _tfgTimer = setTimeout(apply,150); return; }
+    _tfgTimer = setTimeout(()=>{ _drumLock = false; autoCalcTFG(); }, 250);
+  };
   clearTimeout(_tfgTimer);
-  _tfgTimer = setTimeout(autoCalcTFG, 400);
+  _tfgTimer = setTimeout(apply, 350);
 }
 function calcTFG(){ autoCalcTFG(); }
 function openModality(id){
@@ -2288,4 +2342,4 @@ KlugSessao.exigir().then(function(sessao){
   }
   carregarDadosDaConta();
 });
-if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{})); }
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').then(r=>{ try{ r.update(); }catch(_){} }).catch(()=>{})); }   // update(): checa o sw.js a cada abertura (o navegador só checa a cada 24 h por conta própria)
