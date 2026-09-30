@@ -168,9 +168,45 @@ function tfgResultHTML(r){
 }
 
 /* ---- DADOS (seed offline; sync opcional com Supabase) ---- */
+/* ---- Limpeza das tabelas de referência ----
+   O seed traz linhas com centenas de células vazias no fim (ex.: ACM e Artéria
+   Umbilical com 567 colunas → tabela de 71.442 px) e, nos itens fetais, uma
+   "tabela-legenda" só com rótulos de percentil ("50th / 5th / 95th"). Aqui
+   removemos colunas e linhas 100% vazias (sem perder nenhum dado) e
+   transformamos a legenda numa linha de fonte acima da tabela seguinte. */
+const PCT_TOKEN = /^\d+(st|nd|rd|th)$/i;
+function tblBlank(c){ return String(c==null?'':c).trim()===''; }
+function tblClean(rows){
+  let out = (rows||[]).map(r=>Array.isArray(r)?r.slice():[]);
+  const w = out.reduce((m,r)=>Math.max(m,r.length),0), keep=[];
+  for(let c=0;c<w;c++){ if(out.some(r=>!tblBlank(r[c]))) keep.push(c); }
+  out = out.map(r=>keep.map(c=>r[c]==null?'':r[c]));
+  return out.filter(r=>r.some(c=>!tblBlank(c)));
+}
+function tidyTables(tables){
+  if(!Array.isArray(tables)) return tables;
+  const out=[]; let carry='';
+  tables.forEach((t,i)=>{
+    const rows = tblClean(t && t.rows);
+    if(!rows.length) return;                       // tabela sem nenhum dado
+    const cells = [].concat.apply([],rows).map(x=>String(x).trim()).filter(Boolean);
+    const pct = cells.filter(x=>PCT_TOKEN.test(x));
+    const legend = i<tables.length-1 && rows.length<=3 && pct.length && cells.every(x=>PCT_TOKEN.test(x)||!/\d/.test(x));
+    if(legend){
+      const labels = cells.filter(x=>!PCT_TOKEN.test(x) && !/^IG \(s\)$/i.test(x));
+      carry = labels.join(' · ') + (pct.length?' — percentis: '+pct.join(', '):'');
+      return;
+    }
+    const nt = Object.assign({}, t, {rows});
+    if(carry){ nt.source = nt.source ? nt.source+' · '+carry : carry; carry=''; }
+    out.push(nt);
+  });
+  return out;
+}
 function hydrate(items){
   return (items||[]).map(src=>{
     let d; try{ d=JSON.parse(JSON.stringify(src)); }catch(_){ d=Object.assign({},src); }
+    d.tables = tidyTables(d.tables);
     d.icon = ICONS[d.iconKey] || ICONS.organ;
     return d;
   });
@@ -434,6 +470,7 @@ function renderStage(keep){
   else { hdr.className='hdr'; hdr.innerHTML = translateHTML(headerHTML()); }
   const s = $('scroll');
   const top = keep ? s.scrollTop : 0;
+  if(v==='calc' && state.calcId==='tfg') _drumLock = true;   // antes do innerHTML: o scroll "fantasma" das rodas pode vir já no 1º quadro
   s.innerHTML = translateHTML(viewHTML());
   s.className = keep ? 'scroll' : 'scroll fade';
   s.scrollTop = top;
@@ -643,7 +680,7 @@ function headerHTML(){
   else if(v==='config'){ title='Configurações'; }
   else if(v==='termsRead'){ title=TT().title; }
   else if(v==='favoritos'){ title='Favoritos'; }
-  else if(v==='novalista'){ const cl=state.lists.find(x=>x.id===state.composingId); title=cl?cl.name:'Minhas listas'; sub=cl?'Lista personalizada':''; }
+  else if(v==='novalista'){ const cl=state.lists.find(x=>x.id===state.composingId); title=cl?cl.name:'Listas'; sub=cl?'Lista personalizada':''; }
   else if(v==='construction'){ const m=MODALITIES.find(x=>x.id===state.modalityId)||{}; title=m.name||'Em Construção'; }
   else if(v==='busca'){ title='Buscar'; }
 
@@ -726,7 +763,7 @@ function modalityHTML(){
       </div>
       <div class="lc-short" onclick="setView('novalista')">
         <div class="si acc">${svgIcon(P.listplus,23)}</div>
-        <div class="st"><div class="t">Nova lista</div><div class="d">Monte um pacote para o plantão</div></div>
+        <div class="st"><div class="t">Listas</div><div class="d">Monte pacotes para o plantão</div></div>
         <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
       </div>
       <div class="lc-short" onclick="setView('config')">
@@ -797,7 +834,7 @@ function configHTML(){
 
     <div class="sec-label" style="margin-top:14px">Críticas e Sugestões</div>
     <div class="set-note">Clique abaixo e nos envie sua crítica, sugestão ou solicitação de atualização.</div>
-    <div style="padding:0 18px 16px">
+    <div class="fb-form" style="padding:0 18px 16px">
       <textarea id="fb-msg" class="fb-textarea" rows="4" placeholder="Escreva sua mensagem…"></textarea>
       <input id="fb-email" class="fb-input" type="email" inputmode="email" placeholder="Seu e-mail (opcional, para resposta)">
       <div id="fb-status" class="fb-status" hidden></div>
@@ -1128,22 +1165,30 @@ function detailHTML(){
   // celular a coluna direita fica escondida (CSS) e o conteúdo ocupa tudo.
   return `<div class="detail-grid"><div class="detail-main">${h}</div>${detailRailHTML(d)}</div>`;
 }
+/* Resumo rápido (coluna direita, desktop): primeiras linhas da 1ª tabela com
+   dados, já com o nome de cada coluna ("IG (sem) 3 · IG (dias) 6"), para os
+   números não aparecerem soltos. */
+function railSummaryHTML(d){
+  const tb = (d.tables||[]).find(t=>t.rows && t.rows.length>=3 && t.rows[0].length>=2);
+  if(!tb) return '';
+  const first = s=>String(s==null?'':s).split(/\r?\n/)[0].replace(/\s+/g,' ').trim();
+  const hdr = tb.rows[0].map(first);
+  const cols = hdr.map((h,i)=>i).filter(i=>i>0 && hdr[i]);          // colunas com nome
+  const named = cols.length>0 && cols.length>=Math.min(2,hdr.length-1);
+  const body = tb.rows.slice(1,5).filter(r=>r && !tblBlank(r[0]));
+  if(!body.length) return '';
+  const items = body.map(r=>{
+    const lead = first(r[0]);
+    const label = named && hdr[0] ? hdr[0]+': '+lead : lead;
+    let val;
+    if(named) val = cols.slice(0,3).map(i=>hdr[i]+' '+first(r[i])).join(' · ');
+    else { val = first(r[1]); if(/\r?\n/.test(String(r[1]||''))) val += ' …'; }
+    return `<div class="rail-stat"><div class="rl">${esc(label)}</div><div class="rv">${esc(val)}</div></div>`;
+  }).join('');
+  return `<div class="rail-card"><h4>Resumo rápido</h4>${items}</div>`;
+}
 function detailRailHTML(d){
-  // Resumo rápido: primeiras linhas da 1ª tabela (só a 1ª linha de cada valor,
-  // como teaser — a tabela completa fica no conteúdo).
-  let resumo='';
-  const tb = d.tables && d.tables[0];
-  if(tb && tb.rows && tb.rows.length){
-    const rows = tb.rows.slice(0,4).filter(r=>r && r[0]!=null && r[1]!=null);
-    if(rows.length){
-      resumo = `<div class="rail-card"><h4>Resumo rápido</h4>`+
-        rows.map(r=>{
-          const val = String(r[1]).split(/\r?\n/)[0].trim();
-          const more = /\r?\n/.test(String(r[1])) ? ' …' : '';
-          return `<div class="rail-stat"><div class="rl">${esc(String(r[0]))}</div><div class="rv">${esc(val)}${more}</div></div>`;
-        }).join('')+`</div>`;
-    }
-  }
+  const resumo = railSummaryHTML(d);
   const sib = (typeof DATA!=='undefined'?DATA:[]).filter(x=>x.region===d.region && x.group===d.group && x.id!==d.id).slice(0,8);
   let rel='';
   if(sib.length){
@@ -1160,8 +1205,12 @@ function tableHTML(t,key){
   const rows = t.rows||[]; if(!rows.length) return '';
   const ncols = Math.max.apply(null, rows.map(r=>r.length));
   let table='';
-  const minWidth = ncols > 3 ? Math.max(620, ncols*126) : 0;
-  table+=`<div class="table-scroll"><table class="mtable"${minWidth?` style="min-width:${minWidth}px"`:''}><tbody>`;
+  // Tabelas numéricas de 4 colunas cabem em 360–390 px (84 px cada); acima disso
+  // rolam na horizontal, com a primeira coluna fixa (classe .wide). Se as células
+  // têm texto corrido, cada coluna ganha mais largura (120 px).
+  const longText = rows.some(r=>r.some(c=>String(c==null?'':c).length>28));
+  const minWidth = ncols > 3 ? Math.max(300, ncols*(longText?120:84)) : 0;
+  table+=`<div class="table-scroll"><table class="mtable${minWidth?' wide':''}"${minWidth?` style="min-width:${minWidth}px"`:''}><tbody>`;
   rows.forEach((r,ri)=>{
     const head = ri===0 && rows.length>1;
     table+=`<tr>`;
@@ -2126,7 +2175,9 @@ function toggleTableAcc(bodyId,chevId,button){
   const c=$(chevId); if(c) c.textContent=open?'⌃':'⌄';
   if(button) button.setAttribute('aria-expanded',open?'true':'false');
 }
+let _drumLock = false;   // true enquanto initDrums posiciona as rodas: ignora o scroll "fantasma" do navegador
 function onDrumScroll(id, el){
+  if(_drumLock) return;
   const ITEM_H = 44;
   const idx = Math.round(el.scrollTop / ITEM_H);
   var arr = id==='cr'?CR_VALUES:AGE_VALUES;
@@ -2192,14 +2243,29 @@ function tfgCommit(which, raw){  // ao sair/Enter: encaixa no valor válido mais
   if(isNaN(num)||num<=0){ if(inp) inp.value = which==='cr'?state.tfgCr:state.tfgAge; return; }
   _tfgApply(which, _tfgNearestIdx(which, num));
 }
+/* Posiciona as rodas nos valores do estado (padrão: 1,0 mg/dL e 45 anos).
+   Logo após o primeiro layout o Chrome devolve a rolagem das rodas ao topo
+   (encaixe de rolagem), o que disparava onDrumScroll e gravava 0,1 / 1 no
+   estado ("2494,8 mL/min"). Por isso a posição só é aplicada depois do layout
+   assentar (~350 ms), conferida e reaplicada se preciso, e os eventos de
+   rolagem são ignorados (_drumLock) até terminar. */
 function initDrums(){
   const ITEM_H = 44;
-  const crEl = document.getElementById('drum-cr');
-  if(crEl){ crEl.scrollTop = Math.max(0, CR_VALUES.indexOf(state.tfgCr)) * ITEM_H; }
-  const ageEl = document.getElementById('drum-age');
-  if(ageEl){ ageEl.scrollTop = Math.max(0, AGE_VALUES.indexOf(state.tfgAge)) * ITEM_H; }
+  _drumLock = true;
+  let tries = 0;
+  const apply = ()=>{
+    let ok = true;
+    [['drum-cr',CR_VALUES,state.tfgCr],['drum-age',AGE_VALUES,state.tfgAge]].forEach(([id,arr,val])=>{
+      const el = document.getElementById(id); if(!el) return;
+      const target = Math.max(0, arr.indexOf(val)) * ITEM_H;
+      el.scrollTop = target;
+      if(Math.abs(el.scrollTop - target) > 2) ok = false;
+    });
+    if(!ok && ++tries < 6){ _tfgTimer = setTimeout(apply,150); return; }
+    _tfgTimer = setTimeout(()=>{ _drumLock = false; autoCalcTFG(); }, 250);
+  };
   clearTimeout(_tfgTimer);
-  _tfgTimer = setTimeout(autoCalcTFG, 400);
+  _tfgTimer = setTimeout(apply, 350);
 }
 function calcTFG(){ autoCalcTFG(); }
 function openModality(id){

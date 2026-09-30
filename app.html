@@ -2,7 +2,7 @@
 <html lang="pt-BR" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>KlugRads — Sua referência em Radiologia</title>
 <meta name="description" content="Sua referência em Radiologia: medidas, técnicas e cálculos. Ferramenta educacional — não substitui o julgamento clínico.">
 
@@ -129,7 +129,7 @@
     .d-crumb{display:block;font-size:13px;margin:0 0 6px;}
     .d-crumb .crumb-link{color:var(--accent);cursor:pointer;font-weight:650;}
     .d-crumb .crumb-link:hover{text-decoration:underline;}
-    body[data-view="detail"] .htitle{visibility:hidden;}
+    body[data-view="detail"] .htitle-wrap{visibility:hidden;}
     /* views de formulário/lista não devem esticar: largura de leitura
        confortável, alinhada à esquerda (igual à lista de referências) */
     .ti-wrap, .calc-list-wrap, .tfg-wrap, .set-wrap, .lists, .create,
@@ -329,6 +329,8 @@
 
   /* ---------- Faixa etária (chips roláveis) ---------- */
   .sec-label{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);font-weight:700;padding:8px 18px 2px;text-align:center;}
+  /* rótulos acima de conteúdo alinhado à esquerda (detalhe, configurações) também ficam à esquerda */
+  .detail-main .sec-label, .set-wrap .sec-label{text-align:left;}
   .subbandrow{display:flex;gap:10px;padding:6px 16px 12px;}
   .subbandrow .chip{flex:1;text-align:center;}
   .bandzone{position:relative;}
@@ -399,6 +401,9 @@
     cursor:pointer;font-family:inherit;
   }
   .set-btn.accent{background:var(--accent);color:var(--accentInk);border-color:var(--accent);}
+  .fb-form .set-btn{margin-top:12px;}
+  /* textos longos (URLs, referências) quebram em vez de alargar a tela */
+  .tfg-ref-item, .ref, .note, .disc, .ti-legend-row .lt, .lau-frase-tx{overflow-wrap:anywhere;}
   .set-note{font-size:12.5px;color:var(--dim);padding:12px 18px;line-height:1.5;}
   .empty{text-align:center;padding:60px 30px;color:var(--dim);}
   .empty .big{font-size:38px;margin-bottom:10px;opacity:.5;}
@@ -412,6 +417,10 @@
   .mtable td{padding:10px 11px;font-size:13px;border-bottom:1px solid var(--line);text-align:center;font-weight:600;color:var(--tx);}
   .mtable td.lbl{text-align:left;color:var(--dim);font-weight:400;}
   .mtable td.head{background:var(--sf2);color:var(--dim);font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;text-align:center;}
+  /* tabela larga: a 1ª coluna (rótulo) fica fixa enquanto o resto rola */
+  .mtable.wide td:first-child{position:sticky;left:0;z-index:1;background:var(--bg);box-shadow:1px 0 0 var(--line);}
+  .mtable.wide td.head:first-child{background:var(--sf2);}
+  @media(max-width:600px){ .mtable td{padding:10px 7px;} .mtable td:first-child{padding-left:14px;} }
   .tb-title{font-size:11.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;padding:14px 18px 6px;font-weight:700;}
   .tb-source{font-size:11px;color:var(--accent);padding:0 18px 7px;font-weight:700;}
   .note{margin:14px 16px;padding:12px 15px;background:var(--sf);border:1px solid var(--line);border-radius:12px;font-size:12.5px;color:var(--dim);line-height:1.55;}
@@ -444,7 +453,7 @@
   .calc-source{font-size:11px;color:var(--accent);font-weight:750;letter-spacing:.06em;text-transform:uppercase;margin-top:4px;}
   .calc-label{font-size:11.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:10px;}
   .calc-in{display:flex;gap:10px;align-items:center;}
-  .calc-in input{flex:1;background:var(--sf);border:1px solid var(--line);color:var(--tx);padding:13px 14px;border-radius:12px;font-size:17px;outline:none;font-family:inherit;}
+  .calc-in input{flex:1;min-width:0;background:var(--sf);border:1px solid var(--line);color:var(--tx);padding:13px 14px;border-radius:12px;font-size:17px;outline:none;font-family:inherit;}
   .calc-in input:focus{border-color:var(--accent);}
   .calc-btn{background:var(--accent);color:var(--accentInk);border:0;padding:13px 22px;border-radius:12px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit;}
   .calc-btn:active{opacity:.8;}
@@ -601,9 +610,11 @@
   .constr-badge{margin-top:20px;padding:9px 22px;border-radius:12px;background:var(--sf);border:1px solid var(--line);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
 
   /* Pré-eclâmpsia — linhas de fator materno (rótulo + segmento) */
-  .pe-row{display:flex;align-items:center;gap:10px;padding:7px 0;}
-  .pe-row .pe-lbl{flex:1;font-size:13px;color:var(--dim);font-weight:650;line-height:1.2;}
-  .pe-seg{flex:none;flex-wrap:wrap;justify-content:flex-end;}
+  .pe-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:7px 0;}
+  .pe-row .pe-lbl{flex:1 1 130px;min-width:0;font-size:13px;color:var(--dim);font-weight:650;line-height:1.2;}
+  .pe-seg{flex:0 1 auto;min-width:0;flex-wrap:wrap;justify-content:flex-end;}
+  /* grupos com 3+ opções (ex.: origem étnica) descem para a linha de baixo e ocupam a largura toda */
+  .pe-seg:has(button:nth-child(3)){flex:1 1 100%;justify-content:flex-start;}
   .pe-seg button{padding:7px 11px;font-size:12.5px;}
 
   /* Termos de uso — tela de aceite e leitura */
@@ -657,7 +668,7 @@
 
   /* ---- Drum / Wheel Picker (iOS-style) ---- */
   .drum-row{display:flex;gap:12px;margin-bottom:14px;}
-  .drum-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .drum-col{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px;}
   .drum-label{font-size:12px;font-weight:650;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;}
   .drum-shell{position:relative;height:220px;width:100%;overflow:hidden;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);}
   .drum-scroller{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
@@ -672,7 +683,7 @@
   .tfg-step{display:flex;align-items:center;gap:8px;margin-top:10px;width:100%;}
   .tfg-step button{flex:none;width:40px;height:42px;border:1.5px solid var(--line);background:var(--bg);color:var(--accent);border-radius:11px;font-size:22px;font-weight:700;line-height:1;cursor:pointer;font-family:inherit;}
   .tfg-step button:active{background:var(--accentSoft);}
-  .tfg-step input{flex:1;min-width:0;text-align:center;background:var(--bg);border:1.5px solid var(--line);border-radius:11px;padding:9px 4px;font-size:17px;font-weight:700;color:var(--tx);outline:none;font-family:inherit;-webkit-appearance:none;}
+  .tfg-step input{flex:1;width:0;min-width:0;text-align:center;background:var(--bg);border:1.5px solid var(--line);border-radius:11px;padding:9px 4px;font-size:17px;font-weight:700;color:var(--tx);outline:none;font-family:inherit;-webkit-appearance:none;}
   .tfg-step input:focus{border-color:var(--accent);}
 
   /* Calc list */
