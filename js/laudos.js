@@ -473,7 +473,7 @@ function lauNorm(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,''
 const LAU_PREP = ['à','ao','a','de','do','da','em','no','na','e'];
 const LAU_PH_RE = /^([(\[]*)(X{1,3})([^\sX]*)$/;
 const LAU_UNIT = /^(cm|mm|m|ml|mL|g|kg|bpm|kPa|%|cm³|mm³|semanas?|dias?|anos?|meses)[.,;:)]*$/;
-function lauIsWord(w){ return /^[A-Za-zÀ-ÿ]+[.,;:)]*$/.test(w||'') && !/^x$/i.test(w) && !/^X{1,3}$/.test(w); }
+function lauIsWord(w){ return /^[A-Za-zÀ-ÿ-]+[.,;:)]*$/.test(w||'') && !/^x$/i.test(w) && !/^X{1,3}$/.test(w); }
 function lauTokLine(line, start){
   const W = line.split(' '); const out=[]; let i=0, n=start;
   while(i<W.length){
@@ -621,7 +621,7 @@ function LAU_NORMAL(k){
    ESTADO DO LAUDO EM EDIÇÃO (um por modelo, mantido durante a sessão)
    ========================================================================= */
 function lauDefaults(it){
-  const s={__v:{}, __o:[]};
+  const s={__v:{}, __o:[], __f:[]};
   (it.ctrls||[]).forEach(c=>{
     if(!c.k) return;
     if(c.t==='radio' || c.t==='select') s[c.k]=c.opts[0][0];
@@ -638,7 +638,7 @@ function lauNew(modelId){
   const g=lauGen();
   if(!state.lauDocs) state.lauDocs={};
   state.lau = state.lauDocs[modelId] = {model:modelId, v, open:null, html:null, autoConc:true, tab:'opc',
-    tec:{met:false, bio:false}, ind:'', obs:'', font:g.font, size:g.size, tit:{}, conc:{v:{}, o:[]}};
+    tec:{met:false, bio:false}, ind:'', obs:'', font:g.font, size:g.size, tit:{}, conc:{v:{}, o:[]}, xf:[], xv:{}};
   return state.lau;
 }
 function lauCur(){ return state.lau && lauModelo(state.lau.model) ? state.lau : null; }
@@ -646,6 +646,36 @@ function lauBuild(m, it){
   const s=state.lau.v[it.k];
   if(it.generic) return {txt: lauHas(s.alt)?s.alt.trim():null, conc: lauHas(s.conc)?[lauFrase(s.conc)]:[]};
   return it.build(s);
+}
+/* conclusão de uma frase da biblioteca: {n} = valor do campo n do texto */
+function lauFraseConcHTML(f, vals){
+  if(!lauHas(f.c)) return '';
+  const tpl=lauTpl(f.t);
+  return esc(f.c).replace(/\{(\d+)\}/g,(_,n)=>{
+    n=+n; const r=lauVal(tpl, vals||[], n);
+    if(r.ok) return esc(lauN(r.v));
+    let tk=null; tpl.lines.forEach(l=>l.forEach(t=>{ if(t.i===n) tk=t; }));
+    return `<mark class="lau-ph">${esc(tk&&tk.t==='c'?tk.o.join(' / '):'XXX')}</mark>`;
+  });
+}
+/* retira do texto padrão as negativas contrariadas pelos achados
+   (ex.: "sem hidronefrose ou cálculos" + hidronefrose → "sem cálculos").
+   Frases curtas só negativas ("ausentes.", "não há.") são trocadas. */
+const LAU_NEG_CURTA = /^(ausentes?|não há|ausência de [^.]+|negativo|não caracterizad[^.]*|sem [^.]+|em volume fisiológico)\.?$/i;
+function lauNegStrip(html, words, temAdd){
+  const plain = html.replace(/<[^>]+>/g,'').trim();
+  if(!words.length) return (temAdd && LAU_NEG_CURTA.test(plain)) ? '' : html;
+  const hit = t=>words.some(w=>lauNorm(t).indexOf(lauNorm(w))>=0);
+  return html.replace(/(,?\s*)\b(sem|ausência de|não há)\s+([^.;<]+?)(\s+detectáve(?:is|l) ao método)?(?=[.;,]|$)/gi, (all, pre, neg, lista, suf)=>{
+    const itens = lista.split(/\s+ou\s+|,\s*/);
+    const resto = itens.filter(x=>!hit(x));
+    if(resto.length===itens.length) return all;
+    if(!resto.length) return '';
+    return `${pre}${neg} ${resto.join(' ou ')}${suf||''}`;
+  }).replace(/^\s*[.;,]\s*/,'').replace(/\.\s*\./g,'.');
+}
+function lauFraseLines(list, bag, mode){
+  return (list||[]).map(i=>LAU_FRASES[i]).map((f,j)=>f&&f.m===mode ? lauFill(f.t, bag['f'+list[j]], true) : null).filter(x=>x!=null);
 }
 /* frases opcionais marcadas (já preenchidas) */
 function lauOptLines(it, s, html){
@@ -658,14 +688,29 @@ function lauItemHTML(m, it){
   const lblRaw = lauItemLabel(m,it);
   const lbl = lblRaw ? lauFill(lblRaw, s.__v.l, true)+':' : '';
   let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : esc(r.txt).replace(/\n/g,'<br>');
-  const ex = lauOptLines(it, s, true);
+  const subs = lauFraseLines(s.__f, s.__v, 'sub');
+  if(subs.length) txt = subs[subs.length-1];
+  const adds = lauFraseLines(s.__f, s.__v, 'add');
+  if(adds.length && !subs.length && r.txt==null){
+    const ws=[]; (s.__f||[]).forEach(i=>{ const f=LAU_FRASES[i]; if(f.m==='add' && f.x) ws.push(...f.x); });
+    txt = lauNegStrip(txt, ws, true);
+  }
+  const ex = lauOptLines(it, s, true).concat(adds);
+  if(!txt && ex.length){ txt = ex.shift(); }
   if(ex.length) txt += '<br>' + ex.join('<br>');
   const pre = (g.hifen && it.dash) ? '- ' : '';
   return lbl ? `${pre}${g.bold?`<b>${lbl}</b>`:lbl} ${txt}` : `${pre}${txt}`;
 }
 function lauConcs(m){
   const out=[];
-  m.items.forEach(it=>{ (lauBuild(m,it).conc||[]).forEach(c=>{ if(c && out.indexOf(c)<0) out.push(c); }); });
+  const seen={};
+  const push=(h)=>{ if(h && !seen[h]){ seen[h]=1; out.push({html:h}); } };
+  m.items.forEach(it=>{
+    (lauBuild(m,it).conc||[]).forEach(c=>push(esc(c)));
+    const s=state.lau.v[it.k];
+    (s.__f||[]).forEach(i=>push(lauFraseConcHTML(LAU_FRASES[i], s.__v['f'+i])));
+  });
+  (state.lau.xf||[]).forEach(i=>push(lauFraseConcHTML(LAU_FRASES[i], state.lau.xv['f'+i])));
   (m.concOpts||[]).forEach((c,i)=>{ if(state.lau.conc.o[i]) out.push({html:lauFill(c.text, state.lau.conc.v['o'+i], true)}); });
   return out;
 }
@@ -677,7 +722,7 @@ function lauConcHTML(m){
   else {
     const keep = norm.filter(x=>x.ph).map(x=>({html:lauFill(x.c.text, L.conc.v['n'+x.i], true), dash:x.c.dash}));
     const tail = norm.filter(x=>!x.ph && /^Restante/i.test(x.c.text)).map(x=>({html:esc(x.c.text), dash:x.c.dash}));
-    lines = keep.concat(f.map(x=>typeof x==='string'?{html:esc(x),dash:true}:{html:x.html,dash:true}), tail);
+    lines = keep.concat(f.map(x=>({html:x.html,dash:true})), tail);
   }
   return lines.map(x=>`<div>${g.hifen&&x.dash?'- ':''}${x.html}</div>`).join('');
 }
@@ -700,15 +745,16 @@ function lauDocHTML(m){
     + (lauHas(L.ind)?`<p data-k="ind"><b>Indicação:</b> ${esc(L.ind)}</p>`:'')
     + (tec?`<p data-k="tec">${esc(tec)}</p>`:'')
     + `<p><br></p>` + body
-    + (lauHas(L.obs)?`<p data-k="obs">${esc(L.obs)}</p>`:'')
+    + (lauObsHTML()?`<p data-k="obs">${lauObsHTML()}</p>`:'')
     + (m.concTitulo ? `<p><br></p><p data-k="concT"><b>${esc(lauConcTitulo(m))}</b></p><div data-k="conc">${lauConcHTML(m)}</div>` : '')
     + (m.trailer.length ? `<p><br></p>` + m.trailer.map(t=>`<p>${esc(t)}</p>`).join('') : '');
 }
 
 /* ---------- editor: montar, aplicar alterações ---------- */
-function lauEd(){ return document.getElementById('lau-ed'); }
+function lauEd(){ const e=document.getElementById('lau-ed'); return e && e.dataset.mounted ? e : null; }
 function lauMountEditor(){
-  const ed=lauEd(), L=lauCur(); if(!ed||!L) return;
+  const ed=document.getElementById('lau-ed'), L=lauCur(); if(!ed||!L||ed.dataset.mounted) return;
+  ed.dataset.mounted='1';
   const m=lauModelo(L.model);
   ed.innerHTML = L.html || lauDocHTML(m);
   ed.style.fontFamily = lauFontCss(L.font);
@@ -854,7 +900,7 @@ function lauSetQ(k, c, v, i){
 }
 /* campos das máscaras: k = item | '__tit' | '__conc'; tpl = 'n','l','o0',… */
 function lauPhBag(k){
-  const L=lauCur(); if(k==='__tit') return L.tit; if(k==='__conc') return L.conc.v; return L.v[k].__v;
+  const L=lauCur(); if(k==='__tit') return L.tit; if(k==='__conc') return L.conc.v; if(k==='__obs') return L.xv; return L.v[k].__v;
 }
 function lauPh(k, tpl, i, v, str){
   const L=lauCur(); if(!L) return;
@@ -865,6 +911,7 @@ function lauPh(k, tpl, i, v, str){
   });
   if(k==='__tit') lauPatchTit();
   else if(k==='__conc'){ lauPatchConc(); lauSaveEd(); }
+  else if(k==='__obs'){ lauPatchOpt('obs', lauObsHTML()); lauPatchConc(); lauSaveEd(); }
   else { lauPatch(k); lauUpdSum(k); }
 }
 function lauOpt(k, i){
@@ -880,7 +927,20 @@ function lauItemReset(k){
 function lauSetAuto(on){ const L=lauCur(); if(!L) return; L.autoConc=on; lauRenderLeft(); if(on){ lauPatchConc(); lauSaveEd(); } }
 function lauSetTec(c){ const L=lauCur(); if(!L) return; L.tec[c]=!L.tec[c]; lauRenderLeft(); lauPatchOpt('tec', esc(lauTecTxt())); }
 function lauSetInd(v){ const L=lauCur(); if(!L) return; L.ind=v; lauPatchOpt('ind', lauHas(v)?`<b>Indicação:</b> ${esc(v)}`:''); }
-function lauSetObs(v){ const L=lauCur(); if(!L) return; L.obs=v; lauPatchOpt('obs', lauHas(v)?esc(v):''); }
+function lauObsHTML(){
+  const L=state.lau; const parts=[];
+  if(lauHas(L.obs)) parts.push(esc(L.obs).replace(/\n/g,'<br>'));
+  return parts.concat(lauFraseLines(L.xf, L.xv, 'add')).join('<br>');
+}
+function lauSetObs(v){ const L=lauCur(); if(!L) return; L.obs=v; lauPatchOpt('obs', lauObsHTML()); }
+function lauFraseToggle(k, i){
+  const L=lauCur(); if(!L) return;
+  const list = k==='__obs' ? L.xf : L.v[k].__f;
+  const j=list.indexOf(i); if(j>=0) list.splice(j,1); else list.push(i);
+  lauRenderLeft();
+  if(k==='__obs'){ lauPatchOpt('obs', lauObsHTML()); lauPatchConc(); lauSaveEd(); }
+  else lauPatch(k);
+}
 let _lauArm=0;
 function lauRestart(){
   const L=lauCur(); if(!L) return;
@@ -892,12 +952,13 @@ function lauTab(t){ const L=lauCur(); if(!L) return; lauSaveEd(); L.tab=t; rende
 
 function lauSum(m,it){
   const s=state.lau.v[it.k]; const r=lauBuild(m,it);
-  const opt=(s.__o||[]).some(Boolean);
+  const opt=(s.__o||[]).some(Boolean) || (s.__f||[]).length>0;
   if(r.txt==null && !r.conc.length && !opt){
     const filled = Object.values(s.__v||{}).some(a=>(a||[]).some(lauHas));
     return filled ? {cls:'ok', t:'Medidas preenchidas'} : {cls:'ok', t:'Normal'};
   }
-  return {cls:'alt', t: r.conc && r.conc.length ? r.conc[0].replace(/\.$/,'') + (r.conc.length>1?` +${r.conc.length-1}`:'') : 'Alterado'};
+  const nomes = (r.conc||[]).map(c=>c.replace(/\.$/,'')).concat((s.__f||[]).map(i=>LAU_FRASES[i].n));
+  return {cls:'alt', t: nomes.length ? nomes[0] + (nomes.length>1?` +${nomes.length-1}`:'') : 'Alterado'};
 }
 function lauUpdSum(k){
   const L=lauCur(); if(!L) return; const m=lauModelo(L.model); const it=m.items.find(x=>x.k===k);
@@ -939,6 +1000,14 @@ function lauOptsHTML(k, opts, flags, bag){
     return `<label class="lau-chk"><input type="checkbox" ${on?'checked':''} onchange="lauOpt('${k}',${i})"><span>${esc(lauFill(o,bag['o'+i]))}</span></label>${body}`;
   }).join('');
 }
+function lauFrasesPanel(k, org, list, bag, estrut){
+  const fs = (org ? lauFrasesDe(org) : []).filter(f=>!(estrut && f.s));
+  if(!fs.length) return '';
+  const chips = fs.map(f=>`<button type="button" class="ti-ftog ${list.indexOf(f.i)>=0?'on':''}" onclick="lauFraseToggle('${k}',${f.i})">${f.m==='sub'?'':'+ '}${esc(f.n)}</button>`).join('');
+  const sel = list.map(i=>{ const f=LAU_FRASES[i];
+    return `<div class="lau-fsel"><div class="lau-fsel-h"><b>${esc(f.n)}</b><span>${f.m==='sub'?'substitui o texto':'linha acrescentada'}</span><button type="button" onclick="lauFraseToggle('${k}',${i})" aria-label="Remover">×</button></div>${lauHasPh(f.t)?lauInlineForm(k,'f'+i,f.t,bag['f'+i]):`<div class="lau-inl dim">${esc(f.t)}</div>`}</div>`; }).join('');
+  return `<div class="lau-rl" style="margin-top:12px">Frases de alteração</div><div class="lau-chips lau-fchips">${chips}</div>${sel}`;
+}
 function lauItemPanel(m, it){
   const s=state.lau.v[it.k]; const k=it.k;
   const normal=lauItemNormal(m,it), lbl=lauItemLabel(m,it);
@@ -948,6 +1017,7 @@ function lauItemPanel(m, it){
   else if(it.generic) h += `<div class="lau-rl">Texto da máscara</div><div class="lau-inl dim">${esc(normal).replace(/\n/g,'<br>')}</div>`;
   if(!it.generic) h += it.ctrls.map(c=>lauCtrlHTML(k,s,c)).join('');
   h += lauOptsHTML(k, it.opts, s.__o, s.__v);
+  h += lauFrasesPanel(k, it.sk || lauFraseOrgao(lbl || String(normal).slice(0,40)), s.__f, s.__v, !!it.sk);
   if(it.generic){
     h += `<div class="lau-row"><div class="lau-rl">Substituir o texto por (alteração)</div><textarea class="lau-ta" rows="3" placeholder="Deixe em branco para manter o texto da máscara" oninput="lauSetQ('${k}','alt',this.value)">${esc(s.alt)}</textarea></div>`;
     h += `<div class="lau-row"><div class="lau-rl">Frase para a conclusão</div><input class="lau-txt" type="text" value="${esc(s.conc)}" placeholder="ex.: Tendinopatia do supraespinal." oninput="lauSetQ('${k}','conc',this.value)"></div>`;
@@ -980,8 +1050,9 @@ function lauLeftHTML(){
     const title = esc(nm.replace(/:$/,'')) + (it.grp?` <span class="lau-grp">${esc(it.grp)}</span>`:'');
     return lauCard(it.k, title, `<div id="lau-sum-${it.k}" class="lau-sum ${sum.cls}">${esc(sum.t)}</div>`, ()=>lauItemPanel(m,it));
   }).join('');
-  h += lauCard('__obs', 'Achados adicionais', `<div class="lau-sum ${L.obs?'alt':'ok'}">${L.obs?'Preenchido':'Opcional'}</div>`,
-    ()=>`<textarea class="lau-ta" rows="3" placeholder="Texto livre que entra antes da conclusão" oninput="lauSetObs(this.value)">${esc(L.obs)}</textarea>`);
+  h += lauCard('__obs', 'Achados adicionais', `<div class="lau-sum ${(L.obs||L.xf.length)?'alt':'ok'}">${(L.obs||L.xf.length)?'Preenchido':'Opcional'}</div>`,
+    ()=>`<textarea class="lau-ta" rows="3" placeholder="Texto livre que entra antes da conclusão" oninput="lauSetObs(this.value)">${esc(L.obs)}</textarea>`
+      + lauFrasesPanel('__obs', '__extra', L.xf, L.xv));
   if(m.concTitulo){
     const norm=lauConcNormalLines(m);
     const anyPh = norm.some(c=>lauHasPh(c.text));
