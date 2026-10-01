@@ -13,9 +13,14 @@
    (enquanto a conclusão automática estiver ligada). O resto do texto, editado
    à mão, é preservado.
 
-   Padrões do usuário (título, texto normal de cada item, título e texto da
-   conclusão normal, fonte) ficam em localStorage (Configurações → Padrões
-   dos laudos). Os textos dos modelos são próprios do KlugRads.
+   Modelos: as máscaras de US do usuário (js/laudos-us-mascaras.js, gerado
+   por tools/laudos/parse_mascaras.py). Órgãos com achados estruturados
+   (fígado, vesícula, rins, aorta…) usam os controles de LAU_ABD_ITEMS em
+   qualquer máscara; os demais itens têm campos (XXX), frases opcionais,
+   texto alternativo e frase de conclusão.
+
+   Padrões do usuário (Configurações → Padrões dos laudos): formatação geral
+   para todos os laudos e, por laudo, título, textos normais e conclusão.
    ========================================================================= */
 
 const LAUDO_MODS = [
@@ -445,16 +450,130 @@ const LAU_ABD_ITEMS = [
    }},
 ];
 
-/* Modelos disponíveis */
-const LAUDO_MODELOS = {
-  us: [
-    {id:'us-abdome-total', nome:'Abdome total (modo B)', pronto:true,
-     titulo:'ULTRASSONOGRAFIA DE ABDOME TOTAL',
-     concTitulo:'Conclusão:',
-     concNormal:'Exame sem alterações significativas.',
-     items: LAU_ABD_ITEMS},
-  ],
+/* Itens com achados estruturados, reaproveitados em qualquer máscara que
+   tenha o mesmo órgão (o texto normal vem da própria máscara). */
+const LAU_STRUCT = {};
+LAU_ABD_ITEMS.forEach(it=>LAU_STRUCT[it.k]=it);
+const LAU_STRUCT_LABELS = {
+  'figado':'figado', 'veias porta e hepaticas':'porta', 'vesicula biliar':'vesicula',
+  'vias biliares intra e extra-hepaticas':'vias', 'pancreas':'pancreas', 'baco':'baco',
+  'rins':'rins', 'bexiga':'bexiga', 'aorta abdominal':'aorta',
+  'peritoneo e retroperitoneo':'peritoneo', 'peritoneo / retroperitoneo':'peritoneo',
 };
+function lauNorm(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim(); }
+
+/* =========================================================================
+   MARCADORES DAS MÁSCARAS
+   "XXX" / "XX" / "X" = campo a preencher; "a XX b" = escolha entre a e b
+   (ex.: "anteversão XX retroversão"). Template = linhas → tokens:
+     {t:'w', s}            palavra
+     {t:'p', i, pre, suf}  campo (valor i)
+     {t:'c', i, o:[…], pre, suf}  escolha (valor i)
+   ========================================================================= */
+const LAU_PREP = ['à','ao','a','de','do','da','em','no','na','e'];
+const LAU_PH_RE = /^([(\[]*)(X{1,3})([^\sX]*)$/;
+const LAU_UNIT = /^(cm|mm|m|ml|mL|g|kg|bpm|kPa|%|cm³|mm³|semanas?|dias?|anos?|meses)[.,;:)]*$/;
+function lauIsWord(w){ return /^[A-Za-zÀ-ÿ]+[.,;:)]*$/.test(w||'') && !/^x$/i.test(w) && !/^X{1,3}$/.test(w); }
+function lauTokLine(line, start){
+  const W = line.split(' '); const out=[]; let i=0, n=start;
+  while(i<W.length){
+    const w=W[i], m=w.match(LAU_PH_RE);
+    const prevW = out.length && out[out.length-1].t==='w' ? out[out.length-1].s : '';
+    if(m && m[2]==='XX' && !m[1] && !m[3] && lauIsWord(prevW) && !/[:=]$/.test(prevW)
+       && LAU_PREP.indexOf(prevW.toLowerCase())<0 && lauIsWord(W[i+1]) && !LAU_UNIT.test(W[i+1])){
+      // escolha: opção à esquerda (com a preposição só se a da direita também tiver), depois as da direita
+      const left=[out.pop().s];
+      const rPrep = LAU_PREP.indexOf((W[i+1]||'').toLowerCase())>=0;
+      if(rPrep && out.length && out[out.length-1].t==='w' && LAU_PREP.indexOf(out[out.length-1].s.toLowerCase())>=0) left.unshift(out.pop().s);
+      const opts=[left.join(' ')]; let j=i+1; let suf='';
+      for(;;){
+        const r=[]; let k=j;
+        if(LAU_PREP.indexOf((W[k]||'').toLowerCase())>=0 && lauIsWord(W[k+1])){ r.push(W[k]); k++; }
+        r.push(W[k]); k++;
+        let txt=r.join(' '); const pm=txt.match(/[.,;:)]+$/); if(pm){ suf=pm[0]; txt=txt.slice(0,-suf.length); }
+        opts.push(txt);
+        if(!suf && W[k]==='XX' && lauIsWord(W[k+1])){ j=k+1; continue; }
+        j=k; break;
+      }
+      out.push({t:'c', i:n++, o:opts, pre:'', suf}); i=j; continue;
+    }
+    if(m && (m[2].length>=2 || /^(cm|mm|m|g|kg|mL|ml|%|cm³|kPa|bpm)/.test(W[i+1]||'') )){ out.push({t:'p', i:n++, pre:m[1], suf:m[3]}); i++; continue; }
+    out.push({t:'w', s:w}); i++;
+  }
+  return {toks:out, next:n};
+}
+/* template = {lines:[tokens…], n: nº de valores, auto:{i:[a,b,c]}} */
+const _lauTplCache = {};
+function lauTpl(str){
+  str = String(str==null?'':str);
+  if(_lauTplCache[str]) return _lauTplCache[str];
+  let n=0; const lines=str.split('\n').map(l=>{ const r=lauTokLine(l,n); n=r.next; return r.toks; });
+  // volume/massa automáticos a partir de "A x B x C"
+  const auto={};
+  lines.forEach(t=>{
+    for(let a=0;a+4<t.length;a++){
+      if(t[a].t==='p' && t[a+1].s==='x' && t[a+2].t==='p' && t[a+3].s==='x' && t[a+4].t==='p'){
+        const dims=[t[a].i,t[a+2].i,t[a+4].i];
+        for(let b=a+5;b<t.length;b++){
+          if(t[b].t!=='p') continue;
+          const ctx=t.slice(Math.max(a+5,b-4),b).map(x=>x.s||'').join(' ');
+          if(/volume|massa/i.test(ctx)) auto[t[b].i]=dims;
+          break;
+        }
+      }
+    }
+  });
+  return (_lauTplCache[str]={lines, n, auto});
+}
+function lauAutoVal(tpl, vals, i){
+  const d=tpl.auto[i]; if(!d) return null;
+  const v=d.map(j=>lauF(vals[j])); if(v.some(x=>!x)) return null;
+  const r=v[0]*v[1]*v[2]*0.523;
+  return r<10 ? String(Math.round(r*10)/10).replace('.',',') : String(Math.round(r));
+}
+function lauVal(tpl, vals, i){
+  const v=vals&&vals[i];
+  if(lauHas(v)) return {v:String(v).trim(), ok:true};
+  const a=lauAutoVal(tpl, vals||[], i); if(a!=null) return {v:a, ok:true};
+  return {v:null, ok:false};
+}
+/* preenche: html=true marca em amarelo o que falta */
+function lauFill(str, vals, html){
+  const tpl=lauTpl(str); vals=vals||[];
+  return tpl.lines.map(toks=>toks.map(tk=>{
+    if(tk.t==='w') return html?esc(tk.s):tk.s;
+    const r=lauVal(tpl, vals, tk.i);
+    let core;
+    if(tk.t==='c') core = r.ok ? r.v : tk.o.join(' / ');
+    else core = r.ok ? (lauN(r.v)) : 'XXX';
+    if(html) core = r.ok ? esc(core) : `<mark class="lau-ph">${esc(core)}</mark>`;
+    return (html?esc(tk.pre):tk.pre) + core + (html?esc(tk.suf):tk.suf);
+  }).join(' ')).join(html?'<br>':'\n');
+}
+function lauHasPh(str){ return lauTpl(str).n>0; }
+
+/* =========================================================================
+   MODELOS (a partir das máscaras de US)
+   ========================================================================= */
+function lauBuildModel(mk){
+  const used={};
+  const items = mk.items.map(mi=>{
+    const sk = LAU_STRUCT_LABELS[lauNorm(mi.label)];
+    const base = { k:mi.k, label:mi.label, grp:mi.grp||'', dash:mi.dash, normal:mi.text, opts:mi.opts||[] };
+    if(sk && !used[sk]){
+      used[sk]=1;
+      const d=LAU_STRUCT[sk];
+      return Object.assign({}, base, {sk, ctrls:d.ctrls, build:d.build});
+    }
+    return Object.assign({}, base, {generic:true, ctrls:[]});
+  });
+  return { id:mk.id, nome:mk.nome, grupo:mk.grupo, metodo:'us', pronto:true,
+    titulo: mk.titulo.join('\n'), concTitulo: mk.concTitulo, concNormal: mk.conc.filter(c=>!c.opt),
+    concOpts: mk.conc.filter(c=>c.opt), trailer: mk.trailer, seq: mk.seq, items,
+    estruturado: items.filter(x=>x.sk).length>=2 };
+}
+const LAUDO_MODELOS = { us: (typeof LAU_US_MASKS!=='undefined' ? LAU_US_MASKS : []).map(lauBuildModel) };
+const LAU_GRUPOS = ['Medicina interna','Cabeça e pescoço','Musculoesquelético','Doppler','Obstétrico','Vascular'];
 function lauModelo(id){
   for(const k in LAUDO_MODELOS){ const m=LAUDO_MODELOS[k].find(x=>x.id===id); if(m) return m; }
   return null;
@@ -462,6 +581,8 @@ function lauModelo(id){
 
 /* =========================================================================
    PADRÕES DO USUÁRIO (localStorage)
+   Geral (vale para todos): fonte, tamanho, negrito, hífen, título da conclusão.
+   Por laudo: título, rótulo e texto normal de cada item, conclusão normal.
    ========================================================================= */
 const LAU_CFG_KEY = 'klug_laudo_cfg_v1';
 function lauCfgAll(){
@@ -472,76 +593,116 @@ function lauCfgAll(){
   return state.lauCfg;
 }
 function lauCfgSave(){ try{ localStorage.setItem(LAU_CFG_KEY, JSON.stringify(lauCfgAll())); }catch(_){} }
-function lauGen(){ const c=lauCfgAll(); return {font:c.font||'Arial', size:c.size||12, bold:c.bold!==false, hifen:c.hifen!==false}; }
+function lauGen(){ const c=lauCfgAll(); return {font:c.font||'Arial', size:c.size||12, bold:c.bold!==false, hifen:c.hifen!==false, concTitulo:c.concTitulo||''}; }
 function lauMcfg(id){ const c=lauCfgAll(); if(!c.models[id]) c.models[id]={items:{}}; if(!c.models[id].items) c.models[id].items={}; return c.models[id]; }
-/* valor efetivo (padrão do usuário ou do modelo) */
-function lauTitulo(m){ const u=lauMcfg(m.id); return lauHas(u.titulo)?u.titulo:m.titulo; }
-function lauConcTitulo(m){ const u=lauMcfg(m.id); return lauHas(u.concTitulo)?u.concTitulo:m.concTitulo; }
-function lauConcNormal(m){ const u=lauMcfg(m.id); return lauHas(u.concNormal)?u.concNormal:m.concNormal; }
-function lauItemLabel(m,it){ const u=lauMcfg(m.id).items[it.k]||{}; return lauHas(u.label)?u.label:it.label; }
-function lauItemNormal(m,it){ const u=lauMcfg(m.id).items[it.k]||{}; return lauHas(u.normal)?u.normal:it.normal; }
-/* usado dentro do build dos rins */
-function LAU_NORMAL(k){ const m=lauModelo(state.lau&&state.lau.model||'us-abdome-total'); const it=m.items.find(x=>x.k===k); return lauItemNormal(m,it); }
+function lauMcfgPeek(id){ const c=lauCfgAll(); return c.models[id]||{items:{}}; }
+function lauTitulo(m){ const u=lauMcfgPeek(m.id); return lauHas(u.titulo)?u.titulo:m.titulo; }
+function lauConcTitulo(m){
+  const u=lauMcfgPeek(m.id); if(lauHas(u.concTitulo)) return u.concTitulo;
+  const g=lauGen(); if(g.concTitulo && /^Conclusão:?$/.test(m.concTitulo||'')) return g.concTitulo;
+  return m.concTitulo;
+}
+/* linhas da conclusão normal: [{text,dash}] */
+function lauConcNormalLines(m){
+  const u=lauMcfgPeek(m.id);
+  if(lauHas(u.concNormal)) return u.concNormal.split('\n').filter(lauHas).map(t=>({text:t.replace(/^-\s*/,''), dash:/^-/.test(t)||true}));
+  return m.concNormal;
+}
+function lauItemLabel(m,it){ const u=(lauMcfgPeek(m.id).items||{})[it.k]||{}; return lauHas(u.label)?u.label:it.label; }
+function lauItemNormal(m,it){ const u=(lauMcfgPeek(m.id).items||{})[it.k]||{}; return lauHas(u.normal)?u.normal:it.normal; }
+/* usado dentro do build dos rins: texto normal já preenchido */
+function LAU_NORMAL(k){
+  const L=lauCur(); const m=L&&lauModelo(L.model); if(!m) return '';
+  const it=m.items.find(x=>x.sk===k||x.k===k); if(!it) return '';
+  return lauFill(lauItemNormal(m,it), (L.v[it.k].__v||{}).n).replace(/\n/g,' ');
+}
 
 /* =========================================================================
-   ESTADO DO LAUDO EM EDIÇÃO
+   ESTADO DO LAUDO EM EDIÇÃO (um por modelo, mantido durante a sessão)
    ========================================================================= */
 function lauDefaults(it){
-  const s={};
-  it.ctrls.forEach(c=>{
+  const s={__v:{}, __o:[]};
+  (it.ctrls||[]).forEach(c=>{
     if(!c.k) return;
     if(c.t==='radio' || c.t==='select') s[c.k]=c.opts[0][0];
     else if(c.t==='check') s[c.k]=false;
     else if(c.t==='dims') s[c.k]=['','',''];
     else s[c.k]='';
   });
+  if(it.generic){ s.alt=''; s.conc=''; }
   return s;
 }
 function lauNew(modelId){
   const m=lauModelo(modelId); const v={};
   m.items.forEach(it=>v[it.k]=lauDefaults(it));
   const g=lauGen();
-  state.lau = {model:modelId, v, open:null, html:null, autoConc:true, tab:'opc',
-               tec:{met:false, bio:false}, ind:'', obs:'', font:g.font, size:g.size};
+  if(!state.lauDocs) state.lauDocs={};
+  state.lau = state.lauDocs[modelId] = {model:modelId, v, open:null, html:null, autoConc:true, tab:'opc',
+    tec:{met:false, bio:false}, ind:'', obs:'', font:g.font, size:g.size, tit:{}, conc:{v:{}, o:[]}};
   return state.lau;
 }
 function lauCur(){ return state.lau && lauModelo(state.lau.model) ? state.lau : null; }
-function lauBuild(m, it){ return it.build(state.lau.v[it.k]); }
+function lauBuild(m, it){
+  const s=state.lau.v[it.k];
+  if(it.generic) return {txt: lauHas(s.alt)?s.alt.trim():null, conc: lauHas(s.conc)?[lauFrase(s.conc)]:[]};
+  return it.build(s);
+}
+/* frases opcionais marcadas (já preenchidas) */
+function lauOptLines(it, s, html){
+  return (it.opts||[]).map((o,i)=> s.__o[i] ? lauFill(o, (s.__v['o'+i]), html) : null).filter(x=>x!=null);
+}
 
 /* ---------- geração do HTML do laudo ---------- */
 function lauItemHTML(m, it){
-  const r = lauBuild(m,it);
-  const g = lauGen();
-  const lbl = esc(lauItemLabel(m,it)) + ':';
-  const txt = esc(r.txt==null ? lauItemNormal(m,it) : r.txt);
-  return `${g.hifen?'- ':''}${g.bold?`<b>${lbl}</b>`:lbl} ${txt}`;
+  const L=state.lau, s=L.v[it.k], r=lauBuild(m,it), g=lauGen();
+  const lblRaw = lauItemLabel(m,it);
+  const lbl = lblRaw ? lauFill(lblRaw, s.__v.l, true)+':' : '';
+  let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : esc(r.txt).replace(/\n/g,'<br>');
+  const ex = lauOptLines(it, s, true);
+  if(ex.length) txt += '<br>' + ex.join('<br>');
+  const pre = (g.hifen && it.dash) ? '- ' : '';
+  return lbl ? `${pre}${g.bold?`<b>${lbl}</b>`:lbl} ${txt}` : `${pre}${txt}`;
 }
 function lauConcs(m){
-  const out=[]; m.items.forEach(it=>{ (lauBuild(m,it).conc||[]).forEach(c=>{ if(c && out.indexOf(c)<0) out.push(c); }); });
+  const out=[];
+  m.items.forEach(it=>{ (lauBuild(m,it).conc||[]).forEach(c=>{ if(c && out.indexOf(c)<0) out.push(c); }); });
+  (m.concOpts||[]).forEach((c,i)=>{ if(state.lau.conc.o[i]) out.push({html:lauFill(c.text, state.lau.conc.v['o'+i], true)}); });
   return out;
 }
 function lauConcHTML(m){
-  const g=lauGen(); const c=lauConcs(m);
-  const lines = c.length ? c : [lauConcNormal(m)];
-  return lines.map(x=>`<div>${g.hifen?'- ':''}${esc(x)}</div>`).join('');
+  const g=lauGen(); const f=lauConcs(m); const L=state.lau;
+  const norm = lauConcNormalLines(m).map((c,i)=>({c, i, ph:lauHasPh(c.text)}));
+  let lines;
+  if(!f.length) lines = norm.map(x=>({html:lauFill(x.c.text, L.conc.v['n'+x.i], true), dash:x.c.dash}));
+  else {
+    const keep = norm.filter(x=>x.ph).map(x=>({html:lauFill(x.c.text, L.conc.v['n'+x.i], true), dash:x.c.dash}));
+    const tail = norm.filter(x=>!x.ph && /^Restante/i.test(x.c.text)).map(x=>({html:esc(x.c.text), dash:x.c.dash}));
+    lines = keep.concat(f.map(x=>typeof x==='string'?{html:esc(x),dash:true}:{html:x.html,dash:true}), tail);
+  }
+  return lines.map(x=>`<div>${g.hifen&&x.dash?'- ':''}${x.html}</div>`).join('');
 }
 function lauTecTxt(){
   const t=state.lau.tec, l=[];
   if(t.met) l.push('meteorismo intestinal'); if(t.bio) l.push('biotipo do paciente');
   return l.length ? `Exame com limitação técnica devido a ${l.join(' e ')}.` : '';
 }
+function lauTitHTML(m){
+  return lauTitulo(m).split('\n').map((t,i)=>`<b>${lauFill(t, state.lau.tit['t'+i], true)}</b>`).join('<br>');
+}
 function lauDocHTML(m){
-  const L=state.lau;
-  const tec=lauTecTxt();
-  return `<p data-k="titulo" style="text-align:center"><b>${esc(lauTitulo(m))}</b></p>`
+  const L=state.lau; const tec=lauTecTxt();
+  const body = m.seq.map(e=>{
+    if(e.t==='blank') return '<p><br></p>';
+    if(e.t==='line') return `<p>${esc(e.text)}</p>`;
+    const it=m.items.find(x=>x.k===e.k); return it ? `<p data-k="${it.k}">${lauItemHTML(m,it)}</p>` : '';
+  }).join('');
+  return `<p data-k="titulo" style="text-align:center">${lauTitHTML(m)}</p>`
     + (lauHas(L.ind)?`<p data-k="ind"><b>Indicação:</b> ${esc(L.ind)}</p>`:'')
     + (tec?`<p data-k="tec">${esc(tec)}</p>`:'')
-    + `<p><br></p>`
-    + m.items.map(it=>`<p data-k="${it.k}">${lauItemHTML(m,it)}</p>`).join('')
+    + `<p><br></p>` + body
     + (lauHas(L.obs)?`<p data-k="obs">${esc(L.obs)}</p>`:'')
-    + `<p><br></p>`
-    + `<p data-k="concT"><b>${esc(lauConcTitulo(m))}</b></p>`
-    + `<div data-k="conc">${lauConcHTML(m)}</div>`;
+    + (m.concTitulo ? `<p><br></p><p data-k="concT"><b>${esc(lauConcTitulo(m))}</b></p><div data-k="conc">${lauConcHTML(m)}</div>` : '')
+    + (m.trailer.length ? `<p><br></p>` + m.trailer.map(t=>`<p>${esc(t)}</p>`).join('') : '');
 }
 
 /* ---------- editor: montar, aplicar alterações ---------- */
@@ -556,44 +717,46 @@ function lauMountEditor(){
   try{ document.execCommand('styleWithCSS', false, false); }catch(_){}
 }
 function lauSaveEd(){ const ed=lauEd(); if(ed && state.lau) state.lau.html=ed.innerHTML; }
-/* reescreve só o parágrafo do item + a conclusão */
 function lauPatch(k){
   const ed=lauEd(), L=lauCur(); if(!ed||!L) return;
   const m=lauModelo(L.model); const it=m.items.find(x=>x.k===k);
   if(it){
     let p=ed.querySelector(`[data-k="${k}"]`);
-    if(!p){ // parágrafo apagado à mão: recria antes da conclusão
+    if(!p){
       p=document.createElement('p'); p.dataset.k=k;
       const ref=ed.querySelector('[data-k="concT"]'); ref?ed.insertBefore(p,ref):ed.appendChild(p);
     }
-    p.innerHTML = lauItemHTML(m,it);
-    lauFlash(p);
+    p.innerHTML = lauItemHTML(m,it); lauFlash(p);
   }
-  lauPatchConc();
-  lauSaveEd();
+  lauPatchConc(); lauSaveEd();
 }
 function lauPatchConc(){
   const ed=lauEd(), L=lauCur(); if(!ed||!L||!L.autoConc) return;
-  const m=lauModelo(L.model);
+  const m=lauModelo(L.model); if(!m.concTitulo) return;
   let c=ed.querySelector('[data-k="conc"]');
   if(!c){ c=document.createElement('div'); c.dataset.k='conc'; ed.appendChild(c); }
   const novo=lauConcHTML(m);
   if(c.innerHTML!==novo){ c.innerHTML=novo; lauFlash(c); }
 }
-/* parágrafos opcionais (indicação, limitação técnica, observações) */
-function lauPatchOpt(k, html, after){
+function lauPatchTit(){
+  const ed=lauEd(), L=lauCur(); if(!ed||!L) return;
+  const p=ed.querySelector('[data-k="titulo"]'); if(p){ p.innerHTML=lauTitHTML(lauModelo(L.model)); lauFlash(p); }
+  lauSaveEd();
+}
+function lauPatchOpt(k, html){
   const ed=lauEd(); if(!ed) return;
   let p=ed.querySelector(`[data-k="${k}"]`);
   if(!html){ if(p) p.remove(); lauSaveEd(); return; }
   if(!p){
     p=document.createElement('p'); p.dataset.k=k;
-    let anchor=null;
-    if(after==='titulo'){
-      anchor = (k==='tec' && ed.querySelector('[data-k="ind"]')) || ed.querySelector('[data-k="titulo"]');
+    if(k==='obs'){
+      const ref=ed.querySelector('[data-k="concT"]');
+      if(ref){ const prev=ref.previousElementSibling; ed.insertBefore(p, (prev && prev.innerHTML==='<br>') ? prev : ref); }
+      else ed.appendChild(p);
     } else {
-      lauModelo(state.lau.model).items.forEach(it=>{ const e=ed.querySelector(`[data-k="${it.k}"]`); if(e) anchor=e; });
+      const anchor = (k==='tec' && ed.querySelector('[data-k="ind"]')) || ed.querySelector('[data-k="titulo"]');
+      if(anchor) anchor.after(p); else ed.insertBefore(p, ed.firstChild);
     }
-    if(anchor) anchor.after(p); else ed.appendChild(p);
   }
   p.innerHTML=html; lauFlash(p); lauSaveEd();
 }
@@ -627,42 +790,52 @@ function lauSetSize(pt){
   }
   state.lau.size=pt; ed.style.fontSize=pt+'pt';
 }
-/* guarda a seleção ao abrir os menus (o select tira o foco do editor) */
 let _lauRange=null;
 function lauKeepSel(){ const s=window.getSelection(); const ed=lauEd(); if(s&&s.rangeCount&&ed&&ed.contains(s.anchorNode)) _lauRange=s.getRangeAt(0).cloneRange(); else _lauRange=null; }
 function lauRestoreSel(){ if(!_lauRange) return; const s=window.getSelection(); s.removeAllRanges(); s.addRange(_lauRange); }
 
+/* cópia sem as marcações amarelas dos campos */
+function lauCleanClone(){
+  const ed=lauEd(); if(!ed) return null;
+  const c=ed.cloneNode(true);
+  c.querySelectorAll('mark.lau-ph').forEach(mk=>mk.replaceWith(document.createTextNode(mk.textContent)));
+  c.querySelectorAll('[data-k]').forEach(e=>e.removeAttribute('data-k'));
+  c.querySelectorAll('.lau-flash').forEach(e=>e.classList.remove('lau-flash'));
+  c.querySelectorAll('[class=""]').forEach(e=>e.removeAttribute('class'));
+  return c;
+}
 function lauPlain(){
-  const ed=lauEd(); if(!ed) return '';
-  const tmp=ed.cloneNode(true);
-  tmp.querySelectorAll('p,div').forEach(e=>e.appendChild(document.createTextNode('\n')));
-  return tmp.textContent.replace(/ /g,' ').replace(/\n{3,}/g,'\n\n').trim();
+  const c=lauCleanClone(); if(!c) return '';
+  c.querySelectorAll('br').forEach(b=>b.replaceWith(document.createTextNode('\n')));
+  c.querySelectorAll('p,div').forEach(e=>e.appendChild(document.createTextNode('\n')));
+  return c.textContent.replace(/ /g,' ').replace(/\n{3,}/g,'\n\n').trim();
 }
 function lauRichHTML(){
-  const ed=lauEd(); const L=lauCur(); if(!ed||!L) return '';
-  return `<div style="font-family:${lauFontCss(L.font).replace(/"/g,"'")};font-size:${L.size}pt">${ed.innerHTML}</div>`;
+  const c=lauCleanClone(); const L=lauCur(); if(!c||!L) return '';
+  return `<div style="font-family:${lauFontCss(L.font).replace(/"/g,"'")};font-size:${L.size}pt">${c.innerHTML}</div>`;
 }
+function lauPending(){ const ed=lauEd(); return ed ? ed.querySelectorAll('mark.lau-ph').length : 0; }
 function lauCopy(){
   const plain=lauPlain(), html=lauRichHTML();
+  const n=lauPending(); const msg = n ? `Laudo copiado ✓ (${n} campo${n>1?'s':''} sem preencher)` : 'Laudo copiado ✓';
   try{
     if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
       navigator.clipboard.write([new ClipboardItem({
         'text/html': new Blob([html],{type:'text/html'}),
         'text/plain': new Blob([plain],{type:'text/plain'})})])
-        .then(()=>klugToast('Laudo copiado ✓')).catch(()=>klugCopy(plain,'Laudo copiado ✓'));
+        .then(()=>klugToast(msg)).catch(()=>klugCopy(plain,msg));
       return;
     }
   }catch(_){}
-  klugCopy(plain,'Laudo copiado ✓');
+  klugCopy(plain,msg);
 }
-/* .doc = HTML que o Word abre, com as fontes e o negrito */
 function lauDownload(){
   const L=lauCur(); if(!L) return;
   const doc = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>Laudo</title>
 <style>body{font-family:${lauFontCss(L.font).replace(/"/g,"'")};font-size:${L.size}pt;} p,div{margin:0 0 2pt 0;}</style></head><body>${lauRichHTML()}</body></html>`;
   const blob=new Blob(['﻿',doc],{type:'application/msword'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-  a.download=(lauModelo(L.model).id)+'.doc'; document.body.appendChild(a); a.click();
+  a.download=L.model+'.doc'; document.body.appendChild(a); a.click();
   setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 500);
 }
 
@@ -673,40 +846,57 @@ function lauSet(k, c, v){
   const s=L.v[k]; s[c] = (v==='__toggle') ? !s[c] : v;
   lauRenderLeft(); lauPatch(k);
 }
-/* digitação: só atualiza o texto (não redesenha o painel, mantém o foco) */
 function lauSetQ(k, c, v, i){
   const L=lauCur(); if(!L) return;
   if(i!=null){ const a=(L.v[k][c]||['','','']).slice(); a[i]=v; L.v[k][c]=a; }
   else L.v[k][c]=v;
   lauPatch(k); lauUpdSum(k);
 }
+/* campos das máscaras: k = item | '__tit' | '__conc'; tpl = 'n','l','o0',… */
+function lauPhBag(k){
+  const L=lauCur(); if(k==='__tit') return L.tit; if(k==='__conc') return L.conc.v; return L.v[k].__v;
+}
+function lauPh(k, tpl, i, v, str){
+  const L=lauCur(); if(!L) return;
+  const bag=lauPhBag(k); const a=(bag[tpl]||[]).slice(); a[i]=v; bag[tpl]=a;
+  // atualiza os campos automáticos (volume) do mesmo trecho
+  const t=lauTpl(str||''); Object.keys(t.auto).forEach(j=>{
+    const el=document.getElementById(`ph-${k}-${tpl}-${j}`); if(el){ const av=lauAutoVal(t,a,+j); el.placeholder = av!=null ? av : '…'; }
+  });
+  if(k==='__tit') lauPatchTit();
+  else if(k==='__conc'){ lauPatchConc(); lauSaveEd(); }
+  else { lauPatch(k); lauUpdSum(k); }
+}
+function lauOpt(k, i){
+  const L=lauCur(); if(!L) return;
+  if(k==='__conc'){ L.conc.o[i]=!L.conc.o[i]; lauRenderLeft(); lauPatchConc(); lauSaveEd(); return; }
+  const s=L.v[k]; s.__o[i]=!s.__o[i]; lauRenderLeft(); lauPatch(k);
+}
 function lauItemReset(k){
   const L=lauCur(); if(!L) return;
   const it=lauModelo(L.model).items.find(x=>x.k===k);
   L.v[k]=lauDefaults(it); lauRenderLeft(); lauPatch(k);
 }
-function lauSetAuto(on){ const L=lauCur(); if(!L) return; L.autoConc=on; lauRenderLeft(); if(on) { lauPatchConc(); lauSaveEd(); } }
-function lauSetTec(c){ const L=lauCur(); if(!L) return; L.tec[c]=!L.tec[c]; lauRenderLeft(); lauPatchOpt('tec', esc(lauTecTxt()), 'titulo'); }
-function lauSetInd(v){ const L=lauCur(); if(!L) return; L.ind=v; lauPatchOpt('ind', lauHas(v)?`<b>Indicação:</b> ${esc(v)}`:'', 'titulo'); }
-function lauSetObs(v){ const L=lauCur(); if(!L) return; L.obs=v; lauPatchOpt('obs', lauHas(v)?esc(v):'', 'itens'); }
+function lauSetAuto(on){ const L=lauCur(); if(!L) return; L.autoConc=on; lauRenderLeft(); if(on){ lauPatchConc(); lauSaveEd(); } }
+function lauSetTec(c){ const L=lauCur(); if(!L) return; L.tec[c]=!L.tec[c]; lauRenderLeft(); lauPatchOpt('tec', esc(lauTecTxt())); }
+function lauSetInd(v){ const L=lauCur(); if(!L) return; L.ind=v; lauPatchOpt('ind', lauHas(v)?`<b>Indicação:</b> ${esc(v)}`:''); }
+function lauSetObs(v){ const L=lauCur(); if(!L) return; L.obs=v; lauPatchOpt('obs', lauHas(v)?esc(v):''); }
+let _lauArm=0;
 function lauRestart(){
   const L=lauCur(); if(!L) return;
-  if(!confirmLau()) return;
-  lauNew(L.model); state.lau.tab=L.tab; render(true);
-}
-/* confirmação sem diálogo do navegador: 1º clique arma, 2º confirma */
-let _lauArm=0;
-function confirmLau(){
   const now=Date.now();
-  if(now-_lauArm<3500){ _lauArm=0; return true; }
-  _lauArm=now; klugToast('Toque de novo em "Novo laudo" para descartar o texto atual.'); return false;
+  if(now-_lauArm>3500){ _lauArm=now; klugToast('Toque de novo em "Novo laudo" para descartar o texto atual.'); return; }
+  _lauArm=0; const tab=L.tab; lauNew(L.model); state.lau.tab=tab; render(true);
 }
 function lauTab(t){ const L=lauCur(); if(!L) return; lauSaveEd(); L.tab=t; render(true); }
 
-/* resumo (Normal / Alterado) no cabeçalho de cada item */
 function lauSum(m,it){
-  const r=lauBuild(m,it);
-  if(r.txt==null) return {cls:'ok', t:'Normal'};
+  const s=state.lau.v[it.k]; const r=lauBuild(m,it);
+  const opt=(s.__o||[]).some(Boolean);
+  if(r.txt==null && !r.conc.length && !opt){
+    const filled = Object.values(s.__v||{}).some(a=>(a||[]).some(lauHas));
+    return filled ? {cls:'ok', t:'Medidas preenchidas'} : {cls:'ok', t:'Normal'};
+  }
   return {cls:'alt', t: r.conc && r.conc.length ? r.conc[0].replace(/\.$/,'') + (r.conc.length>1?` +${r.conc.length-1}`:'') : 'Alterado'};
 }
 function lauUpdSum(k){
@@ -729,40 +919,82 @@ function lauCtrlHTML(k, s, c){
     return `<div class="lau-row${ind}"><div class="lau-rl">${esc(c.lbl)}</div><div class="lau-dims">${[0,1,2].map(i=>`<input type="text" inputmode="decimal" value="${esc(v[i])}" oninput="lauSetQ('${k}','${c.k}',this.value,${i})">`).join('<i>×</i>')}<span>cm</span></div></div>`; }
   return '';
 }
-function lauLeftHTML(){
-  const L=lauCur(); const m=lauModelo(L.model);
-  const cards = m.items.map(it=>{
-    const s=L.v[it.k], sum=lauSum(m,it), open=L.open===it.k;
-    return `<div class="lau-it ${open?'open':''}">
-      <div class="lau-ih" onclick="lauToggle('${it.k}')">
-        <div class="lau-in"><div class="lau-il">${esc(lauItemLabel(m,it))}</div><div id="lau-sum-${it.k}" class="lau-sum ${sum.cls}">${esc(sum.t)}</div></div>
+/* texto da máscara com os campos embutidos (para preencher) */
+function lauInlineForm(k, tplId, str, vals){
+  const tpl=lauTpl(str); vals=vals||[];
+  const sj = JSON.stringify(str).replace(/"/g,'&quot;');
+  return `<div class="lau-inl">${tpl.lines.map(toks=>toks.map(tk=>{
+    if(tk.t==='w') return esc(tk.s);
+    const v=vals[tk.i]||'';
+    if(tk.t==='c') return esc(tk.pre)+`<select class="lau-ph-sel" onchange="lauPh('${k}','${tplId}',${tk.i},this.value,${sj})"><option value="">${esc(tk.o.join(' / '))}</option>${tk.o.map(o=>`<option ${v===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`+esc(tk.suf);
+    const av=lauAutoVal(tpl, vals, tk.i);
+    return esc(tk.pre)+`<input id="ph-${k}-${tplId}-${tk.i}" class="lau-ph-in" type="text" value="${esc(v)}" placeholder="${av!=null?esc(av):'…'}" oninput="lauPh('${k}','${tplId}',${tk.i},this.value,${sj})">`+esc(tk.suf);
+  }).join(' ')).join('<br>')}</div>`;
+}
+function lauOptsHTML(k, opts, flags, bag){
+  if(!opts || !opts.length) return '';
+  return `<div class="lau-rl" style="margin-top:10px">Frases opcionais da máscara</div>` + opts.map((o,i)=>{
+    const on=!!flags[i];
+    const body = on && lauHasPh(o) ? lauInlineForm(k,'o'+i,o,bag['o'+i]) : '';
+    return `<label class="lau-chk"><input type="checkbox" ${on?'checked':''} onchange="lauOpt('${k}',${i})"><span>${esc(lauFill(o,bag['o'+i]))}</span></label>${body}`;
+  }).join('');
+}
+function lauItemPanel(m, it){
+  const s=state.lau.v[it.k]; const k=it.k;
+  const normal=lauItemNormal(m,it), lbl=lauItemLabel(m,it);
+  let h='';
+  if(lauHasPh(lbl)) h += `<div class="lau-rl">Rótulo</div>${lauInlineForm(k,'l',lbl,s.__v.l)}`;
+  if(lauHasPh(normal)) h += `<div class="lau-rl">${it.generic?'Texto da máscara — preencha os campos':'Medidas do texto padrão'}</div>${lauInlineForm(k,'n',normal,s.__v.n)}`;
+  else if(it.generic) h += `<div class="lau-rl">Texto da máscara</div><div class="lau-inl dim">${esc(normal).replace(/\n/g,'<br>')}</div>`;
+  if(!it.generic) h += it.ctrls.map(c=>lauCtrlHTML(k,s,c)).join('');
+  h += lauOptsHTML(k, it.opts, s.__o, s.__v);
+  if(it.generic){
+    h += `<div class="lau-row"><div class="lau-rl">Substituir o texto por (alteração)</div><textarea class="lau-ta" rows="3" placeholder="Deixe em branco para manter o texto da máscara" oninput="lauSetQ('${k}','alt',this.value)">${esc(s.alt)}</textarea></div>`;
+    h += `<div class="lau-row"><div class="lau-rl">Frase para a conclusão</div><input class="lau-txt" type="text" value="${esc(s.conc)}" placeholder="ex.: Tendinopatia do supraespinal." oninput="lauSetQ('${k}','conc',this.value)"></div>`;
+  }
+  return h + `<button type="button" class="lau-reset" onclick="lauItemReset('${k}')">${svgIcon(P.reset,14,{sw:2})} Voltar ao normal</button>`;
+}
+function lauCard(key, title, sum, body){
+  const L=state.lau, open=L.open===key;
+  return `<div class="lau-it ${open?'open':''}">
+      <div class="lau-ih" onclick="lauToggle('${key}')">
+        <div class="lau-in"><div class="lau-il">${title}</div>${sum}</div>
         <button type="button" class="lau-alt">${open?'Fechar':'Alterar'}</button>
       </div>
-      ${open?`<div class="lau-ib">${it.ctrls.map(c=>lauCtrlHTML(it.k,s,c)).join('')}
-        <button type="button" class="lau-reset" onclick="lauItemReset('${it.k}')">${svgIcon(P.reset,14,{sw:2})} Voltar ao normal</button></div>`:''}
+      ${open?`<div class="lau-ib">${body()}</div>`:''}
     </div>`;
-  }).join('');
-  const extraOpen = L.open==='__extra';
-  return `<div class="lau-it ${extraOpen?'open':''}">
-      <div class="lau-ih" onclick="lauToggle('__extra')">
-        <div class="lau-in"><div class="lau-il">Indicação e limitações técnicas</div><div class="lau-sum ${(L.ind||L.tec.met||L.tec.bio)?'alt':'ok'}">${(L.ind||L.tec.met||L.tec.bio)?'Preenchido':'Opcional'}</div></div>
-        <button type="button" class="lau-alt">${extraOpen?'Fechar':'Alterar'}</button>
-      </div>
-      ${extraOpen?`<div class="lau-ib">
+}
+function lauLeftHTML(){
+  const L=lauCur(); const m=lauModelo(L.model);
+  const tit=lauTitulo(m);
+  const extraOn = L.ind||L.tec.met||L.tec.bio;
+  let h = lauCard('__extra', 'Título, indicação e limitações',
+    `<div class="lau-sum ${extraOn?'alt':'ok'}">${extraOn?'Preenchido':'Opcional'}</div>`,
+    ()=>`${lauHasPh(tit)?`<div class="lau-rl">Título</div>${tit.split('\n').map((t,i)=>lauHasPh(t)?lauInlineForm('__tit','t'+i,t,L.tit['t'+i]):'').join('')}`:''}
         <div class="lau-row"><div class="lau-rl">Indicação clínica</div><input class="lau-txt" type="text" value="${esc(L.ind)}" placeholder="ex.: dor abdominal" oninput="lauSetInd(this.value)"></div>
         <label class="lau-chk"><input type="checkbox" ${L.tec.met?'checked':''} onchange="lauSetTec('met')"><span>Limitação: meteorismo intestinal</span></label>
-        <label class="lau-chk"><input type="checkbox" ${L.tec.bio?'checked':''} onchange="lauSetTec('bio')"><span>Limitação: biotipo do paciente</span></label>
-      </div>`:''}
-    </div>
-    ${cards}
-    <div class="lau-it ${L.open==='__obs'?'open':''}">
-      <div class="lau-ih" onclick="lauToggle('__obs')">
-        <div class="lau-in"><div class="lau-il">Achados adicionais</div><div class="lau-sum ${L.obs?'alt':'ok'}">${L.obs?'Preenchido':'Opcional'}</div></div>
-        <button type="button" class="lau-alt">${L.open==='__obs'?'Fechar':'Alterar'}</button>
-      </div>
-      ${L.open==='__obs'?`<div class="lau-ib"><textarea class="lau-ta" rows="3" placeholder="Texto livre que entra antes da conclusão" oninput="lauSetObs(this.value)">${esc(L.obs)}</textarea></div>`:''}
-    </div>
-    <label class="lau-chk lau-auto"><input type="checkbox" ${L.autoConc?'checked':''} onchange="lauSetAuto(this.checked)"><span>Conclusão automática <small>(desligue para editar a conclusão à mão sem ser sobrescrita)</small></span></label>`;
+        <label class="lau-chk"><input type="checkbox" ${L.tec.bio?'checked':''} onchange="lauSetTec('bio')"><span>Limitação: biotipo do paciente</span></label>`);
+  h += m.items.map(it=>{
+    const sum=lauSum(m,it);
+    const nm = lauItemLabel(m,it) ? lauFill(lauItemLabel(m,it), L.v[it.k].__v.l) : lauFill(lauItemNormal(m,it), L.v[it.k].__v.n).slice(0,48)+'…';
+    const title = esc(nm.replace(/:$/,'')) + (it.grp?` <span class="lau-grp">${esc(it.grp)}</span>`:'');
+    return lauCard(it.k, title, `<div id="lau-sum-${it.k}" class="lau-sum ${sum.cls}">${esc(sum.t)}</div>`, ()=>lauItemPanel(m,it));
+  }).join('');
+  h += lauCard('__obs', 'Achados adicionais', `<div class="lau-sum ${L.obs?'alt':'ok'}">${L.obs?'Preenchido':'Opcional'}</div>`,
+    ()=>`<textarea class="lau-ta" rows="3" placeholder="Texto livre que entra antes da conclusão" oninput="lauSetObs(this.value)">${esc(L.obs)}</textarea>`);
+  if(m.concTitulo){
+    const norm=lauConcNormalLines(m);
+    const anyPh = norm.some(c=>lauHasPh(c.text));
+    const nOpt=(m.concOpts||[]).length;
+    if(anyPh || nOpt){
+      const on=L.conc.o.some(Boolean);
+      h += lauCard('__conc', 'Conclusão — campos e frases', `<div class="lau-sum ${on?'alt':'ok'}">${on?'Frase opcional marcada':'Normal'}</div>`,
+        ()=> norm.map((c,i)=>lauHasPh(c.text)?lauInlineForm('__conc','n'+i,c.text,L.conc.v['n'+i]):'').join('')
+           + lauOptsHTML('__conc', (m.concOpts||[]).map(c=>c.text), L.conc.o, L.conc.v));
+    }
+  }
+  h += `<label class="lau-chk lau-auto"><input type="checkbox" ${L.autoConc?'checked':''} onchange="lauSetAuto(this.checked)"><span>Conclusão automática <small>(desligue para editar a conclusão à mão sem ser sobrescrita)</small></span></label>`;
+  return h;
 }
 function lauRenderLeft(){
   const el=document.getElementById('lau-left'); if(!el) return;
@@ -799,7 +1031,7 @@ function laudoEditHTML(){
   if(!L) return `<div class="calc-list-wrap"><div class="empty"><div class="msg">Escolha um modelo de laudo.</div></div></div>`;
   setTimeout(lauMountEditor, 0);
   return `<div class="lau-wrap tab-${L.tab}">
-    <div class="lau-beta"><b>Em desenvolvimento · fase de testes.</b> Confira sempre o texto antes de usar. Sugestões e erros: Configurações → Críticas e Sugestões.</div>
+    <div class="lau-beta"><b>Em desenvolvimento · fase de testes.</b> Confira sempre o texto antes de usar. Campos em <mark class="lau-ph">amarelo</mark> ainda não foram preenchidos. Sugestões e erros: Configurações → Críticas e Sugestões.</div>
     <div class="lau-tabs">
       <button type="button" class="${L.tab==='opc'?'on':''}" onclick="lauTab('opc')">Achados</button>
       <button type="button" class="${L.tab==='txt'?'on':''}" onclick="lauTab('txt')">Laudo</button>
@@ -813,7 +1045,7 @@ function laudoEditHTML(){
           <button type="button" class="lau-frase-btn" onclick="lauCopy()">${svgIcon(P.copy,16,{sw:2})} Copiar laudo</button>
           <button type="button" class="lau-btn2" onclick="lauDownload()">Baixar .doc</button>
           <button type="button" class="lau-btn2" onclick="lauRestart()">Novo laudo</button>
-          <button type="button" class="lau-btn2" onclick="openLaudoCfg('${L.model}')">Padrões</button>
+          <button type="button" class="lau-btn2" onclick="openLaudoCfg('${L.model}')">Padrões deste laudo</button>
         </div>
         <div class="disc"><b>Ferramenta de apoio. O laudo final é de responsabilidade do médico que o assina.</b></div>
       </div>
@@ -829,7 +1061,7 @@ function laudoMod(id){ return LAUDO_MODS.find(m=>m.id===id); }
 function laudosHTML(){
   const cards = LAUDO_MODS.map(m=>`<div class="lc-short ${m.ativo?'':'locked'}" onclick="openLaudoMod('${m.id}')">
       <div class="si acc">${svgIcon(P.laudo,22)}</div>
-      <div class="st"><div class="t">${esc(m.nome)}</div><div class="d">${m.ativo?'Modelos de laudo estruturado':'Em breve'}</div></div>
+      <div class="st"><div class="t">${esc(m.nome)}</div><div class="d">${m.ativo?`${(LAUDO_MODELOS[m.id]||[]).length} modelos de laudo`:'Em breve'}</div></div>
       <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
     </div>`).join('');
   return `<div class="calc-list-wrap">
@@ -838,77 +1070,113 @@ function laudosHTML(){
     ${cards}
     <div class="lc-short" onclick="openLaudoCfg()">
       <div class="si acc">${svgIcon(P.gear,22)}</div>
-      <div class="st"><div class="t">Padrões dos laudos</div><div class="d">Título, frases normais, conclusão e fonte</div></div>
+      <div class="st"><div class="t">Padrões dos laudos</div><div class="d">Formatação geral e textos de cada laudo</div></div>
       <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
     </div>
     <div class="disc"><b>Ferramenta de apoio. O laudo final é de responsabilidade do médico que o assina.</b></div>
   </div>`;
 }
-
+/* lista agrupada com busca (usada nos modelos e nas configurações) */
+function lauListHTML(metodo, onclickFn, sub){
+  const q = lauNorm(state.lauQ||'');
+  const ms = (LAUDO_MODELOS[metodo]||[]).filter(m=>!q || lauNorm(m.nome+' '+m.grupo).indexOf(q)>=0);
+  const groups = LAU_GRUPOS.map(g=>{
+    const xs=ms.filter(m=>m.grupo===g); if(!xs.length) return '';
+    return `<div class="lau-lg">${esc(g)}</div>` + xs.map(m=>{
+      const cur = state.lauDocs && state.lauDocs[m.id];
+      return `<div class="lau-li" onclick="${onclickFn}('${m.id}')">
+        <div class="lau-lt">${esc(m.nome)}${m.estruturado?' <span class="lau-tag ok">Achados estruturados</span>':''}</div>
+        <div class="lau-ld">${sub(m,cur)}</div>
+        <div class="chev">${svgIcon(P.chev,16,{sw:2})}</div></div>`;
+    }).join('');
+  }).join('');
+  return `<div class="lau-search"><input type="search" placeholder="Buscar laudo…" value="${esc(state.lauQ||'')}" oninput="state.lauQ=this.value;lauRefreshList()"></div>
+    <div id="lau-list">${groups || '<div class="empty"><div class="msg">Nenhum laudo encontrado.</div></div>'}</div>`;
+}
+function lauRefreshList(){
+  const v=state.view; const el=document.getElementById('lau-list'); if(!el) return;
+  const tmp=document.createElement('div');
+  tmp.innerHTML = v==='laudoCfg' ? lauCfgListHTML() : laudoModHTML();
+  const n=tmp.querySelector('#lau-list'); if(n) el.innerHTML=translateHTML(n.innerHTML);
+}
 function laudoModHTML(){
   const m = laudoMod(state.laudoMod);
   if(!m || !m.ativo) return `<div class="calc-list-wrap"><div class="empty"><div class="msg">${esc(m?m.nome:'Método')} — modelos <b>em breve</b>.</div></div></div>`;
-  const modelos = LAUDO_MODELOS[m.id] || [];
-  const cards = modelos.length ? modelos.map(x=>`<div class="lc-short ${x.pronto?'':'locked'}" ${x.pronto?`onclick="openLaudo('${x.id}')"`:''}>
-      <div class="si acc">${svgIcon(P.laudo,22)}</div>
-      <div class="st"><div class="t">${esc(x.nome)} <span class="lau-tag">Em testes</span></div><div class="d">${x.pronto?(state.lau&&state.lau.model===x.id?'Continuar laudo em edição':'Abrir modelo'):'Em construção'}</div></div>
-      ${x.pronto?`<div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>`:''}
-    </div>`).join('')
-    : `<div class="empty"><div class="msg">Modelos <b>em breve</b>.</div></div>`;
   return `<div class="calc-list-wrap">
-    <div class="calc-intro-lbl">Modelos — ${esc(m.nome)}</div>
-    ${cards}
+    <div class="lau-beta"><b>Em testes.</b> Toque no laudo para abrir. Os órgãos marcados com "Achados estruturados" já montam as frases e a conclusão sozinhos; nos demais, preencha os campos e descreva a alteração.</div>
+    ${lauListHTML(m.id, 'openLaudo', (x,cur)=>cur?'Continuar laudo em edição':`${x.items.length} itens`)}
   </div>`;
 }
 
 /* =========================================================================
    CONFIGURAÇÕES — padrões dos laudos
+   Tela 1: formatação geral (vale para todos) + lista de laudos.
+   Tela 2: um laudo — título, conclusão e texto de cada item.
    ========================================================================= */
+function lauCfgListHTML(){
+  return lauListHTML('us','openLaudoCfgModel',(x)=>{
+    const u=lauMcfgPeek(x.id); const n=Object.values(u.items||{}).filter(o=>lauHas(o.label)||lauHas(o.normal)).length + (lauHas(u.titulo)?1:0)+(lauHas(u.concNormal)?1:0)+(lauHas(u.concTitulo)?1:0);
+    return n ? `<span class="lau-tag">${n} personalizado${n>1?'s':''}</span>` : 'Texto padrão da máscara';
+  });
+}
 function laudoCfgHTML(){
   const g=lauGen();
-  const all=[]; Object.keys(LAUDO_MODELOS).forEach(k=>LAUDO_MODELOS[k].forEach(m=>{ if(m.pronto) all.push(m); }));
-  const mid = state.laudoCfgId && lauModelo(state.laudoCfgId) ? state.laudoCfgId : all[0].id;
-  const m=lauModelo(mid), u=lauMcfg(mid);
-  const fld=(lbl,val,ph,on,area)=>`<div class="lau-cf"><div class="lau-rl">${esc(lbl)}</div>${area
-      ?`<textarea class="lau-ta" rows="3" placeholder="${esc(ph)}" oninput="${on}">${esc(val||'')}</textarea>`
-      :`<input class="lau-txt" type="text" placeholder="${esc(ph)}" value="${esc(val||'')}" oninput="${on}">`}</div>`;
-  const items = m.items.map(it=>{ const ui=u.items[it.k]||{};
-    return `<div class="ti-card">
-      <div class="tfg-sec-lbl">${esc(it.label)}</div>
-      ${fld('Rótulo no laudo', ui.label, it.label, `lauCfgItem('${mid}','${it.k}','label',this.value)`)}
-      ${fld('Texto normal', ui.normal, it.normal, `lauCfgItem('${mid}','${it.k}','normal',this.value)`, true)}
-    </div>`; }).join('');
+  if(state.laudoCfgId && lauModelo(state.laudoCfgId)) return laudoCfgModelHTML(state.laudoCfgId);
   return `<div class="ti-wrap lau-cfg">
     <div class="ti-card">
-      <div class="tfg-sec-lbl">Formatação (todos os laudos)</div>
+      <div class="tfg-sec-lbl">Formatação — vale para todos os laudos</div>
       <div class="lau-row"><div class="lau-rl">Fonte</div><div class="lau-chips">${LAU_FONTS.map(f=>`<button type="button" class="ti-ftog ${g.font===f.id?'on':''}" style="font-family:${f.css.replace(/"/g,"'")}" onclick="lauCfgGen('font','${f.id}')">${f.id}</button>`).join('')}</div></div>
       <div class="lau-row"><div class="lau-rl">Tamanho</div><div class="lau-chips">${LAU_SIZES.map(z=>`<button type="button" class="ti-ftog ${g.size===z?'on':''}" onclick="lauCfgGen('size',${z})">${z}</button>`).join('')}</div></div>
       <label class="lau-chk"><input type="checkbox" ${g.bold?'checked':''} onchange="lauCfgGen('bold',this.checked)"><span>Nomes dos órgãos em negrito</span></label>
-      <label class="lau-chk"><input type="checkbox" ${g.hifen?'checked':''} onchange="lauCfgGen('hifen',this.checked)"><span>Hífen no início de cada linha</span></label>
+      <label class="lau-chk"><input type="checkbox" ${g.hifen?'checked':''} onchange="lauCfgGen('hifen',this.checked)"><span>Hífen no início das linhas</span></label>
+      <div class="lau-cf"><div class="lau-rl">Título da conclusão</div><input class="lau-txt" type="text" placeholder="Conclusão:" value="${esc(g.concTitulo)}" oninput="lauCfgGen('concTitulo',this.value,true)"></div>
     </div>
-    ${all.length>1?`<div class="ti-foci">${all.map(x=>`<div class="ti-ftog ${x.id===mid?'on':''}" onclick="state.laudoCfgId='${x.id}';render(true)">${esc(x.nome)}</div>`).join('')}</div>`:''}
+    <div class="ti-card">
+      <div class="tfg-sec-lbl">Personalizar um laudo</div>
+      <div class="ti-legend-row" style="margin:2px 0 8px"><span class="lt">Escolha o laudo para mudar o título, a conclusão normal e o texto de cada item.</span></div>
+      ${lauCfgListHTML()}
+    </div>
+    <div class="ti-legend-row"><span class="lt">Os padrões ficam salvos neste aparelho e valem para os próximos laudos abertos.</span></div>
+  </div>`;
+}
+function laudoCfgModelHTML(mid){
+  const m=lauModelo(mid), u=lauMcfgPeek(mid);
+  const fld=(lbl,val,ph,on,area)=>`<div class="lau-cf"><div class="lau-rl">${esc(lbl)}</div>${area
+      ?`<textarea class="lau-ta" rows="${Math.min(6,Math.max(2,String(ph).split('\n').length+1))}" placeholder="${esc(ph)}" oninput="${on}">${esc(val||'')}</textarea>`
+      :`<input class="lau-txt" type="text" placeholder="${esc(ph)}" value="${esc(val||'')}" oninput="${on}">`}</div>`;
+  const items = m.items.map(it=>{ const ui=(u.items||{})[it.k]||{};
+    return `<div class="ti-card">
+      <div class="tfg-sec-lbl">${esc(it.label||'Linha sem rótulo')}${it.grp?' · '+esc(it.grp):''}</div>
+      ${it.label?fld('Rótulo no laudo', ui.label, it.label, `lauCfgItem('${mid}','${it.k}','label',this.value)`):''}
+      ${fld('Texto normal', ui.normal, it.normal, `lauCfgItem('${mid}','${it.k}','normal',this.value)`, true)}
+    </div>`; }).join('');
+  const concPh = m.concNormal.map(c=>(c.dash?'- ':'')+c.text).join('\n');
+  return `<div class="ti-wrap lau-cfg">
+    <div class="lau-crumb" onclick="state.laudoCfgId=null;render()">${svgIcon(P.back,16,{sw:2.2})} Todos os laudos</div>
     <div class="ti-card">
       <div class="tfg-sec-lbl">${esc(m.nome)} — título e conclusão</div>
-      ${fld('Título', u.titulo, m.titulo, `lauCfgM('${mid}','titulo',this.value)`)}
-      ${fld('Título da conclusão', u.concTitulo, m.concTitulo, `lauCfgM('${mid}','concTitulo',this.value)`)}
-      ${fld('Conclusão do exame normal', u.concNormal, m.concNormal, `lauCfgM('${mid}','concNormal',this.value)`)}
+      ${fld('Título', u.titulo, m.titulo, `lauCfgM('${mid}','titulo',this.value)`, m.titulo.indexOf('\n')>=0)}
+      ${m.concTitulo?fld('Título da conclusão', u.concTitulo, lauConcTitulo(Object.assign({},m,{id:'__'})), `lauCfgM('${mid}','concTitulo',this.value)`):''}
+      ${m.concTitulo?fld('Conclusão do exame normal', u.concNormal, concPh, `lauCfgM('${mid}','concNormal',this.value)`, true):''}
     </div>
     ${items}
-    <div class="ti-legend-row"><span class="lt">Campos em branco usam o texto padrão do KlugRads (mostrado em cinza). As mudanças valem para os próximos laudos abertos e ficam salvas neste aparelho.</span></div>
+    <div class="ti-legend-row"><span class="lt">Campos em branco usam o texto da máscara (em cinza). Use XXX para criar um campo a preencher e "a XX b" para uma escolha. As mudanças valem para os próximos laudos abertos e ficam salvas neste aparelho.</span></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-      <button type="button" class="lau-btn2" onclick="lauCfgReset('${mid}')">Restaurar padrões deste modelo</button>
+      <button type="button" class="lau-btn2" onclick="lauCfgReset('${mid}')">Restaurar padrões deste laudo</button>
+      ${state.lauDocs&&state.lauDocs[mid]?`<button type="button" class="lau-btn2" onclick="lauCfgApply('${mid}')">Aplicar ao laudo aberto (descarta o texto atual)</button>`:''}
     </div>
   </div>`;
 }
-function lauCfgGen(k,v){ lauCfgAll()[k]=v; lauCfgSave(); render(true); }
+function lauCfgGen(k,v,noRender){ lauCfgAll()[k]=v; lauCfgSave(); if(!noRender) render(true); }
 function lauCfgM(id,k,v){ lauMcfg(id)[k]=v; lauCfgSave(); }
 function lauCfgItem(id,ik,k,v){ const u=lauMcfg(id); if(!u.items[ik]) u.items[ik]={}; u.items[ik][k]=v; lauCfgSave(); }
 let _lauCfgArm=0;
 function lauCfgReset(id){
   const now=Date.now();
-  if(now-_lauCfgArm>3500){ _lauCfgArm=now; klugToast('Toque de novo para restaurar os padrões do modelo.'); return; }
+  if(now-_lauCfgArm>3500){ _lauCfgArm=now; klugToast('Toque de novo para restaurar os padrões deste laudo.'); return; }
   _lauCfgArm=0; lauCfgAll().models[id]={items:{}}; lauCfgSave(); render(true); klugToast('Padrões restaurados ✓');
 }
+function lauCfgApply(id){ if(state.lauDocs) delete state.lauDocs[id]; if(state.lau&&state.lau.model===id) state.lau=null; klugToast('O próximo laudo aberto usará os novos padrões ✓'); render(true); }
 
 /* =========================================================================
    NAVEGAÇÃO
@@ -916,8 +1184,9 @@ function lauCfgReset(id){
 function openLaudos(){ navPush(); state.view='laudos'; render(); }
 function openLaudoMod(id){ navPush(); state.laudoMod=id; state.view='laudoMod'; render(); }
 function openLaudo(id){
-  navPush();
-  if(!state.lau || state.lau.model!==id) lauNew(id);
+  lauSaveEd(); navPush();
+  if(state.lauDocs && state.lauDocs[id]) state.lau=state.lauDocs[id]; else lauNew(id);
   state.laudoId=id; state.view='laudoEdit'; render();
 }
-function openLaudoCfg(id){ lauSaveEd(); navPush(); if(id) state.laudoCfgId=id; state.view='laudoCfg'; render(); }
+function openLaudoCfg(id){ lauSaveEd(); navPush(); state.laudoCfgId=id||null; state.view='laudoCfg'; render(); }
+function openLaudoCfgModel(id){ navPush(); state.laudoCfgId=id; state.view='laudoCfg'; render(); }

@@ -1,0 +1,1586 @@
+A. ÍNDICE:
+Abdome Superior
+Abdome Superior com Boyden
+Abdome Total
+Abdome Total: FAST
+Rins e Vias Urinárias
+Próstata
+Próstata Transretal
+Rins e Vias Urinárias e Próstata
+Abdome Total e Próstata
+Parede Abdominal
+Região Inguinal
+Partes Moles
+Pelve Suprapúbico
+Transvaginal
+Transvaginal: DIU
+Transvaginal: Controle de Ovulação
+Bolsa Testicular
+Pênis
+Transvaginal: Endometriose
+Elastografia
+Tórax
+Tórax: Cúpulas
+Transfontanela
+Cervical
+Tireoide
+Glândulas Salivares
+Globo Ocular
+Antebraço
+Braço
+Cotovelo
+Coxa
+Joelho
+Mão
+Ombro
+Pé
+Perna
+Punho
+Quadril
+Dedo da Mão
+Sínfise Púbica
+Tornozelo
+Doppler: Abdome Superior
+Doppler: Fígado Transplantado
+Doppler: Rim Transplantado
+Doppler: Bolsa Testicular
+Doppler: Pênis
+Doppler: Transfontanela
+Doppler: Tireoide
+Doppler: Transvaginal
+Obstétrico 1˚ Trimestre
+Obstétrico 2˚ e 3˚ Trimestre
+Obstétrico Gemelar
+Obstétrico Doppler
+Veia Cava e Ilíacas
+Aorta e Ilíacas
+Artérias Renais
+Artérias Temporais
+Artérias Carótidas
+Arterial dos MMII
+Arterial dos MMII Resumido
+Arterial dos MMSS
+Venoso dos MMII
+Venoso dos MMSS
+Arterial e Venoso dos MMII
+Varizes
+Arterial e Venoso dos MMSS
+Fístula Arteriovenosa
+Arterial e Venoso MMII com Varizes
+
+================================================================================
+
+B. MEDICINA INTERNA:
+
+1. ABDOME SUPERIOR
+ULTRASSONOGRAFIA DO ABDOME SUPERIOR
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Fígado: com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea.
+- Veias porta e hepáticas: com calibres preservados.
+- Vesícula biliar: tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.
+- Vias biliares intra e extra-hepáticas: sem dilatações 
+- Pâncreas: com dimensões, contornos e ecogenicidade normais.
+- Baço: com dimensões normais, homogêneo.
+ 
+Conclusão:
+- Exame sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+2. ABDOME SUPERIOR COM BOYDEN
+ULTRASSONOGRAFIA DO ABDOME SUPERIOR COM PROVA DE BOYDEN
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Fígado: com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea.
+- Veias porta e hepáticas: com calibres preservados.
+- Vesícula biliar: tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.
+Foi realizada a reavaliação da vesícula biliar XXX minutos após uma refeição gordurosa, evidenciando-se esvaziamento estimado em XXX%.
+- Vias biliares intra e extra-hepáticas: sem dilatações 
+- Pâncreas: com dimensões, contornos e ecogenicidade normais.
+- Baço: com dimensões normais, homogêneo.
+ 
+Conclusão:
+- Ultrassonografia do abdome superior com prova motora de Boyden evidenciando esvaziamento de XXX% do volume da vesícula biliar.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+3. ABDOME TOTAL
+ULTRASSONOGRAFIA DE ABDOME TOTAL
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Fígado: com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea.
+- Veias porta e hepáticas: com calibres preservados.
+- Vesícula biliar: tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.
+- Vias biliares intra e extra-hepáticas: sem dilatações 
+- Pâncreas: com dimensões, contornos e ecogenicidade normais.
+- Baço: com dimensões normais, homogêneo.
+- Rins: tópicos, de dimensões normais, com espessura e ecogenicidade parenquimatosas preservadas, sem hidronefrose ou cálculos detectáveis ao método.
+- Aorta abdominal: com calibre normal.
+- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis.
+- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.
+Conclusão:
+- Exame sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+4. ABDOME TOTAL - FAST
+ULTRASSONOGRAFIA DO ABDOME TOTAL DIRECIONADA PARA O TRAUMA
+(EXTENDED FOCUSSED ABDOMINAL SONOGRAPHY FOR TRAUMA – E-FAST)
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame realizado em caráter de emergência para a pesquisa de líquido livre na cavidade abominopélvica, nos hemitóraces e no saco pericárdico. 
+ 
+Saco pericárdico: sem líquido detectável pela janela subxifóide.
+Espaço hepatorrenal (Morrison): ausência de líquido livre.
+Base do hemitórax direito: ausência de derrame pleural.
+Espaço esplenorrenal: ausência de líquido livre.
+Base do hemitórax esquerdo: ausência de derrame pleural.
+Pelve: ausência de líquido livre.
+ 
+Resultado da avaliação E-FAST: EXAME NEGATIVO XX POSITIVO.
+ 
+Demais achados eventuais: 
+ 
+Referências: 
+Focused Assessment with Sonography for Trauma (FAST). Emergency Ultrasound. 2004.
+ACEP Policy Statement: Emergency Ultrasound Guidelines. American College of Emergency Physicians. 2001.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+5. RINS E VIAS URINÁRIAS
+ULTRASSONOGRAFIA DOS RINS E VIAS URINÁRIAS
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Rins: tópicos, de dimensões normais (RD = XX cm; RE = XX cm).
+Espessura e ecogenicidade parenquimatosas preservadas.
+Ausência de hidronefrose ou cálculos detectáveis ao método.
+- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico.
+ 
+Conclusão:
+- Exame sem alterações significativas evidentes.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+6. PRÓSTATA
+ULTRASSONOGRAFIA DA PRÓSTATA
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame realizado pela via suprapúbica.
+- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.
+- Próstata: com forma habitual, medindo cerca de XX x XX x XX cm; massa estimada em XXX gramas.
+- Protrusão prostática intravesical (IPP): de cerca de XXX cm.
+- Vesículas seminais: simétricas e com ecotextura preservada.
+- Resíduo vesical pós-miccional: estimado em XXX mL.
+ 
+Conclusão:
+- Próstata com massa estimada em XXX gramas.
+- Resíduo pós-miccional estimado em XXX mL.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+7. PRÓSTATA TRANSRETAL
+ULTRASSONOGRAFIA TRANSRETAL DA PRÓSTATA
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame da próstata realizado pelas vias suprapúbica e transrretal.
+- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.
+- Próstata: com forma habitual, medindo cerca de XX x XX x XX cm; massa estimada em XXX gramas.
+- Protrusão prostática intravesical (IPP): de cerca de XXX cm.
+- Zona de transição: heterogênea, com padrão nodular característico.
+- Zona periférica: simétrica, regular e relativamente homogênea.
+- Contornos (cápsula) prostáticos: sem abaulamentos ou irregularidades.
+- Vesículas seminais: simétricas e com ecotextura preservada.
+- Resíduo vesical pós-miccional: estimado em XXX mL.
+ 
+Conclusão:
+- Próstata com massa estimada em XXX gramas.
+- Resíduo pós-miccional estimado em XXX mL.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+8. RINS E VIAS URINÁRIAS E PRÓSTATA
+ULTRASSONOGRAFIA DOS RINS, VIAS URINÁRIAS E PRÓSTATA
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Rins tópicos, com dimensões normais (RD = [< >] cm e RE = [< >] cm). 
+Parênquima renal com contornos regulares, espessura e ecotextura preservadas. 
+Não há dilatação do sistema coletor.
+Não se evidenciam cálculos.
+Bexiga com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em [<>] ml.
+Próstata com forma habitual, medindo [<>] x [<>] x [<>]cm e massa estimada em [<>] gramas.
+[<Protrusão prostática intravesical estimada em [<>] cm>].
+Vesículas seminais simétricas e com ecotextura conservada.
+Resíduo vesical pós-miccional estimado em [<>] ml.
+ 
+Conclusão:
+Próstata com massa estimada em [< >] gramas.
+Resíduo pós-miccional estimado em [<>]ml representando esvaziamento de [<>]% do volume vesical.
+Restante do estudo sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+9. ABDOME TOTAL E PRÓSTATA
+ULTRASSONOGRAFIA DE ABDOME TOTAL E DA PRÓSTATA
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame realizado pela via suprapúbica.
+- Fígado: com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea.
+- Veias porta e hepáticas: com calibres preservados.
+- Vesícula biliar: tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.
+- Vias biliares intra e extra-hepáticas: sem dilatações 
+- Pâncreas: com dimensões, contornos e ecogenicidade normais.
+- Baço: com dimensões normais, homogêneo.
+- Rins: tópicos, de dimensões normais, com espessura e ecogenicidade parenquimatosas preservadas, sem hidronefrose ou cálculos detectáveis ao método.
+- Aorta abdominal: com calibre normal.
+- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis.
+- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.
+- Próstata: com forma habitual, medindo cerca de XX x XX x XX cm; massa estimada em XXX gramas.
+- Protrusão prostática intravesical (IPP): de cerca de XXX cm.
+- Vesículas seminais: simétricas e com ecotextura preservada.
+- Resíduo vesical pós-miccional: estimado em XXX mL.
+  
+Conclusão:
+- Próstata com massa estimada em XXX gramas.
+- Resíduo pós-miccional estimado em XXX mL.
+Restante do exame sem particularidades.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+10. PAREDE ABDOMINAL
+ULTRASSONOGRAFIA DA PAREDE ABDOMINAL
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Estudo realizado com o paciente em posição ortostática e em decúbito dorsal, com manobras de Valsalva para a pesquisa de hérnias, direcionado para a região XXX (local da queixa do paciente).
+- Pele e tecido celular subcutâneo: de espessura e ecogenicidade preservadas.
+- Planos musculares: com arquitetura preservada.
+- Coleções: ausentes.
+- Linfonodomegalias ou massas: não há.
+- Herniações: não caracterizadas, mesmo após as manobras de esforço.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+11. REGIÃO INGUINAL
+ULTRASSONOGRAFIA DA REGIÃO INGUINAL XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Estudo realizado com o paciente em posição ortostática e em decúbito dorsal, com manobras de Valsalva para a pesquisa de hérnias.
+- Pele e tecido celular subcutâneo: de espessura e ecogenicidade preservadas.
+- Planos musculares: com arquitetura preservada.
+- Canal inguinal: apresentando dimensões normais e conteúdo habitual.
+- Herniações: não caracterizadas, mesmo após as manobras de esforço.
+- Linfonodomegalias: não há.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+12. PARTES MOLES
+ULTRASSONOGRAFIA DE PARTES MOLES
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame direcionado para a região XX.
+- Pele e tecido celular subcutâneo: de espessura e ecogenicidade preservadas.
+- Planos musculares: com arquitetura preservada.
+- Coleções: ausentes.
+- Linfonodomegalias ou massas: não há.
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+13. PELVE SUPRAPÚBICO
+ULTRASSONOGRAFIA PÉLVICA
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame realizado pela via suprapúbica.
+- Bexiga: com paredes regulares e conteúdo anecogênico.
+- Útero: em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares. Relação corpo / colo uterino de XX.
+- Miométrio: com ecotextura característica, sem nódulos conspícuos.
+- Endométrio: filiforme / não caracterizado XX centrado e homogêneo, com espessura bilaminar de XX cm.
+- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo folículos de até XXX cm.
+- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo folículos de até XXX cm.
+- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
+Conclusão:
+- Útero e ovários sem alterações significativas para a faixa etária. 
+XX - Não há sinais ultrassonográficos de estimulação hormonal.
+XX - Útero e ovários apresentando sinais de estimulação hormonal.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+14. PELVE TRANSVAGINAL
+ULTRASSONOGRAFIA PÉLVICA TRANSVAGINAL
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame realizado pelas vias abdominal / suprapúbica XXX e transvaginal.
+- Bexiga: com paredes regulares e conteúdo anecogênico.
+- Útero: em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
+- Miométrio: com ecotextura característica, sem nódulos conspícuos.
+- Endométrio: centrado e homogêneo, com espessura bilaminar de XX cm.
+- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
+- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
+- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
+Conclusão:
+- Exame sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+15. PELVE TRANSVAGINAL - DIU
+ULTRASSONOGRAFIA PÉLVICA TRANSVAGINAL
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame realizado pelas vias abdominal / suprapúbica XXX e transvaginal.
+- Bexiga: com paredes regulares e conteúdo anecogênico.
+- Útero: em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
+- Miométrio: com ecotextura característica, sem nódulos conspícuos.
+- Endométrio: centrado e homogêneo, com espessura bilaminar de XX cm.
+- Dispositivo contraceptivo: centrado na cavidade endometrial. Distância DIU-serosa fúndica: XXX ; distância DIU-fundo da cavidade: XXX cm.
+- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
+- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
+- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
+Conclusão:
+ - DIU normoposicionado na cavidade uterina.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+16. PELVE TRANSVAGINAL - CONTROLE DE OVULAÇÃO
+ULTRASSONOGRAFIA PÉLVICA TRANSVAGINAL PARA CONTROLE OVULATÓRIO
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Data da última menstruação: XXX. Ciclo: Espontâneo XX induzido.
+Exame realizado no dia XX do ciclo, pelas vias suprapúbica e transvaginal.
+- Útero: em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
+- Miométrio: com ecotextura característica, sem nódulos conspícuos.
+- Endométrio: centrado e homogêneo, com espessura bilaminar de XX cm.
+- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo cerca de XX folículos maiores, o dominante medindo XX cm (diâmetro médio).
+- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo cerca de XX folículos maiores, o dominante medindo XX cm (diâmetro médio).
+- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
+Conclusão e comparação:
+Ovários apresentando sinais de estimulação hormonal, com folículos medindo até X cm.
+Comparativamente à ultrassonografia prévia recente de XXX, houve XXX.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+17. BOLSA TESTICULAR
+ULTRASSONOGRAFIA DA BOLSA TESTICULAR
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Parede da bolsa testicular: com espessura normal.
+- Testículos: tópicos, com morfologia normal, contornos regulares e ecotextura homogênea. Volumes testiculares de XXX cc à direita e XXX cc à esquerda.
+- Epidídimos: com dimensões normais e ecotextura característica.
+- Líquido na bolsa testicular: em volume fisiológico.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+18. PÊNIS
+ULTRASSONOGRAFIA PENIANA
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Pele e tecido subcutâneo: de aspecto preservado.
+- Corpo esponjoso: de morfologia, textura e dimensões habituais.
+- Corpos cavernosos: de morfologia, textura e dimensões habituais.
+- Túnica albugínea: com espessura e ecogenicidade normais em toda a sua extensão.
+XXX Placa calcificada no aspecto XX do terço proximal XX médio XX distal, medindo cerca de XXX.
+ 
+Conclusão: 
+- Ultrassonografia com Doppler peniano dentro da normalidade.
+XXX - Sinais de Doença de Peyronie.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+19. PELVE TRANSVAGINAL - ENDOMETRIOSE
+ULTRASSONOGRAFIA PÉLVICA TRANSVAGINAL COM DOPPLER E PREPARO INTESTINAL
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Útero: em anteversão e anteflexão XX retroflexão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares. 
+- Miométrio: com ecotextura característica, sem nódulos conspícuos.
+XXX Nódulo miometrial hipoecogênico na parede corporal anterior X posterior X no fundo uterino, medindo cerca de XXX cm, comumente representando leiomioma. 
+XXX Assimetria das paredes uterinas com indefinição da interface endométrio / miométrio, sem XX com diminutos cistos subendometriais. Tais achados podem estar relacionados à adenomiose. A critério clínico, uma RM da pelve poderá trazer informações adicionais.
+- Endométrio: centrado e homogêneo, com espessura bilaminar de XX cm.
+XXX - Dispositivo contraceptivo: centrado na cavidade endometrial. Distância DIU-serosa fúndica: XXX ; distância DIU-fundo da cavidade: XXX cm.
+- Colo uterino: forma normal e canal endocervical sem alterações ecográficas. 
+XXX Sinais de histerotomia (cicatriz cesárea) ístmica anterior sem particularidades XXX com pequena istmocele.
+XXX Discretas estrias hipoecogênicas na serosa anterior do útero e no espaço vésico uterino, provavelmente de natureza fibrocicatricial.
+- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
+- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
+- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
+Não há sinais de endometriose profunda no septo retovaginal, fórnice vaginal ou nas regiões retrocervical, paracervical, recesso vésico-uterino e alças intestinais avaliadas. 
+Não há sinais de endometriose profunda no ceco. 
+XXX Tecido hipoecogênico irregular na região retrocervical / retrocorporal uterina (acometendo o tórus uterino) e com extensão para:
+- ligamento uterossacro direito XX esquerdo XX ligamentos uterossacros.
+- ligamento largo direito XX esquerdo XX ligamentos largos.
+- cúpula vaginal posterior.
+- cápsula ovariana direita XX esquerda XX cápsulas ovarianas.
+- parede anterior do reto XX retossigmoide XX sigmoide, infiltrando a camada muscular própria, numa extensão aproximada de XX cm (acometendo XX% da circunferência) e distando cerca de XX cm da borda anal.
+- serosa da parede anterior do reto, medindo XXX cm e distando cerca de XXX cm da borda anal (sem sinais de infiltração profunda).
+- Apêndice cecal: caracterizado e de aspecto ecográfico normal. 
+XXX não caracterizado.
+- Rins: de aspecto ecográfico normal e sem sinais de hidronefrose. 
+Conclusão:
+- Exame sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+20. ELASTOGRAFIA
+ULTRASSONOGRAFIA ABDOMINAL COM ELASTOGRAFIA HEPÁTICA
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Fígado: com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea. Não foram detectadas lesões focais ao método.
+Realizada elastografia com a técnica “shear wave” (2D-SWE), com medidas múltiplas. Mediana das Elasticidades (liver stiffness) no lobo direito calculada em XXX kPa (IQR/med: XXX%).
+- Veias porta e hepáticas: pérvias ao estudo Doppler colorido, com calibres preservados.
+- Vesícula biliar: tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.
+- Vias biliares intra e extra-hepáticas: sem dilatações 
+- Pâncreas: com dimensões, contornos e ecogenicidade normais.
+- Baço: com dimensões normais, homogêneo.
+Conclusão:
+- Elastografia hepática por 2D-SWE com índice de Elasticidade calculado em XXX kPa, inferindo ausência XX presença de fibrose clinicamente significativa.
+Valores de referência*:
+•	< 5 kPa: Normal;
+•	5-9 kPa: Provavelmente sem fibrose clinicamente significativa (≤ F2);
+•	9-13 kPa: Provavelmente com fibrose clinicamente significativa (≥ F3);
+•	13-17 kPa: Cirrose;
+•	> 17 kPa: Cirrose descompensada (hipertensão portal).
+* Barr, Richard G., et al. "Update to the society of radiologists in ultrasound liver elastography consensus statement." Radiology 296.2 (2020): 263-274.
+Referências Bibliográficas:
+Barr RG et Al – Elastography Assessment of Liver Fibrosis: Society of Radiologists in Ultrasound Consensus Conference Statement – Radiology 2015; 276 (3): 845-861
+G. Ferraioli et al - WFUMB Guidelines for Ultrasound Elastography - Liver - Ultrasound in Med. & Biol., Vol. 41, No. 5, pp. 1161–1179, 2015 DOI: https://doi.org/10.1016/j.ultrasmedbio.2015.03.007
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+21. TÓRAX
+ULTRASSONOGRAFIA DO TÓRAX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame realizado nas posições ortostática e em decúbito dorsal horizontal.
+- Cúpulas diafragmáticas: com mobilidade e excursão normais.
+- Espaços pleurais: ausência de derrames.
+- Pericárdico: sem acúmulo líquido significativo.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+22. TÓRAX - CÚPULAS
+ULTRASSONOGRAFIA DO TÓRAX
+(COM ÊNFASE NA AVALIAÇÃO DIAFRAGMÁTICA DINÂMICA)
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Foi realizada a avaliação da movimentação das hemicúpulas diafragmática pela face póstero-lateral dos hemitóraces (linhas axilares posteriores), estando o paciente em posição ortostática e em decúbito dorsal horizontal, com manobras de inspiração.
+ 
+- Hemitórax direito (reparo anatômico = ramo portal esquerdo):
+Excursão diafragmática:
+- Em posição ortostática: XXX cm.
+- Em decúbito lateral esquerdo: XXX cm.
+Ausência de derrame pleural.
+ 
+- Hemitórax esquerdo (reparo anatômico = hilo esplênico / pólo inferior do baço):
+Excursão diafragmática:
+- Em posição ortostática: XXX cm.
+- Em decúbito lateral esquerdo: XXX cm.
+Ausência de derrame pleural.
+ 
+Conclusão:
+- Não se observam alterações significativas na excursão diafragmática bilateral.
+XXX - Redução significativa na excursão diafragmática à direita XX esquerda, comparada à contralateral.
+Liberado por: 
+CRM: 
+
+================================================================================
+
+C. CABEÇA E PESCOÇO:
+
+23. CRÂNIO - TRANSFONTANELA
+ULTRASSONOGRAFIA DO CRÂNIO
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Parênquima encefálico: com morfologia e ecotextura preservadas.
+XXX Hiperecogenicidade da substância branca periventricular.
+XXX Hiperecogenicidade da substância branca periventricular, com extensão à região subcortical parietal e occipital bilateral XX à direita XX à esquerda.
+XXX Hiperecogenicidade da substância branca periventricular, com cistos de até X cm.
+XXX Foco hiperecogênico no sulco caudotalâmico à direita XX esquerda XX bilateral 
+- Sistema ventricular: sem dilatação. Índice ventricular estimado em XXX à direita e de XXX à esquerda. IV ventrículo com dimensões normais.
+XXX Dilatação do sistema ventricular supratentorial.
+- Espaço subaracnóideo: sem alargamento.
+- Fossa posterior: sem alterações significativas ao método.
+ 
+Conclusão:
+- Ultrassonografia do crânio dentro dos padrões da normalidade.
+XXX - Hemorragia intracraniana grau I bilateral XX à direita XX à esquerda.
+XXX - Sinais sugestivos de lesão da substância branca hemisférica (periventricular XX e subcortical).
+XXX - Sinais compatíveis com lesão da substância branca (leucomalácia multicística periventricular).
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+24. CERVICAL
+ULTRASSONOGRAFIA DA REGIÃO CERVICAL
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Tireoide: tópica, com morfologia habitual, dimensões normais e contornos regulares. Parênquima tireoideano com textura característica, sem lesões nodulares sólidas ou císticas conspícuas.
+Volumes estimados: lobo direito: XXX cm³; lobo esquerdo XXX cm³; volume glandular total: XX cm³.
+- Glândulas parótidas e submandibulares: com morfologia, dimensões e ecotextura preservadas. Não há dilatação ductal ou calcificações.
+- Linfonodomegalias cervicais: não há.
+- Formações (massas) sólidas ou císticas: não caracterizadas.
+- Coleções: ausentes.
+Conclusão:
+- Ultrassonografia cervical sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+25. TIREOIDE
+ULTRASSONOGRAFIA DA TIREOIDE
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Tireoide: tópica, com morfologia habitual, dimensões normais e contornos regulares. Parênquima tireoideano com textura característica, sem lesões nodulares sólidas ou císticas conspícuas.
+Volumes estimados: lobo direito: XXX cm³; lobo esquerdo XXX cm³; volume glandular total: XX cm³.
+- Linfonodomegalias cervicais regionais: não há.
+Conclusão:
+- Ultrassonografia da tireoide sem alterações significativas.
+Categoria ACR TI-RADS™: 1
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+26. GLÂNDULAS SALIVARES
+ULTRASSONOGRAFIA DAS GLÂNDULAS SALIVARES
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Glândulas parótidas e submandibulares: com morfologia, dimensões e ecotextura preservadas. Não há dilatação ductal ou calcificações.
+- Linfonodomegalias: não há.
+- Formações (massas) sólidas ou císticas: não caracterizadas.
+- Coleções: ausentes.
+ 
+Conclusão:
+- Ultrassonografia das glândulas salivares sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+27. GLOBO OCULAR
+ULTRASSONOGRAFIA DOS GLOBOS OCULARES
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+DIREITO
+- Córnea: de contornos regulares.
+- Câmara anterior: com ecogenicidade preservada.
+- Cristalino: normal.
+- Câmara vítrea: com contornos regulares e conteúdo anecogênico homogêneo.
+- Deslocamento de retina: negativo.
+- Corpo estranho: não há. 
+- Nervo óptico: com ecotextura e morfologia preservadas. 
+- Massas retrobulbares: ausentes.
+- Musculatura extrínseca: com ecotextura e morfologia preservadas. 
+ 
+ESQUERDO
+- Córnea: de contornos regulares.
+- Câmara anterior: com ecogenicidade preservada.
+- Cristalino: normal.
+- Câmara vítrea: com contornos regulares e conteúdo anecogênico homogêneo.
+- Deslocamento de retina: negativo.
+- Corpo estranho: não há. 
+- Nervo óptico: com ecotextura e morfologia preservadas. 
+- Massas retrobulbares: ausentes.
+- Musculatura extrínseca: com ecotextura e morfologia preservadas. 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+================================================================================
+
+D. MUSCULOESQUELÉTICO:
+
+28. ANTEBRAÇO
+ULTRASSONOGRAFIA DO ANTEBRAÇO XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Planos musculares: com arquitetura preservada. Não há sinais de rotura muscular.
+- Massas: não há.
+- Coleções: ausentes.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+29. BRAÇO
+ULTRASSONOGRAFIA DO BRAÇO XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Planos musculares: com arquitetura preservada. Não há sinais de rotura muscular.
+- Massas: não há.
+- Coleções: ausentes.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+30. COTOVELO
+ULTRASSONOGRAFIA DO COTOVELO XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Tendão comum dos extensores: com aspecto habitual.
+- Tendão comum dos flexores: com espessura, contornos e textura preservados.
+- Tendões do tríceps braquial e bíceps distal: apresentando espessura, contornos e arranjo fibrilar preservados.
+- Fossas coronoide, ulnar e olecraniana: anatômicas.
+- Nervo ulnar: com espessura, contornos e ecotextura normais.
+- Derrame articular: não há.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+31. COXA
+ULTRASSONOGRAFIA DA COXA XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Planos musculares: com arquitetura preservada. Não há sinais de rotura muscular.
+- Massas: não há.
+- Coleções: ausentes.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+32. JOELHO
+ULTRASSONOGRAFIA DO JOELHO XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Tendão quadríceps femoral: com espessura, contornos e textura normais.
+- Tendão patelar: com aspecto anatômico.
+- Tendões da “pata de ganso”: apresentando espessura e textura normais.
+- Trato iliotibial e tendão bicipital: com características preservadas.
+- Ligamentos colaterais: com espessura, contornos e textura habituais.
+- Fossa poplítea: sem formações císticas.
+- Derrame articular: não há.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+33. MÃO
+ULTRASSONOGRAFIA DA MÃO XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Tendões flexores e extensores: com espessura, contornos e textura normais.
+- Musculatura intrínseca: com aspecto ecográfico preservado.
+- Alterações peritendíneas e/ou periarticulares: não detectadas.
+- Lesões sólidas ou císticas: não há.
+- Polias anulares dos tendões flexores: de aspecto normal.
+- Placas volares: íntegras.
+ 
+Conclusão:
+- Exame sem achados significativos.  
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+34. OMBRO
+ULTRASSONOGRAFIA DO OMBRO XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Tendão da cabeça longa do bíceps: com espessura, contornos e textura normais.
+- Tendões supraespinhal, infraespinhal e subescapular: com espessura, contornos e textura habituais.
+- Ventres musculares do supraespinhal e infraespinhal: apresentando morfologia e trofismo preservados.
+- Bursa subacromial-subdeltoidea: sem espessamentos ou distensão líquida.
+- Derrame articular glenoumeral: não há.
+- Articulação acromioclavicular: sem alterações significativas.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+35. PÉ
+ULTRASSONOGRAFIA DO PÉ XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Musculatura intrínseca: com aspecto preservado.
+Espaços interdigitais: sem coleções ou lesões nodulares sólidas ou císticas.
+Fáscia plantar: com espessura, contornos e textura normais.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+36. PERNA
+ULTRASSONOGRAFIA DA PERNA XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Planos musculares: com arquitetura preservada. Não há sinais de rotura muscular.
+- Massas: não há.
+- Coleções: ausentes.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+37. PUNHO
+ULTRASSONOGRAFIA DO PUNHO XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Tendões flexores dos dedos: com espessura, contornos e textura normais.
+- Compartimentos sinoviais extensores dos dedos: com aspecto habitual.
+- Nervo mediano: com trajeto preservado, contornos lisos e textura homogênea. Área seccional (AST) estimada em XXX cm² no túnel do carpo.
+- Lesões sólidas ou císticas: não há.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+38. QUADRIL
+ULTRASSONOGRAFIA DO QUADRIL XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Derrame articular: não há.
+- Tendões glúteos médio e mínimo: preservados em suas inserções no trocânter maior.
+- Tendão retofemoral e segmentos acessíveis do iliopsoas: preservados.
+- Bursa trocantérica: ausência de sinais de bursite.
+- Ventres musculares: de trofismo conservado, sem lesões.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+39. DEDO DA MÃO
+ULTRASSONOGRAFIA DO XX QUIRODÁCTILO XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Tendões flexores e extensor: de espessura, contornos e textura normais. 
+- Líquido peritendíneo: ausente. 
+- Derrame articular metacarpofalangiano ou interfalangiano: não há. 
+- Lesões expansivas: não há. 
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+40. SÍNFISE PÚBICA
+ULTRASSONOGRAFIA DA SÍNFISE PÚBICA
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Sínfise púbica: de contornos regulares, sem derrame articular.
+- Inserções dos tendões dos adutores longos e aponeurose do retoabdominal: de aspecto preservado.
+- Ventres musculares dos adutores: de trofismo preservado, sem lesões.
+- Hérnias inguinais: não caracterizadas.
+- Massas ou coleções: ausentes.
+ 
+Conclusão:
+- Exame sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+41. TORNOZELO
+ULTRASSONOGRAFIA DO TORNOZELO XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Tendões tibial posterior, flexores longos dos dedos e do hálux: com espessura, contornos e ecotextura normais.
+- Tendões fibulares: aparentemente preservados.
+- Tendão calcâneo: de espessura e ecogenicidade preservadas. 
+- Bursite retrocalcaneana: não caracterizada.
+- Tendões extensores: sem alterações significativas.
+- Ligamentos fíbulotalar anterior, fíbulocalcâneo e tibiofibular anterior: preservados.
+- Fáscia plantar: com espessura, contornos e textura normais.
+- Derrame articular: não há.
+Liberado por: 
+CRM: 
+
+================================================================================
+
+E. DOPPLER:
+
+42. DOPPLER ABDOME SUPERIOR
+ULTRASSONOGRAFIA DO ABDOME SUPERIOR COM DOPPLER
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Fígado: com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea.
+- Vesícula biliar: tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.
+- Vias biliares intra e extra-hepáticas: sem dilatações 
+- Pâncreas: com dimensões, contornos e ecogenicidade normais.
+- Baço: com dimensões normais, homogêneo.
+Ao estudo Doppler:
+- Artéria hepática: pérvia, com fluxo bifásico de boa amplitude.
+- Veia porta (tronco e ramos intrahepáticos): pérvia, de calibre normal, apresentando fluxo hepatopetal com velocidades no tronco em torno de 20 XX cm/s.
+- Veias esplênica e mesentérica superior: pérvias, de calibre normal, com fluxo de sentido preservado.
+- Veias hepáticas: pérvias, de calibres preservados e distribuição habitual, apresentando fluxo multifásico hepatofugal.
+- Veia cava inferior: pérvia.
+ 
+Conclusão:
+- Exame sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+43. DOPPLER FÍGADO TRANSPLANTADO
+ULTRASSONOGRAFIA DO FÍGADO TRANSPLANTADO COM DOPPLER
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Fígado transplantado: de dimensões normais e contornos regulares. Ecotextura parenquimatosa hepática homogênea.
+Vascularização:
+- Artéria hepática: pérvia, de calibre normal, com IR estimado em XXX.
+XXX Trombose XX estenose da artéria hepática. Há fluxo nos ramos arteriais intra-hepáticos, reenchidos por colaterais 
+XXX Ramos arteriais intra-hepáticos sem fluxo detectável.
+- Veia porta: com calibre de XXX cm, exibindo fluxo hepatopetal XX hepatofugal com velocidade estimada em XXX cm/s.
+XXX Colaterais venosas paraesofágicas, perigástricas / no território da veia gástrica esquerda e periesplênicas. 
+XXX Sinais de shunt esplenorrenal.
+- Veias hepáticas e cava inferior: pérvias. Anastomoses venosas preservadas, sem aumentos significativos de velocidade.
+- Vias biliares intra e extra-hepáticas: sem dilatações 
+- Pâncreas: com dimensões, contornos e ecogenicidade normais.
+- Baço: com dimensões normais, homogêneo.
+XXX Aumentado e homogêneo.
+- Linfonodos: não se observam linfonodomegalias.
+XXX Linfonodos proeminentes no hilo hepático e no espaço portocava.
+- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis.
+- Demais achados: pâncreas, adrenais e rins sem particularidades.
+ 
+Conclusão:
+- Ultrassonografia com Doppler do fígado transplantado sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+44. DOPPLER RIM TRANSPLANTADO
+ULTRASSONOGRAFIA DOPPLER DO RIM TRANSPLANTADO
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Rim transplantado: na fossa ilíaca direita XX esquerda, com dimensões normais (XXX cm).
+Espessura e ecogenicidade parenquimatosas preservadas.
+Ausência de hidronefrose ou cálculos detectáveis.
+- Peritôneo e retroperitôneo: não há coleções significativas junto ao enxerto.
+Ao estudo Doppler: 
+- Anastomose arterial: prévia, com velocidades sistólicas dentro dos limites da normalidade.
+- Artérias intrarrenais: com índices de resistência (IR) variando entre 0,X e 0,X.
+- Anastomose venosa: pérvia, sem aumentos significativos de velocidade.
+Conclusão:
+- Ultrassonografia com Doppler do rim transplantado sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+45. BOLSA TESTICULAR COM DOPPLER
+ULTRASSONOGRAFIA DA BOLSA TESTICULAR COM DOPPLER
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Parede da bolsa testicular: com espessura normal.
+- Testículos: tópicos, com morfologia normal, contornos regulares e ecotextura homogênea. Volumes testiculares de XXX cc à direita e XXX cc à esquerda. Vascularização preservada.
+- Epidídimos: com dimensões normais e ecotextura característica, exibindo vascularização preservada.
+- Líquido na bolsa testicular: em volume fisiológico.
+- Plexos pampiniformes: com veias de calibres normais, sem refluxo significativo às manobras de esforço.
+Conclusão:
+- Exame da bolsa testicular com Doppler sem achados significativos.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+46. PÊNIS COM DOPPLER
+ULTRASSONOGRAFIA PENIANA COM DOPPLER
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Pele e tecido subcutâneo: de aspecto preservado.
+- Corpo esponjoso: de morfologia, textura e dimensões habituais.
+- Corpos cavernosos: de morfologia, textura e dimensões habituais.
+- Túnica albugínea: com espessura e ecogenicidade normais em toda a sua extensão.
+XXX Placa calcificada no aspecto XX do terço proximal XX médio XX distal, medindo cerca de XXX.
+- Artérias cavernosas: pérvias, com trajeto e calibre normais, com paredes regulares.
+XXX Artérias cavernosas tortuosas, com calcificações parietais difusas.
+Após a fármaco-indução com alprostadil 20 mcg – Caverject®, evidenciou-se:
+Boa XX Moderada XX Mínima XX Ausência de resposta de ereção.
+À Dopplervelocimetria (realizadas avaliações com 5, 10 e 15 minutos), nota-se:
+- Artéria cavernosa direita com velocidade de pico sistólico de até XXX cm/s e velocidade diastólica final de XXX cm/s.
+- Artéria cavernosa esquerda com velocidade de pico sistólico de até XXX cm/s e velocidade diastólica final de XXX cm/s.
+ 
+Conclusão: 
+- Ultrassonografia com Doppler peniano dentro da normalidade.
+XXX - Sinais Dopplervelocimétricos de insuficiência arteriogênica.
+XXX - Sinais Dopplervelocimétricos de insuficiência venogênica.
+XXX - Sinais de Doença de Peyronie.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+47. TRANSFONTANELA COM DOPPLER
+ULTRASSONOGRAFIA TRANSFONTANELAR COM DOPPLER
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Hemisférios cerebrais: simétricos e com ecogenicidade habitual.
+- Hemorragia intracraniana: não detectada.
+- Sistema ventricular: sem dilatação. Índice ventricular estimado em XXX à direita e de XXX à esquerda.
+- Espaço subaracnóideo: sem alargamento.
+- Fossa posterior: sem alterações significativas ao método.
+- Estudo Doppler: índices de resistência das artérias cerebrais avaliadas dentro dos limites da normalidade. 
+ 
+Conclusão:
+- Ultrassonografia transfontanelar com Doppler sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+48. TIREÓIDE COM DOPPLER
+ULTRASSONOGRAFIA DA TIREOIDE COM DOPPLER
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Tireoide: tópica, com morfologia habitual, dimensões normais e contornos regulares. Parênquima tireoideano com textura característica, sem lesões nodulares sólidas ou císticas conspícuas.
+Volumes estimados: lobo direito: XXX cm³; lobo esquerdo XXX cm³; volume glandular total: XX cm³.
+- Estudo Doppler colorido do parênquima glandular: vascularização característica.
+- Linfonodomegalias cervicais regionais: não há.
+Conclusão:
+- Ultrassonografia da tireoide sem alterações significativas.
+Categoria ACR TI-RADS™: 1
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+49. TRANSVAGINAL COM DOPPLER
+ULTRASSONOGRAFIA PÉLVICA TRANSVAGINAL COM DOPPLER
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame realizado pelas vias abdominal / suprapúbica XXX e transvaginal.
+- Bexiga: com paredes regulares e conteúdo anecogênico.
+- Útero: em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
+- Miométrio: com ecotextura característica, sem nódulos conspícuos. Vascularização miometrial de aspecto habitual ao Doppler colorido.
+- Endométrio: centrado e homogêneo, com espessura bilaminar de XX cm, sem focos de vascularização anômala.
+- Artérias uterinas: com padrão espectral habitual.
+- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
+- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
+Ao estudo Doppler colorido, não foram observados focos de vascularização anômala nos ovários. 
+- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
+  
+Conclusão:
+- Ultrassonografia pélvica transvaginal com Doppler sem alterações significativas.
+Liberado por: 
+CRM: 
+
+================================================================================
+
+F. OBSTÉTRICO:
+
+50. OBSTÉTRICO 1˚ TRIMESTRE
+ULTRASSONOGRAFIA OBSTÉTRICA
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame realizado em caráter de urgência no pronto-socorro, por via transvaginal.
+ 
+- Bexiga: com repleção parcial. 
+- Útero: globoso e levemente aumentado.
+- Colo uterino: de aspecto preservado, com comprimento estimado em XXX cm.
+- Ovários e regiões anexiais: sem particularidades.
+XXX Provável corpo lúteo de XX cm no ovário direito XX esquerdo.
+- Saco gestacional: tópico, único e de contornos regulares, medindo cerca de XX x XX x XX mm (DMSG = XXX mm). 
+Não se observam coleções / hematomas perigestacionais ou áreas de descolamento ovular.
+- Vesícula vitelínica: esférica, regular, medindo XXX mm. 
+- Embrião / feto: único, com batimentos cardíacos evidentes à frequência de (BCF): XXX bpm. CCN = XXX mm.
+ 
+Conclusão:
+- Gestação tópica e única, com embrião vivo e de idade gestacional estimada em XXX semanas e XXX dias pela biometria atual.
+Obs: O exame obstétrico de pronto-atendimento tem como objetivo primordial o de avaliar a vitalidade imediata da gestação, não se destinando à pesquisa de malformações fetais nem substituindo os exames de rotina do pré-natal.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+51. OBSTÉTRICO 2˚ e 3˚ TRIMESTRES
+ULTRASSONOGRAFIA OBSTÉTRICA
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame realizado em caráter de urgência no pronto-socorro, por via suprapúbica (abdominal).
+ 
+- Bexiga: com repleção parcial. 
+- Útero: gravídico, globoso.
+- Colo uterino: de aspecto aparentemente preservado.
+- Feto: único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda.
+- Batimentos cardíacos (BCF): XXX bpm.
+- Placenta: com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): XXX.
+- Cordão umbilical: de aspecto habitual.
+- Líquido amniótico: em quantidade normal. Maior bolsão vertical (MBV) estimado em XXX mm XXX ILA estimado em XXX cm.
+Medidas:
+Cabeça: DBP = XXX mm; PC = XXX mm.
+Abdome: CA = XXX mm.
+Fêmur: CF = XXX mm.
+Peso fetal estimado (Hadlock): XXX g (variação de ± 15%).
+Conclusão:
+- Gestação tópica e única, com feto vivo e de idade gestacional estimada em XXX semanas e XXX dias pela biometria atual.
+Obs: O exame obstétrico de pronto-atendimento tem como objetivo primordial o de avaliar a vitalidade imediata da gestação, não se destinando à pesquisa de malformações fetais nem substituindo os exames de rotina do pré-natal.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+52. OBSTÉTRICO GEMELAR
+ULTRASSONOGRAFIA OBSTÉTRICA
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame realizado em caráter de urgência no pronto-socorro, por via suprapúbica (abdominal).
+ 
+- Bexiga: com repleção parcial. 
+- Útero: gravídico, globoso.
+- Colo uterino: de aspecto aparentemente preservado.
+- Placenta XX placentas: com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): XXX. 
+XXX Não é possível determinar corionicidade por este estudo.
+- Cordão umbilical: de aspecto habitual.
+- Líquido amniótico: em quantidade aparentemente normal. Maior bolsão vertical (MBV) estimado em XXX mm XXX ILA estimado em XXX cm. Não é possível determinar amnionicidade por este estudo.
+- Feto 1: único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.
+Medidas:
+Cabeça: DBP = XXX mm; PC = XXX mm.
+Abdome: CA = XXX mm.
+Fêmur: CF = XXX mm.
+Peso fetal estimado (Hadlock): XXX g (variação de ± 15%).
+- Feto 2: único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.
+Medidas:
+Cabeça: DBP = XXX mm; PC = XXX mm.
+Abdome: CA = XXX mm.
+Fêmur: CF = XXX mm.
+Peso fetal estimado (Hadlock): XXX g (variação de ± 15%).
+Conclusão:
+- Gestação gemelar, com fetos vivos e com pesos estimados acima. Idade gestacional (IG) estimada em XXX semanas e XXX dias
+Obs: O exame obstétrico de pronto-atendimento tem como objetivo primordial o de avaliar a vitalidade imediata da gestação, não se destinando à pesquisa de malformações fetais nem substituindo os exames de rotina do pré-natal.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+53. OBSTÉTRICO DOPPLER
+ULTRASSONOGRAFIA OBSTÉTRICA COM DOPPLER
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Exame realizado em caráter de urgência no pronto-socorro, por via suprapúbica (abdominal).
+ 
+- Bexiga: com repleção parcial. 
+- Útero: gravídico, globoso.
+- Colo uterino: de aspecto aparentemente preservado.
+- Feto: único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda.
+- Batimentos cardíacos (BCF): XXX bpm.
+- Placenta: com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): XXX.
+- Cordão umbilical: de aspecto habitual.
+- Líquido amniótico: em quantidade normal. Maior bolsão vertical (MBV) estimado em XXX mm XXX ILA estimado em XXX cm.
+Medidas:
+Cabeça: DBP = XXX mm; PC = XXX mm.
+Abdome: CA = XXX mm.
+Fêmur: CF = XXX mm.
+Peso fetal estimado: XXX g (variação de ± 10%).
+Dopplervelocimetria:
+Índices de resistividade e de pulsatilidade (IR e IP, respectivamente):
+- Artéria umbilical: XXX e XXX
+- Artéria cerebral média: XXX e XXX
+Relação umbilico-cerebral: XXX
+XXX Índices de resistividade das artérias uterinas: XXX à direita e XXX à esquerda.
+Conclusão:
+- Gestação tópica e única, com feto vivo e de idade gestacional estimada em XXX semanas e XXX dias pela biometria atual.
+- Estudo Doppler da circulação fetoplacentária dentro dos limites da normalidade.
+Obs: O exame obstétrico de pronto-atendimento tem como objetivo primordial o de avaliar a vitalidade imediata da gestação, não se destinando à pesquisa de malformações fetais nem substituindo os exames de rotina do pré-natal.
+Liberado por: 
+CRM: 
+
+================================================================================
+
+G. VASCULAR:
+
+54. VEIA CAVA E ILÍACAS
+ULTRASSONOGRAFIA COM DOPPLER DA VEIA CAVA INFERIOR E VEIAS ILÍACAS
+  
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Veias cava inferior e ilíacas comuns, externas e internas (porções superiores): pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses.
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+ 
+Conclusão:
+- Veias analisadas com aspecto ultrassonográfico e ao Doppler colorido dentro dos limites da normalidade.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+55. AORTA E ILÍACAS
+ULTRASSONOGRAFIA COM DOPPLER DA AORTA E ARTÉRIAS ILÍACAS
+  
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Aorta, artérias ilíacas comuns e externas e segmentos proximais das artérias ilíacas internas pérvios, de trajetos e calibres normais, sem espessamentos ou calcificações parietais.
+XXX Ateromatose discreta XX difusa, com placas parietais parcialmente calcificadas esparsas, sem determinar estenoses hemodinamicamente significativas.
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+ 
+Conclusão:
+- Exame dentro dos padrões da normalidade.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+56. ARTÉRIAS RENAIS
+ULTRASSONOGRAFIA DOS RINS E ARTÉRIAS RENAIS COM DOPPLER
+  
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Rins: tópicos, de dimensões normais (RD = XX cm; RE = XX cm).
+Espessura e ecogenicidade parenquimatosas preservadas.
+Ausência de hidronefrose ou cálculos detectáveis ao método.
+- Artérias renais: pérvias, com padrão espectral e velocidades preservados nos segmentos acessíveis. 
+Velocidades de pico sistólico máximo: XXX cm/s à direita e XXX cm/s à esquerda.
+Relações velocidades de pico sistólico da aorta / artéria renais: dentro dos limites da normalidade.
+- Artérias intrarrenais (segmentares): com padrões espectrais habituais (índices de resistividade preservados).
+ 
+Conclusão:
+- Ultrassonografia com Doppler dos rins e artérias renais dentro dos parâmetros da normalidade.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+57. ARTÉRIAS TEMPORAIS
+ULTRASSONOGRAFIA COM DOPPLER DAS ARTÉRIAS TEMPORAIS
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Artérias temporais superficiais: pérvias, de trajetos e calibres normais, sem espessamentos ou calcificações parietais.
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+ 
+Conclusão:
+- Ultrassonografia com Doppler de artérias temporais sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+58. ARTÉRIAS CARÓTIDAS
+ULTRASSONOGRAFIA COM DOPPLER DAS ARTÉRIAS CARÓTIDAS E VERTEBRAIS
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+- Artérias carótidas comuns, internas e externas (segmentos acessíveis): pérvias, com trajetos habituais e calibres normais, sem dilatações, espessamentos ou calcificações parietais.
+XXX Ateromatose discreta XX difusa, com placas parietais parcialmente calcificadas esparsas, sem determinar estenoses hemodinamicamente significativas.
+Ao estudo Doppler, os padrões espectrais e as velocidades encontram-se preservados.
+- Complexos médio-intimais (avaliados na parede posterior do terço distal das artérias carótidas comuns): menores do que 0,1 cm.
+- Artérias vertebrais: com fluxo anterógrado.
+Conclusão:
+- Ultrassonografia com Doppler sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+59. ARTERIAL DOS MEMBROS INFERIORES
+ULTRASSONOGRAFIA COM DOPPLER ARTERIAL DOS MEMBROS INFERIORES
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Membro inferior direito:
+- Artéria femoral comum: pérvia, com paredes regulares e calibre preservado, sem dilatações ou placas ateromatosas determinando estenoses significativas.
+- Artéria femoral: pérvia, com paredes regulares e calibre preservado, sem dilatações ou placas ateromatosas determinando estenoses significativas.
+- Artéria femoral profunda: pérvia, com paredes regulares e calibre preservado, sem dilatações ou placas ateromatosas determinando estenoses significativas.
+- Artéria poplítea: pérvia, com paredes regulares e calibre preservado, sem dilatações ou placas ateromatosas determinando estenoses significativas.
+- Artérias tibiais anterior e posterior e fibular: pérvias, com paredes regulares e calibre preservado, sem dilatações ou placas ateromatosas determinando estenoses significativas.
+Membro inferior esquerdo:
+- Artéria femoral comum: pérvia, com paredes regulares e calibre preservado, sem dilatações ou placas ateromatosas determinando estenoses significativas.
+- Artéria femoral: pérvia, com paredes regulares e calibre preservado, sem dilatações ou placas ateromatosas determinando estenoses significativas.
+- Artéria femoral profunda: pérvia, com paredes regulares e calibre preservado, sem dilatações ou placas ateromatosas determinando estenoses significativas.
+- Artéria poplítea: pérvia, com paredes regulares e calibre preservado, sem dilatações ou placas ateromatosas determinando estenoses significativas.
+- Artérias tibiais anterior e posterior e fibular: pérvias, com paredes regulares e calibre preservado, sem dilatações ou placas ateromatosas determinando estenoses significativas.
+Conclusão:
+- Ultrassonografia com Doppler sem alterações significativas.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+60. ARTERIAL DOS MEMBROS INFERIORES - RESUMIDO
+ULTRASSONOGRAFIA COM DOPPLER ARTERIAL DOS MEMBROS INFERIORES
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Artérias femorais, poplíteas, tibiais e fibulares pérvias, de trajetos e calibres normais, sem espessamentos ou calcificações parietais.
+XXX Ateromatose discreta XX difusa, com placas parietais parcialmente calcificadas esparsas, sem determinar estenoses hemodinamicamente significativas.
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+Conclusão:
+- Exame dentro dos padrões da normalidade.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+61. ARTERIAL DOS MEMBROS SUPERIORES
+ULTRASSONOGRAFIA COM DOPPLER ARTERIAL DOS MEMBROS SUPERIORES
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Artérias subclávias, axilares, braquiais, radiais e ulnares pérvias, de trajetos e calibres normais, sem espessamentos ou calcificações parietais.
+XXX Ateromatose discreta XX difusa, com placas parietais parcialmente calcificadas esparsas, sem determinar estenoses hemodinamicamente significativas.
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+Conclusão:
+- Artérias e veias analisadas com aspecto ultrassonográfico e ao Doppler colorido dentro dos limites da normalidade.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+62. VENOSO DOS MEMBROS INFERIORES
+ULTRASSONOGRAFIA COM DOPPLER VENOSO PROFUNDO DO MEMBRO INFERIOR XX
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Veias femorais, poplítea, tibiais e fibular pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses. 
+Crossas das veias safenas magna e parva pérvias, sem tromboses.
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+Conclusão:
+- Exame negativo para trombose venosa profunda.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+63. VENOSO DOS MEMBROS SUPERIORES
+ULTRASSONOGRAFIA COM DOPPLER VENOSO DO MEMBRO SUPERIOR XX
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Veias subclávia, axilar, braquial, radial, ulnar, XXX cefálica e XXX basílica pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses. 
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+Conclusão:
+Exame negativo para trombose venosa profunda.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+64. ARTERIAL E VENOSO DOS MEMBROS INFERIORES
+ULTRASSONOGRAFIA COM DOPPLER ARTERIAL E VENOSO PROFUNDO DOS MEMBROS INFERIORES
+  
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Sistema arterial:
+Artérias femorais, poplíteas, tibiais e fibulares pérvias, de trajetos e calibres normais, sem espessamentos ou calcificações parietais.
+XXX Ateromatose discreta XX difusa, com placas parietais parcialmente calcificadas esparsas, sem determinar estenoses hemodinamicamente significativas.
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+ 
+Sistema venoso profundo:
+Veias femorais, poplíteas, tibiais e fibulares pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses. 
+Crossas das veias safenas magnas e parvas pérvias, sem tromboses.
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+ 
+Conclusão:
+- Artérias e veias analisadas com aspecto ultrassonográfico e ao Doppler dentro dos limites da normalidade.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+65. VARIZES
+ULTRASSONOGRAFIA COM DOPPLER VENOSO SUPERFICIAL E PROFUNDO DOS MEMBROS INFERIORES
+   
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Sistema venoso profundo:
+Veias femorais, poplíteas, tibiais e fibulares pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses. 
+Crossas das veias safenas magnas e parvas pérvias, sem tromboses.
+Não houve refluxo às manobras sensibilizadoras.
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+Sistema venoso superficial:
+Veias safenas magnas e parvas pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses. 
+Não há sinais de incompetência valvar às manobras de compressão e Valsalva.
+Não foram detectadas veias perfurantes incompetentes. 
+XXX Veia perfurante insuficiente na face posterior XX medial da perna XXX, a cerca de XX cm da planta do pé.
+Calibres das veias safenas magnas (planos da crossa, terço inferior da coxa e terço inferior da perna, respectivamente):
+- Direita: XX cm; XX cm; XX cm.
+- Esquerda: XX cm; XX cm; XX cm.
+Conclusão:
+- Veias analisadas com aspecto ultrassonográfico e ao Doppler dentro dos limites da normalidade.
+XXX - Veia safena magna XXX discretamente dilatada na coxa, competente.
+XXX - Varizes superficiais.
+XXX - Veias perfurantes incompetentes, acima descritas.
+XXX - Veia safena magna XXX dilatada, com refluxo significativo da junção safeno-femoral até o terço inferior da coxa. 
+XXX - Veia safena magna XXX dilatada e tortuosa, incompetente em todo o membro XXX, com colateral calibrosa na porção XXX proximal da coxa drenando o refluxo.
+XXX - Tromboflebite da safena magna XXX parva XXX.
+XXX - Junção safeno-poplítea não caracterizada, continuando-se pela extensão cranial da safena parva.
+XXX - Sinais de safenectomia XX.
+XXX - Veia safena magna XXX não caracterizada no seu trajeto habitual da interlinha do joelho até o terço médio da perna, continuando-se neste segmento por veia colateral superficial que se encontra insuficiente.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+66. ARTERIAL E VENOSO DOS MEMBROS SUPERIORES
+ULTRASSONOGRAFIA COM DOPPLER ARTERIAL E VENOSO DOS MEMBROS SUPERIORES
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Sistema arterial:
+Artérias subclávias, axilares, braquiais, radiais e ulnares pérvias, de trajetos e calibres normais, sem espessamentos ou calcificações parietais.
+XXX Ateromatose discreta XX difusa, com placas parietais parcialmente calcificadas esparsas, sem determinar estenoses hemodinamicamente significativas.
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+Sistema venoso:
+Veias subclávias, axilares, braquiais, radiais, ulnares, XXX cefálicas e XXX basílicas pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses. 
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+Conclusão:
+- Artérias e veias analisadas com aspecto ultrassonográfico e ao Doppler colorido dentro dos limites da normalidade.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+67. FÍSTULA ARTERIOVENOSA
+ULTRASSONOGRAFIA COM DOPPLER ARTERIAL E VENOSO DOS MEMBROS SUPERIORES
+ 
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Realizada avaliação das artérias e veias dos membros superiores para a análise pré-operatória de fístula arteriovenosa de hemodiálise.
+ 
+Membro superior direito:
+- Veia cefálica: pérvia, com calibre, paredes e compressibilidade preservadas, sem tromboses. Calibres:
+Medidas do calibre da Veia Cefálica:
+- Punho: XX cm.
+- Terço médio do braço: XX cm.
+- Cotovelo: XX cm.
+- Veia basílica: pérvia, com calibre, paredes e compressibilidade preservadas, sem tromboses. Calibres:
+Medidas do calibre da Veia Basílica:
+- Punho: XX cm.
+- Terço médio do antebraço: XX cm.
+- Cotovelo: XX cm. 
+- Artérias radiais e unares: de trajetos e calibres normais, sem espessamentos ou calcificações parietais. Ao estudo com Doppler, o padrão espectral e as velocidades estão preservados.
+ 
+Membro superior esquerdo:
+- Veia cefálica: pérvia, com calibre, paredes e compressibilidade preservadas, sem tromboses. Calibres:
+Medidas do calibre da Veia Cefálica:
+- Punho: XX cm.
+- Terço médio do braço: XX cm.
+- Cotovelo: XX cm.
+- Veia basílica: pérvia, com calibre, paredes e compressibilidade preservadas, sem tromboses. Calibres:
+Medidas do calibre da Veia Basílica:
+- Punho: XX cm.
+- Terço médio do antebraço: XX cm.
+- Cotovelo: XX cm. 
+- Artérias radiais e unares: de trajetos e calibres normais, sem espessamentos ou calcificações parietais. Ao estudo com Doppler, o padrão espectral e as velocidades estão preservados.
+Conclusão:
+- Artérias e veias analisadas dos membros superiores sem particularidades.
+Liberado por: 
+CRM: 
+
+--------------------------------------------------------------------------------
+
+68. ARTERIAL E VENOSO DOS MEMBROS INFERIORES COM VARIZES
+ULTRASSONOGRAFIA COM DOPPLER ARTERIAL E VENOSO SUPERFICIAL E PROFUNDO DOS MEMBROS INFERIORES
+Nome do Paciente: 
+Data de Nascimento: 
+Data do Exame: 
+Sistema arterial:
+Artérias femorais, poplíteas, tibiais e fibulares pérvias, de trajetos e calibres normais, sem espessamentos ou calcificações parietais.
+XXX Ateromatose discreta XX difusa, com placas parietais parcialmente calcificadas esparsas, sem determinar estenoses hemodinamicamente significativas.
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+ 
+Sistema venoso profundo:
+Veias femorais, poplíteas, tibiais e fibulares pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses. 
+Crossas das veias safenas magnas e parvas pérvias, sem tromboses.
+Não houve refluxo às manobras sensibilizadoras.
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+Sistema venoso superficial:
+Veias safenas magnas e parvas pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses. 
+Não há sinais de incompetência valvar às manobras de compressão e Valsalva.
+Não foram detectadas veias perfurantes incompetentes. 
+Calibres das veias safenas magnas (planos da crossa, terço inferior da coxa e terço inferior da perna, respectivamente):
+- Direita: XX cm; XX cm; XX cm.
+- Esquerda: XX cm; XX cm; XX cm.
+Conclusão:
+- Artérias e veias analisadas com aspecto ultrassonográfico e ao Doppler dentro dos limites da normalidade.
+Liberado por: 
+CRM: 
