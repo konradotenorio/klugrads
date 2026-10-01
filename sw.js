@@ -10,7 +10,7 @@
    SUBA A VERSAO A CADA PUBLICACAO QUE MEXA EM JS/HTML/CSS: e a mudanca de bytes do sw.js que
    dispara a atualizacao (instala o novo cache e recarrega as abas abertas).
    ========================================================================= */
-const VERSION = 'v0.74.0';
+const VERSION = 'v0.75.0';
 const APP_CACHE = `ultraref-app-${VERSION}`;
 const DATA_CACHE = `ultraref-data-${VERSION}`;
 
@@ -26,6 +26,7 @@ const APP_SHELL = [
   '/js/seed.js',
   '/js/app.js',
   '/js/contraste.js',
+  '/js/laudos.js',
   '/js/calc-fetal.js',
   '/js/calc-orads.js',
   '/js/calc-volume-gastrico.js',

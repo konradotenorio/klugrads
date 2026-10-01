@@ -44,6 +44,7 @@ const P = {
   checklist:'<path d="M10.5 6h9.5M10.5 12h9.5M10.5 18h9.5"/><path d="M3.5 6.2l1.5 1.5 2.6-3M3.5 12.2l1.5 1.5 2.6-3M3.5 18.2l1.5 1.5 2.6-3"/>',
   reset:'<path d="M3 12a9 9 0 1 0 2.64-6.36"/><polyline points="3 3.5 3 9 8.5 9"/>',
   copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
+  laudo:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 12h6M10 15.5h6M10 19h4"/>',
   dicom:'<rect x="3" y="4" width="18" height="13" rx="2"/><circle cx="12" cy="10.5" r="3.6"/><path d="M12 6.9v7.2M8.4 10.5h7.2"/><path d="M8 21h8M12 17v4"/>',
   gear:'<circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
 };
@@ -547,6 +548,7 @@ function sidebarHTML(){
       ${(state.modalityId==='us' && !isCalc) ? `<div class="side-sec">Ultrassonografia — Referências</div>${specGroups}` : ''}
       <div class="side-sec">Ferramentas</div>
       <div class="side-item" onclick="openViewer()"><span class="si">${svgIcon(P.dicom,19)}</span>VISUALIZADOR DICOM</div>
+      <div class="side-item ${state.view==='laudos'||state.view==='laudoMod'?'on':''}" onclick="openLaudos()"><span class="si">${svgIcon(P.laudo,19)}</span>LAUDOS ESTRUTURADOS</div>
       <div class="side-item ${isCalc&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>Calculadoras (US)</div>
       ${tool('ferramentas','Outras Ferramentas', svgIcon(P.tools,19))}
       ${tool('favoritos','Favoritos', svgIcon(P.star,19,{fill:'none'}))}
@@ -656,6 +658,7 @@ function dashboardHTML(){
     <div class="dash-sec">Ferramentas</div>
     <div class="dash-tools">
       <div class="dash-tool" onclick="openViewer()">${svgIcon(P.dicom,24)}<div><div class="tt">VISUALIZADOR DICOM</div><div class="td">Abra exames do CD/pendrive no navegador</div></div></div>
+      <div class="dash-tool" onclick="openLaudos()">${svgIcon(P.laudo,24)}<div><div class="tt">LAUDOS ESTRUTURADOS</div><div class="td">Monte o laudo por método e modelo</div></div></div>
       <div class="dash-tool" onclick="openCalcs()">${svgIcon(P.calc,24)}<div><div class="tt">Calculadoras</div><div class="td">TI-RADS, O-RADS, risco fetal…</div></div></div>
       <div class="dash-tool" onclick="setView('favoritos')">${svgIcon(P.star,24,{fill:'none'})}<div><div class="tt">Favoritos</div><div class="td">O que você marcou</div></div></div>
       <div class="dash-tool" onclick="setView('ferramentas')">${svgIcon(P.tools,24)}<div><div class="tt">Outras Ferramentas</div><div class="td">TFG e mais</div></div></div>
@@ -686,6 +689,8 @@ function headerHTML(){
     else title='Calculadoras'; }
   else if(v==='ferramentas'){ title='Outras Ferramentas'; }
   else if(v==='contraste'){ title='Meios de Contraste'; }
+  else if(v==='laudos'){ title='Laudos Estruturados'; }
+  else if(v==='laudoMod'){ const m=laudoMod(state.laudoMod); title=m?m.nome:'Laudos'; sub='Laudos Estruturados'; }
   else if(v==='contrasteItem'){ const t=contrasteTopic(state.contrasteId); title=t?t.title:'Meios de Contraste'; sub='Meios de Contraste'; }
   else if(v==='config'){ title='Configurações'; }
   else if(v==='termsRead'){ title=TT().title; }
@@ -724,6 +729,8 @@ function viewHTML(){
     case 'construction': return constructionHTML();
     case 'ferramentas': return ferramentasHTML();
     case 'contraste': return contrasteListHTML();
+    case 'laudos': return laudosHTML();
+    case 'laudoMod': return laudoModHTML();
     case 'contrasteItem': return contrasteItemHTML();
     case 'config': return configHTML();
     case 'terms': return termsGateHTML();
@@ -775,8 +782,9 @@ function modalityHTML(){
     + short(svgIcon(P.listplus,23),'acc','Nova Lista','Editável: crie e edite pacotes para o plantão',"setView('novalista')")
     }</div>
 
-    <div class="modal-shortcuts cols2">${
+    <div class="modal-shortcuts cols3">${
       short(svgIcon(P.dicom,23),'acc','VISUALIZADOR DICOM','Abra exames do CD/pendrive direto no navegador','openViewer()')
+    + short(svgIcon(P.laudo,23),'acc','LAUDOS ESTRUTURADOS','Monte o laudo por método e modelo','openLaudos()')
     + short(svgIcon(P.gear,23),'acc','Configurações','Tema, tamanho da fonte e sugestões',"setView('config')")
     }</div>
   </div>`;
@@ -2046,7 +2054,7 @@ function listsHTML(){
    AÇÕES
    ========================================================================= */
 /* ---- Navegação: pilha de telas, para o Voltar sempre desfazer o último passo ---- */
-const NAV_KEYS = ['contrasteId','view','calcId','calcKind','calcSpec','modalityId','item','sub','composingId','specialty','subBand','query'];
+const NAV_KEYS = ['laudoMod','contrasteId','view','calcId','calcKind','calcSpec','modalityId','item','sub','composingId','specialty','subBand','query'];
 function navSnapshot(){ const s={}; NAV_KEYS.forEach(k=>s[k]=state[k]); return s; }
 function navPush(){
   state.nav.push(navSnapshot());
