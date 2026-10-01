@@ -10,7 +10,13 @@
      n  nome no botão
      m  'sub' substitui o texto do item | 'add' acrescenta uma linha
      t  texto do laudo — XXX = campo; "a XX b" = escolha
-     c  conclusão; {0}, {1}… = valor do campo/escolha nº 0, 1… do texto
+     c  conclusão; {0}, {1}… = valor do campo/escolha nº 0, 1… do texto;
+        {L} = rótulo do item (ex.: "mama direita")
+     x  negativas a retirar do texto padrão quando a frase é acrescentada
+     s  1 = já coberta pelos controles estruturados do órgão (fica oculta)
+     kind 'tirads' | 'birads' = frase com classificação (descritores +
+          categoria; TI-RADS usa a mesma pontuação da calculadora)
+     br categoria BI-RADS da frase (entra na categoria final do exame)
    ========================================================================= */
 
 /* rótulo do item (normalizado, sem acento) → órgão da biblioteca */
@@ -36,6 +42,9 @@ const LAU_FRASE_ORGAOS = [
   ['ovario', /^ovario/],
   ['partes', /formac|massas|^coleco|tecido|subcutane|^pele|^lesoes|^lesao/],
   ['pleura', /pleura|cupula|hemitorax/],
+  ['mama', /^mama (direita|esquerda)/],
+  ['ductos', /retroareolar|^ductos/],
+  ['axila', /axila/],
   ['__extra', /^__extra$/],
   /* musculoesquelético */
   ['tendao', /^tend(ao|oes)|tendine|^trato iliotibial|^compartimentos sinoviais/],
@@ -331,9 +340,8 @@ const LAU_FRASES = [
    c:'Hérnia {0}.'},
 
   /* ---------------- TIREOIDE ---------------- */
-  {o:'tireoide', x:['lesões nodulares','císticas'], n:'Nódulo', m:'add',
-   t:'Nódulo sólido XX misto XX cístico no terço superior XX médio XX inferior do lobo direito XX esquerdo, medindo XXX x XXX x XXX cm. ACR TI-RADS: XXX.',
-   c:'Nódulo tireoidiano no lobo {2} (TI-RADS {6}).'},
+  {o:'tireoide', n:'Nódulo (TI-RADS)', m:'add', kind:'tirads', x:['lesões nodulares','císticas'],
+   t:'no terço superior XX médio XX inferior do lobo direito XX esquerdo, medindo XXX x XXX x XXX cm'},
   {o:'tireoide', x:['lesões nodulares','císticas'], n:'Cisto', m:'add',
    t:'Cisto anecogênico no lobo direito XX esquerdo, medindo XXX cm.',
    c:'Cisto tireoidiano.'},
@@ -640,7 +648,74 @@ const LAU_FRASES = [
   {o:'veiafav', n:'Trombose / esclerose', m:'sub',
    t:'com paredes espessadas e trombo no segmento XXX, não compressível.',
    c:'Trombose da veia {L} no segmento {0}.'},
+  /* ================= MAMA (léxico ACR BI-RADS US) ================= */
+  {o:'mama', n:'Nódulo sólido (BI-RADS)', m:'add', kind:'birads', x:['nódulos','císticos'],
+   t:'localizado às XXX horas, a XXX cm do mamilo, medindo XXX x XXX x XXX cm'},
+  {o:'mama', n:'Cisto simples', m:'add', br:'2', x:['nódulos','císticos'],
+   t:'Cisto simples (anecoico, circunscrito, com reforço acústico posterior) às XXX horas, a XXX cm do mamilo, medindo XXX x XXX cm.',
+   c:'Cisto simples na {L} (BI-RADS® 2).'},
+  {o:'mama', n:'Cistos simples (vários)', m:'add', br:'2', x:['nódulos','císticos'],
+   t:'Cistos simples esparsos, o maior às XXX horas, medindo XXX cm.',
+   c:'Cistos simples na {L} (BI-RADS® 2).'},
+  {o:'mama', n:'Microcistos agrupados', m:'add', br:'2', x:['nódulos','císticos'],
+   t:'Agrupamento de microcistos com finas septações, sem componente sólido, às XXX horas, medindo XXX cm no conjunto.',
+   c:'Microcistos agrupados na {L} (BI-RADS® 2).'},
+  {o:'mama', n:'Cisto complicado', m:'add', br:'3', x:['nódulos','císticos'],
+   t:'Cisto com ecos internos homogêneos de baixa amplitude, sem componente sólido nem fluxo ao Doppler, às XXX horas, a XXX cm do mamilo, medindo XXX cm.',
+   c:'Cisto complicado na {L} (BI-RADS® 3 — controle ultrassonográfico em 6 meses).'},
+  {o:'mama', n:'Massa complexa cística e sólida', m:'add', br:'4', x:['nódulos','císticos'],
+   t:'Massa complexa com componentes cístico e sólido, com fluxo no componente sólido, às XXX horas, a XXX cm do mamilo, medindo XXX x XXX x XXX cm.',
+   c:'Massa complexa cística e sólida na {L} (BI-RADS® 4 — recomenda-se estudo histopatológico).'},
+  {o:'mama', n:'Distorção arquitetural', m:'add', br:'4', x:['distorção'],
+   t:'Área de distorção arquitetural às XXX horas, a XXX cm do mamilo, medindo XXX cm, sem nódulo definido.',
+   c:'Distorção arquitetural na {L} (BI-RADS® 4 — recomenda-se estudo histopatológico; correlacionar com mamografia).'},
+  {o:'mama', n:'Linfonodo intramamário', m:'add', br:'2',
+   t:'Linfonodo intramamário de aspecto habitual, com hilo adiposo, às XXX horas, medindo XXX cm.',
+   c:'Linfonodo intramamário (BI-RADS® 2).'},
+  {o:'mama', n:'Cisto oleoso / esteatonecrose', m:'add', br:'2', x:['nódulos','císticos'],
+   t:'Imagem circunscrita com conteúdo ecogênico e nível, às XXX horas, medindo XXX cm, compatível com cisto oleoso (esteatonecrose).',
+   c:'Cisto oleoso na {L} (BI-RADS® 2).'},
+  {o:'mama', n:'Alterações pós-cirúrgicas', m:'add', br:'2',
+   t:'Alterações cicatriciais na região XXX, compatíveis com manipulação cirúrgica prévia, sem lesões nodulares associadas.',
+   c:'Alterações pós-cirúrgicas na {L} (BI-RADS® 2).'},
+  {o:'mama', n:'Espessamento cutâneo / edema', m:'add',
+   t:'Espessamento cutâneo (XXX cm) e edema do tecido subcutâneo.',
+   c:'Espessamento cutâneo e edema na {L}.'},
+  {o:'mama', n:'Coleção / abscesso', m:'add',
+   t:'Coleção com conteúdo espesso e debris às XXX horas, medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), com edema dos tecidos adjacentes.',
+   c:'Coleção na {L}, sugestiva de abscesso, a correlacionar clinicamente.'},
+  {o:'mama', n:'Implante íntegro', m:'add',
+   t:'Implante mamário retroglandular XX retromuscular de contornos regulares, sem sinais de rotura.',
+   c:''},
+  {o:'mama', n:'Rotura intracapsular', m:'add',
+   t:'Implante com linhas ecogênicas paralelas em seu interior (sinal da escada), sugerindo rotura intracapsular.',
+   c:'Sinais de rotura intracapsular do implante na {L}.'},
+  {o:'mama', n:'Rotura extracapsular', m:'add',
+   t:'Área hiperecogênica com sombra acústica difusa (padrão em tempestade de neve) junto ao implante, compatível com silicone livre.',
+   c:'Sinais de rotura extracapsular do implante na {L}.'},
+  {o:'mama', n:'Mastectomia', m:'sub',
+   t:'não caracterizada (status pós-mastectomia); plastrão sem lesões nodulares.',
+   c:'Status pós-mastectomia ({L}).'},
+  {o:'mama', n:'Ginecomastia', m:'sub',
+   t:'com tecido fibroglandular retroareolar de padrão nodular XX dendrítico XX difuso, medindo XXX cm de espessura.',
+   c:'Ginecomastia ({L}).'},
+  {o:'ductos', n:'Ectasia ductal', m:'sub',
+   t:'ductos retroareolares ectasiados à direita XX à esquerda XX bilateralmente, medindo até XXX cm, com conteúdo anecoico XX ecogênico.',
+   c:'Ectasia ductal retroareolar.'},
+  {o:'ductos', n:'Lesão intraductal', m:'add', br:'4', x:['lesões intraductais'],
+   t:'Imagem sólida intraductal na região XXX da mama direita XX esquerda, medindo XXX cm, com fluxo ao Doppler.',
+   c:'Lesão sólida intraductal na mama {1} (BI-RADS® 4 — recomenda-se estudo histopatológico).'},
+  {o:'axila', n:'Linfonodo atípico', m:'sub',
+   t:'linfonodo axilar direito XX esquerdo com espessamento cortical (XXX cm) e hilo adiposo reduzido XX ausente, medindo XXX cm; demais de aspecto habitual.',
+   c:'Linfonodo axilar {0} de aspecto atípico — correlação clínica e prosseguimento da investigação.'},
+  {o:'axila', n:'Linfonodos reacionais', m:'sub',
+   t:'linfonodos de aspecto reacional, com cortical discretamente espessada e hilo adiposo preservado, o maior medindo XXX cm.',
+   c:''},
+  {o:'axila', n:'Tecido mamário acessório', m:'add',
+   t:'Tecido fibroglandular acessório na axila direita XX esquerda.',
+   c:'Tecido mamário acessório axilar.'},
 ];
+
 
 function lauFraseOrgao(label){
   const n = String(label||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();

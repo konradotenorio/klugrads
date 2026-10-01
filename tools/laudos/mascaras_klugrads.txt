@@ -1,0 +1,20 @@
+Máscaras escritas pelo KlugRads (mesmo formato de mascaras_us.txt).
+=====
+
+H. MAMA:
+
+1. MAMAS
+ULTRASSONOGRAFIA DAS MAMAS
+
+- Pele e tecido subcutâneo: de espessura e ecogenicidade preservadas.
+- Composição do tecido de fundo: adiposa XX fibroglandular XX heterogênea.
+- Mama direita: sem nódulos sólidos ou císticos detectáveis ao método. Sem distorção arquitetural.
+- Mama esquerda: sem nódulos sólidos ou císticos detectáveis ao método. Sem distorção arquitetural.
+- Regiões retroareolares e ductos: sem ectasias ductais ou lesões intraductais.
+- Regiões axilares: linfonodos de aspecto habitual, com hilo adiposo preservado.
+
+Conclusão:
+- Ultrassonografia das mamas sem alterações significativas.
+- Categoria BI-RADS®: 1 (negativo).
+
+-----

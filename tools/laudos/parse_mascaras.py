@@ -13,7 +13,9 @@ SRC = os.path.join(HERE, 'mascaras_us.txt')
 OUT = os.path.join(HERE, '..', '..', 'js', 'laudos-us-mascaras.js')
 
 DROP = re.compile(r'^(Nome do Paciente|Data de Nascimento|Data do Exame|Liberado por|CRM)\s*:', re.I)
-GROUPS = {'B':'Medicina interna','C':'Cabeça e pescoço','D':'Musculoesquelético','E':'Doppler','F':'Obstétrico','G':'Vascular'}
+GROUPS = {'B':'Medicina interna','C':'Cabeça e pescoço','D':'Musculoesquelético','E':'Doppler','F':'Obstétrico','G':'Vascular','H':'Mama'}
+EXTRA = os.path.join(HERE, 'mascaras_klugrads.txt')   # máscaras escritas pelo KlugRads
+EXTRA_NOMES = {'MAMAS':'Mamas'}
 LABEL_DASH = re.compile(r'^-\s+([^:]{1,120}?):\s*(.*)$')
 LABEL_NODASH = re.compile(r'^([A-ZÀ-Ú][^:]{1,45}?):\s+(\S.*)$')
 TRAILER = re.compile(r'^(Obs\b|Obs\.|Valores de refer|Refer[eê]ncias|•|\*|Nota\b)', re.I)
@@ -35,15 +37,22 @@ while not lines[i].startswith('====='):
     if lines[i].strip(): idx_names.append(lines[i].strip())
     i += 1
 
-models = []; group = None; cur = None
-for ln in lines[i:]:
-    m = re.match(r'^([B-G])\.\s', ln)
-    if m: group = GROUPS[m.group(1)]; continue
-    m = re.match(r'^(\d+)\.\s+(.+)$', ln)
-    if m and group:
-        cur = {'n':int(m.group(1)), 'grupo':group, 'raw':[]}; models.append(cur); continue
-    if ln.startswith('-----') or ln.startswith('====='): cur = None; continue
-    if cur is not None: cur['raw'].append(ln.rstrip())
+models = []
+def read_models(lns, extra=False):
+    group = None; cur = None
+    for ln in lns:
+        m = re.match(r'^([B-H])\.\s', ln)
+        if m: group = GROUPS[m.group(1)]; continue
+        m = re.match(r'^(\d+)\.\s+(.+)$', ln)
+        if m and group:
+            cur = {'n':int(m.group(1)), 'grupo':group, 'raw':[]}
+            if extra: cur['nome'] = EXTRA_NOMES.get(m.group(2).strip(), m.group(2).strip().capitalize())
+            models.append(cur); continue
+        if ln.startswith('-----') or ln.startswith('====='): cur = None; continue
+        if cur is not None: cur['raw'].append(ln.rstrip())
+read_models(lines[i:])
+if os.path.exists(EXTRA):
+    read_models(open(EXTRA, encoding='utf-8').read().split('\n'), extra=True)
 
 out = []
 for md in models:
@@ -110,7 +119,7 @@ for md in models:
     for it in items: labs[it['label']] = labs.get(it['label'],0)+1
     for it in items:
         if not it['label'] or labs[it['label']]<2: it['grp'] = ''
-    nome = idx_names[md['n']-1] if md['n']-1 < len(idx_names) else md['raw'][0]
+    nome = md.get('nome') or (idx_names[md['n']-1] if md['n']-1 < len(idx_names) else md['raw'][0])
     out.append({'id':'us-'+slug(nome), 'nome':nome, 'grupo':md['grupo'], 'titulo':title,
                 'items':items, 'seq':seq, 'concTitulo':conc_title, 'conc':conc, 'trailer':trailer})
 

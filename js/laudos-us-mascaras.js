@@ -7073,5 +7073,101 @@ const LAU_US_MASKS = [
 }
 ],
 "trailer": []
+},
+{
+"id": "us-mamas",
+"nome": "Mamas",
+"grupo": "Mama",
+"titulo": [
+"ULTRASSONOGRAFIA DAS MAMAS"
+],
+"items": [
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "composicao-do-tecido-de-fundo",
+"label": "Composição do tecido de fundo",
+"text": "adiposa XX fibroglandular XX heterogênea.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "mama-direita",
+"label": "Mama direita",
+"text": "sem nódulos sólidos ou císticos detectáveis ao método. Sem distorção arquitetural.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "mama-esquerda",
+"label": "Mama esquerda",
+"text": "sem nódulos sólidos ou císticos detectáveis ao método. Sem distorção arquitetural.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "regioes-retroareolares-e-ductos",
+"label": "Regiões retroareolares e ductos",
+"text": "sem ectasias ductais ou lesões intraductais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "regioes-axilares",
+"label": "Regiões axilares",
+"text": "linfonodos de aspecto habitual, com hilo adiposo preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
+},
+{
+"t": "item",
+"k": "composicao-do-tecido-de-fundo"
+},
+{
+"t": "item",
+"k": "mama-direita"
+},
+{
+"t": "item",
+"k": "mama-esquerda"
+},
+{
+"t": "item",
+"k": "regioes-retroareolares-e-ductos"
+},
+{
+"t": "item",
+"k": "regioes-axilares"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Ultrassonografia das mamas sem alterações significativas.",
+"dash": true
+},
+{
+"text": "Categoria BI-RADS®: 1 (negativo).",
+"dash": true
+}
+],
+"trailer": []
 }
 ];

@@ -573,7 +573,7 @@ function lauBuildModel(mk){
     estruturado: items.filter(x=>x.sk).length>=2 };
 }
 const LAUDO_MODELOS = { us: (typeof LAU_US_MASKS!=='undefined' ? LAU_US_MASKS : []).map(lauBuildModel) };
-const LAU_GRUPOS = ['Medicina interna','Cabeça e pescoço','Musculoesquelético','Doppler','Obstétrico','Vascular'];
+const LAU_GRUPOS = ['Medicina interna','Mama','Cabeça e pescoço','Musculoesquelético','Doppler','Obstétrico','Vascular'];
 function lauModelo(id){
   for(const k in LAUDO_MODELOS){ const m=LAUDO_MODELOS[k].find(x=>x.id===id); if(m) return m; }
   return null;
@@ -636,8 +636,7 @@ function lauNew(modelId){
   const m=lauModelo(modelId); const v={};
   m.items.forEach(it=>v[it.k]=lauDefaults(it));
   const g=lauGen();
-  if(!state.lauDocs) state.lauDocs={};
-  state.lau = state.lauDocs[modelId] = {model:modelId, v, open:null, html:null, autoConc:true, tab:'opc',
+  state.lau = {model:modelId, v, open:null, html:null, autoConc:true, tab:'opc',
     tec:{met:false, bio:false}, ind:'', obs:'', font:g.font, size:g.size, tit:{}, conc:{v:{}, o:[]}, xf:[], xv:{}};
   return state.lau;
 }
@@ -676,8 +675,124 @@ function lauNegStrip(html, words, temAdd){
     return `${pre}${neg} ${txt}${suf||''}`;
   }).replace(/^\s*[.;,]\s*/,'').replace(/\.\s*\./g,'.');
 }
+/* Cada frase escolhida é uma instância "índice_n" (a mesma frase pode entrar
+   várias vezes, ex.: dois nódulos). Valores dos campos em bag['f'+id];
+   descritores das frases com classificação (TI-RADS / BI-RADS) em bag['d'+id]. */
+function lauFI(id){ return LAU_FRASES[parseInt(id,10)]; }
+function lauFraseText(id, bag, html){
+  const f=lauFI(id); if(!f) return '';
+  if(f.kind==='tirads') return lauTiradsText(f, bag['f'+id], bag['d'+id]||{}, html);
+  if(f.kind==='birads') return lauBiradsText(f, bag['f'+id], bag['d'+id]||{}, html);
+  return lauFill(f.t, bag['f'+id], html);
+}
+function lauFraseConc(id, bag, lbl){
+  const f=lauFI(id); if(!f) return '';
+  if(f.kind==='tirads') return lauTiradsConc(f, bag['f'+id], bag['d'+id]||{});
+  if(f.kind==='birads') return lauBiradsConc(f, bag['f'+id], bag['d'+id]||{}, lbl);
+  return lauFraseConcHTML(f, bag['f'+id], lbl);
+}
 function lauFraseLines(list, bag, mode){
-  return (list||[]).map(i=>LAU_FRASES[i]).map((f,j)=>f&&f.m===mode ? lauFill(f.t, bag['f'+list[j]], true) : null).filter(x=>x!=null);
+  return (list||[]).filter(id=>{ const f=lauFI(id); return f && f.m===mode; }).map(id=>lauFraseText(id, bag, true));
+}
+
+/* ---------- TI-RADS (mesma pontuação da calculadora: TIRADS_CATS / tiradsEval) ---------- */
+const LAU_TR_TXT = {
+  comp:['cístico','espongiforme','misto cístico-sólido','sólido'],
+  echo:['anecoico','hiperecoico/isoecoico','hipoecoico','acentuadamente hipoecoico'],
+  shape:['mais largo que alto','mais alto que largo'],
+  margin:['de margens regulares','de margens mal definidas','de margens lobuladas/irregulares','com extensão extratireoidiana'],
+};
+const LAU_TR_FOCI = ['sem focos ecogênicos','com macrocalcificações','com calcificação periférica (em casca)','com focos ecogênicos puntiformes'];
+function lauTrNod(d){ return {comp:d.comp??null, echo:d.echo??null, shape:d.shape??null, margin:d.margin??null, foci:d.foci&&d.foci.length?d.foci:[0]}; }
+function lauMaxDim(f, vals){
+  const tpl=lauTpl(f.t); let mx=null;
+  tpl.lines.flat().forEach(tk=>{ if(tk.t==='p'){ const v=lauF((vals||[])[tk.i]); if(v!=null && (mx==null||v>mx) && !tpl.auto[tk.i]) mx=v; } });
+  return mx;
+}
+function lauMk(v,html){ return html ? `<mark class="lau-ph">${esc(v)}</mark>` : v; }
+function lauTiradsText(f, vals, d, html){
+  const n=lauTrNod(d), ev=tiradsEval(n);
+  const w=(k)=> n[k]==null ? lauMk('___',html) : (html?esc(LAU_TR_TXT[k][n[k]]):LAU_TR_TXT[k][n[k]]);
+  const foci = n.foci.map(i=>LAU_TR_FOCI[i]).join(' e ').replace('sem focos ecogênicos e ','');
+  const loc = lauFill(f.t, vals, html);
+  const cat = ev.complete || ev.auto ? `TR${ev.tr} (${ev.pts} ponto${ev.pts===1?'':'s'})` : lauMk('TR?',html);
+  return `Nódulo ${w('comp')}, ${w('echo')}, ${w('shape')}, ${w('margin')}, ${html?esc(foci):foci}, ${loc}. ACR TI-RADS: ${cat}.`;
+}
+function lauTiradsConc(f, vals, d){
+  const n=lauTrNod(d), ev=tiradsEval(n);
+  const tpl=lauTpl(f.t); const lado=lauVal(tpl, vals||[], 1);
+  const ladoTxt = lado.ok ? esc(lado.v) : lauMk('direito / esquerdo',true);
+  if(!(ev.complete||ev.auto)) return `Nódulo tireoidiano no lobo ${ladoTxt} — ACR TI-RADS ${lauMk('TR?',true)}.`;
+  const r=tiradsRec(ev.tr, lauMaxDim(f, vals), ev.auto);
+  return `Nódulo tireoidiano no lobo ${ladoTxt} — ACR TI-RADS TR${ev.tr} (${esc(TIRADS_TRC[ev.tr].name.toLowerCase())}). ${esc(r.a)}${r.a==='Informe o tamanho'?'':'.'}`;
+}
+
+/* ---------- BI-RADS (léxico ACR BI-RADS US, 5ª ed.) ----------
+   A categoria é escolhida pelo médico; a sugestão segue os descritores:
+   cisto simples → 2; sólido oval, paralelo e circunscrito → 3;
+   1 descritor suspeito → 4A, 2 → 4B, ≥3 → 4C; espiculado + irregular +
+   não paralelo → 5; massa complexa cística e sólida → 4. */
+const LAU_BR = {
+  forma:{l:'Forma', o:['oval','redonda','irregular']},
+  orient:{l:'Orientação', o:['paralela','não paralela']},
+  margem:{l:'Margem', o:['circunscrita','indistinta','angular','microlobulada','espiculada']},
+  eco:{l:'Padrão ecogênico', o:['anecoico','hiperecoico','complexo cístico e sólido','hipoecoico','isoecoico','heterogêneo']},
+  post:{l:'Achados posteriores', o:['sem alterações acústicas posteriores','com reforço acústico posterior','com sombra acústica posterior','com padrão posterior combinado']},
+  calc:{l:'Calcificações', o:['sem calcificações','com calcificações internas']},
+};
+const LAU_BR_CATS = ['2','3','4A','4B','4C','5','6'];
+const LAU_BR_ORDEM = ['0','1','2','3','4','4A','4B','4C','5','6'];
+const LAU_BR_MANEJO = {
+  '0':'avaliação adicional por imagem', '1':'rastreamento de rotina', '2':'achado benigno; rastreamento de rotina',
+  '3':'provavelmente benigno; controle ultrassonográfico em 6 meses', '4':'suspeito; recomenda-se estudo histopatológico',
+  '4A':'baixa suspeição; recomenda-se estudo histopatológico', '4B':'moderada suspeição; recomenda-se estudo histopatológico',
+  '4C':'alta suspeição; recomenda-se estudo histopatológico', '5':'altamente sugestivo de malignidade; recomenda-se estudo histopatológico',
+  '6':'malignidade comprovada por biópsia; conduta terapêutica',
+};
+function lauBrSug(d){
+  if(d.eco==null && d.forma==null && d.margem==null) return null;
+  if(d.eco===0 && (d.margem==null||d.margem===0)) return '2';
+  if(d.eco===2) return '4';
+  const susp = (d.forma===2) + (d.orient===1) + (d.margem!=null&&d.margem>0) + (d.post===2) + (d.calc===1);
+  if(d.margem===4 && d.forma===2 && d.orient===1) return '5';
+  if(!susp) return '3';
+  return susp===1 ? '4A' : susp===2 ? '4B' : '4C';
+}
+function lauBrCat(d){ return d.cat || lauBrSug(d); }
+function lauBiradsText(f, vals, d, html){
+  const w=(k,suf)=> d[k]==null ? lauMk('___',html) : (html?esc(LAU_BR[k].o[d[k]]):LAU_BR[k].o[d[k]])+(suf||'');
+  const cat=lauBrCat(d);
+  return `Nódulo de forma ${w('forma')}, orientação ${w('orient')} à pele, margem ${w('margem')}, ${w('eco')}, ${w('post')}, ${w('calc')}, ${lauFill(f.t, vals, html)}. Categoria BI-RADS®: ${cat?esc(cat):lauMk('?',html)}.`;
+}
+function lauBiradsConc(f, vals, d, lbl){
+  const cat=lauBrCat(d); const L=String(lbl||'').toLowerCase().replace(/:$/,'');
+  return `Nódulo na ${esc(L||'mama')} — BI-RADS® ${cat?esc(cat)+': '+esc(LAU_BR_MANEJO[cat]):lauMk('?',true)}.`;
+}
+/* categoria BI-RADS de uma instância (frases de mama têm f.br fixo) */
+function lauBrOf(id, bag){ const f=lauFI(id); if(!f) return null; if(f.kind==='birads') return lauBrCat(bag['d'+id]||{}); return f.br||null; }
+function lauDescSet(k, id, key, v){
+  const bag=lauPhBag(k); const d=bag['d'+id]=Object.assign({}, bag['d'+id]||{});
+  if(key==='foci'){ let a=(d.foci||[0]).slice(); if(v===0) a=[0]; else { a=a.filter(x=>x!==0); const j=a.indexOf(v); j>=0?a.splice(j,1):a.push(v); if(!a.length) a=[0]; } d.foci=a; }
+  else d[key] = d[key]===v ? null : v;
+  lauRenderLeft();
+  if(k==='__obs'){ lauPatchOpt('obs', lauObsHTML()); lauPatchConc(); lauSaveEd(); } else { lauPatch(k); lauUpdSum(k); }
+}
+function lauDescHTML(k, id, f, d){
+  const chip=(key,v,txt,on)=>`<button type="button" class="ti-ftog ${on?'on':''}" onclick="lauDescSet('${k}','${id}','${key}',${typeof v==='string'?`'${v}'`:v})">${esc(txt)}</button>`;
+  if(f.kind==='tirads'){
+    const n=lauTrNod(d), ev=tiradsEval(n);
+    let h = ['comp','echo','shape','margin'].map(key=>`<div class="lau-row"><div class="lau-rl">${esc(TIRADS_CATS[key].label)}</div><div class="lau-chips">${TIRADS_CATS[key].opts.map((o,oi)=>chip(key,oi,`${o[0]} (${o[1]})`,n[key]===oi)).join('')}</div></div>`).join('');
+    h += `<div class="lau-row"><div class="lau-rl">Focos ecogênicos</div><div class="lau-chips">${TIRADS_FOCI.map((o,oi)=>chip('foci',oi,`${o[2]} (${o[1]})`,n.foci.indexOf(oi)>=0)).join('')}</div></div>`;
+    const ok=ev.complete||ev.auto; const tc=TIRADS_TRC[ev.tr];
+    h += `<div class="lau-clres" style="${ok?`background:${tc.bg};border-color:${tc.c}`:''}">${ok?`<b style="color:${tc.c}">TR${ev.tr} · ${ev.pts} ponto${ev.pts===1?'':'s'}</b> — ${esc(tc.name)} · ${esc(tiradsRec(ev.tr, lauMaxDim(f, lauPhBag(k)['f'+id]), ev.auto).a)}`:'Marque composição, ecogenicidade, formato e margens (mesma pontuação da calculadora TI-RADS).'}</div>`;
+    return h;
+  }
+  let h = Object.keys(LAU_BR).map(key=>`<div class="lau-row"><div class="lau-rl">${esc(LAU_BR[key].l)}</div><div class="lau-chips">${LAU_BR[key].o.map((o,oi)=>chip(key,oi,o,d[key]===oi)).join('')}</div></div>`).join('');
+  const sug=lauBrSug(d);
+  h += `<div class="lau-row"><div class="lau-rl">Categoria BI-RADS® ${sug?`<span class="lau-sug">sugestão: ${esc(sug)}</span>`:''}</div><div class="lau-chips">${LAU_BR_CATS.map(c=>chip('cat',c,c,d.cat===c||(!d.cat&&sug===c))).join('')}</div></div>`;
+  const cat=lauBrCat(d);
+  h += `<div class="lau-clres">${cat?`<b>BI-RADS® ${esc(cat)}</b> — ${esc(LAU_BR_MANEJO[cat])}${d.cat?'':' <i>(sugestão pelos descritores — confirme)</i>'}`:'Marque os descritores para a sugestão de categoria.'}</div>`;
+  return h;
 }
 /* frases opcionais marcadas (já preenchidas) */
 function lauOptLines(it, s, html){
@@ -694,7 +809,7 @@ function lauItemHTML(m, it){
   if(subs.length) txt = subs[subs.length-1];
   const adds = lauFraseLines(s.__f, s.__v, 'add');
   if(adds.length && !subs.length && r.txt==null){
-    const ws=[]; (s.__f||[]).forEach(i=>{ const f=LAU_FRASES[i]; if(f.m==='add' && f.x) ws.push(...f.x); });
+    const ws=[]; (s.__f||[]).forEach(id=>{ const f=lauFI(id); if(f && f.m==='add' && f.x) ws.push(...f.x); });
     txt = lauNegStrip(txt, ws, true);
   }
   const ex = lauOptLines(it, s, true).concat(adds);
@@ -710,10 +825,15 @@ function lauConcs(m){
   m.items.forEach(it=>{
     (lauBuild(m,it).conc||[]).forEach(c=>push(esc(c)));
     const s=state.lau.v[it.k];
-    (s.__f||[]).forEach(i=>push(lauFraseConcHTML(LAU_FRASES[i], s.__v['f'+i], lauItemLabel(m,it))));
+    (s.__f||[]).forEach(id=>push(lauFraseConc(id, s.__v, lauItemLabel(m,it))));
   });
-  (state.lau.xf||[]).forEach(i=>push(lauFraseConcHTML(LAU_FRASES[i], state.lau.xv['f'+i])));
+  (state.lau.xf||[]).forEach(id=>push(lauFraseConc(id, state.lau.xv, '')));
   (m.concOpts||[]).forEach((c,i)=>{ if(state.lau.conc.o[i]) out.push({html:lauFill(c.text, state.lau.conc.v['o'+i], true)}); });
+  // categoria BI-RADS final do exame = a mais alta entre os achados
+  let br=null;
+  const seeBr=(list,bag)=>(list||[]).forEach(id=>{ const c=lauBrOf(id,bag); if(c && (br==null || LAU_BR_ORDEM.indexOf(c)>LAU_BR_ORDEM.indexOf(br))) br=c; });
+  m.items.forEach(it=>seeBr(state.lau.v[it.k].__f, state.lau.v[it.k].__v)); seeBr(state.lau.xf, state.lau.xv);
+  if(br) out.push({html:`Categoria BI-RADS® final do exame: ${esc(br)} (${esc(LAU_BR_MANEJO[br])}).`});
   return out;
 }
 function lauConcHTML(m){
@@ -911,6 +1031,8 @@ function lauPh(k, tpl, i, v, str){
   const t=lauTpl(str||''); Object.keys(t.auto).forEach(j=>{
     const el=document.getElementById(`ph-${k}-${tpl}-${j}`); if(el){ const av=lauAutoVal(t,a,+j); el.placeholder = av!=null ? av : '…'; }
   });
+  if(/^f\d/.test(tpl)){ const id=tpl.slice(1), f=lauFI(id), el=document.getElementById(`desc-${k}-${id}`);
+    if(f && f.kind && el) el.innerHTML = translateHTML(lauDescHTML(k, id, f, bag['d'+id]||{})); }
   if(k==='__tit') lauPatchTit();
   else if(k==='__conc'){ lauPatchConc(); lauSaveEd(); }
   else if(k==='__obs'){ lauPatchOpt('obs', lauObsHTML()); lauPatchConc(); lauSaveEd(); }
@@ -935,10 +1057,23 @@ function lauObsHTML(){
   return parts.concat(lauFraseLines(L.xf, L.xv, 'add')).join('<br>');
 }
 function lauSetObs(v){ const L=lauCur(); if(!L) return; L.obs=v; lauPatchOpt('obs', lauObsHTML()); }
+let _lauFseq=0;
+function lauFraseList(k){ const L=lauCur(); return k==='__obs' ? L.xf : L.v[k].__f; }
+/* frase "acrescenta": cada toque cria uma nova instância; "substitui": liga/desliga */
 function lauFraseToggle(k, i){
   const L=lauCur(); if(!L) return;
-  const list = k==='__obs' ? L.xf : L.v[k].__f;
-  const j=list.indexOf(i); if(j>=0) list.splice(j,1); else list.push(i);
+  const list=lauFraseList(k); const f=LAU_FRASES[i];
+  const cur=list.filter(id=>parseInt(id,10)===i);
+  if(f.m==='sub' && cur.length) cur.forEach(id=>list.splice(list.indexOf(id),1));
+  else list.push(i+'_'+(++_lauFseq));
+  lauFraseAfter(k);
+}
+function lauFraseDel(k, id){
+  const L=lauCur(); if(!L) return;
+  const list=lauFraseList(k); const j=list.indexOf(id); if(j>=0) list.splice(j,1);
+  lauFraseAfter(k);
+}
+function lauFraseAfter(k){
   lauRenderLeft();
   if(k==='__obs'){ lauPatchOpt('obs', lauObsHTML()); lauPatchConc(); lauSaveEd(); }
   else lauPatch(k);
@@ -959,7 +1094,7 @@ function lauSum(m,it){
     const filled = Object.values(s.__v||{}).some(a=>(a||[]).some(lauHas));
     return filled ? {cls:'ok', t:'Medidas preenchidas'} : {cls:'ok', t:'Normal'};
   }
-  const nomes = (r.conc||[]).map(c=>c.replace(/\.$/,'')).concat((s.__f||[]).map(i=>LAU_FRASES[i].n));
+  const nomes = (r.conc||[]).map(c=>c.replace(/\.$/,'')).concat((s.__f||[]).map(id=>lauFI(id).n));
   return {cls:'alt', t: nomes.length ? nomes[0] + (nomes.length>1?` +${nomes.length-1}`:'') : 'Alterado'};
 }
 function lauUpdSum(k){
@@ -1005,9 +1140,10 @@ function lauOptsHTML(k, opts, flags, bag){
 function lauFrasesPanel(k, org, list, bag, estrut){
   const fs = lauFrasesDe(org).filter(f=>!(estrut && f.s));
   if(!fs.length) return '';
-  const chips = fs.map(f=>`<button type="button" class="ti-ftog ${list.indexOf(f.i)>=0?'on':''}" onclick="lauFraseToggle('${k}',${f.i})">${f.m==='sub'?'':'+ '}${esc(f.n)}</button>`).join('');
-  const sel = list.map(i=>{ const f=LAU_FRASES[i];
-    return `<div class="lau-fsel"><div class="lau-fsel-h"><b>${esc(f.n)}</b><span>${f.m==='sub'?'substitui o texto':'linha acrescentada'}</span><button type="button" onclick="lauFraseToggle('${k}',${i})" aria-label="Remover">×</button></div>${lauHasPh(f.t)?lauInlineForm(k,'f'+i,f.t,bag['f'+i]):`<div class="lau-inl dim">${esc(f.t)}</div>`}</div>`; }).join('');
+  const nOf = i=>list.filter(id=>parseInt(id,10)===i).length;
+  const chips = fs.map(f=>{ const n=nOf(f.i); return `<button type="button" class="ti-ftog ${n?'on':''}${f.kind?' lau-fk':''}" onclick="lauFraseToggle('${k}',${f.i})">${f.m==='sub'?'':'+ '}${esc(f.n)}${n>1?` <span class="n">${n}</span>`:''}</button>`; }).join('');
+  const sel = list.map(id=>{ const f=lauFI(id); const d=bag['d'+id]||{};
+    return `<div class="lau-fsel"><div class="lau-fsel-h"><b>${esc(f.n)}</b><span>${f.m==='sub'?'substitui o texto':'linha acrescentada'}</span><button type="button" onclick="lauFraseDel('${k}','${id}')" aria-label="Remover">×</button></div>${f.kind?`<div id="desc-${k}-${id}">${lauDescHTML(k,id,f,d)}</div>`:''}${lauHasPh(f.t)?(f.kind?'<div class="lau-rl">Localização e medidas</div>':'')+lauInlineForm(k,'f'+id,f.t,bag['f'+id]):`<div class="lau-inl dim">${esc(f.t)}</div>`}</div>`; }).join('');
   return `<div class="lau-rl" style="margin-top:12px">Frases de alteração</div><div class="lau-chips lau-fchips">${chips}</div>${sel}`;
 }
 function lauItemPanel(m, it){
@@ -1156,10 +1292,9 @@ function lauListHTML(metodo, onclickFn, sub){
   const groups = LAU_GRUPOS.map(g=>{
     const xs=ms.filter(m=>m.grupo===g); if(!xs.length) return '';
     return `<div class="lau-lg">${esc(g)}</div>` + xs.map(m=>{
-      const cur = state.lauDocs && state.lauDocs[m.id];
       return `<div class="lau-li" onclick="${onclickFn}('${m.id}')">
         <div class="lau-lt">${esc(m.nome)}${m.estruturado?' <span class="lau-tag ok">Achados estruturados</span>':''}</div>
-        <div class="lau-ld">${sub(m,cur)}</div>
+        <div class="lau-ld">${sub(m)}</div>
         <div class="chev">${svgIcon(P.chev,16,{sw:2})}</div></div>`;
     }).join('');
   }).join('');
@@ -1177,7 +1312,7 @@ function laudoModHTML(){
   if(!m || !m.ativo) return `<div class="calc-list-wrap"><div class="empty"><div class="msg">${esc(m?m.nome:'Método')} — modelos <b>em breve</b>.</div></div></div>`;
   return `<div class="calc-list-wrap">
     <div class="lau-beta"><b>Em testes.</b> Toque no laudo para abrir. Os órgãos marcados com "Achados estruturados" já montam as frases e a conclusão sozinhos; nos demais, preencha os campos e descreva a alteração.</div>
-    ${lauListHTML(m.id, 'openLaudo', (x,cur)=>cur?'Continuar laudo em edição':`${x.items.length} itens`)}
+    ${lauListHTML(m.id, 'openLaudo', (x)=>`${x.items.length} itens`)}
   </div>`;
 }
 
@@ -1236,7 +1371,6 @@ function laudoCfgModelHTML(mid){
     <div class="ti-legend-row"><span class="lt">Campos em branco usam o texto da máscara (em cinza). Use XXX para criar um campo a preencher e "a XX b" para uma escolha. As mudanças valem para os próximos laudos abertos e ficam salvas neste aparelho.</span></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
       <button type="button" class="lau-btn2" onclick="lauCfgReset('${mid}')">Restaurar padrões deste laudo</button>
-      ${state.lauDocs&&state.lauDocs[mid]?`<button type="button" class="lau-btn2" onclick="lauCfgApply('${mid}')">Aplicar ao laudo aberto (descarta o texto atual)</button>`:''}
     </div>
   </div>`;
 }
@@ -1258,7 +1392,7 @@ function openLaudos(){ navPush(); state.view='laudos'; render(); }
 function openLaudoMod(id){ navPush(); state.laudoMod=id; state.view='laudoMod'; render(); }
 function openLaudo(id){
   lauSaveEd(); navPush();
-  if(state.lauDocs && state.lauDocs[id]) state.lau=state.lauDocs[id]; else lauNew(id);
+  lauNew(id);   // abrir um laudo (outro ou o mesmo) sempre começa um laudo novo
   state.laudoId=id; state.view='laudoEdit'; render();
 }
 function openLaudoCfg(id){ lauSaveEd(); navPush(); state.laudoCfgId=id||null; state.view='laudoCfg'; render(); }
