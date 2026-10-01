@@ -1568,6 +1568,8 @@ function calcViewHTML(){
   if(state.calcId === 'figo-us') return figoCalcHTML('us');
   if(state.calcId === 'figo-rm') return figoCalcHTML('rm');
   if(state.calcId === 'figo-rm-ref') return figoRmRefHTML();
+  if(state.calcId === 'bosniak-tc') return bosniakPageHTML('tc');
+  if(state.calcId === 'bosniak-rm') return bosniakPageHTML('rm');
   if(state.calcId === 'doppler-renais') return calcDopplerRenaisHTML();
   if(state.calcId === 'volgastrico') return calcVolumeGastricoHTML();
   if(state.calcId === 'esteatose-rm') return calcEsteatoseRmHTML();
