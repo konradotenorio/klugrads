@@ -171,7 +171,7 @@
   .side-result .rm{font-size:11.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .side-empty,.side-subempty{font-size:12.5px;color:var(--dim);padding:8px 12px;font-style:italic;}
   /* Busca dedicada (view 'busca') + barra de busca da tela inicial */
-  .busca-wrap{max-width:760px;margin:0 auto;padding:14px 16px 24px;}
+  .busca-wrap{width:100%;max-width:760px;margin:0 auto;padding:14px 16px 24px;}
   .busca-bar{position:relative;}
   .busca-bar input{width:100%;background:var(--sf2);border:1px solid var(--line);color:var(--tx);border-radius:12px;padding:13px 14px 13px 40px;font-size:16px;outline:none;font-family:inherit;}
   .busca-bar input:focus{border-color:var(--accent);}
@@ -374,6 +374,17 @@
 
   .disc{margin:18px 16px;padding:13px 15px;background:var(--accentSoft);border-radius:14px;font-size:12.5px;color:var(--dim);line-height:1.5;}
   .disc b{color:var(--tx);}
+  /* Rodapé padrão de todas as telas (footerHTML em app.js) */
+  /* .scroll vira coluna para o rodapé (margin-top:auto) ficar no fim da tela mesmo em páginas curtas; flex:none mantém o tamanho natural dos demais filhos */
+  .scroll{display:flex;flex-direction:column;}
+  .scroll > *{flex:none;}
+  .kr-foot{margin-top:auto;padding-top:26px;}
+  .kr-foot-in{margin:0 16px;padding:20px 0 32px;border-top:1px solid var(--line);text-align:center;font-size:12.5px;line-height:1.55;color:var(--dim);}
+  .kr-foot-in p{margin:0 auto;max-width:88rem;}
+  .kr-foot-in p + p{margin-top:10px;}
+  .kr-foot-in b{color:var(--tx);}
+  .kr-foot-in a{color:var(--accent);font-weight:600;text-decoration:none;}
+  .kr-foot-in a:hover{text-decoration:underline;}
   /* ---------- Configurações ---------- */
   .set-wrap{padding:6px 0 30px;}
   .set-row{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);}
@@ -414,6 +425,8 @@
   .mtable td.head{background:var(--sf2);color:var(--dim);font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;text-align:center;}
   .tb-title{font-size:11.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;padding:14px 18px 6px;font-weight:700;}
   .tb-source{font-size:11px;color:var(--accent);padding:0 18px 7px;font-weight:700;}
+  /* textos longos (URLs, referências) quebram em vez de alargar a tela */
+  .tfg-ref-item, .ref, .note, .disc, .ti-legend-row .lt, .lau-frase-tx{overflow-wrap:anywhere;}
   .note{margin:14px 16px;padding:12px 15px;background:var(--sf);border:1px solid var(--line);border-radius:12px;font-size:12.5px;color:var(--dim);line-height:1.55;}
 
   /* tabelas alternativas por fonte (carótidas) */
@@ -444,7 +457,7 @@
   .calc-source{font-size:11px;color:var(--accent);font-weight:750;letter-spacing:.06em;text-transform:uppercase;margin-top:4px;}
   .calc-label{font-size:11.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:10px;}
   .calc-in{display:flex;gap:10px;align-items:center;}
-  .calc-in input{flex:1;background:var(--sf);border:1px solid var(--line);color:var(--tx);padding:13px 14px;border-radius:12px;font-size:17px;outline:none;font-family:inherit;}
+  .calc-in input{flex:1;min-width:0;background:var(--sf);border:1px solid var(--line);color:var(--tx);padding:13px 14px;border-radius:12px;font-size:17px;outline:none;font-family:inherit;}
   .calc-in input:focus{border-color:var(--accent);}
   .calc-btn{background:var(--accent);color:var(--accentInk);border:0;padding:13px 22px;border-radius:12px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit;}
   .calc-btn:active{opacity:.8;}
@@ -559,13 +572,13 @@
     position:relative;padding-top:calc(env(safe-area-inset-top) + 16px);
     padding-bottom:24px;display:flex;flex-direction:column;min-height:100%;
   }
-  .modal-head{padding:14px 24px 20px;}
+  .modal-head{padding:14px 24px 14px;}
   .modal-brand{
     font-size:34px;letter-spacing:.18em;text-transform:uppercase;font-weight:800;
     color:var(--accent);text-align:center;display:block;margin-bottom:2px;
   }
   .modal-brand span{color:var(--dim);}
-  .modal-slogan{font-size:13px;font-style:italic;color:var(--dim);text-align:center;margin-top:0;margin-bottom:18px;}
+  .modal-slogan{font-size:13px;font-style:italic;color:var(--dim);text-align:center;margin-top:0;margin-bottom:6px;}
   .modal-title{font-size:22px;font-weight:750;letter-spacing:-.02em;line-height:1.1;text-align:left;}
   .modal-sub{color:var(--dim);font-size:14px;margin-top:5px;text-align:left;}
   .modal-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 18px 14px;}
@@ -601,9 +614,11 @@
   .constr-badge{margin-top:20px;padding:9px 22px;border-radius:12px;background:var(--sf);border:1px solid var(--line);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
 
   /* Pré-eclâmpsia — linhas de fator materno (rótulo + segmento) */
-  .pe-row{display:flex;align-items:center;gap:10px;padding:7px 0;}
-  .pe-row .pe-lbl{flex:1;font-size:13px;color:var(--dim);font-weight:650;line-height:1.2;}
-  .pe-seg{flex:none;flex-wrap:wrap;justify-content:flex-end;}
+  .pe-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:7px 0;}
+  .pe-row .pe-lbl{flex:1 1 130px;min-width:0;font-size:13px;color:var(--dim);font-weight:650;line-height:1.2;}
+  .pe-seg{flex:0 1 auto;min-width:0;flex-wrap:wrap;justify-content:flex-end;}
+  /* grupos com 3+ opções (ex.: origem étnica) descem para a linha de baixo e ocupam a largura toda */
+  .pe-seg:has(button:nth-child(3)){flex:1 1 100%;justify-content:flex-start;}
   .pe-seg button{padding:7px 11px;font-size:12.5px;}
 
   /* Termos de uso — tela de aceite e leitura */
@@ -657,7 +672,7 @@
 
   /* ---- Drum / Wheel Picker (iOS-style) ---- */
   .drum-row{display:flex;gap:12px;margin-bottom:14px;}
-  .drum-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .drum-col{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px;}
   .drum-label{font-size:12px;font-weight:650;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;}
   .drum-shell{position:relative;height:220px;width:100%;overflow:hidden;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);}
   .drum-scroller{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
@@ -672,7 +687,7 @@
   .tfg-step{display:flex;align-items:center;gap:8px;margin-top:10px;width:100%;}
   .tfg-step button{flex:none;width:40px;height:42px;border:1.5px solid var(--line);background:var(--bg);color:var(--accent);border-radius:11px;font-size:22px;font-weight:700;line-height:1;cursor:pointer;font-family:inherit;}
   .tfg-step button:active{background:var(--accentSoft);}
-  .tfg-step input{flex:1;min-width:0;text-align:center;background:var(--bg);border:1.5px solid var(--line);border-radius:11px;padding:9px 4px;font-size:17px;font-weight:700;color:var(--tx);outline:none;font-family:inherit;-webkit-appearance:none;}
+  .tfg-step input{flex:1;width:0;min-width:0;text-align:center;background:var(--bg);border:1.5px solid var(--line);border-radius:11px;padding:9px 4px;font-size:17px;font-weight:700;color:var(--tx);outline:none;font-family:inherit;-webkit-appearance:none;}
   .tfg-step input:focus{border-color:var(--accent);}
 
   /* Calc list */
@@ -748,6 +763,87 @@
   .ti-legend-row:last-child{border-bottom:0;}
   .ti-legend-row .lk{width:34px;flex:none;text-align:center;font-weight:800;border-radius:6px;padding:3px 0;font-size:11px;color:#fff;}
   .ti-legend-row .lt{font-size:12.5px;color:var(--dim);line-height:1.3;}
+
+  /* =====================================================================
+     Blocos (tela inicial e lançador de método) — visual mais limpo:
+     sem sombra pesada, cantos e tamanhos consistentes, texto legível,
+     ícone · título/descrição · seta alinhados à esquerda, destaque só no
+     bloco principal. Não muda estrutura, conteúdo nem navegação.
+     ===================================================================== */
+
+
+  /* --- lançador: Protocolos · Referências · Calculadoras --- */
+  .lc-top{grid-template-columns:1fr;gap:12px;}
+  .lc-card,.lc-card.wide{
+    grid-column:auto;flex-direction:row;align-items:center;justify-content:flex-start;gap:16px;
+    min-height:0;padding:18px 20px;border-radius:18px;box-shadow:none;transition:border-color .15s,filter .15s;
+  }
+  .lc-card::after{content:"";flex:none;width:18px;height:18px;margin-left:auto;background:currentColor;opacity:.5;
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 6 15 12 9 18'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 6 15 12 9 18'/%3E%3C/svg%3E") center/contain no-repeat;}
+  .lc-card>div:nth-child(2){flex:1;min-width:0;}
+  .lc-chip{width:52px;height:52px;border-radius:15px;flex:none;}
+  .lc-card .t{font-size:17px;font-weight:700;letter-spacing:-.01em;line-height:1.25;}
+  .lc-card .d{font-size:13px;line-height:1.4;margin-top:3px;}
+  .lc-card:hover{border-color:var(--accent);}
+  .lc-card.fill:hover{border-color:transparent;filter:brightness(1.06);}
+
+  /* --- início: blocos dos métodos --- */
+  .mod-card{border-radius:16px;box-shadow:none;padding:14px 6px;gap:8px;min-height:104px;justify-content:center;transition:border-color .15s;}
+  .mod-card:hover{border-color:var(--accent);}
+  .mod-icon{width:46px;height:46px;border-radius:14px;}
+  .mod-name{font-size:12.5px;line-height:1.3;}
+  .mod-card.locked{background:transparent;border-style:dashed;}
+  .mod-card.locked .mod-icon{background:var(--sf);}
+  .mod-badge{font-size:9px;padding:2px 6px;white-space:nowrap;letter-spacing:0;}
+
+  /* --- início: atalhos (Visualizador, Ferramentas, Favoritos…) e cartões de lista --- */
+  .lc-short{border-radius:16px;box-shadow:none;padding:14px 16px;transition:border-color .15s;}
+  .lc-short:hover{border-color:var(--accent);}
+  .lc-short .st .t{font-size:16px;}
+
+  @media(min-width:900px){
+    /* lançador: 3 blocos iguais lado a lado, alinhados com o título do método */
+    .lc-head,.lc-b{max-width:1100px;margin-inline:auto;}
+    .lc-head{padding-inline:18px;}
+    .lc-top{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+    .lc-card,.lc-card.wide{padding:22px;min-height:108px;}
+    /* início: métodos em linha (ícone à esquerda), atalhos em 2 colunas */
+    .mod-card{flex-direction:row;align-items:center;justify-content:flex-start;text-align:left;gap:14px;padding:16px 18px;min-height:0;}
+    .mod-card .mod-name{flex:1;min-width:0;font-size:15px;font-weight:700;}
+    .mod-badge{margin-left:auto;flex:none;}
+    .modal-grid{gap:12px;}
+    .modal-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  }
+
+  /* ===== Tela inicial: Busca Geral · Métodos · Ferramentas · Visualizador/Configurações ===== */
+  .home-find{display:flex;align-items:center;gap:16px;padding:4px 18px 34px;}
+  .home-lbl{flex:none;font-size:17px;font-weight:750;letter-spacing:-.01em;white-space:nowrap;}
+  .home-find .modal-search{flex:1;min-width:0;margin:0;padding:14px 16px;}
+  .home-sec{padding:0 18px 16px;}
+  /* mais respiro entre os blocos e entre as seções */
+  .modal-grid{gap:16px;padding-bottom:34px;}
+  .modal-shortcuts{gap:16px;padding-bottom:16px;}
+  .modal-shortcuts.cols2{padding-bottom:22px;}
+  /* nomes dos métodos maiores */
+  .mod-card{min-height:124px;gap:10px;}
+  .mod-icon{width:52px;height:52px;border-radius:15px;}
+  .mod-name{font-size:15px;font-weight:700;line-height:1.25;}
+  .mod-badge{font-size:9.5px;}
+  @media(max-width:899px){   /* abaixo de 900 px o app é uma coluna de até 440 px */
+    .home-find{flex-direction:column;align-items:stretch;gap:10px;padding-bottom:28px;}
+    .modal-grid{grid-template-columns:1fr 1fr;}      /* 2 colunas: cabe o nome maior sem quebrar palavras */
+  }
+  @media(min-width:900px){
+    .modal-grid{gap:20px;padding-bottom:40px;}
+    .modal-shortcuts{gap:20px;padding-bottom:20px;}
+    .modal-shortcuts.cols3{grid-template-columns:repeat(3,minmax(0,1fr));}
+    .modal-shortcuts.cols2{grid-template-columns:repeat(2,minmax(0,1fr));padding-bottom:26px;}
+    .mod-card{min-height:96px;gap:16px;padding:20px 22px;}
+    .mod-card .mod-name{font-size:18px;}
+    .mod-icon{width:56px;height:56px;border-radius:16px;}
+    .modal-shortcuts .lc-short{padding:18px 20px;}
+  }
 </style>
 </head>
 <body>
@@ -768,45 +864,45 @@
   </div>
 </noscript>
 
-<script src="/js/i18n.js"></script>
-<script src="/js/config.js"></script>
+<script src="/js/i18n.js?v=0.74.0"></script>
+<script src="/js/config.js?v=0.74.0"></script>
 <!-- Modo estático/aberto: o conteúdo (74 itens) é embutido aqui, antes do
      app.js, que o lê de window.SEED. Sem login e sem backend. -->
-<script src="/js/seed.js"></script>
-<script src="/js/sessao.js"></script>
-<script src="/js/app.js"></script>
-<script src="/js/contraste.js"></script>
-<script src="/js/calc-fetal.js"></script>
-<script src="/js/calc-orads.js"></script>
-<script src="/js/calc-volume-gastrico.js"></script>
-<script src="/js/calc-figo-miomas.js"></script>
-<script src="/js/ref-bosniak.js"></script>
-<script src="/js/calc-doppler-renais.js"></script>
-<script src="/js/calc-esteatose-rm.js"></script>
-<script src="/js/calc-esteatose-tc.js"></script>
-<script src="/js/calc-ferro-r2.js"></script>
-<script src="/js/calc-ferro-t2.js"></script>
-<script src="/js/calc-adrenal-tc.js"></script>
-<script src="/js/calc-adrenal-rm.js"></script>
-<script src="/js/calc-renal.js"></script>
-<script src="/js/calc-ccls.js"></script>
-<script src="/js/calc-pirads.js"></script>
-<script src="/js/calc-prostata-setores.js"></script>
-<script src="/js/calc-crads.js"></script>
-<script src="/js/calc-pancreatite.js"></script>
-<script src="/js/calc-orads-mri.js"></script>
-<script src="/js/calc-lung-rads.js"></script>
-<script src="/js/calc-fleischner.js"></script>
-<script src="/js/calc-idade-ossea.js"></script>
-<script src="/js/calc-cadrads.js"></script>
-<script src="/js/calc-mesa-cac.js"></script>
-<script src="/js/calc-pi-qual.js"></script>
-<script src="/js/calc-precise.js"></script>
-<script src="/js/calc-pi-rr.js"></script>
-<script src="/js/calc-trisomias.js"></script>
-<script src="/js/calc-preeclampsia.js"></script>
-<script src="/js/calc-sga.js"></script>
-<script src="/js/calc-gdm.js"></script>
-<script src="/js/calc-ptb.js"></script>
+<script src="/js/seed.js?v=0.74.0"></script>
+<script src="/js/sessao.js?v=0.74.0"></script>
+<script src="/js/app.js?v=0.74.0"></script>
+<script src="/js/contraste.js?v=0.74.0"></script>
+<script src="/js/calc-fetal.js?v=0.74.0"></script>
+<script src="/js/calc-orads.js?v=0.74.0"></script>
+<script src="/js/calc-volume-gastrico.js?v=0.74.0"></script>
+<script src="/js/calc-figo-miomas.js?v=0.74.0"></script>
+<script src="/js/ref-bosniak.js?v=0.74.0"></script>
+<script src="/js/calc-doppler-renais.js?v=0.74.0"></script>
+<script src="/js/calc-esteatose-rm.js?v=0.74.0"></script>
+<script src="/js/calc-esteatose-tc.js?v=0.74.0"></script>
+<script src="/js/calc-ferro-r2.js?v=0.74.0"></script>
+<script src="/js/calc-ferro-t2.js?v=0.74.0"></script>
+<script src="/js/calc-adrenal-tc.js?v=0.74.0"></script>
+<script src="/js/calc-adrenal-rm.js?v=0.74.0"></script>
+<script src="/js/calc-renal.js?v=0.74.0"></script>
+<script src="/js/calc-ccls.js?v=0.74.0"></script>
+<script src="/js/calc-pirads.js?v=0.74.0"></script>
+<script src="/js/calc-prostata-setores.js?v=0.74.0"></script>
+<script src="/js/calc-crads.js?v=0.74.0"></script>
+<script src="/js/calc-pancreatite.js?v=0.74.0"></script>
+<script src="/js/calc-orads-mri.js?v=0.74.0"></script>
+<script src="/js/calc-lung-rads.js?v=0.74.0"></script>
+<script src="/js/calc-fleischner.js?v=0.74.0"></script>
+<script src="/js/calc-idade-ossea.js?v=0.74.0"></script>
+<script src="/js/calc-cadrads.js?v=0.74.0"></script>
+<script src="/js/calc-mesa-cac.js?v=0.74.0"></script>
+<script src="/js/calc-pi-qual.js?v=0.74.0"></script>
+<script src="/js/calc-precise.js?v=0.74.0"></script>
+<script src="/js/calc-pi-rr.js?v=0.74.0"></script>
+<script src="/js/calc-trisomias.js?v=0.74.0"></script>
+<script src="/js/calc-preeclampsia.js?v=0.74.0"></script>
+<script src="/js/calc-sga.js?v=0.74.0"></script>
+<script src="/js/calc-gdm.js?v=0.74.0"></script>
+<script src="/js/calc-ptb.js?v=0.74.0"></script>
 </body>
 </html>

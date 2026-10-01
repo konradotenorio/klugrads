@@ -41,6 +41,7 @@ const P = {
   exam:'<circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/>',
   tech:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>',
   tools:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  checklist:'<path d="M10.5 6h9.5M10.5 12h9.5M10.5 18h9.5"/><path d="M3.5 6.2l1.5 1.5 2.6-3M3.5 12.2l1.5 1.5 2.6-3M3.5 18.2l1.5 1.5 2.6-3"/>',
   reset:'<path d="M3 12a9 9 0 1 0 2.64-6.36"/><polyline points="3 3.5 3 9 8.5 9"/>',
   copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
   dicom:'<rect x="3" y="4" width="18" height="13" rx="2"/><circle cx="12" cy="10.5" r="3.6"/><path d="M12 6.9v7.2M8.4 10.5h7.2"/><path d="M8 21h8M12 17v4"/>',
@@ -168,9 +169,45 @@ function tfgResultHTML(r){
 }
 
 /* ---- DADOS (seed offline; sync opcional com Supabase) ---- */
+/* ---- Limpeza das tabelas de referência ----
+   O seed traz linhas com centenas de células vazias no fim (ex.: ACM e Artéria
+   Umbilical com 567 colunas → tabela de 71.442 px) e, nos itens fetais, uma
+   "tabela-legenda" só com rótulos de percentil ("50th / 5th / 95th"). Aqui
+   removemos colunas e linhas 100% vazias (sem perder nenhum dado) e
+   transformamos a legenda numa linha de fonte acima da tabela seguinte. */
+const PCT_TOKEN = /^\d+(st|nd|rd|th)$/i;
+function tblBlank(c){ return String(c==null?'':c).trim()===''; }
+function tblClean(rows){
+  let out = (rows||[]).map(r=>Array.isArray(r)?r.slice():[]);
+  const w = out.reduce((m,r)=>Math.max(m,r.length),0), keep=[];
+  for(let c=0;c<w;c++){ if(out.some(r=>!tblBlank(r[c]))) keep.push(c); }
+  out = out.map(r=>keep.map(c=>r[c]==null?'':r[c]));
+  return out.filter(r=>r.some(c=>!tblBlank(c)));
+}
+function tidyTables(tables){
+  if(!Array.isArray(tables)) return tables;
+  const out=[]; let carry='';
+  tables.forEach((t,i)=>{
+    const rows = tblClean(t && t.rows);
+    if(!rows.length) return;                       // tabela sem nenhum dado
+    const cells = [].concat.apply([],rows).map(x=>String(x).trim()).filter(Boolean);
+    const pct = cells.filter(x=>PCT_TOKEN.test(x));
+    const legend = i<tables.length-1 && rows.length<=3 && pct.length && cells.every(x=>PCT_TOKEN.test(x)||!/\d/.test(x));
+    if(legend){
+      const labels = cells.filter(x=>!PCT_TOKEN.test(x) && !/^IG \(s\)$/i.test(x));
+      carry = labels.join(' · ') + (pct.length?' — percentis: '+pct.join(', '):'');
+      return;
+    }
+    const nt = Object.assign({}, t, {rows});
+    if(carry){ nt.source = nt.source ? nt.source+' · '+carry : carry; carry=''; }
+    out.push(nt);
+  });
+  return out;
+}
 function hydrate(items){
   return (items||[]).map(src=>{
     let d; try{ d=JSON.parse(JSON.stringify(src)); }catch(_){ d=Object.assign({},src); }
+    d.tables = tidyTables(d.tables);
     d.icon = ICONS[d.iconKey] || ICONS.organ;
     return d;
   });
@@ -434,7 +471,8 @@ function renderStage(keep){
   else { hdr.className='hdr'; hdr.innerHTML = translateHTML(headerHTML()); }
   const s = $('scroll');
   const top = keep ? s.scrollTop : 0;
-  s.innerHTML = translateHTML(viewHTML());
+  if(v==='calc' && state.calcId==='tfg') _drumLock = true;   // antes do innerHTML: o scroll "fantasma" das rodas pode vir já no 1º quadro
+  s.innerHTML = translateHTML(viewHTML()) + footerHTML();
   s.className = keep ? 'scroll' : 'scroll fade';
   s.scrollTop = top;
   if(v==='calc' && state.calcId==='tfg') setTimeout(initDrums, 0);
@@ -442,6 +480,16 @@ function renderStage(keep){
   const sub = $('subtabs');
   sub.className='subtabs hide';
   sub.innerHTML='';
+}
+
+/* ---- Rodapé padrão (fim de TODAS as telas) ----
+   Mesmas duas mensagens do rodapé da landing (index.html). Anexado por
+   renderStage(), então vale para qualquer tela nova sem mexer nela. */
+function footerHTML(){
+  return `<div class="kr-foot"><div class="kr-foot-in">
+    <p><b>KLUGRADS - Ferramenta Educacional.</b> Acervo de informações baseados nos principais artigos da literatura radiológica. Métodos de maior produtividade não substituem o julgamento clínico. Confirme sempre e garanta sua excelência diagnóstica.</p>
+    <p>Dúvidas, críticas e sugestões: Entre em contato via e-mail: <a href="mailto:${FEEDBACK_EMAIL}">${FEEDBACK_EMAIL}</a> ou envie-nos uma mensagem direto dentro do setor de Configurações</p>
+  </div></div>`;
 }
 
 /* ---- Métodos ativos no menu lateral (US/TC/RM) ----
@@ -612,7 +660,6 @@ function dashboardHTML(){
       <div class="dash-tool" onclick="setView('favoritos')">${svgIcon(P.star,24,{fill:'none'})}<div><div class="tt">Favoritos</div><div class="td">O que você marcou</div></div></div>
       <div class="dash-tool" onclick="setView('ferramentas')">${svgIcon(P.tools,24)}<div><div class="tt">Outras Ferramentas</div><div class="td">TFG e mais</div></div></div>
     </div>
-    <div class="disc"><b>Ferramenta educacional. Os valores são referências da literatura e não substituem o julgamento clínico.</b></div>
   </div>`;
 }
 function sideSearch(v){
@@ -695,46 +742,43 @@ function modalityHTML(){
       <div class="mod-name">${m.label}</div>
       ${!m.active?'<div class="mod-badge">Em construção</div>':''}
     </div>`).join('');
+  const short = (icon,iconCls,t,d,act)=>`
+      <div class="lc-short" onclick="${act}">
+        <div class="si ${iconCls}">${icon}</div>
+        <div class="st"><div class="t">${t}</div><div class="d">${d}</div></div>
+        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
+      </div>`;
+  // Ordem da tela: Busca Geral → Métodos de Diagnóstico → (Outras Ferramentas · Favoritos · Nova Lista) → (Visualizador DICOM · Configurações)
   return `<div class="modal-screen">
     <button class="iconbtn modal-theme" onclick="toggleTheme()" aria-label="Alternar tema dia/noite" title="Tema dia/noite">${state.theme==='light'?'🌙':'☀️'}</button>
     <div class="modal-head">
       <div class="modal-brand">KLUG<span>RADS</span></div>
       <div class="modal-slogan">Sua referência em Radiologia</div>
-      <div class="modal-title">Métodos de Diagnóstico</div>
-      <div class="modal-sub">Selecione uma modalidade</div>
     </div>
-    <div class="modal-search" onclick="setView('busca')" role="button" tabindex="0">
-      <span class="si">${svgIcon(P.search,18,{sw:2})}</span>
-      <span class="ph">Buscar referências e calculadoras…</span>
+
+    <div class="home-find">
+      <div class="home-lbl">Busca Geral:</div>
+      <div class="modal-search" onclick="setView('busca')" role="button" tabindex="0">
+        <span class="si">${svgIcon(P.search,18,{sw:2})}</span>
+        <span class="ph">Buscar referências e calculadoras…</span>
+      </div>
+    </div>
+
+    <div class="home-sec">
+      <div class="modal-title">Métodos de Diagnóstico</div>
     </div>
     <div class="modal-grid">${cards}</div>
-    <div class="modal-shortcuts">
-      <div class="lc-short" onclick="openViewer()">
-        <div class="si acc">${svgIcon(P.dicom,23)}</div>
-        <div class="st"><div class="t">VISUALIZADOR DICOM</div><div class="d">Abra exames do CD/pendrive direto no navegador</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-      <div class="lc-short" onclick="setView('ferramentas')">
-        <div class="si acc">${svgIcon(P.tools,22)}</div>
-        <div class="st"><div class="t">Outras Ferramentas</div><div class="d">Calculadoras e referências por especialidade</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-      <div class="lc-short" onclick="setView('favoritos')">
-        <div class="si star">${svgIcon(P.star,23,{fill:'currentColor',noStroke:true})}</div>
-        <div class="st"><div class="t">Favoritos</div><div class="d">Acesso rápido ao que você marcou</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-      <div class="lc-short" onclick="setView('novalista')">
-        <div class="si acc">${svgIcon(P.listplus,23)}</div>
-        <div class="st"><div class="t">Nova lista</div><div class="d">Monte um pacote para o plantão</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-      <div class="lc-short" onclick="setView('config')">
-        <div class="si acc">${svgIcon(P.gear,23)}</div>
-        <div class="st"><div class="t">Configurações</div><div class="d">Tema, tamanho da fonte e sugestões</div></div>
-        <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
-      </div>
-    </div>
+
+    <div class="modal-shortcuts cols3">${
+      short(svgIcon(P.tools,22),'acc','Outras Ferramentas','Calculadoras e referências por especialidade',"setView('ferramentas')")
+    + short(svgIcon(P.star,23,{fill:'currentColor',noStroke:true}),'star','Favoritos','Acesso rápido ao que você marcou',"setView('favoritos')")
+    + short(svgIcon(P.listplus,23),'acc','Nova Lista','Editável: crie e edite pacotes para o plantão',"setView('novalista')")
+    }</div>
+
+    <div class="modal-shortcuts cols2">${
+      short(svgIcon(P.dicom,23),'acc','VISUALIZADOR DICOM','Abra exames do CD/pendrive direto no navegador','openViewer()')
+    + short(svgIcon(P.gear,23),'acc','Configurações','Tema, tamanho da fonte e sugestões',"setView('config')")
+    }</div>
   </div>`;
 }
 
@@ -1010,7 +1054,7 @@ function homeHTML(){
     <div class="lc-b">
       <div class="lc-top">
         <div class="lc-card" onclick="${protoOnclick}">
-          <div class="lc-chip">${svgIcon(P.table,26)}</div>
+          <div class="lc-chip">${svgIcon(P.checklist,26)}</div>
           <div><div class="t">Protocolos</div><div class="d">${esc(t.protoD)}</div></div>
         </div>
         <div class="lc-card fill" onclick="${refOnclick}">
@@ -1068,7 +1112,6 @@ function refsListHTML(){
     if(d.region!==last){ html+=`<div class="grp">${esc(d.region)}</div>`; last=d.region; }
     html += rowHTML(d);
   });
-  html += `<div class="disc"><b>Ferramenta educacional. Os valores são referências da literatura e não substituem o julgamento clínico.</b></div>`;
   return html;
 }
 function dopplerIndexHTML(q){
@@ -2128,7 +2171,9 @@ function toggleTableAcc(bodyId,chevId,button){
   const c=$(chevId); if(c) c.textContent=open?'⌃':'⌄';
   if(button) button.setAttribute('aria-expanded',open?'true':'false');
 }
+let _drumLock = false;   // true enquanto initDrums posiciona as rodas: ignora o scroll "fantasma" do navegador
 function onDrumScroll(id, el){
+  if(_drumLock) return;
   const ITEM_H = 44;
   const idx = Math.round(el.scrollTop / ITEM_H);
   var arr = id==='cr'?CR_VALUES:AGE_VALUES;
@@ -2194,14 +2239,29 @@ function tfgCommit(which, raw){  // ao sair/Enter: encaixa no valor válido mais
   if(isNaN(num)||num<=0){ if(inp) inp.value = which==='cr'?state.tfgCr:state.tfgAge; return; }
   _tfgApply(which, _tfgNearestIdx(which, num));
 }
+/* Posiciona as rodas nos valores do estado (padrão: 1,0 mg/dL e 45 anos).
+   Logo após o primeiro layout o Chrome devolve a rolagem das rodas ao topo
+   (encaixe de rolagem), o que disparava onDrumScroll e gravava 0,1 / 1 no
+   estado ("2494,8 mL/min"). Por isso a posição só é aplicada depois do layout
+   assentar (~350 ms), conferida e reaplicada se preciso, e os eventos de
+   rolagem são ignorados (_drumLock) até terminar. */
 function initDrums(){
   const ITEM_H = 44;
-  const crEl = document.getElementById('drum-cr');
-  if(crEl){ crEl.scrollTop = Math.max(0, CR_VALUES.indexOf(state.tfgCr)) * ITEM_H; }
-  const ageEl = document.getElementById('drum-age');
-  if(ageEl){ ageEl.scrollTop = Math.max(0, AGE_VALUES.indexOf(state.tfgAge)) * ITEM_H; }
+  _drumLock = true;
+  let tries = 0;
+  const apply = ()=>{
+    let ok = true;
+    [['drum-cr',CR_VALUES,state.tfgCr],['drum-age',AGE_VALUES,state.tfgAge]].forEach(([id,arr,val])=>{
+      const el = document.getElementById(id); if(!el) return;
+      const target = Math.max(0, arr.indexOf(val)) * ITEM_H;
+      el.scrollTop = target;
+      if(Math.abs(el.scrollTop - target) > 2) ok = false;
+    });
+    if(!ok && ++tries < 6){ _tfgTimer = setTimeout(apply,150); return; }
+    _tfgTimer = setTimeout(()=>{ _drumLock = false; autoCalcTFG(); }, 250);
+  };
   clearTimeout(_tfgTimer);
-  _tfgTimer = setTimeout(autoCalcTFG, 400);
+  _tfgTimer = setTimeout(apply, 350);
 }
 function calcTFG(){ autoCalcTFG(); }
 function openModality(id){
@@ -2290,4 +2350,4 @@ KlugSessao.exigir().then(function(sessao){
   }
   carregarDadosDaConta();
 });
-if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{})); }
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').then(r=>{ try{ r.update(); }catch(_){} }).catch(()=>{})); }   // update(): checa o sw.js a cada abertura (o navegador só checa a cada 24 h por conta própria)
