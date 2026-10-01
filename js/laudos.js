@@ -799,6 +799,7 @@ function laudoEditHTML(){
   if(!L) return `<div class="calc-list-wrap"><div class="empty"><div class="msg">Escolha um modelo de laudo.</div></div></div>`;
   setTimeout(lauMountEditor, 0);
   return `<div class="lau-wrap tab-${L.tab}">
+    <div class="lau-beta"><b>Em desenvolvimento · fase de testes.</b> Confira sempre o texto antes de usar. Sugestões e erros: Configurações → Críticas e Sugestões.</div>
     <div class="lau-tabs">
       <button type="button" class="${L.tab==='opc'?'on':''}" onclick="lauTab('opc')">Achados</button>
       <button type="button" class="${L.tab==='txt'?'on':''}" onclick="lauTab('txt')">Laudo</button>
@@ -832,6 +833,7 @@ function laudosHTML(){
       <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
     </div>`).join('');
   return `<div class="calc-list-wrap">
+    <div class="lau-beta"><b>Em desenvolvimento · fase de testes.</b> Os modelos ainda estão sendo construídos e revisados.</div>
     <div class="calc-intro-lbl">Escolha o método</div>
     ${cards}
     <div class="lc-short" onclick="openLaudoCfg()">
@@ -849,7 +851,7 @@ function laudoModHTML(){
   const modelos = LAUDO_MODELOS[m.id] || [];
   const cards = modelos.length ? modelos.map(x=>`<div class="lc-short ${x.pronto?'':'locked'}" ${x.pronto?`onclick="openLaudo('${x.id}')"`:''}>
       <div class="si acc">${svgIcon(P.laudo,22)}</div>
-      <div class="st"><div class="t">${esc(x.nome)}</div><div class="d">${x.pronto?(state.lau&&state.lau.model===x.id?'Continuar laudo em edição':'Abrir modelo'):'Em construção'}</div></div>
+      <div class="st"><div class="t">${esc(x.nome)} <span class="lau-tag">Em testes</span></div><div class="d">${x.pronto?(state.lau&&state.lau.model===x.id?'Continuar laudo em edição':'Abrir modelo'):'Em construção'}</div></div>
       ${x.pronto?`<div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>`:''}
     </div>`).join('')
     : `<div class="empty"><div class="msg">Modelos <b>em breve</b>.</div></div>`;
