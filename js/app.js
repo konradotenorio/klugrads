@@ -548,7 +548,7 @@ function sidebarHTML(){
       ${(state.modalityId==='us' && !isCalc) ? `<div class="side-sec">Ultrassonografia — Referências</div>${specGroups}` : ''}
       <div class="side-sec">Ferramentas</div>
       <div class="side-item" onclick="openViewer()"><span class="si">${svgIcon(P.dicom,19)}</span>VISUALIZADOR DICOM</div>
-      <div class="side-item ${state.view==='laudos'||state.view==='laudoMod'?'on':''}" onclick="openLaudos()"><span class="si">${svgIcon(P.laudo,19)}</span>LAUDOS ESTRUTURADOS</div>
+      <div class="side-item ${['laudos','laudoMod','laudoEdit','laudoCfg'].indexOf(state.view)>=0?'on':''}" onclick="openLaudos()"><span class="si">${svgIcon(P.laudo,19)}</span>LAUDOS ESTRUTURADOS</div>
       <div class="side-item ${isCalc&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>Calculadoras (US)</div>
       ${tool('ferramentas','Outras Ferramentas', svgIcon(P.tools,19))}
       ${tool('favoritos','Favoritos', svgIcon(P.star,19,{fill:'none'}))}
@@ -691,6 +691,8 @@ function headerHTML(){
   else if(v==='contraste'){ title='Meios de Contraste'; }
   else if(v==='laudos'){ title='Laudos Estruturados'; }
   else if(v==='laudoMod'){ const m=laudoMod(state.laudoMod); title=m?m.nome:'Laudos'; sub='Laudos Estruturados'; }
+  else if(v==='laudoEdit'){ const m=lauModelo(state.laudoId); title=m?('US — '+m.nome):'Laudo'; sub='Laudos Estruturados'; }
+  else if(v==='laudoCfg'){ title='Padrões dos laudos'; sub='Laudos Estruturados'; }
   else if(v==='contrasteItem'){ const t=contrasteTopic(state.contrasteId); title=t?t.title:'Meios de Contraste'; sub='Meios de Contraste'; }
   else if(v==='config'){ title='Configurações'; }
   else if(v==='termsRead'){ title=TT().title; }
@@ -731,6 +733,8 @@ function viewHTML(){
     case 'contraste': return contrasteListHTML();
     case 'laudos': return laudosHTML();
     case 'laudoMod': return laudoModHTML();
+    case 'laudoEdit': return laudoEditHTML();
+    case 'laudoCfg': return laudoCfgHTML();
     case 'contrasteItem': return contrasteItemHTML();
     case 'config': return configHTML();
     case 'terms': return termsGateHTML();
@@ -843,6 +847,12 @@ function configHTML(){
         <div class="val">${Math.round(state.fontScale*100)}%</div>
         <button onclick="stepFont(1)" ${i>=FONT_STEPS.length-1?'disabled':''} aria-label="Aumentar fonte">+</button>
       </div>
+    </div>
+
+    <div class="sec-label" style="margin-top:14px">Laudos estruturados</div>
+    <div class="set-row" onclick="openLaudoCfg()" style="cursor:pointer">
+      <div class="lbl">Padrões dos laudos<div class="sub">Título, frases normais, conclusão e fonte</div></div>
+      <div style="color:var(--dim);display:flex">${svgIcon(P.chev,18,{sw:2})}</div>
     </div>
 
     ${(window.CONFIG&&CONFIG.STATIC_MODE) ? '' : `<div class="sec-label" style="margin-top:14px">Conta</div>${conta}`}
@@ -2054,7 +2064,7 @@ function listsHTML(){
    AÇÕES
    ========================================================================= */
 /* ---- Navegação: pilha de telas, para o Voltar sempre desfazer o último passo ---- */
-const NAV_KEYS = ['laudoMod','contrasteId','view','calcId','calcKind','calcSpec','modalityId','item','sub','composingId','specialty','subBand','query'];
+const NAV_KEYS = ['laudoMod','laudoId','laudoCfgId','contrasteId','view','calcId','calcKind','calcSpec','modalityId','item','sub','composingId','specialty','subBand','query'];
 function navSnapshot(){ const s={}; NAV_KEYS.forEach(k=>s[k]=state[k]); return s; }
 function navPush(){
   state.nav.push(navSnapshot());
