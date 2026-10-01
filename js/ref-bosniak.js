@@ -8,7 +8,7 @@
    ========================================================================= */
 
 const BOSNIAK_REFS = [
-  'Silverman SG, Pedrosa I, Ellis JH, et al. Bosniak Classification of Cystic Renal Masses, Version 2019: An Update Proposal and Needs Assessment. Radiology. 2019;292(2):475-488. doi:10.1148/radiol.2019182646.',
+  'Silverman SG, Pedrosa I, Ellis JH, et al. Bosniak Classification of Cystic Renal Masses, Version 2019: An Update Proposal and Needs Assessment. Radiology. 2019;292(2):475-488. doi:10.1148/radiol.2019182646. PMCID: PMC6677285.',
   'Schieda N, Davenport MS, Krishna S, et al. Bosniak Classification of Cystic Renal Masses, Version 2019: A Pictorial Guide to Clinical Use. RadioGraphics. 2021;41(3). doi:10.1148/rg.2021200160.',
 ];
 
