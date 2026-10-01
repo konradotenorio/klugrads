@@ -2320,6 +2320,14 @@ const LAU_US_MASKS = [
 "grp": "Excursão diafragmática"
 },
 {
+"k": "hemitorax-esquerdo-reparo-anatomico-hilo",
+"label": "Hemitórax esquerdo (reparo anatômico = hilo esplênico / pólo inferior do baço)",
+"text": "",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
 "k": "em-posicao-ortostatica-2",
 "label": "Em posição ortostática",
 "text": "XXX cm.",
@@ -2364,8 +2372,8 @@ const LAU_US_MASKS = [
 "t": "blank"
 },
 {
-"t": "line",
-"text": "- Hemitórax esquerdo (reparo anatômico = hilo esplênico / pólo inferior do baço):"
+"t": "item",
+"k": "hemitorax-esquerdo-reparo-anatomico-hilo"
 },
 {
 "t": "line",
@@ -3834,7 +3842,15 @@ const LAU_US_MASKS = [
 {
 "k": "sinfise-pubica",
 "label": "Sínfise púbica",
-"text": "de contornos regulares, sem derrame articular.\n- Inserções dos tendões dos adutores longos e aponeurose do retoabdominal: de aspecto preservado.",
+"text": "de contornos regulares, sem derrame articular.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "insercoes-dos-tendoes-dos-adutores-longo",
+"label": "Inserções dos tendões dos adutores longos e aponeurose do retoabdominal",
+"text": "de aspecto preservado.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -3868,6 +3884,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "sinfise-pubica"
+},
+{
+"t": "item",
+"k": "insercoes-dos-tendoes-dos-adutores-longo"
 },
 {
 "t": "item",
@@ -3934,7 +3954,15 @@ const LAU_US_MASKS = [
 {
 "k": "tendoes-extensores",
 "label": "Tendões extensores",
-"text": "sem alterações significativas.\n- Ligamentos fíbulotalar anterior, fíbulocalcâneo e tibiofibular anterior: preservados.",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "ligamentos-fibulotalar-anterior-fibuloca",
+"label": "Ligamentos fíbulotalar anterior, fíbulocalcâneo e tibiofibular anterior",
+"text": "preservados.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -3976,6 +4004,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "tendoes-extensores"
+},
+{
+"t": "item",
+"k": "ligamentos-fibulotalar-anterior-fibuloca"
 },
 {
 "t": "item",
@@ -5675,18 +5707,10 @@ const LAU_US_MASKS = [
 ],
 "items": [
 {
-"k": "veias-cava-inferior-e-iliaca",
-"label": "",
-"text": "- Veias cava inferior e ilíacas comuns, externas e internas (porções superiores): pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses.",
+"k": "veias-cava-inferior-e-iliacas-comuns-ext",
+"label": "Veias cava inferior e ilíacas comuns, externas e internas (porções superiores)",
+"text": "pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses.\nAo estudo Doppler, o padrão espectral e as velocidades estão preservados.",
 "dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "ao-estudo-doppler-o-padrao-es",
-"label": "",
-"text": "Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.",
-"dash": false,
 "opts": [],
 "grp": ""
 }
@@ -5694,11 +5718,7 @@ const LAU_US_MASKS = [
 "seq": [
 {
 "t": "item",
-"k": "veias-cava-inferior-e-iliaca"
-},
-{
-"t": "item",
-"k": "ao-estudo-doppler-o-padrao-es"
+"k": "veias-cava-inferior-e-iliacas-comuns-ext"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -5867,11 +5887,19 @@ const LAU_US_MASKS = [
 {
 "k": "arterias-carotidas-comuns-internas-e-ext",
 "label": "Artérias carótidas comuns, internas e externas (segmentos acessíveis)",
-"text": "pérvias, com trajetos habituais e calibres normais, sem dilatações, espessamentos ou calcificações parietais.\nAo estudo Doppler, os padrões espectrais e as velocidades encontram-se preservados.\n- Complexos médio-intimais (avaliados na parede posterior do terço distal das artérias carótidas comuns): menores do que 0,1 cm.",
+"text": "pérvias, com trajetos habituais e calibres normais, sem dilatações, espessamentos ou calcificações parietais.\nAo estudo Doppler, os padrões espectrais e as velocidades encontram-se preservados.",
 "dash": true,
 "opts": [
 "Ateromatose discreta XX difusa, com placas parietais parcialmente calcificadas esparsas, sem determinar estenoses hemodinamicamente significativas."
 ],
+"grp": ""
+},
+{
+"k": "complexos-medio-intimais-avaliados-na-pa",
+"label": "Complexos médio-intimais (avaliados na parede posterior do terço distal das artérias carótidas comuns)",
+"text": "menores do que 0,1 cm.",
+"dash": true,
+"opts": [],
 "grp": ""
 },
 {
@@ -5887,6 +5915,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "arterias-carotidas-comuns-internas-e-ext"
+},
+{
+"t": "item",
+"k": "complexos-medio-intimais-avaliados-na-pa"
 },
 {
 "t": "item",

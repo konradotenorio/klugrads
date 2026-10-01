@@ -14,7 +14,7 @@ OUT = os.path.join(HERE, '..', '..', 'js', 'laudos-us-mascaras.js')
 
 DROP = re.compile(r'^(Nome do Paciente|Data de Nascimento|Data do Exame|Liberado por|CRM)\s*:', re.I)
 GROUPS = {'B':'Medicina interna','C':'Cabeça e pescoço','D':'Musculoesquelético','E':'Doppler','F':'Obstétrico','G':'Vascular'}
-LABEL_DASH = re.compile(r'^-\s+([^:]{1,70}?):\s*(.*)$')
+LABEL_DASH = re.compile(r'^-\s+([^:]{1,120}?):\s*(.*)$')
 LABEL_NODASH = re.compile(r'^([A-ZÀ-Ú][^:]{1,45}?):\s+(\S.*)$')
 TRAILER = re.compile(r'^(Obs\b|Obs\.|Valores de refer|Refer[eê]ncias|•|\*|Nota\b)', re.I)
 

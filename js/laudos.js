@@ -648,10 +648,11 @@ function lauBuild(m, it){
   return it.build(s);
 }
 /* conclusão de uma frase da biblioteca: {n} = valor do campo n do texto */
-function lauFraseConcHTML(f, vals){
+function lauFraseConcHTML(f, vals, lbl){
   if(!lauHas(f.c)) return '';
   const tpl=lauTpl(f.t);
-  return esc(f.c).replace(/\{(\d+)\}/g,(_,n)=>{
+  const L = String(lbl||'').toLowerCase().replace(/^(bursa|bursite|veia|tendão|tendões)\s+/,'').replace(/:$/,'');
+  return esc(f.c).replace(/\{L\}/g, esc(L)).replace(/\{(\d+)\}/g,(_,n)=>{
     n=+n; const r=lauVal(tpl, vals||[], n);
     if(r.ok) return esc(lauN(r.v));
     let tk=null; tpl.lines.forEach(l=>l.forEach(t=>{ if(t.i===n) tk=t; }));
@@ -666,12 +667,13 @@ function lauNegStrip(html, words, temAdd){
   const plain = html.replace(/<[^>]+>/g,'').trim();
   if(!words.length) return (temAdd && LAU_NEG_CURTA.test(plain)) ? '' : html;
   const hit = t=>words.some(w=>lauNorm(t).indexOf(lauNorm(w))>=0);
-  return html.replace(/(,?\s*)\b(sem|ausência de|não há)\s+([^.;<]+?)(\s+detectáve(?:is|l) ao método)?(?=[.;,]|$)/gi, (all, pre, neg, lista, suf)=>{
+  return html.replace(/(,?\s*)\b(sem|ausência de|não há)\s+([^.;<]+?)(\s+detectáve(?:is|l) ao método)?(?=[.;]|$)/gi, (all, pre, neg, lista, suf)=>{
     const itens = lista.split(/\s+ou\s+|,\s*/);
     const resto = itens.filter(x=>!hit(x));
     if(resto.length===itens.length) return all;
     if(!resto.length) return '';
-    return `${pre}${neg} ${resto.join(' ou ')}${suf||''}`;
+    const txt = resto.length>1 ? resto.slice(0,-1).join(', ')+' ou '+resto[resto.length-1] : resto[0];
+    return `${pre}${neg} ${txt}${suf||''}`;
   }).replace(/^\s*[.;,]\s*/,'').replace(/\.\s*\./g,'.');
 }
 function lauFraseLines(list, bag, mode){
@@ -708,7 +710,7 @@ function lauConcs(m){
   m.items.forEach(it=>{
     (lauBuild(m,it).conc||[]).forEach(c=>push(esc(c)));
     const s=state.lau.v[it.k];
-    (s.__f||[]).forEach(i=>push(lauFraseConcHTML(LAU_FRASES[i], s.__v['f'+i])));
+    (s.__f||[]).forEach(i=>push(lauFraseConcHTML(LAU_FRASES[i], s.__v['f'+i], lauItemLabel(m,it))));
   });
   (state.lau.xf||[]).forEach(i=>push(lauFraseConcHTML(LAU_FRASES[i], state.lau.xv['f'+i])));
   (m.concOpts||[]).forEach((c,i)=>{ if(state.lau.conc.o[i]) out.push({html:lauFill(c.text, state.lau.conc.v['o'+i], true)}); });
@@ -1001,7 +1003,7 @@ function lauOptsHTML(k, opts, flags, bag){
   }).join('');
 }
 function lauFrasesPanel(k, org, list, bag, estrut){
-  const fs = (org ? lauFrasesDe(org) : []).filter(f=>!(estrut && f.s));
+  const fs = lauFrasesDe(org).filter(f=>!(estrut && f.s));
   if(!fs.length) return '';
   const chips = fs.map(f=>`<button type="button" class="ti-ftog ${list.indexOf(f.i)>=0?'on':''}" onclick="lauFraseToggle('${k}',${f.i})">${f.m==='sub'?'':'+ '}${esc(f.n)}</button>`).join('');
   const sel = list.map(i=>{ const f=LAU_FRASES[i];
@@ -1017,7 +1019,7 @@ function lauItemPanel(m, it){
   else if(it.generic) h += `<div class="lau-rl">Texto da máscara</div><div class="lau-inl dim">${esc(normal).replace(/\n/g,'<br>')}</div>`;
   if(!it.generic) h += it.ctrls.map(c=>lauCtrlHTML(k,s,c)).join('');
   h += lauOptsHTML(k, it.opts, s.__o, s.__v);
-  h += lauFrasesPanel(k, it.sk || lauFraseOrgao(lbl || String(normal).slice(0,40)), s.__f, s.__v, !!it.sk);
+  h += lauFrasesPanel(k, it.sk ? [it.sk] : lauFraseOrgao(lbl || String(normal).slice(0,60)), s.__f, s.__v, !!it.sk);
   if(it.generic){
     h += `<div class="lau-row"><div class="lau-rl">Substituir o texto por (alteração)</div><textarea class="lau-ta" rows="3" placeholder="Deixe em branco para manter o texto da máscara" oninput="lauSetQ('${k}','alt',this.value)">${esc(s.alt)}</textarea></div>`;
     h += `<div class="lau-row"><div class="lau-rl">Frase para a conclusão</div><input class="lau-txt" type="text" value="${esc(s.conc)}" placeholder="ex.: Tendinopatia do supraespinal." oninput="lauSetQ('${k}','conc',this.value)"></div>`;
