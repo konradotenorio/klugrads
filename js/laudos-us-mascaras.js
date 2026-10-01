@@ -2507,7 +2507,7 @@ const LAU_US_MASKS = [
 {
 "k": "volumes-estimados",
 "label": "Volumes estimados",
-"text": "lobo direito: XXX cm³; lobo esquerdo XXX cm³; volume glandular total: XX cm³.",
+"text": "lobo direito: XXX x XXX x XXX cm (XXX cm³); lobo esquerdo: XXX x XXX x XXX cm (XXX cm³); istmo: XXX cm; volume glandular total: XXX cm³.",
 "dash": false,
 "opts": [],
 "grp": ""
@@ -2599,7 +2599,7 @@ const LAU_US_MASKS = [
 {
 "k": "volumes-estimados",
 "label": "Volumes estimados",
-"text": "lobo direito: XXX cm³; lobo esquerdo XXX cm³; volume glandular total: XX cm³.",
+"text": "lobo direito: XXX x XXX x XXX cm (XXX cm³); lobo esquerdo: XXX x XXX x XXX cm (XXX cm³); istmo: XXX cm; volume glandular total: XXX cm³.",
 "dash": false,
 "opts": [],
 "grp": ""
@@ -4735,7 +4735,7 @@ const LAU_US_MASKS = [
 {
 "k": "volumes-estimados",
 "label": "Volumes estimados",
-"text": "lobo direito: XXX cm³; lobo esquerdo XXX cm³; volume glandular total: XX cm³.",
+"text": "lobo direito: XXX x XXX x XXX cm (XXX cm³); lobo esquerdo: XXX x XXX x XXX cm (XXX cm³); istmo: XXX cm; volume glandular total: XXX cm³.",
 "dash": false,
 "opts": [],
 "grp": ""
