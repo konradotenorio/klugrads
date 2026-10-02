@@ -1862,7 +1862,7 @@ const LAU_US_MASKS = [
 {
 "k": "testiculos",
 "label": "Testículos",
-"text": "tópicos, com morfologia normal, contornos regulares e ecotextura homogênea. Volumes testiculares de XXX cc à direita e XXX cc à esquerda.",
+"text": "tópicos, com morfologia normal, contornos regulares e ecotextura homogênea. Testículo direito medindo XX x XX x XX cm (volume estimado em XXX cm³); testículo esquerdo medindo XX x XX x XX cm (volume estimado em XXX cm³).",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -4469,7 +4469,7 @@ const LAU_US_MASKS = [
 {
 "k": "testiculos",
 "label": "Testículos",
-"text": "tópicos, com morfologia normal, contornos regulares e ecotextura homogênea. Volumes testiculares de XXX cc à direita e XXX cc à esquerda. Vascularização preservada.",
+"text": "tópicos, com morfologia normal, contornos regulares e ecotextura homogênea. Testículo direito medindo XX x XX x XX cm (volume estimado em XXX cm³); testículo esquerdo medindo XX x XX x XX cm (volume estimado em XXX cm³). Vascularização preservada.",
 "dash": true,
 "opts": [],
 "grp": ""
