@@ -508,14 +508,13 @@ Nome do Paciente:
 Data de Nascimento: 
 Data do Exame: 
 - Fígado: com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea. Não foram detectadas lesões focais ao método.
-Realizada elastografia com a técnica “shear wave” (2D-SWE), com medidas múltiplas. Mediana das Elasticidades (liver stiffness) no lobo direito calculada em XXX kPa (IQR/med: XXX%).
+- Elastografia hepática: realizada com a técnica “shear wave” (2D-SWE), com medidas múltiplas. Mediana das elasticidades (liver stiffness) no lobo direito calculada em XXX kPa (IQR/med: XXX%).
 - Veias porta e hepáticas: pérvias ao estudo Doppler colorido, com calibres preservados.
 - Vesícula biliar: tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.
 - Vias biliares intra e extra-hepáticas: sem dilatações 
 - Pâncreas: com dimensões, contornos e ecogenicidade normais.
 - Baço: com dimensões normais, homogêneo.
 Conclusão:
-- Elastografia hepática por 2D-SWE com índice de Elasticidade calculado em XXX kPa, inferindo ausência XX presença de fibrose clinicamente significativa.
 Valores de referência*:
 •	< 5 kPa: Normal;
 •	5-9 kPa: Provavelmente sem fibrose clinicamente significativa (≤ F2);

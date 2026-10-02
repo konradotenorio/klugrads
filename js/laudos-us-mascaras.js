@@ -2139,7 +2139,15 @@ const LAU_US_MASKS = [
 {
 "k": "figado",
 "label": "Fígado",
-"text": "com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea. Não foram detectadas lesões focais ao método.\nRealizada elastografia com a técnica “shear wave” (2D-SWE), com medidas múltiplas. Mediana das Elasticidades (liver stiffness) no lobo direito calculada em XXX kPa (IQR/med: XXX%).",
+"text": "com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea. Não foram detectadas lesões focais ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "elastografia-hepatica",
+"label": "Elastografia hepática",
+"text": "realizada com a técnica “shear wave” (2D-SWE), com medidas múltiplas. Mediana das elasticidades (liver stiffness) no lobo direito calculada em XXX kPa (IQR/med: XXX%).",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -2192,6 +2200,10 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
+"k": "elastografia-hepatica"
+},
+{
+"t": "item",
 "k": "veias-porta-e-hepaticas"
 },
 {
@@ -2212,12 +2224,7 @@ const LAU_US_MASKS = [
 }
 ],
 "concTitulo": "Conclusão:",
-"conc": [
-{
-"text": "Elastografia hepática por 2D-SWE com índice de Elasticidade calculado em XXX kPa, inferindo ausência XX presença de fibrose clinicamente significativa.",
-"dash": true
-}
-],
+"conc": [],
 "trailer": [
 "Valores de referência*:",
 "•\t< 5 kPa: Normal;",

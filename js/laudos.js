@@ -478,8 +478,33 @@ const LAU_STRUCT_LABELS = {
   'vias biliares intra e extra-hepaticas':'vias', 'pancreas':'pancreas', 'baco':'baco',
   'rins':'rins', 'bexiga':'bexiga', 'aorta abdominal':'aorta',
   'peritoneo e retroperitoneo':'peritoneo', 'peritoneo / retroperitoneo':'peritoneo',
-  'cirurgias previas':'cirurgia', 'alcas intestinais':'alcas',
+  'cirurgias previas':'cirurgia', 'alcas intestinais':'alcas', 'elastografia hepatica':'elasto',
 };
+/* Elastografia hepática (2D-SWE): conclusão automática pela faixa do valor (SRU 2020)
+   e alerta de qualidade quando IQR/mediana > 30% */
+LAU_STRUCT.elasto = {k:'elasto', label:'Elastografia hepática', noNF:true,
+  normal:'realizada com a técnica “shear wave” (2D-SWE), com medidas múltiplas. Mediana das elasticidades (liver stiffness) no lobo direito calculada em XXX kPa (IQR/med: XXX%).',
+  ctrls:[
+    {t:'num', k:'kpa', lbl:'Mediana da elasticidade', unit:'kPa'},
+    {t:'num', k:'iqr', lbl:'IQR/mediana', unit:'%'},
+  ],
+  build(s){
+    const k=lauF(s.kpa), q=lauF(s.iqr);
+    if(k==null) return {txt:null, conc:['Elastografia hepática por 2D-SWE com índice de elasticidade calculado em ___ kPa.']};
+    const kv=lauN(s.kpa), qv=lauHas(s.iqr)?lauN(s.iqr):'';
+    let t=`realizada com a técnica “shear wave” (2D-SWE), com medidas múltiplas. Mediana das elasticidades (liver stiffness) no lobo direito calculada em ${kv} kPa${qv?` (IQR/med: ${qv}%)`:''}.`;
+    const inf = k<5 ? 'inferindo ausência de fibrose (normal)'
+      : k<9 ? 'inferindo ausência de fibrose clinicamente significativa'
+      : k<13 ? 'inferindo presença de fibrose clinicamente significativa'
+      : k<=17 ? 'inferindo cirrose'
+      : 'inferindo cirrose, com valor sugestivo de hipertensão portal clinicamente significativa (F4)';
+    const conc=[`Elastografia hepática por 2D-SWE com índice de elasticidade calculado em ${kv} kPa, ${inf}.`];
+    if(q!=null && q>30){
+      t += ` A relação IQR/mediana (${qv}%) está acima de 30%, indicando grande variabilidade entre as medidas.`;
+      conc.push(`Qualidade técnica da elastografia abaixo do recomendado (IQR/mediana de ${qv}%, acima de 30%): o valor obtido tem menor confiabilidade e deve ser interpretado com cautela, podendo o exame ser repetido.`);
+    }
+    return {txt:t, conc};
+  }};
 /* Alças intestinais — apêndice e intussuscepção */
 LAU_STRUCT.alcas = {k:'alcas', label:'Alças intestinais',
   normal:'sem distensão ou espessamento parietal detectáveis ao método.',
@@ -894,7 +919,7 @@ function lauBuildModel(mk){
     if(sk && !used[sk]){
       used[sk]=1;
       const d=LAU_STRUCT[sk];
-      return Object.assign({}, base, {sk, ctrls:d.ctrls, build:d.build, hideNormal:!!d.hideNormal});
+      return Object.assign({}, base, {sk, ctrls:d.ctrls, build:d.build, hideNormal:!!d.hideNormal, noNF:!!d.noNF});
     }
     return Object.assign({}, base, {generic:true, ctrls:[]});
   });
@@ -1887,7 +1912,7 @@ function lauItemPanel(m, it){
   const normal=lauItemNormal(m,it), lbl=lauItemLabel(m,it);
   let h='';
   if(lauHasPh(lbl)) h += `<div class="lau-rl">Rótulo</div>${lauInlineForm(k,'l',lbl,s.__v.l)}`;
-  if(lauHasPh(normal)) h += `<div class="lau-rl">${it.generic?'Texto da máscara — preencha os campos':'Medidas do texto padrão'}</div>${lauInlineForm(k,'n',normal,s.__v.n)}`;
+  if(lauHasPh(normal) && !it.noNF) h += `<div class="lau-rl">${it.generic?'Texto da máscara — preencha os campos':'Medidas do texto padrão'}</div>${lauInlineForm(k,'n',normal,s.__v.n)}`;
   else if(it.generic) h += `<div class="lau-rl">Texto da máscara</div><div class="lau-inl dim">${esc(normal).replace(/\n/g,'<br>')}</div>`;
   if(!it.generic) h += it.ctrls.map(c=>lauCtrlHTML(k,s,c)).join('');
   h += lauOptsHTML(k, it.opts, s.__o, s.__v);
