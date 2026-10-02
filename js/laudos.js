@@ -459,7 +459,55 @@ const LAU_STRUCT_LABELS = {
   'vias biliares intra e extra-hepaticas':'vias', 'pancreas':'pancreas', 'baco':'baco',
   'rins':'rins', 'bexiga':'bexiga', 'aorta abdominal':'aorta',
   'peritoneo e retroperitoneo':'peritoneo', 'peritoneo / retroperitoneo':'peritoneo',
+  'cirurgias previas':'cirurgia',
 };
+
+/* Mama — cirurgias prévias (mamoplastia, mastectomia com/sem reconstrução, implantes) */
+const LAU_LADO = [['bi','Bilateral'],['d','Direita'],['e','Esquerda']];
+function lauLadoTxt(v, plural){ return v==='d' ? 'à direita' : v==='e' ? 'à esquerda' : (plural?'bilaterais':'bilateral'); }
+LAU_STRUCT.cirurgia = {k:'cirurgia', label:'Cirurgias prévias',
+  normal:'sem sinais de intervenção cirúrgica prévia.',
+  ctrls:[
+    {t:'check', k:'mamo', lbl:'Mamoplastia'},
+    {t:'radio', k:'mamoT', lbl:'Tipo', opts:[['red','Redutora'],['aum','De aumento'],['out','Outra / não especificada']], show:s=>s.mamo, ind:1},
+    {t:'radio', k:'mamoL', lbl:'Lado', opts:LAU_LADO, show:s=>s.mamo, ind:1},
+    {t:'check', k:'mast', lbl:'Mastectomia'},
+    {t:'radio', k:'mastL', lbl:'Lado', opts:[['d','Direita'],['e','Esquerda'],['bi','Bilateral']], show:s=>s.mast, ind:1},
+    {t:'radio', k:'rec', lbl:'Reconstrução', opts:[['nao','Não'],['sim','Sim']], show:s=>s.mast, ind:1},
+    {t:'radio', k:'recT', lbl:'Tipo de reconstrução', opts:[['impl','Implante mamário'],['ret','Retalho miocutâneo']], show:s=>s.mast&&s.rec==='sim', ind:1},
+    {t:'check', k:'impl', lbl:'Implantes mamários'},
+    {t:'radio', k:'implL', lbl:'Lado', opts:LAU_LADO, show:s=>s.impl, ind:1},
+    {t:'radio', k:'implP', lbl:'Posição', opts:[['rg','Retroglandular'],['rm','Retromuscular']], show:s=>s.impl, ind:1},
+    {t:'radio', k:'implI', lbl:'Integridade', opts:[['ok','Íntegro'],['intra','Rotura intracapsular'],['extra','Rotura extracapsular']], show:s=>s.impl, ind:1},
+  ],
+  build(s){
+    if(!s.mamo && !s.mast && !s.impl) return {txt:null, conc:[]};
+    const p=[], conc=[];
+    if(s.mamo){
+      const tipo = {red:'redutora ', aum:'de aumento ', out:''}[s.mamoT];
+      p.push(`sinais de mamoplastia ${tipo}${lauLadoTxt(s.mamoL)}, com alterações cicatriciais, sem lesões nodulares associadas.`);
+      conc.push(`Status pós-mamoplastia ${tipo}${lauLadoTxt(s.mamoL)}.`.replace('  ',' '));
+    }
+    if(s.mast){
+      const lado = s.mastL==='bi' ? 'bilateral' : s.mastL==='d' ? 'direita' : 'esquerda';
+      const rec = s.rec==='sim' ? (s.recT==='ret' ? ', com reconstrução com retalho miocutâneo' : ', com reconstrução com implante mamário') : ', sem reconstrução';
+      p.push(`status pós-mastectomia ${lado}${rec}; plastrão sem lesões nodulares.`);
+      conc.push(`Status pós-mastectomia ${lado}${rec}.`);
+    }
+    if(s.impl){
+      const pl = s.implL==='bi';
+      const pos = s.implP==='rm' ? 'retromusculares' : 'retroglandulares';
+      const posS = s.implP==='rm' ? 'retromuscular' : 'retroglandular';
+      const integ = {ok: pl?'íntegros, de contornos regulares':'íntegro, de contornos regulares',
+        intra: 'com linhas ecogênicas paralelas em seu interior (sinal da escada), sugerindo rotura intracapsular',
+        extra: 'com área hiperecogênica e sombra acústica difusa adjacente (padrão em tempestade de neve), compatível com silicone livre — rotura extracapsular'}[s.implI];
+      p.push(`${pl?'implantes mamários '+pos:'implante mamário '+posS} ${lauLadoTxt(s.implL, pl)}, ${integ}.`);
+      if(s.implI==='ok') conc.push(pl ? 'Implantes mamários íntegros.' : `Implante mamário ${lauLadoTxt(s.implL)} íntegro.`);
+      else conc.push(`Sinais de rotura ${s.implI==='intra'?'intracapsular':'extracapsular'} de implante mamário ${lauLadoTxt(s.implL)}.`);
+    }
+    const t = p.map((x,i)=> i ? x.charAt(0).toUpperCase()+x.slice(1) : x).join(' ');
+    return {txt:t, conc};
+  }};
 function lauNorm(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim(); }
 
 /* =========================================================================

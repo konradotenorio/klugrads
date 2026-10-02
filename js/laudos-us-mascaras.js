@@ -7100,6 +7100,14 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
+"k": "cirurgias-previas",
+"label": "Cirurgias prévias",
+"text": "sem sinais de intervenção cirúrgica prévia.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
 "k": "mama-direita",
 "label": "Mama direita",
 "text": "sem nódulos sólidos ou císticos detectáveis ao método. Sem distorção arquitetural.",
@@ -7148,6 +7156,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "composicao-do-tecido-de-fundo"
+},
+{
+"t": "item",
+"k": "cirurgias-previas"
 },
 {
 "t": "item",
