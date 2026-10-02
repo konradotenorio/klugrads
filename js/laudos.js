@@ -477,7 +477,7 @@ LAU_STRUCT.cirurgia = {k:'cirurgia', label:'Cirurgias prévias', hideNormal:true
     {t:'radio', k:'recT', lbl:'Tipo de reconstrução', opts:[['impl','Implante mamário'],['ret','Retalho miocutâneo']], show:s=>s.mast&&s.rec==='sim', ind:1},
     {t:'check', k:'impl', lbl:'Implantes mamários'},
     {t:'radio', k:'implL', lbl:'Lado', opts:LAU_LADO, show:s=>s.impl, ind:1},
-    {t:'radio', k:'implP', lbl:'Posição', opts:[['rg','Retroglandular'],['rm','Retromuscular']], show:s=>s.impl, ind:1},
+    {t:'radio', k:'implP', lbl:'Posição (opcional)', opts:[['ne','Não especificar'],['rg','Retroglandular'],['rm','Retromuscular'],['pp','Pré-peitoral'],['sf','Subfascial']], show:s=>s.impl, ind:1},
     {t:'radio', k:'implI', lbl:'Integridade', opts:[['ok','Íntegro'],['intra','Rotura intracapsular'],['extra','Rotura extracapsular']], show:s=>s.impl, ind:1},
   ],
   build(s){
@@ -485,23 +485,23 @@ LAU_STRUCT.cirurgia = {k:'cirurgia', label:'Cirurgias prévias', hideNormal:true
     const p=[], conc=[];
     if(s.mamo){
       const tipo = {red:'redutora ', aum:'de aumento ', out:''}[s.mamoT];
-      p.push(`sinais de mamoplastia ${tipo}${lauLadoTxt(s.mamoL)}, com alterações cicatriciais, sem lesões nodulares associadas.`);
+      p.push(`sinais de mamoplastia ${tipo}${lauLadoTxt(s.mamoL)}.`);
       conc.push(`Status pós-mamoplastia ${tipo}${lauLadoTxt(s.mamoL)}.`.replace('  ',' '));
     }
     if(s.mast){
       const lado = s.mastL==='bi' ? 'bilateral' : s.mastL==='d' ? 'direita' : 'esquerda';
       const rec = s.rec==='sim' ? (s.recT==='ret' ? ', com reconstrução com retalho miocutâneo' : ', com reconstrução com implante mamário') : ', sem reconstrução';
-      p.push(`status pós-mastectomia ${lado}${rec}; plastrão sem lesões nodulares.`);
+      p.push(`status pós-mastectomia ${lado}${rec}.`);
       conc.push(`Status pós-mastectomia ${lado}${rec}.`);
     }
     if(s.impl){
       const pl = s.implL==='bi';
-      const pos = s.implP==='rm' ? 'retromusculares' : 'retroglandulares';
-      const posS = s.implP==='rm' ? 'retromuscular' : 'retroglandular';
+      const POS = {rg:['retroglandular','retroglandulares'], rm:['retromuscular','retromusculares'], pp:['pré-peitoral','pré-peitorais'], sf:['subfascial','subfasciais']}[s.implP];
+      const pos = POS ? ' '+POS[1] : '', posS = POS ? ' '+POS[0] : '';
       const integ = {ok: pl?'íntegros, de contornos regulares':'íntegro, de contornos regulares',
         intra: 'com linhas ecogênicas paralelas em seu interior (sinal da escada), sugerindo rotura intracapsular',
         extra: 'com área hiperecogênica e sombra acústica difusa adjacente (padrão em tempestade de neve), compatível com silicone livre — rotura extracapsular'}[s.implI];
-      p.push(`${pl?'implantes mamários '+pos:'implante mamário '+posS} ${lauLadoTxt(s.implL, pl)}, ${integ}.`);
+      p.push(`${pl?'implantes mamários'+pos:'implante mamário'+posS} ${lauLadoTxt(s.implL, pl)}, ${integ}.`);
       if(s.implI==='ok') conc.push(pl ? 'Implantes mamários íntegros.' : `Implante mamário ${lauLadoTxt(s.implL)} íntegro.`);
       else conc.push(`Sinais de rotura ${s.implI==='intra'?'intracapsular':'extracapsular'} de implante mamário ${lauLadoTxt(s.implL)}.`);
     }
@@ -869,7 +869,7 @@ function lauBiradsConc(f, vals, d, lbl, plural, all){
   const cat=lauBrCat(d); const L=String(lbl||'').toLowerCase().replace(/:$/,'');
   const manejo = `BI-RADS® ${cat?esc(cat)+': '+esc(LAU_BR_MANEJO[cat]):lauMk('?',true)}`;
   if(!plural) return `Nódulo na ${esc(L||'mama')} — ${manejo}.`;
-  return `${all.length} nódulos semelhantes na ${esc(L||'mama')} — ${manejo}.`;
+  return `Nódulos na ${esc(L||'mama')} — ${manejo}.`;
 }
 /* categoria BI-RADS de uma instância (frases de mama têm f.br fixo) */
 function lauBrOf(id, bag){ const f=lauFI(id); if(!f) return null; if(f.kind==='birads') return lauBrCat(bag['d'+id]||{}); return f.br||null; }

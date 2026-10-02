@@ -681,7 +681,7 @@ const LAU_FRASES = [
    t:'Coleção com conteúdo espesso e debris às XXX horas, medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), com edema dos tecidos adjacentes.',
    c:'Coleção na {L}, sugestiva de abscesso, a correlacionar clinicamente.'},
   {o:'mama', n:'Implante íntegro', m:'add',
-   t:'Implante mamário retroglandular XX retromuscular de contornos regulares, sem sinais de rotura.',
+   t:'Implante mamário de contornos regulares, sem sinais de rotura.',
    c:''},
   {o:'mama', n:'Rotura intracapsular', m:'add',
    t:'Implante com linhas ecogênicas paralelas em seu interior (sinal da escada), sugerindo rotura intracapsular.',
