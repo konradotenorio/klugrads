@@ -2053,6 +2053,22 @@ function laudosHTML(){
 /* lista agrupada com busca (usada nos modelos e nas configurações) */
 /* Lista com filtro por subespecialidade (chips) e busca. Com texto na busca,
    procura em todas as subespecialidades. */
+/* favoritos dos laudos (ficam neste aparelho) */
+const LAU_FAV_KEY='klug_laudo_favs_v1';
+function lauFavs(){ if(state.lauFavs) return state.lauFavs; let a=[]; try{ a=JSON.parse(localStorage.getItem(LAU_FAV_KEY)||'[]'); }catch(_){} state.lauFavs=Array.isArray(a)?a:[]; return state.lauFavs; }
+function lauIsFav(id){ return lauFavs().indexOf(id)>=0; }
+function lauFavToggle(id){
+  const a=lauFavs(); const i=a.indexOf(id); i>=0 ? a.splice(i,1) : a.push(id);
+  try{ localStorage.setItem(LAU_FAV_KEY, JSON.stringify(a)); }catch(_){}
+  lauRefreshList();
+}
+function lauFavsHTML(all, onclickFn){
+  const fs = lauFavs().map(id=>all.find(m=>m.id===id)).filter(Boolean).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base',numeric:true}));
+  const star = svgIcon(P.star,14,{fill:'currentColor',noStroke:true});
+  return `<div class="lau-favs"><div class="lau-favs-h">${star} Favoritos</div>${fs.length
+    ? `<div class="lau-chips">${fs.map(m=>`<button type="button" class="ti-ftog" onclick="${onclickFn}('${m.id}')"><span class="x">${star}</span>${esc(m.nome)}</button>`).join('')}</div>`
+    : `<div class="lau-favs-e">Toque na estrela ao lado de um laudo para fixá-lo aqui.</div>`}</div>`;
+}
 function lauListHTML(metodo, onclickFn, sub){
   const all = [].concat(...[].concat(metodo).map(k=>LAUDO_MODELOS[k]||[])).slice().sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base',numeric:true}));
   const q = lauNorm(state.lauQ||'');
@@ -2062,6 +2078,7 @@ function lauListHTML(metodo, onclickFn, sub){
   const row = m=>`<div class="lau-li" onclick="${onclickFn}('${m.id}')">
         <div class="lau-lt">${esc(m.nome)}${m.estruturado?' <span class="lau-tag ok">Achados estruturados</span>':''}</div>
         <div class="lau-ld">${sub(m)}</div>
+        <button type="button" class="lau-star ${lauIsFav(m.id)?'on':''}" onclick="event.stopPropagation();lauFavToggle('${m.id}')" aria-label="${lauIsFav(m.id)?'Remover dos favoritos':'Favoritar'}" title="${lauIsFav(m.id)?'Remover dos favoritos':'Favoritar'}">${svgIcon(P.star,20,{fill:lauIsFav(m.id)?'currentColor':'none'})}</button>
         <div class="chev">${svgIcon(P.chev,16,{sw:2})}</div></div>`;
   const body = q
     ? grupos.map(g=>{ const xs=ms.filter(m=>m.grupo===g); return xs.length ? `<div class="lau-lg">${esc(g)}</div>`+xs.map(row).join('') : ''; }).join('')
@@ -2069,6 +2086,7 @@ function lauListHTML(metodo, onclickFn, sub){
   const chips = grupos.map(g=>`<button type="button" class="ti-ftog ${!q&&state.lauGrp===g?'on':''}" onclick="state.lauGrp='${g}';state.lauQ='';lauRefreshList(true)">${esc(g)} <span class="n">${all.filter(m=>m.grupo===g).length}</span></button>`).join('');
   return `<div class="lau-search"><input id="lau-q" type="search" placeholder="Buscar em todos os laudos…" value="${esc(state.lauQ||'')}" oninput="state.lauQ=this.value;lauRefreshList()"></div>
     <div id="lau-grps" class="lau-chips lau-grps">${chips}</div>
+    <div id="lau-favw">${lauFavsHTML(all, onclickFn)}</div>
     <div id="lau-list">${body || '<div class="empty"><div class="msg">Nenhum laudo encontrado.</div></div>'}</div>`;
 }
 function lauRefreshList(limpaBusca){
@@ -2077,6 +2095,7 @@ function lauRefreshList(limpaBusca){
   tmp.innerHTML = v==='laudoCfg' ? lauCfgListHTML() : laudoModHTML();
   const n=tmp.querySelector('#lau-list'); if(n) el.innerHTML=translateHTML(n.innerHTML);
   const g=tmp.querySelector('#lau-grps'), ge=document.getElementById('lau-grps'); if(g&&ge) ge.innerHTML=translateHTML(g.innerHTML);
+  const fv=tmp.querySelector('#lau-favw'), fe=document.getElementById('lau-favw'); if(fv&&fe) fe.innerHTML=translateHTML(fv.innerHTML);
   if(limpaBusca){ const qi=document.getElementById('lau-q'); if(qi) qi.value=''; }
 }
 function laudoModHTML(){
