@@ -465,7 +465,7 @@ const LAU_STRUCT_LABELS = {
 /* Mama — cirurgias prévias (mamoplastia, mastectomia com/sem reconstrução, implantes) */
 const LAU_LADO = [['bi','Bilateral'],['d','Direita'],['e','Esquerda']];
 function lauLadoTxt(v, plural){ return v==='d' ? 'à direita' : v==='e' ? 'à esquerda' : (plural?'bilaterais':'bilateral'); }
-LAU_STRUCT.cirurgia = {k:'cirurgia', label:'Cirurgias prévias',
+LAU_STRUCT.cirurgia = {k:'cirurgia', label:'Cirurgias prévias', hideNormal:true,   // sem nada marcado, não aparece no laudo
   normal:'sem sinais de intervenção cirúrgica prévia.',
   ctrls:[
     {t:'check', k:'mamo', lbl:'Mamoplastia'},
@@ -629,7 +629,7 @@ function lauBuildModel(mk){
     if(sk && !used[sk]){
       used[sk]=1;
       const d=LAU_STRUCT[sk];
-      return Object.assign({}, base, {sk, ctrls:d.ctrls, build:d.build});
+      return Object.assign({}, base, {sk, ctrls:d.ctrls, build:d.build, hideNormal:!!d.hideNormal});
     }
     return Object.assign({}, base, {generic:true, ctrls:[]});
   });
@@ -903,8 +903,14 @@ function lauOptLines(it, s, html){
 }
 
 /* ---------- geração do HTML do laudo ---------- */
+function lauItemOculto(m, it){
+  if(!it.hideNormal) return false;
+  const s=state.lau.v[it.k], r=lauBuild(m,it);
+  return r.txt==null && !(s.__f||[]).length && !(s.__o||[]).some(Boolean);
+}
 function lauItemHTML(m, it){
   const L=state.lau, s=L.v[it.k], r=lauBuild(m,it), g=lauGen();
+  if(lauItemOculto(m,it)) return '';
   const lblRaw = lauItemLabel(m,it);
   const lbl = lblRaw ? lauFill(lblRaw, s.__v.l, true)+':' : '';
   let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : esc(r.txt).replace(/\n/g,'<br>');
@@ -964,7 +970,8 @@ function lauDocHTML(m){
   const body = m.seq.map(e=>{
     if(e.t==='blank') return '<p><br></p>';
     if(e.t==='line') return `<p>${esc(e.text)}</p>`;
-    const it=m.items.find(x=>x.k===e.k); return it ? `<p data-k="${it.k}">${lauItemHTML(m,it)}</p>` : '';
+    const it=m.items.find(x=>x.k===e.k); if(!it) return '';
+    const h=lauItemHTML(m,it); return `<p data-k="${it.k}"${h?'':' hidden'}>${h}</p>`;
   }).join('');
   return `<p data-k="titulo" style="text-align:center">${lauTitHTML(m)}</p>`
     + (lauHas(L.ind)?`<p data-k="ind"><b>Indicação:</b> ${esc(L.ind)}</p>`:'')
@@ -997,7 +1004,7 @@ function lauPatch(k){
       p=document.createElement('p'); p.dataset.k=k;
       const ref=ed.querySelector('[data-k="concT"]'); ref?ed.insertBefore(p,ref):ed.appendChild(p);
     }
-    p.innerHTML = lauItemHTML(m,it); lauFlash(p);
+    const h=lauItemHTML(m,it); p.innerHTML = h; p.hidden = !h; if(h) lauFlash(p);
   }
   lauPatchConc(); lauSaveEd();
 }
@@ -1069,6 +1076,7 @@ function lauRestoreSel(){ if(!_lauRange) return; const s=window.getSelection(); 
 function lauCleanClone(){
   const ed=lauEd(); if(!ed) return null;
   const c=ed.cloneNode(true);
+  c.querySelectorAll('[hidden]').forEach(e=>e.remove());
   c.querySelectorAll('mark.lau-ph').forEach(mk=>mk.replaceWith(document.createTextNode(mk.textContent)));
   c.querySelectorAll('[data-k]').forEach(e=>e.removeAttribute('data-k'));
   c.querySelectorAll('.lau-flash').forEach(e=>e.classList.remove('lau-flash'));
