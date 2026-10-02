@@ -18,6 +18,7 @@
           categoria; TI-RADS usa a mesma pontuação da calculadora)
      br categoria BI-RADS da frase (entra na categoria final do exame)
      kind 'tend' | 'musc' = escolha do tendão/músculo (lista por articulação) e do tipo de lesão
+     so  lista de laudos em que a frase aparece (ex.: só no ombro)
      vaz trechos que somem do laudo quando o campo (XXX) não for preenchido
      q  1 = aceita quantidade (único / vários semelhantes / diferentes); cp = conclusão no plural
    ========================================================================= */
@@ -475,7 +476,7 @@ const LAU_FRASES = [
   {o:'tendao', n:'Entesopatia', m:'add',
    t:'Irregularidades corticais e entesófitos na inserção do tendão XXX.',
    c:'Entesopatia do {0}.'},
-  {o:'tendao', n:'Luxação do bíceps', m:'add',
+  {o:'tendao', n:'Luxação do bíceps', m:'add', so:['us-ombro'],
    t:'Tendão da cabeça longa do bíceps fora do sulco intertubercular (luxação medial).',
    c:'Luxação medial do tendão da cabeça longa do bíceps.'},
   {o:'bursa', n:'Bursite', m:'sub', vaz:[', medindo XXX cm de espessura'],

@@ -816,7 +816,7 @@ const LAU_ALVOS = {
   'us-punho':   {tend:[['flexores dos dedos','flexores dos dedos'],['abdutor longo / extensor curto do polegar (1º compartimento)','do 1º compartimento extensor (abdutor longo e extensor curto do polegar)'],['extensor ulnar do carpo','do extensor ulnar do carpo'],['flexor radial do carpo','do flexor radial do carpo'],['extensores dos dedos','extensores dos dedos']], musc:[]},
   'us-mao':     {tend:[['flexores dos dedos','flexores dos dedos'],['extensores dos dedos','extensores dos dedos']], musc:[['interósseos','interósseos'],['tenar','tenar'],['hipotenar','hipotenar']]},
   'us-dedo-da-mao':{tend:[['flexor profundo','do flexor profundo'],['flexor superficial','do flexor superficial'],['extensor','extensor']], musc:[]},
-  'us-joelho':  {tend:[['quadríceps femoral','do quadríceps femoral'],['patelar','patelar'],['pata de ganso','da pata de ganso'],['trato iliotibial','do trato iliotibial'],['bíceps femoral','do bíceps femoral'],['semimembranoso','do semimembranoso']],
+  'us-joelho':  {tend:[['quadríceps femoral','do quadríceps femoral'],['patelar','patelar'],['pata de ganso','da pata de ganso',{pl:1,tn:1}],['trato iliotibial','do trato iliotibial'],['bíceps femoral','do bíceps femoral'],['semimembranoso','do semimembranoso']],
                  musc:[['gastrocnêmio medial','gastrocnêmio medial'],['vasto medial','vasto medial'],['vasto lateral','vasto lateral']]},
   'us-quadril': {tend:[['glúteo médio','do glúteo médio'],['glúteo mínimo','do glúteo mínimo'],['retofemoral','retofemoral'],['iliopsoas','do iliopsoas'],['isquiotibiais (origem)','dos isquiotibiais']],
                  musc:[['glúteo médio','glúteo médio'],['glúteo mínimo','glúteo mínimo'],['iliopsoas','iliopsoas'],['adutor longo','adutor longo'],['retofemoral','retofemoral']]},
@@ -837,14 +837,14 @@ function lauNormH(s){ return lauNorm(s).replace(/h/g,''); }
 /* opções do item: tendões/músculos citados no rótulo; se só um, ele já fica escolhido */
 function lauAlvoOpts(kind, label){
   const al=lauAlvos(kind), L=lauNormH(label);
-  const idx=al.map((a,i)=>i).filter(i=>{ const n=lauNormH(al[i][0]).split(' (')[0]; const j=L.indexOf(n); return j>=0 && (j===0 || /[\s,.(]/.test(L[j-1])); });
+  const idx=al.map((a,i)=>i).filter(i=>{ const n=lauNormH(al[i][0]).split(' (')[0]; const j=L.indexOf(n); return j>=0 && (j===0 || /[\s,.("“'‘]/.test(L[j-1])); });
   return idx;
 }
 /* cada tendão/músculo marcado tem o seu tipo de lesão: d.det[chave] = {tipo, face, bainha};
    medidas em bag['f'+id+'_'+chave]. chave = índice na lista ou 'x' (digitado em "outro"). */
 function lauAlvoList(kind, d){
-  const al=lauAlvos(kind); const out=(d.alvos||[]).map(i=>al[i]?{key:String(i), nome:al[i][0], prep:al[i][1]}:null).filter(Boolean);
-  if(lauHas(d.alvoTxt)) out.push({key:'x', nome:d.alvoTxt.trim(), prep:(kind==='tend'?'do ':'')+d.alvoTxt.trim()});
+  const al=lauAlvos(kind); const out=(d.alvos||[]).map(i=>al[i]?{key:String(i), nome:al[i][0], prep:al[i][1], x:al[i][2]||{}}:null).filter(Boolean);
+  if(lauHas(d.alvoTxt)) out.push({key:'x', nome:d.alvoTxt.trim(), prep:(kind==='tend'?'do ':'')+d.alvoTxt.trim(), x:{}});
   return out;
 }
 function lauJuntaE(xs){ return xs.length<2 ? (xs[0]||'') : xs.slice(0,-1).join(', ')+' e '+xs[xs.length-1]; }
@@ -859,8 +859,11 @@ function lauTendFrase(f, a, t, vals, html, sujeito){
   const S = sujeito ? sujeito+' ' : '';
   const tipo=t.tipo;
   if(f.kind==='tend'){
-    const b = t.bainha ? ', com distensão líquida da bainha tendínea' : '';
-    if(!tipo) return t.bainha ? `${S}sem alterações estruturais, com distensão líquida da bainha tendínea.` : `${S}${lauMk('(escolha o tipo)',html)}.`;
+    const X=(a&&a.x)||{}; const pl=!!X.pl;
+    const dist = X.tn ? 'distensão líquida peritendínea (tenossinovite)' : 'distensão líquida da bainha tendínea';
+    const b = t.bainha ? `, com ${dist}` : '';
+    if(!tipo) return t.bainha ? `${S}sem alterações estruturais, com ${dist}.` : `${S}${lauMk('(escolha o tipo)',html)}.`;
+    if(tipo==='tend') return `${S}${pl?'espessados e hipoecogênicos':'espessado e hipoecogênico'}, com perda parcial do padrão fibrilar (tendinopatia), sem sinais de rotura${b}.`;
     if(tipo==='parcial') return `${S}com sinais de tendinopatia e rotura parcial ${LAU_FACES[t.face||0]}, ${med}${b}.`;
     if(tipo==='completa') return `${S}com rotura completa, com ${med}${b}.`;
     if(tipo==='calc') return `${S}com tendinopatia calcárea (${med})${b}.`;
@@ -887,6 +890,8 @@ function lauTendConc(f, id, bag){
     if(f.kind==='tend'){
       const de = /^(do|da|dos|das) /.test(a.prep) ? a.prep : 'do tendão '+a.prep;
       const b = t.bainha && tipo ? ', com distensão líquida da bainha tendínea' : '';
+      if(a.x && a.x.tn){ const bt = t.bainha ? (tipo?', com tenossinovite':'') : ''; if(!tipo) return {g:'tenos', pre:'Tenossinovite', de, suf:'.'};
+        if(tipo==='tend') return {g:'tend-tn'+bt, pre:'Tendinopatia', de, suf:`, sem rotura${bt}.`}; }
       if(!tipo) return {g:'bainha', pre:'Distensão líquida da bainha tendínea', de, suf:'.'};
       if(tipo==='parcial') return {g:'parcial'+(t.face||0)+b, pre:'Tendinopatia', de, suf:` com rotura parcial ${LAU_FACES[t.face||0]}${b}.`};
       if(tipo==='completa') return {g:'completa'+b, pre:'Rotura completa', de: /^do tendão /.test(de)?de:'do tendão '+a.prep.replace(/^(do|da|dos|das) /,''), suf:`${b}.`};
@@ -1017,7 +1022,7 @@ function lauDescHTML(k, id, f, d){
     h += lauAlvoList(f.kind, d).map(a=>{
       const t=det[a.key]||{}; const tpl=lauTendTpl(f,t);
       return `<div class="lau-tbox"><div class="lau-tbox-h">${esc(a.nome)}</div>
-        <div class="lau-chips">${T.map(o=>dchip(a.key,'tipo',o[0],o[1],t.tipo===o[0])).join('')}${f.kind==='tend'?dchip(a.key,'bainha',1,'Distensão líquida da bainha',!!t.bainha):''}</div>
+        <div class="lau-chips">${T.map(o=>dchip(a.key,'tipo',o[0],o[1],t.tipo===o[0])).join('')}${f.kind==='tend'?dchip(a.key,'bainha',1,a.x&&a.x.tn?'Tenossinovite':'Distensão líquida da bainha',!!t.bainha):''}</div>
         ${f.kind==='tend'&&t.tipo==='parcial'?`<div class="lau-rl" style="margin-top:6px">Face</div><div class="lau-chips">${LAU_FACES.map((o,oi)=>dchip(a.key,'face',oi,o.replace('da face ','face '),(t.face||0)===oi)).join('')}</div>`:''}
         ${tpl?`<div class="lau-rl" style="margin-top:6px">Medidas</div>${lauInlineForm(k,'f'+id+'_'+a.key,tpl,bag['f'+id+'_'+a.key])}`:''}
       </div>`;
@@ -1061,7 +1066,8 @@ function lauItemHTML(m, it){
     const multi = (s.__f||[]).filter(id=>{ const f=lauFI(id); return f && (f.kind==='tend'||f.kind==='musc'); }).length;
     if(multi){
       txt = subs.map((x,i)=> i ? x.charAt(0).toUpperCase()+x.slice(1) : x).join(' ');
-      if(/^(tend(ões|oes)|ventres|planos|musculatura|compartimentos)/i.test(lblRaw||'')) txt += ' Demais com aspecto habitual.';
+      const soFixo = (s.__f||[]).every(id=>{ const f=lauFI(id); return !(f && (f.kind==='tend'||f.kind==='musc')) || (s.__v['d'+id]||{}).fixo; });
+      if(!soFixo && /^(tend(ões|oes)|ventres|planos|musculatura|compartimentos)/i.test(lblRaw||'')) txt += ' Demais com aspecto habitual.';
     } else txt = subs[subs.length-1];
   }
   const adds = lauFraseLines(s.__f, s.__v, 'add');
@@ -1469,7 +1475,9 @@ function lauOptsHTML(k, opts, flags, bag){
   }).join('');
 }
 function lauFrasesPanel(k, org, list, bag, estrut){
-  const fs = lauFrasesDe(org).filter(f=>!(estrut && f.s));
+  const lblK = (()=>{ const L=state.lau, m=L&&lauModelo(L.model), it=m&&m.items.find(x=>x.k===k); return it?lauNorm(lauItemLabel(m,it)):''; })();
+  const mid = state.lau && state.lau.model;
+  const fs = lauFrasesDe(org).filter(f=>!(estrut && f.s) && !(f.n==='Tenossinovite' && /pata de ganso/.test(lblK)) && !(f.so && f.so.indexOf(mid)<0));
   if(!fs.length) return '';
   const nOf = i=>list.filter(id=>parseInt(id,10)===i).length;
   const chips = fs.map(f=>{ const n=nOf(f.i); return `<button type="button" class="ti-ftog ${n?'on':''}${f.kind?' lau-fk':''}" onclick="lauFraseToggle('${k}',${f.i})">${f.m==='sub'?'':'+ '}${esc(f.n)}${n>1?` <span class="n">${n}</span>`:''}</button>`; }).join('');
