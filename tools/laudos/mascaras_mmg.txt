@@ -1,0 +1,61 @@
+Máscaras de mamografia escritas pelo KlugRads (mesmo formato de mascaras_us.txt).
+=====
+
+M. MAMOGRAFIA:
+
+1. MAMOGRAFIA BILATERAL
+MAMOGRAFIA DIGITAL BILATERAL
+
+- Técnica: exame realizado em mamógrafo digital, nas incidências craniocaudal e mediolateral oblíqua bilaterais.
+XXX Realizadas incidências complementares: XXX.
+- Composição mamária: mamas com densidades fibroglandulares esparsas (padrão ACR B).
+- Cirurgias prévias: sem sinais de intervenção cirúrgica prévia.
+- Mama direita: sem nódulos, calcificações suspeitas, assimetrias ou distorção arquitetural.
+- Mama esquerda: sem nódulos, calcificações suspeitas, assimetrias ou distorção arquitetural.
+- Pele e complexo areolopapilar: pele de espessura preservada; complexos areolopapilares de aspecto habitual.
+- Regiões axilares: linfonodos de aspecto habitual nos prolongamentos axilares.
+- Comparação: sem exame prévio disponível para comparação.
+
+Conclusão:
+- Mamografia sem alterações significativas.
+- Categoria BI-RADS®: 1 (negativo). Rastreamento de rotina, conforme a faixa etária e o risco da paciente.
+
+-----
+
+2. MAMOGRAFIA UNILATERAL
+MAMOGRAFIA DIGITAL DA MAMA XX
+
+- Técnica: exame realizado em mamógrafo digital, nas incidências craniocaudal e mediolateral oblíqua.
+XXX Realizadas incidências complementares: XXX.
+- Composição mamária: mama com densidades fibroglandulares esparsas (padrão ACR B).
+- Cirurgias prévias: sem sinais de intervenção cirúrgica prévia.
+- Mama: sem nódulos, calcificações suspeitas, assimetrias ou distorção arquitetural.
+- Pele e complexo areolopapilar: pele de espessura preservada; complexo areolopapilar de aspecto habitual.
+- Região axilar: linfonodos de aspecto habitual no prolongamento axilar.
+- Comparação: sem exame prévio disponível para comparação.
+
+Conclusão:
+- Mamografia sem alterações significativas.
+- Categoria BI-RADS®: 1 (negativo).
+
+-----
+
+3. MAMOGRAFIA COM IMPLANTES
+MAMOGRAFIA DIGITAL BILATERAL COM IMPLANTES MAMÁRIOS
+
+- Técnica: exame realizado em mamógrafo digital, nas incidências craniocaudal e mediolateral oblíqua bilaterais, complementadas por incidências com deslocamento posterior dos implantes (manobra de Eklund).
+XXX Realizadas incidências complementares: XXX.
+- Composição mamária: mamas com densidades fibroglandulares esparsas (padrão ACR B).
+- Implantes mamários: implantes retroglandulares XX retropeitorais bilaterais, de contornos regulares, sem sinais mamográficos de rotura extracapsular.
+- Mama direita: sem nódulos, calcificações suspeitas, assimetrias ou distorção arquitetural.
+- Mama esquerda: sem nódulos, calcificações suspeitas, assimetrias ou distorção arquitetural.
+- Pele e complexo areolopapilar: pele de espessura preservada; complexos areolopapilares de aspecto habitual.
+- Regiões axilares: linfonodos de aspecto habitual nos prolongamentos axilares.
+- Comparação: sem exame prévio disponível para comparação.
+
+Conclusão:
+- Implantes mamários sem sinais mamográficos de rotura extracapsular.
+- Categoria BI-RADS®: 2 (achado benigno).
+- A mamografia não avalia adequadamente a integridade intracapsular dos implantes; quando necessário, a ressonância magnética é o método indicado.
+
+-----

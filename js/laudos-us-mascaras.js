@@ -2,6 +2,7 @@
 const LAU_US_MASKS = [
 {
 "id": "us-abdome-superior",
+"metodo": "us",
 "nome": "Abdome Superior",
 "grupo": "Medicina interna",
 "titulo": [
@@ -94,6 +95,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-abdome-superior-com-boyden",
+"metodo": "us",
 "nome": "Abdome Superior com Boyden",
 "grupo": "Medicina interna",
 "titulo": [
@@ -186,6 +188,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-abdome-total",
+"metodo": "us",
 "nome": "Abdome Total",
 "grupo": "Medicina interna",
 "titulo": [
@@ -326,6 +329,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-abdome-total-fast",
+"metodo": "us",
 "nome": "Abdome Total: FAST",
 "grupo": "Medicina interna",
 "titulo": [
@@ -482,6 +486,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-rins-e-vias-urinarias",
+"metodo": "us",
 "nome": "Rins e Vias Urinárias",
 "grupo": "Medicina interna",
 "titulo": [
@@ -526,6 +531,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-prostata",
+"metodo": "us",
 "nome": "Próstata",
 "grupo": "Medicina interna",
 "titulo": [
@@ -622,6 +628,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-prostata-transretal",
+"metodo": "us",
 "nome": "Próstata Transretal",
 "grupo": "Medicina interna",
 "titulo": [
@@ -754,6 +761,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-rins-e-vias-urinarias-e-prostata",
+"metodo": "us",
 "nome": "Rins e Vias Urinárias e Próstata",
 "grupo": "Medicina interna",
 "titulo": [
@@ -880,6 +888,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-abdome-total-e-prostata",
+"metodo": "us",
 "nome": "Abdome Total e Próstata",
 "grupo": "Medicina interna",
 "titulo": [
@@ -1088,6 +1097,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-parede-abdominal",
+"metodo": "us",
 "nome": "Parede Abdominal",
 "grupo": "Medicina interna",
 "titulo": [
@@ -1180,6 +1190,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-regiao-inguinal",
+"metodo": "us",
 "nome": "Região Inguinal",
 "grupo": "Medicina interna",
 "titulo": [
@@ -1272,6 +1283,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-partes-moles",
+"metodo": "us",
 "nome": "Partes Moles",
 "grupo": "Medicina interna",
 "titulo": [
@@ -1352,6 +1364,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-pelve-suprapubico",
+"metodo": "us",
 "nome": "Pelve Suprapúbico",
 "grupo": "Medicina interna",
 "titulo": [
@@ -1476,6 +1489,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-transvaginal",
+"metodo": "us",
 "nome": "Transvaginal",
 "grupo": "Medicina interna",
 "titulo": [
@@ -1592,6 +1606,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-transvaginal-diu",
+"metodo": "us",
 "nome": "Transvaginal: DIU",
 "grupo": "Medicina interna",
 "titulo": [
@@ -1720,6 +1735,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-transvaginal-controle-de-ovulacao",
+"metodo": "us",
 "nome": "Transvaginal: Controle de Ovulação",
 "grupo": "Medicina interna",
 "titulo": [
@@ -1828,6 +1844,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-bolsa-testicular",
+"metodo": "us",
 "nome": "Bolsa Testicular",
 "grupo": "Medicina interna",
 "titulo": [
@@ -1896,6 +1913,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-penis",
+"metodo": "us",
 "nome": "Pênis",
 "grupo": "Medicina interna",
 "titulo": [
@@ -1970,6 +1988,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-transvaginal-endometriose",
+"metodo": "us",
 "nome": "Transvaginal: Endometriose",
 "grupo": "Medicina interna",
 "titulo": [
@@ -2110,6 +2129,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-elastografia",
+"metodo": "us",
 "nome": "Elastografia",
 "grupo": "Medicina interna",
 "titulo": [
@@ -2213,6 +2233,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-torax",
+"metodo": "us",
 "nome": "Tórax",
 "grupo": "Medicina interna",
 "titulo": [
@@ -2281,6 +2302,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-torax-cupulas",
+"metodo": "us",
 "nome": "Tórax: Cúpulas",
 "grupo": "Medicina interna",
 "titulo": [
@@ -2404,6 +2426,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-transfontanela",
+"metodo": "us",
 "nome": "Transfontanela",
 "grupo": "Cabeça e pescoço",
 "titulo": [
@@ -2491,6 +2514,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-cervical",
+"metodo": "us",
 "nome": "Cervical",
 "grupo": "Cabeça e pescoço",
 "titulo": [
@@ -2583,6 +2607,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-tireoide",
+"metodo": "us",
 "nome": "Tireoide",
 "grupo": "Cabeça e pescoço",
 "titulo": [
@@ -2643,6 +2668,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-glandulas-salivares",
+"metodo": "us",
 "nome": "Glândulas Salivares",
 "grupo": "Cabeça e pescoço",
 "titulo": [
@@ -2711,6 +2737,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-globo-ocular",
+"metodo": "us",
 "nome": "Globo Ocular",
 "grupo": "Cabeça e pescoço",
 "titulo": [
@@ -2958,6 +2985,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-antebraco",
+"metodo": "us",
 "nome": "Antebraço",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -3014,6 +3042,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-braco",
+"metodo": "us",
 "nome": "Braço",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -3070,6 +3099,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-cotovelo",
+"metodo": "us",
 "nome": "Cotovelo",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -3162,6 +3192,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-coxa",
+"metodo": "us",
 "nome": "Coxa",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -3218,6 +3249,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-joelho",
+"metodo": "us",
 "nome": "Joelho",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -3322,6 +3354,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-mao",
+"metodo": "us",
 "nome": "Mão",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -3414,6 +3447,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-ombro",
+"metodo": "us",
 "nome": "Ombro",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -3506,6 +3540,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-pe",
+"metodo": "us",
 "nome": "Pé",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -3562,6 +3597,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-perna",
+"metodo": "us",
 "nome": "Perna",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -3618,6 +3654,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-punho",
+"metodo": "us",
 "nome": "Punho",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -3686,6 +3723,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-quadril",
+"metodo": "us",
 "nome": "Quadril",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -3766,6 +3804,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-dedo-da-mao",
+"metodo": "us",
 "nome": "Dedo da Mão",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -3834,6 +3873,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-sinfise-pubica",
+"metodo": "us",
 "nome": "Sínfise Púbica",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -3914,6 +3954,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-tornozelo",
+"metodo": "us",
 "nome": "Tornozelo",
 "grupo": "Musculoesquelético",
 "titulo": [
@@ -4025,6 +4066,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-doppler-abdome-superior",
+"metodo": "us",
 "nome": "Doppler: Abdome Superior",
 "grupo": "Vascular",
 "titulo": [
@@ -4169,6 +4211,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-doppler-figado-transplantado",
+"metodo": "us",
 "nome": "Doppler: Fígado Transplantado",
 "grupo": "Vascular",
 "titulo": [
@@ -4323,6 +4366,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-doppler-rim-transplantado",
+"metodo": "us",
 "nome": "Doppler: Rim Transplantado",
 "grupo": "Vascular",
 "titulo": [
@@ -4407,6 +4451,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-doppler-bolsa-testicular",
+"metodo": "us",
 "nome": "Doppler: Bolsa Testicular",
 "grupo": "Vascular",
 "titulo": [
@@ -4487,6 +4532,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-doppler-penis",
+"metodo": "us",
 "nome": "Doppler: Pênis",
 "grupo": "Vascular",
 "titulo": [
@@ -4627,6 +4673,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-doppler-transfontanela",
+"metodo": "us",
 "nome": "Doppler: Transfontanela",
 "grupo": "Vascular",
 "titulo": [
@@ -4719,6 +4766,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-doppler-tireoide",
+"metodo": "us",
 "nome": "Doppler: Tireoide",
 "grupo": "Vascular",
 "titulo": [
@@ -4791,6 +4839,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-doppler-transvaginal",
+"metodo": "us",
 "nome": "Doppler: Transvaginal",
 "grupo": "Vascular",
 "titulo": [
@@ -4919,6 +4968,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-obstetrico-1-trimestre",
+"metodo": "us",
 "nome": "Obstétrico 1˚ Trimestre",
 "grupo": "Obstétrico",
 "titulo": [
@@ -5042,6 +5092,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-obstetrico-2-e-3-trimestre",
+"metodo": "us",
 "nome": "Obstétrico 2˚ e 3˚ Trimestre",
 "grupo": "Obstétrico",
 "titulo": [
@@ -5227,6 +5278,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-obstetrico-gemelar",
+"metodo": "us",
 "nome": "Obstétrico Gemelar",
 "grupo": "Obstétrico",
 "titulo": [
@@ -5466,6 +5518,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-obstetrico-doppler",
+"metodo": "us",
 "nome": "Obstétrico Doppler",
 "grupo": "Obstétrico",
 "titulo": [
@@ -5701,6 +5754,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-veia-cava-e-iliacas",
+"metodo": "us",
 "nome": "Veia Cava e Ilíacas",
 "grupo": "Vascular",
 "titulo": [
@@ -5733,6 +5787,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-aorta-e-iliacas",
+"metodo": "us",
 "nome": "Aorta e Ilíacas",
 "grupo": "Vascular",
 "titulo": [
@@ -5779,6 +5834,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-arterias-renais",
+"metodo": "us",
 "nome": "Artérias Renais",
 "grupo": "Vascular",
 "titulo": [
@@ -5847,6 +5903,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-arterias-temporais",
+"metodo": "us",
 "nome": "Artérias Temporais",
 "grupo": "Vascular",
 "titulo": [
@@ -5879,6 +5936,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-arterias-carotidas",
+"metodo": "us",
 "nome": "Artérias Carótidas",
 "grupo": "Vascular",
 "titulo": [
@@ -5937,6 +5995,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-arterial-dos-mmii",
+"metodo": "us",
 "nome": "Arterial dos MMII",
 "grupo": "Vascular",
 "titulo": [
@@ -6085,6 +6144,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-arterial-dos-mmii-resumido",
+"metodo": "us",
 "nome": "Arterial dos MMII Resumido",
 "grupo": "Vascular",
 "titulo": [
@@ -6131,6 +6191,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-arterial-dos-mmss",
+"metodo": "us",
 "nome": "Arterial dos MMSS",
 "grupo": "Vascular",
 "titulo": [
@@ -6177,6 +6238,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-venoso-dos-mmii",
+"metodo": "us",
 "nome": "Venoso dos MMII",
 "grupo": "Vascular",
 "titulo": [
@@ -6233,6 +6295,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-venoso-dos-mmss",
+"metodo": "us",
 "nome": "Venoso dos MMSS",
 "grupo": "Vascular",
 "titulo": [
@@ -6277,6 +6340,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-arterial-e-venoso-dos-mmii",
+"metodo": "us",
 "nome": "Arterial e Venoso dos MMII",
 "grupo": "Vascular",
 "titulo": [
@@ -6370,6 +6434,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-varizes",
+"metodo": "us",
 "nome": "Varizes",
 "grupo": "Vascular",
 "titulo": [
@@ -6548,6 +6613,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-arterial-e-venoso-dos-mmss",
+"metodo": "us",
 "nome": "Arterial e Venoso dos MMSS",
 "grupo": "Vascular",
 "titulo": [
@@ -6626,6 +6692,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-fistula-arteriovenosa",
+"metodo": "us",
 "nome": "Fístula Arteriovenosa",
 "grupo": "Vascular",
 "titulo": [
@@ -6904,6 +6971,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-arterial-e-venoso-mmii-com-varizes",
+"metodo": "us",
 "nome": "Arterial e Venoso MMII com Varizes",
 "grupo": "Vascular",
 "titulo": [
@@ -7077,6 +7145,7 @@ const LAU_US_MASKS = [
 },
 {
 "id": "us-mamas",
+"metodo": "us",
 "nome": "Mamas",
 "grupo": "Mama",
 "titulo": [
@@ -7190,6 +7259,369 @@ const LAU_US_MASKS = [
 },
 {
 "text": "Categoria BI-RADS®: 1 (negativo).",
+"dash": true
+}
+],
+"trailer": []
+}
+];
+const LAU_MMG_MASKS = [
+{
+"id": "mmg-mamografia-bilateral",
+"metodo": "mmg",
+"nome": "Mamografia bilateral",
+"grupo": "Mamografia",
+"titulo": [
+"MAMOGRAFIA DIGITAL BILATERAL"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "exame realizado em mamógrafo digital, nas incidências craniocaudal e mediolateral oblíqua bilaterais.",
+"dash": true,
+"opts": [
+"Realizadas incidências complementares: XXX."
+],
+"grp": ""
+},
+{
+"k": "composicao-mamaria",
+"label": "Composição mamária",
+"text": "mamas com densidades fibroglandulares esparsas (padrão ACR B).",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "cirurgias-previas",
+"label": "Cirurgias prévias",
+"text": "sem sinais de intervenção cirúrgica prévia.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "mama-direita",
+"label": "Mama direita",
+"text": "sem nódulos, calcificações suspeitas, assimetrias ou distorção arquitetural.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "mama-esquerda",
+"label": "Mama esquerda",
+"text": "sem nódulos, calcificações suspeitas, assimetrias ou distorção arquitetural.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pele-e-complexo-areolopapilar",
+"label": "Pele e complexo areolopapilar",
+"text": "pele de espessura preservada; complexos areolopapilares de aspecto habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "regioes-axilares",
+"label": "Regiões axilares",
+"text": "linfonodos de aspecto habitual nos prolongamentos axilares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "sem exame prévio disponível para comparação.",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "item",
+"k": "composicao-mamaria"
+},
+{
+"t": "item",
+"k": "cirurgias-previas"
+},
+{
+"t": "item",
+"k": "mama-direita"
+},
+{
+"t": "item",
+"k": "mama-esquerda"
+},
+{
+"t": "item",
+"k": "pele-e-complexo-areolopapilar"
+},
+{
+"t": "item",
+"k": "regioes-axilares"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Mamografia sem alterações significativas.",
+"dash": true
+},
+{
+"text": "Categoria BI-RADS®: 1 (negativo). Rastreamento de rotina, conforme a faixa etária e o risco da paciente.",
+"dash": true
+}
+],
+"trailer": []
+},
+{
+"id": "mmg-mamografia-unilateral",
+"metodo": "mmg",
+"nome": "Mamografia unilateral",
+"grupo": "Mamografia",
+"titulo": [
+"MAMOGRAFIA DIGITAL DA MAMA XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "exame realizado em mamógrafo digital, nas incidências craniocaudal e mediolateral oblíqua.",
+"dash": true,
+"opts": [
+"Realizadas incidências complementares: XXX."
+],
+"grp": ""
+},
+{
+"k": "composicao-mamaria",
+"label": "Composição mamária",
+"text": "mama com densidades fibroglandulares esparsas (padrão ACR B).",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "cirurgias-previas",
+"label": "Cirurgias prévias",
+"text": "sem sinais de intervenção cirúrgica prévia.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "mama",
+"label": "Mama",
+"text": "sem nódulos, calcificações suspeitas, assimetrias ou distorção arquitetural.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pele-e-complexo-areolopapilar",
+"label": "Pele e complexo areolopapilar",
+"text": "pele de espessura preservada; complexo areolopapilar de aspecto habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "regiao-axilar",
+"label": "Região axilar",
+"text": "linfonodos de aspecto habitual no prolongamento axilar.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "sem exame prévio disponível para comparação.",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "item",
+"k": "composicao-mamaria"
+},
+{
+"t": "item",
+"k": "cirurgias-previas"
+},
+{
+"t": "item",
+"k": "mama"
+},
+{
+"t": "item",
+"k": "pele-e-complexo-areolopapilar"
+},
+{
+"t": "item",
+"k": "regiao-axilar"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Mamografia sem alterações significativas.",
+"dash": true
+},
+{
+"text": "Categoria BI-RADS®: 1 (negativo).",
+"dash": true
+}
+],
+"trailer": []
+},
+{
+"id": "mmg-mamografia-com-implantes",
+"metodo": "mmg",
+"nome": "Mamografia com implantes",
+"grupo": "Mamografia",
+"titulo": [
+"MAMOGRAFIA DIGITAL BILATERAL COM IMPLANTES MAMÁRIOS"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "exame realizado em mamógrafo digital, nas incidências craniocaudal e mediolateral oblíqua bilaterais, complementadas por incidências com deslocamento posterior dos implantes (manobra de Eklund).",
+"dash": true,
+"opts": [
+"Realizadas incidências complementares: XXX."
+],
+"grp": ""
+},
+{
+"k": "composicao-mamaria",
+"label": "Composição mamária",
+"text": "mamas com densidades fibroglandulares esparsas (padrão ACR B).",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "implantes-mamarios",
+"label": "Implantes mamários",
+"text": "implantes retroglandulares XX retropeitorais bilaterais, de contornos regulares, sem sinais mamográficos de rotura extracapsular.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "mama-direita",
+"label": "Mama direita",
+"text": "sem nódulos, calcificações suspeitas, assimetrias ou distorção arquitetural.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "mama-esquerda",
+"label": "Mama esquerda",
+"text": "sem nódulos, calcificações suspeitas, assimetrias ou distorção arquitetural.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pele-e-complexo-areolopapilar",
+"label": "Pele e complexo areolopapilar",
+"text": "pele de espessura preservada; complexos areolopapilares de aspecto habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "regioes-axilares",
+"label": "Regiões axilares",
+"text": "linfonodos de aspecto habitual nos prolongamentos axilares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "sem exame prévio disponível para comparação.",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "item",
+"k": "composicao-mamaria"
+},
+{
+"t": "item",
+"k": "implantes-mamarios"
+},
+{
+"t": "item",
+"k": "mama-direita"
+},
+{
+"t": "item",
+"k": "mama-esquerda"
+},
+{
+"t": "item",
+"k": "pele-e-complexo-areolopapilar"
+},
+{
+"t": "item",
+"k": "regioes-axilares"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Implantes mamários sem sinais mamográficos de rotura extracapsular.",
+"dash": true
+},
+{
+"text": "Categoria BI-RADS®: 2 (achado benigno).",
+"dash": true
+},
+{
+"text": "A mamografia não avalia adequadamente a integridade intracapsular dos implantes; quando necessário, a ressonância magnética é o método indicado.",
 "dash": true
 }
 ],
