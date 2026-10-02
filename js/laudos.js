@@ -699,7 +699,7 @@ function lauFI(id){ return LAU_FRASES[parseInt(id,10)]; }
 const LAU_QTPL = 'Identificam-se outras XXX formações de aspecto semelhante, a maior medindo XXX cm.';
 function lauQtd(f, bag, id){ return f.q ? ((bag['d'+id]||{}).qtd || '1') : '1'; }
 /* mama: em "vários semelhantes" informa-se a localização e as medidas de cada um */
-const LAU_LOCT = 'às XXX horas, a XXX cm do mamilo, medindo XXX x XXX x XXX cm';
+const LAU_LOCT = 'às XXX horas, a XXX cm do mamilo, a XXX cm da pele, medindo XXX x XXX x XXX cm';
 function lauMulti(f){ return f.o==='mama'; }
 function lauQn(d){ const n=parseInt((d||{}).qn,10); return isNaN(n) ? 2 : Math.max(2, Math.min(12, n)); }
 function lauLocs(f, id, bag, html){
@@ -712,6 +712,10 @@ function lauLocCurta(vals){
   const v=i=> lauHas((vals||[])[i]) ? esc(lauN(vals[i])) : lauMk('___',true);
   return `às ${v(0)} h, ${v(2)} x ${v(3)} x ${v(4)} cm`;
 }
+/* distâncias do mamilo e da pele são opcionais: sem valor, saem do texto */
+function lauSemDistVazia(t){
+  return t.replace(/a (<mark class="lau-ph">)?XXX(<\/mark>)? cm d[ao] (mamilo|pele), /g, '');
+}
 function lauFraseText(id, bag, html){
   const f=lauFI(id); if(!f) return '';
   let t;
@@ -723,7 +727,7 @@ function lauFraseText(id, bag, html){
     else if(lauMulti(f)) t += lauLocs(f,id,bag,html).slice(1).map((l,j)=>`${html?'<br>':'\n'}Formação semelhante ${j+2}: ${l}.`).join('');
     else t += ' ' + lauFill(LAU_QTPL, bag['q'+id], html);
   }
-  return t;
+  return f.o==='mama' ? lauSemDistVazia(t) : t;
 }
 function lauFraseConc(id, bag, lbl){
   const f=lauFI(id); if(!f) return '';
