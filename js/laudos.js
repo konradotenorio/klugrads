@@ -1363,12 +1363,45 @@ function lauConcs(m){
   let br=null; const cats=new Set();
   const seeBr=(list,bag)=>(list||[]).forEach(id=>{ const c=lauBrOf(id,bag); if(c){ cats.add(c); if(br==null || LAU_BR_ORDEM.indexOf(c)>LAU_BR_ORDEM.indexOf(br)) br=c; } });
   vis.forEach(it=>seeBr(state.lau.v[it.k].__f, state.lau.v[it.k].__v)); seeBr(state.lau.xf, state.lau.xv);
-  const mgCir = m.metodo==='mmg' && m.items.some(it=>it.sk==='mgcir' && (lauBuild(m,it).conc||[]).length);
-  if(mgCir){
-    if(br==null) out.push({html:'Categoria BI-RADS®: 2 (achado benigno).'});
-    else { cats.add('2'); if(LAU_BR_ORDEM.indexOf('2')>LAU_BR_ORDEM.indexOf(br)) br='2'; }
+  if(m.metodo==='mmg'){
+    // mamografia: achados sem categoria em cada linha, iguais nas duas mamas viram uma frase só,
+    // e uma única categoria BI-RADS® no fim (a mais alta)
+    if(m.items.some(it=>it.sk==='mgcir' && !lauItemOutroLado(m,it) && (lauBuild(m,it).conc||[]).length)){
+      cats.add('2');
+    }
+    // hierarquia ACR para a avaliação global: 1 < 2 < 3 < 6 < 0 < 4 < 5
+    const ORD=['1','2','3','6','0','4','4A','4B','4C','5'];
+    br = [...cats].sort((a,b)=>ORD.indexOf(b)-ORD.indexOf(a))[0] || null;
+    const res = lauMgMergeConc(out.map(o=>o.html));
+    if(br) res.push(`Categoria BI-RADS®: ${esc(br)} (${esc(lauManejo(br))}).`);
+    return res.map(h=>({html:h}));
   }
   if(br && cats.size>1) out.push({html:`Categoria BI-RADS® final do exame: ${esc(br)} (${esc(lauManejo(br))}).`});
+  return out;
+}
+/* singular → plural quando o mesmo achado está nas duas mamas */
+const LAU_MG_PLURAL = [
+  [/^Ginecomastia nas mamas/,'Ginecomastia bilateral'],
+  [/^Nódulo /,'Nódulos '], [/^Linfonodo intramamário/,'Linfonodos intramamários'], [/^Fibroadenoma calcificado/,'Fibroadenomas calcificados'],
+  [/^Assimetria global/,'Assimetrias globais'], [/^Assimetria focal/,'Assimetrias focais'], [/^Assimetria /,'Assimetrias '],
+  [/^Distorção arquitetural cicatricial/,'Distorções arquiteturais cicatriciais'], [/^Distorção arquitetural/,'Distorções arquiteturais'],
+  [/^Lesão com conteúdo/,'Lesões com conteúdo'], [/^Clipe metálico/,'Clipes metálicos'], [/^Status pós-mastectomia/,'Status pós-mastectomia'],
+];
+function lauMgMergeConc(lines){
+  const tira = h => h.replace(/\s*\(BI-RADS®[^)]*\)/g,'').replace(/\s+—\s+BI-RADS®.*$/,'').replace(/[\s.;,]*$/,'') + '.';
+  const out=[], idx={};
+  lines.map(tira).forEach(h=>{
+    const mm = h.match(/ na mama (direita|esquerda)/);
+    if(!mm){ if(out.indexOf(h)<0) out.push(h); return; }
+    const key = h.replace(mm[0],' na mama §');
+    if(idx[key]==null){ idx[key]={i:out.length, lados:new Set([mm[1]])}; out.push(h); return; }
+    const g=idx[key]; g.lados.add(mm[1]);
+    if(g.lados.size>1){
+      let t = key.replace(' na mama §',' nas mamas'); const pl = LAU_MG_PLURAL.find(p=>p[0].test(t));
+      t = pl ? t.replace(pl[0],pl[1]) : (/^[A-ZÀ-Ú][a-zà-ú]*s\b/.test(t) ? t : key.replace(' na mama §',' em ambas as mamas'));
+      out[g.i]=t;
+    }
+  });
   return out;
 }
 function lauConcHTML(m){
