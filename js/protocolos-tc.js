@@ -44,7 +44,7 @@ const PROTO_TC = [
    ind:'Investigação de hematúria.',
    fases:['Sem contraste','Arterial','Venosa','Tardia (excretora)'],
    tec:['Aquisição multifásica.','Reconstruções 3D / MIP para pelve renal e ureteres.'],
-   pts:['Lesões hipervasculares (> 110 HU) sugerem carcinoma de células claras; hipovasculares (< 90 HU), carcinoma papilífero.',
+   pts:['Realce intenso na fase corticomedular (aproximadamente > 110 HU) sugere carcinoma de células claras; realce discreto (aproximadamente < 90 HU) sugere carcinoma papilífero — os limites variam entre os estudos.',
         'A fase tardia é essencial para o carcinoma urotelial (células transicionais).']},
 
   {id:'doador-renal', g:'gu', t:'Doador renal',
@@ -62,9 +62,10 @@ const PROTO_TC = [
 
   {id:'massa-renal', g:'gu', t:'Massa renal',
    ind:'Avaliação de massa renal suspeita ou conhecida.',
-   fases:['Sem contraste','Arterial (35 s)','Venosa (70 s)','Tardia (4–5 min)'],
+   fases:['Sem contraste','Corticomedular / arterial (35 s)','Nefrográfica (80–100 s)','Tardia (4–5 min)'],
    tec:[],
-   pts:['Lesões entre 20 e 70 HU na fase sem contraste são indeterminadas ("zona de perigo") e exigem o estudo contrastado.',
+   pts:['A fase nefrográfica (80–100 s) é a mais sensível para detectar e caracterizar massas renais.',
+        'Lesões entre 20 e 70 HU na fase sem contraste são indeterminadas ("zona de perigo") e exigem o estudo contrastado.',
         'Massa sólida com realce acima de 100 HU sugere carcinoma de células claras.'],
    rel:[['bosniak-tc','Bosniak v2019 (TC)']]},
 
@@ -76,7 +77,7 @@ const PROTO_TC = [
 
   {id:'urotelial', g:'gu', t:'Carcinoma urotelial do trato superior (uro-TC)',
    ind:'Suspeita de carcinoma urotelial (células transicionais) do sistema coletor ou ureter.',
-   fases:['Sem contraste','Corticomedular (30–35 s)','Nefrográfica (60–70 s)','Excretora (5–8 min)'],
+   fases:['Sem contraste','Corticomedular (30–35 s)','Nefrográfica (80–100 s)','Excretora (5–8 min)'],
    tec:['Hidratação oral para otimizar a distensão do sistema coletor.'],
    pts:['O sinal do "cálice amputado" reflete invasão tumoral.']},
 
@@ -108,9 +109,10 @@ const PROTO_TC = [
 
   {id:'sangramento-gi', g:'gi', t:'Sangramento digestivo (alto e baixo)',
    ind:'Suspeita de hemorragia digestiva.',
-   fases:['Arterial (30–35 s)','Venosa (70 s)'],
-   tec:['Água via oral (750–1000 mL) como contraste neutro, para distensão gástrica e intestinal.','Dupla fase estrita, sem aquisição sem contraste.'],
-   pts:['O sangramento ativo muda de aspecto entre a fase arterial e a venosa.']},
+   fases:['Sem contraste','Arterial (25–35 s / bolus tracking)','Portal (60–70 s)'],
+   tec:['Não usar contraste oral (positivo ou água): o contraste positivo simula extravasamento e a água dilui e pode mascarar o sangramento.',
+        'Fase sem contraste para identificar material espontaneamente denso (sangue coagulado, comprimidos, clipes, contraste prévio) que simula extravasamento.'],
+   pts:['O sangramento ativo aparece como contraste extravasado na fase arterial, que aumenta e muda de forma na fase portal.']},
 
   {id:'massa-pancreatica', g:'gi', t:'Massa pancreática',
    ind:'Suspeita de adenocarcinoma pancreático.',
@@ -167,7 +169,7 @@ const PROTO_TC = [
   {id:'tep', g:'card', t:'Tromboembolismo pulmonar (TEP)',
    ind:'Pesquisa de trombos nas artérias pulmonares.',
    fases:['Arterial pulmonar (bolus tracking)'],
-   tec:['Disparo do bolus tracking no tronco da artéria pulmonar ao atingir 200 HU.','Cortes finos de no máximo 1 mm (obrigatório).'],
+   tec:['Bolus tracking com ROI no tronco da artéria pulmonar; disparo ao atingir cerca de 100–150 HU (ajustar ao equipamento e ao protocolo do serviço).','Cortes finos de no máximo 1 mm (obrigatório).'],
    pts:['Cortes finos evitam laudos falso-negativos.']},
 
   {id:'nodulo-pulmonar', g:'card', t:'Nódulo pulmonar (fumantes)',
