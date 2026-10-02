@@ -370,13 +370,12 @@ ULTRASSONOGRAFIA PÉLVICA TRANSVAGINAL
 Nome do Paciente: 
 Data de Nascimento: 
 Data do Exame: 
-Exame realizado pelas vias abdominal / suprapúbica XXX e transvaginal.
 - Bexiga: com paredes regulares e conteúdo anecogênico.
-- Útero: em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
+- Útero: em anteversoflexão* XX retroversão XX medioversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
 - Miométrio: com ecotextura característica, sem nódulos conspícuos.
 - Endométrio: centrado e homogêneo, com espessura bilaminar de XX cm.
-- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
-- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
+- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
+- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 - Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
 Conclusão:
 - Exame sem alterações significativas.
@@ -390,14 +389,13 @@ ULTRASSONOGRAFIA PÉLVICA TRANSVAGINAL
 Nome do Paciente: 
 Data de Nascimento: 
 Data do Exame: 
-Exame realizado pelas vias abdominal / suprapúbica XXX e transvaginal.
 - Bexiga: com paredes regulares e conteúdo anecogênico.
-- Útero: em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
+- Útero: em anteversoflexão* XX retroversão XX medioversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
 - Miométrio: com ecotextura característica, sem nódulos conspícuos.
 - Endométrio: centrado e homogêneo, com espessura bilaminar de XX cm.
 - Dispositivo contraceptivo: centrado na cavidade endometrial. Distância DIU-serosa fúndica: XXX ; distância DIU-fundo da cavidade: XXX cm.
-- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
-- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
+- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
+- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 - Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
 Conclusão:
  - DIU normoposicionado na cavidade uterina.
@@ -414,7 +412,7 @@ Data de Nascimento:
 Data do Exame: 
 Data da última menstruação: XXX. Ciclo: Espontâneo XX induzido.
 Exame realizado no dia XX do ciclo, pelas vias suprapúbica e transvaginal.
-- Útero: em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
+- Útero: em anteversoflexão* XX retroversão XX medioversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
 - Miométrio: com ecotextura característica, sem nódulos conspícuos.
 - Endométrio: centrado e homogêneo, com espessura bilaminar de XX cm.
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo cerca de XX folículos maiores, o dominante medindo XX cm (diâmetro médio).
@@ -481,8 +479,8 @@ XXX - Dispositivo contraceptivo: centrado na cavidade endometrial. Distância DI
 - Colo uterino: forma normal e canal endocervical sem alterações ecográficas. 
 XXX Sinais de histerotomia (cicatriz cesárea) ístmica anterior sem particularidades XXX com pequena istmocele.
 XXX Discretas estrias hipoecogênicas na serosa anterior do útero e no espaço vésico uterino, provavelmente de natureza fibrocicatricial.
-- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
-- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
+- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
+- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 - Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
 Não há sinais de endometriose profunda no septo retovaginal, fórnice vaginal ou nas regiões retrocervical, paracervical, recesso vésico-uterino e alças intestinais avaliadas. 
 Não há sinais de endometriose profunda no ceco. 
@@ -1123,14 +1121,13 @@ ULTRASSONOGRAFIA PÉLVICA TRANSVAGINAL COM DOPPLER
 Nome do Paciente: 
 Data de Nascimento: 
 Data do Exame: 
-Exame realizado pelas vias abdominal / suprapúbica XXX e transvaginal.
 - Bexiga: com paredes regulares e conteúdo anecogênico.
-- Útero: em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
+- Útero: em anteversoflexão* XX retroversão XX medioversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
 - Miométrio: com ecotextura característica, sem nódulos conspícuos. Vascularização miometrial de aspecto habitual ao Doppler colorido.
 - Endométrio: centrado e homogêneo, com espessura bilaminar de XX cm, sem focos de vascularização anômala.
 - Artérias uterinas: com padrão espectral habitual.
-- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
-- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.
+- Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
+- Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 Ao estudo Doppler colorido, não foram observados focos de vascularização anômala nos ovários. 
 - Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
   

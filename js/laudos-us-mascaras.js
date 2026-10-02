@@ -1521,14 +1521,6 @@ const LAU_US_MASKS = [
 ],
 "items": [
 {
-"k": "exame-realizado-pelas-vias-abd",
-"label": "",
-"text": "Exame realizado pelas vias abdominal / suprapúbica XXX e transvaginal.",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
 "k": "bexiga",
 "label": "Bexiga",
 "text": "com paredes regulares e conteúdo anecogênico.",
@@ -1539,7 +1531,7 @@ const LAU_US_MASKS = [
 {
 "k": "utero",
 "label": "Útero",
-"text": "em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.",
+"text": "em anteversoflexão* XX retroversão XX medioversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -1563,7 +1555,7 @@ const LAU_US_MASKS = [
 {
 "k": "ovario-direito",
 "label": "Ovário direito",
-"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.",
+"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -1571,7 +1563,7 @@ const LAU_US_MASKS = [
 {
 "k": "ovario-esquerdo",
 "label": "Ovário esquerdo",
-"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.",
+"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -1586,10 +1578,6 @@ const LAU_US_MASKS = [
 }
 ],
 "seq": [
-{
-"t": "item",
-"k": "exame-realizado-pelas-vias-abd"
-},
 {
 "t": "item",
 "k": "bexiga"
@@ -1638,14 +1626,6 @@ const LAU_US_MASKS = [
 ],
 "items": [
 {
-"k": "exame-realizado-pelas-vias-abd",
-"label": "",
-"text": "Exame realizado pelas vias abdominal / suprapúbica XXX e transvaginal.",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
 "k": "bexiga",
 "label": "Bexiga",
 "text": "com paredes regulares e conteúdo anecogênico.",
@@ -1656,7 +1636,7 @@ const LAU_US_MASKS = [
 {
 "k": "utero",
 "label": "Útero",
-"text": "em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.",
+"text": "em anteversoflexão* XX retroversão XX medioversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -1688,7 +1668,7 @@ const LAU_US_MASKS = [
 {
 "k": "ovario-direito",
 "label": "Ovário direito",
-"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.",
+"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -1696,7 +1676,7 @@ const LAU_US_MASKS = [
 {
 "k": "ovario-esquerdo",
 "label": "Ovário esquerdo",
-"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.",
+"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -1711,10 +1691,6 @@ const LAU_US_MASKS = [
 }
 ],
 "seq": [
-{
-"t": "item",
-"k": "exame-realizado-pelas-vias-abd"
-},
 {
 "t": "item",
 "k": "bexiga"
@@ -1777,7 +1753,7 @@ const LAU_US_MASKS = [
 {
 "k": "utero",
 "label": "Útero",
-"text": "em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.",
+"text": "em anteversoflexão* XX retroversão XX medioversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -2062,7 +2038,7 @@ const LAU_US_MASKS = [
 {
 "k": "ovario-direito",
 "label": "Ovário direito",
-"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.",
+"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -2070,7 +2046,7 @@ const LAU_US_MASKS = [
 {
 "k": "ovario-esquerdo",
 "label": "Ovário esquerdo",
-"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.",
+"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -4871,14 +4847,6 @@ const LAU_US_MASKS = [
 ],
 "items": [
 {
-"k": "exame-realizado-pelas-vias-abd",
-"label": "",
-"text": "Exame realizado pelas vias abdominal / suprapúbica XXX e transvaginal.",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
 "k": "bexiga",
 "label": "Bexiga",
 "text": "com paredes regulares e conteúdo anecogênico.",
@@ -4889,7 +4857,7 @@ const LAU_US_MASKS = [
 {
 "k": "utero",
 "label": "Útero",
-"text": "em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.",
+"text": "em anteversoflexão* XX retroversão XX medioversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -4921,7 +4889,7 @@ const LAU_US_MASKS = [
 {
 "k": "ovario-direito",
 "label": "Ovário direito",
-"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.",
+"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -4929,7 +4897,7 @@ const LAU_US_MASKS = [
 {
 "k": "ovario-esquerdo",
 "label": "Ovário esquerdo",
-"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada, com cistos / folículos de até XXX cm.\nAo estudo Doppler colorido, não foram observados focos de vascularização anômala nos ovários.",
+"text": "medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.\nAo estudo Doppler colorido, não foram observados focos de vascularização anômala nos ovários.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -4944,10 +4912,6 @@ const LAU_US_MASKS = [
 }
 ],
 "seq": [
-{
-"t": "item",
-"k": "exame-realizado-pelas-vias-abd"
-},
 {
 "t": "item",
 "k": "bexiga"
