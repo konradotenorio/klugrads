@@ -7094,7 +7094,7 @@ const LAU_US_MASKS = [
 {
 "k": "composicao-do-tecido-de-fundo",
 "label": "Composição do tecido de fundo",
-"text": "adiposa XX fibroglandular XX heterogênea.",
+"text": "adiposa XX fibroglandular* XX heterogênea.",
 "dash": true,
 "opts": [],
 "grp": ""

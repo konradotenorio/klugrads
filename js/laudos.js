@@ -473,7 +473,7 @@ function lauNorm(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,''
 const LAU_PREP = ['à','ao','a','de','do','da','em','no','na','e'];
 const LAU_PH_RE = /^([(\[]*)(X{1,3})([^\sX]*)$/;
 const LAU_UNIT = /^(cm|mm|m|ml|mL|g|kg|bpm|kPa|%|cm³|mm³|semanas?|dias?|anos?|meses)[.,;:)]*$/;
-function lauIsWord(w){ return /^[A-Za-zÀ-ÿ-]+[.,;:)]*$/.test(w||'') && !/^x$/i.test(w) && !/^X{1,3}$/.test(w); }
+function lauIsWord(w){ return /^[A-Za-zÀ-ÿ-]+\*?[.,;:)]*$/.test(w||'') && !/^x$/i.test(w) && !/^X{1,3}$/.test(w); }
 function lauTokLine(line, start){
   const W = line.split(' '); const out=[]; let i=0, n=start;
   while(i<W.length){
@@ -495,7 +495,8 @@ function lauTokLine(line, start){
         if(!suf && W[k]==='XX' && lauIsWord(W[k+1])){ j=k+1; continue; }
         j=k; break;
       }
-      out.push({t:'c', i:n++, o:opts, pre:'', suf}); i=j; continue;
+      const def = (opts.find(o=>/\*$/.test(o))||'').replace(/\*$/,'');
+      out.push({t:'c', i:n++, o:opts.map(o=>o.replace(/\*$/,'')), def, pre:'', suf}); i=j; continue;
     }
     if(m && (m[2].length>=2 || /^(cm|mm|m|g|kg|mL|ml|%|cm³|kPa|bpm)/.test(W[i+1]||'') )){ out.push({t:'p', i:n++, pre:m[1], suf:m[3]}); i++; continue; }
     out.push({t:'w', s:w}); i++;
@@ -550,6 +551,7 @@ function lauAutoVal(tpl, vals, i){
 function lauVal(tpl, vals, i){
   const v=vals&&vals[i];
   if(lauHas(v)) return {v:String(v).trim(), ok:true};
+  const tk=tpl.lines.flat().find(t=>t.i===i && t.t==='c' && t.def); if(tk) return {v:tk.def, ok:true};
   const a=lauAutoVal(tpl, vals||[], i); if(a!=null) return {v:a, ok:true};
   return {v:null, ok:false};
 }
@@ -1192,7 +1194,7 @@ function lauInlineForm(k, tplId, str, vals){
   return `<div class="lau-inl">${tpl.lines.map(toks=>toks.map(tk=>{
     if(tk.t==='w') return esc(tk.s);
     const v=vals[tk.i]||'';
-    if(tk.t==='c') return esc(tk.pre)+`<select class="lau-ph-sel" onchange="lauPh('${k}','${tplId}',${tk.i},this.value,${sj})"><option value="">${esc(tk.o.join(' / '))}</option>${tk.o.map(o=>`<option ${v===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`+esc(tk.suf);
+    if(tk.t==='c') return esc(tk.pre)+`<select class="lau-ph-sel" onchange="lauPh('${k}','${tplId}',${tk.i},this.value,${sj})">${tk.def?'':`<option value="">${esc(tk.o.join(' / '))}</option>`}${tk.o.map(o=>`<option ${(v||tk.def)===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`+esc(tk.suf);
     const av=lauAutoVal(tpl, vals, tk.i);
     return esc(tk.pre)+`<input id="ph-${k}-${tplId}-${tk.i}" class="lau-ph-in" type="text" value="${esc(v)}" placeholder="${av!=null?esc(av):'…'}" oninput="lauPh('${k}','${tplId}',${tk.i},this.value,${sj})">`+esc(tk.suf);
   }).join(' ')).join('<br>')}</div>`;
