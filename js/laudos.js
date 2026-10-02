@@ -513,7 +513,25 @@ function lauNorm(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,''
 /* =========================================================================
    MAMOGRAFIA — itens estruturados (composição ACR e cirurgias prévias)
    ========================================================================= */
-const LAU_STRUCT_LABELS_MMG = { 'composicao mamaria':'mgcomp', 'cirurgias previas':'mgcir' };
+const LAU_STRUCT_LABELS_MMG = { 'tecnica':'mgtec', 'composicao mamaria':'mgcomp', 'cirurgias previas':'mgcir' };
+/* técnica: incidências complementares (o texto padrão vem da máscara) */
+const LAU_MG_INC = [['mag','Magnificação com compressão seletiva','magnificação com compressão seletiva'],['comp','Compressão localizada','compressão localizada'],
+  ['ccx','Crânio-caudal exagerada','crânio-caudal exagerada'],['clv','Cleavage ou incidência medial exagerada','cleavage (incidência medial exagerada)'],
+  ['rol','Mama “rolada”','mama “rolada”'],['perf','Perfil','perfil'],['cleo','Cleópatra','Cleópatra'],['axi','Incidência axilar','axilar']];
+LAU_STRUCT.mgtec = {k:'mgtec', label:'Técnica',
+  normal:'exame realizado em mamógrafo digital, nas incidências craniocaudal e mediolateral oblíqua bilaterais.',
+  ctrls:[{t:'head', lbl:'Incidências complementares'}]
+    .concat(LAU_MG_INC.map(o=>({t:'check', k:'i_'+o[0], lbl:o[1]})))
+    .concat([{t:'text', k:'incOut', lbl:'Outra (opcional)', ph:'ex.: tangencial'},
+             {t:'radio', k:'incL', lbl:'Mama', opts:[['ne','Não especificar'],['d','Direita'],['e','Esquerda'],['bi','Bilateral']], show:s=>LAU_MG_INC.some(o=>s['i_'+o[0]])||lauHas(s.incOut)}]),
+  build(s){
+    const l = LAU_MG_INC.filter(o=>s['i_'+o[0]]).map(o=>o[2]);
+    if(lauHas(s.incOut)) l.push(s.incOut.trim());
+    if(!l.length) return {txt:null, conc:[]};
+    const lado = {d:' da mama direita', e:' da mama esquerda', bi:' bilaterais'}[s.incL]||'';
+    const base = LAU_NORMAL('mgtec').trim().replace(/\.?$/,'.');
+    return {txt:`${base} ${l.length>1?'Realizadas incidências complementares':'Realizada incidência complementar'}${lado}: ${lauJuntaE(l)}.`, conc:[]};
+  }};
 /* mama única (mamografia unilateral) ou as duas */
 function lauMgSing(){ const L=state.lau, m=L&&lauModelo(L.model); return !!(m && m.lado && !m.lado.bil); }
 LAU_STRUCT.mgcomp = {k:'mgcomp', label:'Composição mamária',

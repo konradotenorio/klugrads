@@ -7280,9 +7280,7 @@ const LAU_MMG_MASKS = [
 "label": "Técnica",
 "text": "exame realizado em mamógrafo digital, nas incidências craniocaudal e mediolateral oblíqua bilaterais.",
 "dash": true,
-"opts": [
-"Realizadas incidências complementares: XXX."
-],
+"opts": [],
 "grp": ""
 },
 {
@@ -7403,9 +7401,7 @@ const LAU_MMG_MASKS = [
 "label": "Técnica",
 "text": "exame realizado em mamógrafo digital, nas incidências craniocaudal e mediolateral oblíqua.",
 "dash": true,
-"opts": [
-"Realizadas incidências complementares: XXX."
-],
+"opts": [],
 "grp": ""
 },
 {
@@ -7514,9 +7510,7 @@ const LAU_MMG_MASKS = [
 "label": "Técnica",
 "text": "exame realizado em mamógrafo digital, nas incidências craniocaudal e mediolateral oblíqua bilaterais, complementadas por incidências com deslocamento posterior dos implantes (manobra de Eklund).",
 "dash": true,
-"opts": [
-"Realizadas incidências complementares: XXX."
-],
+"opts": [],
 "grp": ""
 },
 {
