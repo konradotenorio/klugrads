@@ -2207,13 +2207,14 @@ const LAU_US_MASKS = [
 "•\t> 17 kPa: Cirrose descompensada (hipertensão portal).",
 "* Barr, Richard G., et al. \"Update to the society of radiologists in ultrasound liver elastography consensus statement.\" Radiology 296.2 (2020): 263-274.",
 "Referências Bibliográficas:",
-"Barr RG et Al – Elastography Assessment of Liver Fibrosis: Society of Radiologists in Ultrasound Consensus Conference Statement – Radiology 2015; 276 (3): 845-861"
+"Barr RG et Al – Elastography Assessment of Liver Fibrosis: Society of Radiologists in Ultrasound Consensus Conference Statement – Radiology 2015; 276 (3): 845-861",
+"G. Ferraioli et al - WFUMB Guidelines for Ultrasound Elastography - Liver - Ultrasound in Med. & Biol., Vol. 41, No. 5, pp. 1161–1179, 2015 DOI: https://doi.org/10.1016/j.ultrasmedbio.2015.03.007"
 ]
 },
 {
 "id": "us-torax",
 "nome": "Tórax",
-"grupo": "Vascular",
+"grupo": "Medicina interna",
 "titulo": [
 "ULTRASSONOGRAFIA DO TÓRAX"
 ],
@@ -2281,7 +2282,7 @@ const LAU_US_MASKS = [
 {
 "id": "us-torax-cupulas",
 "nome": "Tórax: Cúpulas",
-"grupo": "Vascular",
+"grupo": "Medicina interna",
 "titulo": [
 "ULTRASSONOGRAFIA DO TÓRAX",
 "(COM ÊNFASE NA AVALIAÇÃO DIAFRAGMÁTICA DINÂMICA)"

@@ -41,7 +41,7 @@ models = []
 def read_models(lns, extra=False):
     group = None; cur = None
     for ln in lns:
-        m = re.match(r'^([B-H])\.\s', ln)
+        m = re.match(r'^([B-H])\.\s+[A-ZÀ-Ú][A-ZÀ-Ú ]+:\s*$', ln)   # cabeçalho de grupo (ex.: "D. MUSCULOESQUELÉTICO:")
         if m: group = GROUPS[m.group(1)]; continue
         m = re.match(r'^(\d+)\.\s+(.+)$', ln)
         if m and group:

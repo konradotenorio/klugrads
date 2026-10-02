@@ -1323,33 +1323,40 @@ function laudosHTML(){
   </div>`;
 }
 /* lista agrupada com busca (usada nos modelos e nas configurações) */
+/* Lista com filtro por subespecialidade (chips) e busca. Com texto na busca,
+   procura em todas as subespecialidades. */
 function lauListHTML(metodo, onclickFn, sub){
+  const all = LAUDO_MODELOS[metodo]||[];
   const q = lauNorm(state.lauQ||'');
-  const ms = (LAUDO_MODELOS[metodo]||[]).filter(m=>!q || lauNorm(m.nome+' '+m.grupo).indexOf(q)>=0);
-  const groups = LAU_GRUPOS.map(g=>{
-    const xs=ms.filter(m=>m.grupo===g); if(!xs.length) return '';
-    return `<div class="lau-lg">${esc(g)}</div>` + xs.map(m=>{
-      return `<div class="lau-li" onclick="${onclickFn}('${m.id}')">
+  const grupos = LAU_GRUPOS.filter(g=>all.some(m=>m.grupo===g));
+  if(!state.lauGrp || grupos.indexOf(state.lauGrp)<0) state.lauGrp = grupos[0];
+  const ms = q ? all.filter(m=>lauNorm(m.nome+' '+m.grupo).indexOf(q)>=0) : all.filter(m=>m.grupo===state.lauGrp);
+  const row = m=>`<div class="lau-li" onclick="${onclickFn}('${m.id}')">
         <div class="lau-lt">${esc(m.nome)}${m.estruturado?' <span class="lau-tag ok">Achados estruturados</span>':''}</div>
         <div class="lau-ld">${sub(m)}</div>
         <div class="chev">${svgIcon(P.chev,16,{sw:2})}</div></div>`;
-    }).join('');
-  }).join('');
-  return `<div class="lau-search"><input type="search" placeholder="Buscar laudo…" value="${esc(state.lauQ||'')}" oninput="state.lauQ=this.value;lauRefreshList()"></div>
-    <div id="lau-list">${groups || '<div class="empty"><div class="msg">Nenhum laudo encontrado.</div></div>'}</div>`;
+  const body = q
+    ? grupos.map(g=>{ const xs=ms.filter(m=>m.grupo===g); return xs.length ? `<div class="lau-lg">${esc(g)}</div>`+xs.map(row).join('') : ''; }).join('')
+    : ms.map(row).join('');
+  const chips = grupos.map(g=>`<button type="button" class="ti-ftog ${!q&&state.lauGrp===g?'on':''}" onclick="state.lauGrp='${g}';state.lauQ='';lauRefreshList(true)">${esc(g)} <span class="n">${all.filter(m=>m.grupo===g).length}</span></button>`).join('');
+  return `<div class="lau-search"><input id="lau-q" type="search" placeholder="Buscar em todos os laudos…" value="${esc(state.lauQ||'')}" oninput="state.lauQ=this.value;lauRefreshList()"></div>
+    <div id="lau-grps" class="lau-chips lau-grps">${chips}</div>
+    <div id="lau-list">${body || '<div class="empty"><div class="msg">Nenhum laudo encontrado.</div></div>'}</div>`;
 }
-function lauRefreshList(){
+function lauRefreshList(limpaBusca){
   const v=state.view; const el=document.getElementById('lau-list'); if(!el) return;
   const tmp=document.createElement('div');
   tmp.innerHTML = v==='laudoCfg' ? lauCfgListHTML() : laudoModHTML();
   const n=tmp.querySelector('#lau-list'); if(n) el.innerHTML=translateHTML(n.innerHTML);
+  const g=tmp.querySelector('#lau-grps'), ge=document.getElementById('lau-grps'); if(g&&ge) ge.innerHTML=translateHTML(g.innerHTML);
+  if(limpaBusca){ const qi=document.getElementById('lau-q'); if(qi) qi.value=''; }
 }
 function laudoModHTML(){
   const m = laudoMod(state.laudoMod);
   if(!m || !m.ativo) return `<div class="calc-list-wrap"><div class="empty"><div class="msg">${esc(m?m.nome:'Método')} — modelos <b>em breve</b>.</div></div></div>`;
   return `<div class="calc-list-wrap">
     <div class="lau-beta"><b>Em testes.</b> Toque no laudo para abrir. Os órgãos marcados com "Achados estruturados" já montam as frases e a conclusão sozinhos; nos demais, preencha os campos e descreva a alteração.</div>
-    ${lauListHTML(m.id, 'openLaudo', (x)=>`${x.items.length} itens`)}
+    ${lauListHTML(m.id, 'openLaudo', (x)=>`${x.items.length} ${x.items.length===1?"item":"itens"}`)}
   </div>`;
 }
 
