@@ -7402,14 +7402,6 @@ const LAU_DMO_MASKS = [
 "grp": ""
 },
 {
-"k": "referencia",
-"label": "Referência",
-"text": "Laudo elaborado de acordo com as Posições Oficiais de 2023 da International Society for Clinical Densitometry (ISCD) e as Diretrizes Técnicas de Densitometria Óssea do PADI (Colégio Brasileiro de Radiologia).",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
 "k": "antebraco",
 "label": "Antebraço",
 "text": "A DMO do ANTEBRAÇO DISTAL (rádio 33%).",
@@ -7422,10 +7414,6 @@ const LAU_DMO_MASKS = [
 {
 "t": "item",
 "k": "tecnica"
-},
-{
-"t": "item",
-"k": "referencia"
 },
 {
 "t": "blank"
@@ -7461,14 +7449,6 @@ const LAU_DMO_MASKS = [
 "grp": ""
 },
 {
-"k": "referencia",
-"label": "Referência",
-"text": "Laudo elaborado de acordo com as Posições Oficiais de 2023 da International Society for Clinical Densitometry (ISCD) e as Diretrizes Técnicas de Densitometria Óssea do PADI (Colégio Brasileiro de Radiologia).",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
 "k": "coluna-lombar",
 "label": "Coluna lombar",
 "text": "A densidade mineral óssea (DMO) do segmento L1-L4 da COLUNA LOMBAR.",
@@ -7489,10 +7469,6 @@ const LAU_DMO_MASKS = [
 {
 "t": "item",
 "k": "tecnica"
-},
-{
-"t": "item",
-"k": "referencia"
 },
 {
 "t": "blank"
@@ -7532,14 +7508,6 @@ const LAU_DMO_MASKS = [
 "grp": ""
 },
 {
-"k": "referencia",
-"label": "Referência",
-"text": "Laudo elaborado de acordo com as Posições Oficiais de 2023 da International Society for Clinical Densitometry (ISCD) e as Diretrizes Técnicas de Densitometria Óssea do PADI (Colégio Brasileiro de Radiologia).",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
 "k": "coluna-lombar",
 "label": "Coluna lombar",
 "text": "A densidade mineral óssea (DMO) do segmento L1-L4 da COLUNA LOMBAR.",
@@ -7568,10 +7536,6 @@ const LAU_DMO_MASKS = [
 {
 "t": "item",
 "k": "tecnica"
-},
-{
-"t": "item",
-"k": "referencia"
 },
 {
 "t": "blank"
@@ -7615,14 +7579,6 @@ const LAU_DMO_MASKS = [
 "grp": ""
 },
 {
-"k": "referencia",
-"label": "Referência",
-"text": "Laudo elaborado de acordo com as Posições Oficiais de 2023 da International Society for Clinical Densitometry (ISCD) e as Diretrizes Técnicas de Densitometria Óssea do PADI (Colégio Brasileiro de Radiologia).",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
 "k": "corpo-inteiro",
 "label": "Corpo inteiro",
 "text": "A DMO do CORPO INTEIRO.",
@@ -7635,10 +7591,6 @@ const LAU_DMO_MASKS = [
 {
 "t": "item",
 "k": "tecnica"
-},
-{
-"t": "item",
-"k": "referencia"
 },
 {
 "t": "blank"

@@ -7,7 +7,6 @@ O. DENSITOMETRIA:
 DENSITOMETRIA ÓSSEA
 
 - Técnica: Exame realizado pelo método de absorção de raios X de dupla energia (DXA).
-- Referência: Laudo elaborado de acordo com as Posições Oficiais de 2023 da International Society for Clinical Densitometry (ISCD) e as Diretrizes Técnicas de Densitometria Óssea do PADI (Colégio Brasileiro de Radiologia).
 
 RELATÓRIO:
 - Antebraço: A DMO do ANTEBRAÇO DISTAL (rádio 33%).
@@ -20,7 +19,6 @@ Hipótese Diagnóstica:
 DENSITOMETRIA ÓSSEA
 
 - Técnica: Exame realizado pelo método de absorção de raios X de dupla energia (DXA).
-- Referência: Laudo elaborado de acordo com as Posições Oficiais de 2023 da International Society for Clinical Densitometry (ISCD) e as Diretrizes Técnicas de Densitometria Óssea do PADI (Colégio Brasileiro de Radiologia).
 
 RELATÓRIO:
 - Coluna lombar: A densidade mineral óssea (DMO) do segmento L1-L4 da COLUNA LOMBAR.
@@ -34,7 +32,6 @@ Hipótese Diagnóstica:
 DENSITOMETRIA ÓSSEA
 
 - Técnica: Exame realizado pelo método de absorção de raios X de dupla energia (DXA).
-- Referência: Laudo elaborado de acordo com as Posições Oficiais de 2023 da International Society for Clinical Densitometry (ISCD) e as Diretrizes Técnicas de Densitometria Óssea do PADI (Colégio Brasileiro de Radiologia).
 
 RELATÓRIO:
 - Coluna lombar: A densidade mineral óssea (DMO) do segmento L1-L4 da COLUNA LOMBAR.
@@ -49,7 +46,6 @@ Hipótese Diagnóstica:
 DENSITOMETRIA ÓSSEA DE CORPO INTEIRO
 
 - Técnica: Exame realizado pelo método de absorção de raios X de dupla energia (DXA).
-- Referência: Laudo elaborado de acordo com as Posições Oficiais de 2023 da International Society for Clinical Densitometry (ISCD) e as Diretrizes Técnicas de Densitometria Óssea do PADI (Colégio Brasileiro de Radiologia).
 
 RELATÓRIO:
 - Corpo inteiro: A DMO do CORPO INTEIRO.
