@@ -103,50 +103,115 @@ function pmapGeom(level){
 }
 
 /* ---- desenho ---- */
-function pmapSliceSVG(lv){
+/* cores das zonas (mesmo esquema do desenho zonal) */
+const PMAP_ZCOR = {PZ:'#efc3cf', TZ:'#f6d873', CZ:'#a9dbb2', AS:'#b8cdea', US:'#fff4d6', SV:'#e8dcc9', EUE:'#d9c3a5'};
+function pmapZCor(z){ return PMAP_ZCOR[z.slice(0,2)==='PZ'?'PZ':z.slice(0,2)==='TZ'?'TZ':z]; }
+/* ex=true: versão para exportar (imagem) — cores fixas, sem cliques */
+function pmapSliceInner(lv, ex){
   PMAP_SH = lv.id;
   const sc = lv.id==='apex' ? 74 : (lv.id==='mid' ? 84 : 80);
   const g = pmapGeom(lv.id);
+  const ln = ex ? '#6b6b6b' : 'var(--dim)';
   let paths='', labels='';
   [['D',true],['E',false]].forEach(([lado,mirror])=>{
     lv.zones.forEach(z=>{
       const [t0,t1,r0,r1]=g[z]; const id=lv.id+'-'+z+'-'+lado;
       const own=pmapOwner(id);
-      const fill= own ? PMAP_COLORS[own] : 'var(--sf2)';
-      paths+=`<path d="${pmapSector(t0,t1,r0,r1,sc,mirror)}" fill="${fill}" fill-opacity="${own?0.85:1}" stroke="var(--dim)" stroke-width="1" class="pmap-sec" onclick="pmapToggle('${id}')"><title>${esc(pmapSectorName(id))}</title></path>`;
+      const fill= own ? PMAP_COLORS[own] : pmapZCor(z);
+      paths+= ex ? `<path d="${pmapSector(t0,t1,r0,r1,sc,mirror)}" fill="${fill}" stroke="${ln}" stroke-width="1"/>`
+                 : `<path d="${pmapSector(t0,t1,r0,r1,sc,mirror)}" fill="${fill}" stroke="${ln}" stroke-width="1" class="pmap-sec" onclick="pmapToggle('${id}')"><title>${esc(pmapSectorName(id))}</title></path>`;
       const c=pmapCentroid(t0,t1,r0,r1,sc,mirror);
-      labels+=`<text x="${c[0].toFixed(1)}" y="${(c[1]+2.5).toFixed(1)}" class="pmap-lbl${own?' on':''}">${own?own:z}</text>`;
+      labels+= ex ? `<text x="${c[0].toFixed(1)}" y="${(c[1]+(own?3.5:2.5)).toFixed(1)}" font-family="Arial,Helvetica,sans-serif" font-size="${own?11:8}" font-weight="700" text-anchor="middle" fill="${own?'#fff':'#2b2b2b'}">${own?own:z}</text>`
+                  : `<text x="${c[0].toFixed(1)}" y="${(c[1]+2.5).toFixed(1)}" class="pmap-lbl z${own?' on':''}">${own?own:z}</text>`;
     });
   });
   const F=PMAP_FORMA[lv.id], W=sc*F.w+14, H=sc+14, Hb=sc*F.post+16;   // altura até o contorno posterior
+  const tx = (x,y,t,cls,anc)=> ex ? `<text x="${x}" y="${y}" font-family="Arial,Helvetica,sans-serif" font-size="${cls==='pmap-side'?11:8}" font-weight="${cls==='pmap-side'?800:400}" font-style="${cls==='pmap-ori'?'italic':'normal'}" text-anchor="${anc||'middle'}" fill="${cls==='pmap-side'?'#1d6f8a':'#777'}">${t}</text>`
+                                   : `<text x="${x}" y="${y}" class="${cls}">${t}</text>`;
+  const body = `${tx(-W+4,-H+10,'D','pmap-side','start')}${tx(W-12,-H+10,'E','pmap-side','start')}${tx(0,-H+8,'anterior','pmap-ori')}
+      ${paths}${labels}
+      <path d="${pmapOutline(0.14,sc)}" fill="${PMAP_ZCOR.US}" stroke="${ln}" stroke-width="1" pointer-events="none"><title>Uretra</title></path>
+      ${tx(0,Hb+6,'posterior','pmap-ori')}`;
+  return {vb:[-W,-H,2*W,H+Hb+12], body};
+}
+function pmapSliceSVG(lv){
+  const r=pmapSliceInner(lv,false);
   return `<div class="pmap-slice">
     <div class="pmap-slice-t">${lv.nome}</div>
-    <svg viewBox="${-W} ${-H} ${2*W} ${H+Hb+12}" class="pmap-svg" role="img" aria-label="Corte axial — ${lv.nome}">
-      <text x="${-W+4}" y="${-H+10}" class="pmap-side">D</text><text x="${W-12}" y="${-H+10}" class="pmap-side">E</text>
-      <text x="0" y="${-H+8}" class="pmap-ori">anterior</text>
-      ${paths}${labels}
-      <path d="${pmapOutline(0.14,sc)}" fill="#fff4d6" stroke="var(--dim)" stroke-width="1" pointer-events="none"><title>Uretra</title></path>
-      <text x="0" y="${Hb+6}" class="pmap-ori">posterior</text>
-    </svg>
+    <svg viewBox="${r.vb.join(' ')}" class="pmap-svg" role="img" aria-label="Corte axial — ${lv.nome}">${r.body}</svg>
   </div>`;
 }
+function pmapExtraInner(ex){
+  const ln = ex ? '#6b6b6b' : 'var(--dim)';
+  const piece=(id,tag,attrs,title)=>{ const own=pmapOwner(id);
+    const fill= own?PMAP_COLORS[own]:PMAP_ZCOR[id==='EUE'?'EUE':'SV'];
+    return `<${tag} ${attrs} fill="${fill}" stroke="${ln}" stroke-width="1"${ex?'':` class="pmap-sec" onclick="pmapToggle('${id}')"`}><title>${title}</title></${tag}>`; };
+  const lbl=(id,x,y,txt)=>{ const own=pmapOwner(id);
+    return ex ? `<text x="${x}" y="${y+(own?1:0)}" font-family="Arial,Helvetica,sans-serif" font-size="${own?12:9}" font-weight="700" text-anchor="middle" fill="${own?'#fff':'#2b2b2b'}">${own?own:txt}</text>`
+              : `<text x="${x}" y="${y}" class="pmap-lbl z${own?' on':''}">${own?own:txt}</text>`; };
+  const side=(x,y,t)=> ex ? `<text x="${x}" y="${y}" font-family="Arial,Helvetica,sans-serif" font-size="11" font-weight="800" fill="#1d6f8a">${t}</text>` : `<text x="${x}" y="${y}" class="pmap-side">${t}</text>`;
+  const body = `${side(-116,-48,'D')}${side(104,-48,'E')}
+      ${piece('SV-D','ellipse','cx="-52" cy="-18" rx="44" ry="20" transform="rotate(-18 -52 -18)"','Vesícula seminal direita')}
+      ${piece('SV-E','ellipse','cx="52" cy="-18" rx="44" ry="20" transform="rotate(18 52 -18)"','Vesícula seminal esquerda')}
+      ${lbl('SV-D',-52,-15,'VS')}${lbl('SV-E',52,-15,'VS')}
+      ${piece('EUE','rect','x="-24" y="34" width="48" height="36" rx="16"','Esfíncter uretral externo')}
+      ${lbl('EUE',0,56,'EUE')}`;
+  return {vb:[-120,-60,240,150], body};
+}
 function pmapExtraSVG(){
-  const piece=(id,shape)=>{ const own=pmapOwner(id);
-    return shape.replace('FILL', own?PMAP_COLORS[own]:'var(--sf2)').replace('OPA', own?'0.85':'1')
-      .replace('<ellipse','<ellipse class="pmap-sec" onclick="pmapToggle(\''+id+'\')"')
-      .replace('<rect','<rect class="pmap-sec" onclick="pmapToggle(\''+id+'\')"'); };
-  const lbl=(id,x,y,txt)=>{ const own=pmapOwner(id); return `<text x="${x}" y="${y}" class="pmap-lbl${own?' on':''}">${own?own:txt}</text>`; };
+  const r=pmapExtraInner(false);
   return `<div class="pmap-slice">
     <div class="pmap-slice-t">Vesículas seminais e esfíncter</div>
-    <svg viewBox="-120 -60 240 150" class="pmap-svg" role="img" aria-label="Vesículas seminais e esfíncter uretral externo">
-      <text x="-116" y="-48" class="pmap-side">D</text><text x="104" y="-48" class="pmap-side">E</text>
-      ${piece('SV-D','<ellipse cx="-52" cy="-18" rx="44" ry="20" transform="rotate(-18 -52 -18)" fill="FILL" fill-opacity="OPA" stroke="var(--dim)" stroke-width="1"><title>Vesícula seminal direita</title></ellipse>')}
-      ${piece('SV-E','<ellipse cx="52" cy="-18" rx="44" ry="20" transform="rotate(18 52 -18)" fill="FILL" fill-opacity="OPA" stroke="var(--dim)" stroke-width="1"><title>Vesícula seminal esquerda</title></ellipse>')}
-      ${lbl('SV-D',-52,-15,'VS')}${lbl('SV-E',52,-15,'VS')}
-      ${piece('EUE','<rect x="-24" y="34" width="48" height="36" rx="16" fill="FILL" fill-opacity="OPA" stroke="var(--dim)" stroke-width="1"><title>Esfíncter uretral externo</title></rect>')}
-      ${lbl('EUE',0,56,'EUE')}
-    </svg>
+    <svg viewBox="${r.vb.join(' ')}" class="pmap-svg" role="img" aria-label="Vesículas seminais e esfíncter uretral externo">${r.body}</svg>
   </div>`;
+}
+
+/* ---- imagem do esquema com as lesões (para colar no laudo) ---- */
+function pmapExportSVG(){
+  const W=1200, F='font-family="Arial,Helvetica,sans-serif"';
+  const cell=(r,x,y,w,h,t)=>`<text x="${x+w/2}" y="${y-8}" ${F} font-size="15" font-weight="700" text-anchor="middle" fill="#444">${t}</text>`
+    + `<svg x="${x}" y="${y}" width="${w}" height="${h}" viewBox="${r.vb.join(' ')}" preserveAspectRatio="xMidYMid meet">${r.body}</svg>`;
+  let g = `<rect width="${W}" height="620" fill="#ffffff"/>`
+    + `<text x="24" y="34" ${F} font-size="20" font-weight="700" fill="#222">Mapa de setores da próstata — PI-RADS v2.1</text>`;
+  PMAP_LEVELS.forEach((lv,i)=>{ g += cell(pmapSliceInner(lv,true), 24+i*392, 70, 370, 300, lv.nome); });
+  g += cell(pmapExtraInner(true), 24, 410, 300, 190, 'Vesículas seminais e esfíncter');
+  // legenda das lesões
+  const s=pmapState(); let y=420;
+  for(let i=1;i<=4;i++){ const L=s.lesions[i]; if(!L.sectors.length) continue;
+    const ex=[]; if(L.cat) ex.push('PI-RADS '+L.cat); const sz=parseFloat(String(L.size||'').replace(',','.')); if(sz>0) ex.push(String(sz).replace('.',',')+' mm');
+    g += `<circle cx="372" cy="${y-5}" r="10" fill="${PMAP_COLORS[i]}"/><text x="372" y="${y-1}" ${F} font-size="12" font-weight="700" text-anchor="middle" fill="#fff">${i}</text>`
+      + `<text x="392" y="${y}" ${F} font-size="15" font-weight="700" fill="#222">Lesão ${i}${ex.length?' — '+ex.join(', '):''}</text>`
+      + `<text x="392" y="${y+20}" ${F} font-size="12.5" fill="#555">${esc(L.sectors.slice().sort(pmapOrder).map(pmapCode).join(' · '))}</text>`;
+    y += 48;
+  }
+  if(y===420) g += `<text x="372" y="${y}" ${F} font-size="14" fill="#888">Nenhuma lesão marcada.</text>`;
+  g += `<text x="${W-24}" y="606" ${F} font-size="11" text-anchor="end" fill="#999">D = direita do paciente · esquema ilustrativo KlugRads</text>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="620" viewBox="0 0 ${W} 620">${g}</svg>`;
+}
+function pmapImgBlob(type){
+  return new Promise((ok, fail)=>{
+    const img=new Image();
+    img.onload=()=>{ const k=2, c=document.createElement('canvas'); c.width=img.width*k; c.height=img.height*k;
+      const x=c.getContext('2d'); x.fillStyle='#fff'; x.fillRect(0,0,c.width,c.height); x.scale(k,k); x.drawImage(img,0,0);
+      c.toBlob(b=> b?ok(b):fail(new Error('canvas')), type, 0.92); };
+    img.onerror=fail;
+    img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(pmapExportSVG());
+  });
+}
+/* copiar: a área de transferência só aceita PNG; para JPEG há o botão de baixar */
+function pmapCopyImg(){
+  try{
+    if(!(navigator.clipboard && window.ClipboardItem)) throw new Error('sem clipboard');
+    navigator.clipboard.write([new ClipboardItem({'image/png': pmapImgBlob('image/png')})])
+      .then(()=>klugToast('Imagem do esquema copiada ✓ — cole no laudo'))
+      .catch(()=>{ klugToast('Não deu para copiar aqui — baixando o JPEG'); pmapBaixarJpg(); });
+  }catch(e){ klugToast('Não deu para copiar aqui — baixando o JPEG'); pmapBaixarJpg(); }
+}
+function pmapBaixarJpg(){
+  pmapImgBlob('image/jpeg').then(b=>{
+    const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='mapa-setores-prostata.jpg';
+    document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }).catch(()=>klugToast('Não consegui gerar a imagem.'));
 }
 
 /* ---- nomes e frase ---- */
@@ -219,7 +284,11 @@ function pmapFraseHTML(){
   return `<div class="lau-frase">
     <div class="lau-frase-lbl">Frase para o laudo</div>
     <div class="lau-frase-tx">${esc(f).replace(/\n/g,'<br>')}</div>
-    <button type="button" class="lau-frase-btn" onclick="pmapCopy()">${svgIcon(P.copy,16,{sw:2})} Copiar frase</button>
+    <div class="pmap-acts">
+      <button type="button" class="lau-frase-btn" onclick="pmapCopy()">${svgIcon(P.copy,16,{sw:2})} Copiar frase</button>
+      <button type="button" class="lau-btn2" onclick="pmapCopyImg()">Copiar imagem do esquema</button>
+      <button type="button" class="lau-btn2" onclick="pmapBaixarJpg()">Baixar JPEG</button>
+    </div>
   </div>`;
 }
 
