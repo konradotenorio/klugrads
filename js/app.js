@@ -691,7 +691,7 @@ function headerHTML(){
   else if(v==='contraste'){ title='Meios de Contraste'; }
   else if(v==='laudos'){ title='Laudos Estruturados'; }
   else if(v==='laudoMod'){ const m=laudoMod(state.laudoMod); title=m?m.nome:'Laudos'; sub='Laudos Estruturados'; }
-  else if(v==='laudoEdit'){ const m=lauModelo(state.laudoId); title=m?((m.metodo==='mmg'?'MG — ':'US — ')+m.nome):'Laudo'; sub='Laudos Estruturados'; }
+  else if(v==='laudoEdit'){ const m=lauModelo(state.laudoId); title=m?(({mmg:'MG — ',dmo:'DO — '}[m.metodo]||'US — ')+m.nome):'Laudo'; sub='Laudos Estruturados'; }
   else if(v==='laudoCfg'){ title='Padrões dos laudos'; sub='Laudos Estruturados'; }
   else if(v==='contrasteItem'){ const t=contrasteTopic(state.contrasteId); title=t?t.title:'Meios de Contraste'; sub='Meios de Contraste'; }
   else if(v==='config'){ title='Configurações'; }

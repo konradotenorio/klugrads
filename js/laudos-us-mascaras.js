@@ -7383,3 +7383,277 @@ const LAU_MMG_MASKS = [
 "trailer": []
 }
 ];
+const LAU_DMO_MASKS = [
+{
+"id": "dmo-radio-distal-1-segmento",
+"metodo": "dmo",
+"nome": "Rádio distal (1 segmento)",
+"grupo": "Densitometria",
+"titulo": [
+"DENSITOMETRIA ÓSSEA"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Exame realizado pelo método de absorção de raios X de dupla energia (DXA).",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "referencia",
+"label": "Referência",
+"text": "Laudo elaborado com as Posições Oficiais do Consenso de 2006 da Sociedade Brasileira de Densitometria Clínica.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "antebraco",
+"label": "Antebraço",
+"text": "A DMO do ANTEBRAÇO DISTAL (rádio 33%).",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "item",
+"k": "referencia"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "RELATÓRIO:"
+},
+{
+"t": "item",
+"k": "antebraco"
+}
+],
+"concTitulo": "Hipótese Diagnóstica:",
+"conc": [],
+"trailer": []
+},
+{
+"id": "dmo-coluna-e-femur-2-segmentos",
+"metodo": "dmo",
+"nome": "Coluna e fêmur (2 segmentos)",
+"grupo": "Densitometria",
+"titulo": [
+"DENSITOMETRIA ÓSSEA"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Exame realizado pelo método de absorção de raios X de dupla energia (DXA).",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "referencia",
+"label": "Referência",
+"text": "Laudo elaborado com as Posições Oficiais do Consenso de 2006 da Sociedade Brasileira de Densitometria Clínica.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "coluna-lombar",
+"label": "Coluna lombar",
+"text": "A densidade mineral óssea (DMO) do segmento L1-L4 da COLUNA LOMBAR.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "femur",
+"label": "Fêmur",
+"text": "A DMO do FÊMUR TOTAL.",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "item",
+"k": "referencia"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "RELATÓRIO:"
+},
+{
+"t": "item",
+"k": "coluna-lombar"
+},
+{
+"t": "item",
+"k": "femur"
+}
+],
+"concTitulo": "Hipótese Diagnóstica:",
+"conc": [],
+"trailer": []
+},
+{
+"id": "dmo-coluna-femur-e-radio-3-segmentos",
+"metodo": "dmo",
+"nome": "Coluna, fêmur e rádio (3 segmentos)",
+"grupo": "Densitometria",
+"titulo": [
+"DENSITOMETRIA ÓSSEA"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Exame realizado pelo método de absorção de raios X de dupla energia (DXA).",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "referencia",
+"label": "Referência",
+"text": "Laudo elaborado com as Posições Oficiais do Consenso de 2006 da Sociedade Brasileira de Densitometria Clínica.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "coluna-lombar",
+"label": "Coluna lombar",
+"text": "A densidade mineral óssea (DMO) do segmento L1-L4 da COLUNA LOMBAR.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "femur",
+"label": "Fêmur",
+"text": "A DMO do FÊMUR TOTAL.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "antebraco",
+"label": "Antebraço",
+"text": "A DMO do ANTEBRAÇO DISTAL (rádio 33%).",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "item",
+"k": "referencia"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "RELATÓRIO:"
+},
+{
+"t": "item",
+"k": "coluna-lombar"
+},
+{
+"t": "item",
+"k": "femur"
+},
+{
+"t": "item",
+"k": "antebraco"
+}
+],
+"concTitulo": "Hipótese Diagnóstica:",
+"conc": [],
+"trailer": []
+},
+{
+"id": "dmo-corpo-inteiro",
+"metodo": "dmo",
+"nome": "Corpo inteiro",
+"grupo": "Densitometria",
+"titulo": [
+"DENSITOMETRIA ÓSSEA DE CORPO INTEIRO"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Exame realizado pelo método de absorção de raios X de dupla energia (DXA).",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "referencia",
+"label": "Referência",
+"text": "Laudo elaborado com as Posições Oficiais do Consenso de 2006 da Sociedade Brasileira de Densitometria Clínica.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "corpo-inteiro",
+"label": "Corpo inteiro",
+"text": "A DMO do CORPO INTEIRO.",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "item",
+"k": "referencia"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "RELATÓRIO:"
+},
+{
+"t": "item",
+"k": "corpo-inteiro"
+}
+],
+"concTitulo": "Hipótese Diagnóstica:",
+"conc": [],
+"trailer": []
+}
+];

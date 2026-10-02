@@ -26,7 +26,7 @@
 const LAUDO_MODS = [
   {id:'rx',   nome:'Radiografia',               ativo:false},
   {id:'mmg',  nome:'Mamografia',                ativo:true},
-  {id:'dmo',  nome:'Densitometria óssea',       ativo:false},
+  {id:'dmo',  nome:'Densitometria óssea',       ativo:true},
   {id:'us',   nome:'Ultrassonografia',          ativo:true},
   {id:'tc',   nome:'Tomografia computadorizada',ativo:false},
   {id:'rm',   nome:'Ressonância magnética',     ativo:false},
@@ -800,6 +800,7 @@ function lauLblLado(m, lbl){
 /* limitações técnicas e indicações por método */
 const LAU_TEC = {
   us:[['met','meteorismo intestinal'],['bio','biotipo do paciente']],
+  dmo:[['mov','movimentação do paciente'],['art','artefatos metálicos'],['deg','alterações degenerativas']],
   mmg:[['pos','dificuldade de posicionamento'],['mov','artefato de movimento'],['comp','compressão limitada por desconforto']],
 };
 const LAU_IND_MMG = ['Rastreamento','Controle de achado prévio','Complementação diagnóstica','Pós-operatório','Nódulo palpável','Descarga papilar','Retração cutânea / mamilar','Linfonodo axilar aumentado'];
@@ -918,7 +919,8 @@ function lauHasPh(str){ return lauTpl(str).n>0; }
 function lauBuildModel(mk){
   const used={};
   const items = mk.items.map(mi=>{
-    const sk = (mk.metodo==='mmg' && LAU_STRUCT_LABELS_MMG[lauNorm(mi.label)]) || (mk.metodo!=='mmg' && LAU_STRUCT_LABELS[lauNorm(mi.label)]) || null;
+    const smap = mk.metodo==='mmg' ? LAU_STRUCT_LABELS_MMG : mk.metodo==='dmo' ? (typeof LAU_STRUCT_LABELS_DMO!=='undefined'?LAU_STRUCT_LABELS_DMO:{}) : LAU_STRUCT_LABELS;
+    const sk = smap[lauNorm(mi.label)] || null;
     const base = { k:mi.k, label:mi.label, grp:mi.grp||'', dash:mi.dash, normal:mi.text, opts:mi.opts||[] };
     if(sk && !used[sk]){
       used[sk]=1;
@@ -941,8 +943,11 @@ function lauBuildModel(mk){
 }
 const LAUDO_MODELOS = { us: (typeof LAU_US_MASKS!=='undefined' ? LAU_US_MASKS : []).map(lauBuildModel),
   mmg: (typeof LAU_MMG_MASKS!=='undefined' ? LAU_MMG_MASKS : []).map(lauBuildModel) };
-const LAU_GRUPOS = ['Medicina interna','Mama','Cabeça e pescoço','Musculoesquelético','Obstétrico','Vascular','Mamografia'];
+/* densitometria: os itens estruturados ficam em laudos-dmo.js (carregado depois) — monta na 1ª consulta */
+function lauModelosDmo(){ if(!LAUDO_MODELOS.dmo && typeof LAU_DMO_MASKS!=='undefined' && typeof LAU_STRUCT_LABELS_DMO!=='undefined') LAUDO_MODELOS.dmo = LAU_DMO_MASKS.map(lauBuildModel); return LAUDO_MODELOS.dmo||[]; }
+const LAU_GRUPOS = ['Medicina interna','Mama','Cabeça e pescoço','Musculoesquelético','Obstétrico','Vascular','Mamografia','Densitometria'];
 function lauModelo(id){
+  lauModelosDmo();
   for(const k in LAUDO_MODELOS){ const m=LAUDO_MODELOS[k].find(x=>x.id===id); if(m) return m; }
   return null;
 }
@@ -1411,7 +1416,7 @@ function lauItemHTML(m, it){
   if(lauItemOculto(m,it)) return '';
   const lblRaw = lauLblLado(m, lauItemLabel(m,it));
   const lbl = lblRaw ? lauFill(lblRaw, s.__v.l, true)+':' : '';
-  let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : esc(r.txt).replace(/\n/g,'<br>');
+  let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : r.html ? r.txt : esc(r.txt).replace(/\n/g,'<br>');
   const subs = lauFraseLines(s.__f, s.__v, 'sub');
   if(subs.length){
     const multi = (s.__f||[]).filter(id=>{ const f=lauFI(id); return f && lauKindTE(f); }).length;
@@ -1435,6 +1440,7 @@ function lauItemHTML(m, it){
   const ex = lauOptLines(it, s, true).concat(adds);
   if(!txt && ex.length){ txt = ex.shift(); }
   if(ex.length) txt += '<br>' + ex.join('<br>');
+  if(m.metodo==='dmo') return txt;   // densitometria: frases corridas, sem rótulo nem hífen
   const pre = (g.hifen && it.dash) ? '- ' : '';
   return lbl ? `${pre}${g.bold?`<b>${lbl}</b>`:lbl} ${txt}` : `${pre}${txt}`;
 }
@@ -1466,6 +1472,7 @@ function lauConcs(m){
   let br=null; const cats=new Set();
   const seeBr=(list,bag)=>(list||[]).forEach(id=>{ const c=lauBrOf(id,bag); if(c){ cats.add(c); if(br==null || LAU_BR_ORDEM.indexOf(c)>LAU_BR_ORDEM.indexOf(br)) br=c; } });
   vis.forEach(it=>seeBr(state.lau.v[it.k].__f, state.lau.v[it.k].__v)); seeBr(state.lau.xf, state.lau.xv);
+  if(m.metodo==='dmo' && typeof dmoConcs==='function') return dmoConcs(m);
   if(m.metodo==='mmg'){
     // mamografia: achados sem categoria em cada linha, iguais nas duas mamas viram uma frase só,
     // e uma única categoria BI-RADS® no fim (a mais alta)
@@ -1517,7 +1524,7 @@ function lauConcHTML(m){
     const tail = norm.filter(x=>!x.ph && /^Restante/i.test(x.c.text)).map(x=>({html:esc(x.c.text), dash:x.c.dash}));
     lines = keep.concat(f.map(x=>({html:x.html,dash:true})), tail);
   }
-  return lines.map(x=>`<div>${g.hifen&&x.dash?'- ':''}${x.html}</div>`).join('');
+  return lines.map(x=>`<div>${g.hifen&&x.dash&&m.metodo!=='dmo'?'- ':''}${x.html}</div>`).join('');
 }
 function lauTecOpts(){ const m=lauModelo(state.lau.model); return LAU_TEC[(m&&m.metodo)||'us'] || LAU_TEC.us; }
 function lauTecTxt(){
@@ -1832,8 +1839,10 @@ function lauRestart(){
 }
 function lauTab(t){ const L=lauCur(); if(!L) return; lauSaveEd(); L.tab=t; render(true); }
 
+function lauDmoRef(v){ const L=lauCur(); if(!L) return; L.dmoRef=v; lauSaveEd(); L.html=null; render(true); }
 function lauSum(m,it){
   const s=state.lau.v[it.k]; const r=lauBuild(m,it);
+  if(r.sum) return {cls: /Preencher/.test(r.sum)?'ok':'alt', t:r.sum};
   const opt=(s.__o||[]).some(Boolean) || (s.__f||[]).length>0;
   if(r.txt==null && !r.conc.length && !opt){
     const filled = Object.values(s.__v||{}).some(a=>(a||[]).some(lauHas));
@@ -1942,7 +1951,8 @@ function lauLeftHTML(){
   const tit=lauTitulo(m);
   const extraOn = L.ind||Object.values(L.tec).some(Boolean);
   const indChips = m.metodo==='mmg' ? `<div class="lau-chips" style="margin-top:6px">${LAU_IND_MMG.map(v=>`<button type="button" class="ti-ftog ${L.ind===v?'on':''}" onclick="lauSetIndChip(this.textContent)">${esc(v)}</button>`).join('')}</div>` : '';
-  let h = lauLadoHTML(m) + lauCard('__extra', 'Título, indicação e limitações',
+  const dmoRefH = m.metodo==='dmo' ? `<div class="lau-lado"><span>Critério</span>${[['t','T-score (pós-menopausa / homem ≥ 50 anos)'],['z','Z-score (pré-menopausa / homem < 50 anos / criança)']].map(o=>`<button type="button" class="ti-ftog ${(L.dmoRef||'t')===o[0]?'on':''}" onclick="lauDmoRef('${o[0]}')">${o[1]}</button>`).join('')}</div>` : '';
+  let h = dmoRefH + lauLadoHTML(m) + lauCard('__extra', 'Título, indicação e limitações',
     `<div class="lau-sum ${extraOn?'alt':'ok'}">${extraOn?'Preenchido':'Opcional'}</div>`,
     ()=>`${lauHasPh(tit)?`<div class="lau-rl">Título</div>${tit.split('\n').map((t,i)=>lauHasPh(t)?lauInlineForm('__tit','t'+i,t,L.tit['t'+i]):'').join('')}`:''}
         <div class="lau-row"><div class="lau-rl">Indicação clínica</div><input class="lau-txt" type="text" value="${esc(L.ind)}" placeholder="${m.metodo==='mmg'?'ex.: rastreamento':'ex.: dor abdominal'}" oninput="lauSetInd(this.value)">${indChips}</div>
@@ -2071,6 +2081,7 @@ function lauFavsHTML(all, onclickFn){
     : `<div class="lau-favs-e">Toque na bolinha ao lado de um laudo para fixá-lo aqui.</div>`}</div>`;
 }
 function lauListHTML(metodo, onclickFn, sub){
+  lauModelosDmo();
   const all = [].concat(...[].concat(metodo).map(k=>LAUDO_MODELOS[k]||[])).slice().sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base',numeric:true}));
   const q = lauNorm(state.lauQ||'');
   const grupos = LAU_GRUPOS.filter(g=>all.some(m=>m.grupo===g));
@@ -2114,7 +2125,8 @@ function laudoModHTML(){
    Tela 2: um laudo — título, conclusão e texto de cada item.
    ========================================================================= */
 function lauCfgListHTML(){
-  return lauListHTML(['us','mmg'],'openLaudoCfgModel',(x)=>{
+  lauModelosDmo();
+  return lauListHTML(['us','mmg','dmo'],'openLaudoCfgModel',(x)=>{
     const u=lauMcfgPeek(x.id); const n=Object.values(u.items||{}).filter(o=>lauHas(o.label)||lauHas(o.normal)).length + (lauHas(u.titulo)?1:0)+(lauHas(u.concNormal)?1:0)+(lauHas(u.concTitulo)?1:0);
     return n ? `<span class="lau-tag">${n} personalizado${n>1?'s':''}</span>` : 'Texto padrão da máscara';
   });

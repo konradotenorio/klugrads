@@ -1,0 +1,59 @@
+Máscaras de densitometria óssea (KlugRads). Os rótulos ("Técnica:", "Coluna lombar:"…) só identificam o item; no laudo saem frases corridas.
+=====
+
+O. DENSITOMETRIA:
+
+1. RÁDIO DISTAL (1 SEGMENTO)
+DENSITOMETRIA ÓSSEA
+
+- Técnica: Exame realizado pelo método de absorção de raios X de dupla energia (DXA).
+- Referência: Laudo elaborado com as Posições Oficiais do Consenso de 2006 da Sociedade Brasileira de Densitometria Clínica.
+
+RELATÓRIO:
+- Antebraço: A DMO do ANTEBRAÇO DISTAL (rádio 33%).
+
+Hipótese Diagnóstica:
+
+-----
+
+2. COLUNA E FÊMUR (2 SEGMENTOS)
+DENSITOMETRIA ÓSSEA
+
+- Técnica: Exame realizado pelo método de absorção de raios X de dupla energia (DXA).
+- Referência: Laudo elaborado com as Posições Oficiais do Consenso de 2006 da Sociedade Brasileira de Densitometria Clínica.
+
+RELATÓRIO:
+- Coluna lombar: A densidade mineral óssea (DMO) do segmento L1-L4 da COLUNA LOMBAR.
+- Fêmur: A DMO do FÊMUR TOTAL.
+
+Hipótese Diagnóstica:
+
+-----
+
+3. COLUNA, FÊMUR E RÁDIO (3 SEGMENTOS)
+DENSITOMETRIA ÓSSEA
+
+- Técnica: Exame realizado pelo método de absorção de raios X de dupla energia (DXA).
+- Referência: Laudo elaborado com as Posições Oficiais do Consenso de 2006 da Sociedade Brasileira de Densitometria Clínica.
+
+RELATÓRIO:
+- Coluna lombar: A densidade mineral óssea (DMO) do segmento L1-L4 da COLUNA LOMBAR.
+- Fêmur: A DMO do FÊMUR TOTAL.
+- Antebraço: A DMO do ANTEBRAÇO DISTAL (rádio 33%).
+
+Hipótese Diagnóstica:
+
+-----
+
+4. CORPO INTEIRO
+DENSITOMETRIA ÓSSEA DE CORPO INTEIRO
+
+- Técnica: Exame realizado pelo método de absorção de raios X de dupla energia (DXA).
+- Referência: Laudo elaborado com as Posições Oficiais do Consenso de 2006 da Sociedade Brasileira de Densitometria Clínica.
+
+RELATÓRIO:
+- Corpo inteiro: A DMO do CORPO INTEIRO.
+
+Hipótese Diagnóstica:
+
+-----
