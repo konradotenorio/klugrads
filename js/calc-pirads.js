@@ -92,6 +92,7 @@ function calcPiradsHTML(){
         <div class="ti-legend-row"><span class="lk" style="background:#cf2020">5</span><span class="lt">Muito provável · ~89%</span></div>
       </div>
     </div>
+    ${typeof prostEsquemaHTML==='function' ? prostEsquemaHTML(true) : ''}
     <div class="ti-card">
       <div class="tfg-sec-lbl">Regras de upgrade (v2.1)</div>
       <div class="tfg-ref-list">

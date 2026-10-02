@@ -55,9 +55,26 @@ function pmapOwner(sec){
 /* ---- geometria (coordenadas polares num contorno elíptico) ----
    θ em graus a partir do anterior (0°) até o posterior (180°), para o lado
    ESQUERDO do paciente (direita da tela). O lado direito é espelhado. */
+/* Contorno em forma de próstata (não elipse): anterior mais estreito e
+   arredondado, posterior mais largo e achatado, com leve depressão na linha
+   média posterior. A base é mais larga; o ápice, menor e mais arredondado. */
+let PMAP_SH='mid';
+const PMAP_FORMA = { base:{w:1.34, ant:0.84, post:0.74, notch:0.08}, mid:{w:1.25, ant:0.86, post:0.78, notch:0.07}, apex:{w:1.12, ant:0.9, post:0.88, notch:0.04} };
+function pmapShape(th){
+  const f=PMAP_FORMA[PMAP_SH]||PMAP_FORMA.mid, a=th*Math.PI/180, sn=Math.sin(a), c=Math.cos(a);
+  const wx = f.w*(f.ant + (1-f.ant)*(1-c)/2);                 // mais estreito na frente
+  let y = -c*(c>0 ? 1 : f.post);                              // posterior achatado
+  if(c<0){ const d=(180-th)/18; y -= f.notch*Math.exp(-d*d); } // sulco mediano posterior
+  return [sn*wx, y];
+}
 function pmapPt(th, r, sc){
-  const a=th*Math.PI/180;
-  return [(r*1.25*Math.sin(a)*sc).toFixed(1), (-r*Math.cos(a)*sc).toFixed(1)];
+  const p=pmapShape(th);
+  return [(r*p[0]*sc).toFixed(1), (r*p[1]*sc).toFixed(1)];
+}
+/* contorno fechado (ex.: uretra no centro) */
+function pmapOutline(r, sc){
+  const pts=[]; for(let i=0;i<=36;i++){ const th=i*10, p=pmapShape(th>180?360-th:th); pts.push([(th>180?-1:1)*r*p[0]*sc, r*p[1]*sc]); }
+  return 'M'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join('L')+'Z';
 }
 function pmapSector(t0,t1,r0,r1,sc,mirror){
   const n=10, pts=[];
@@ -87,6 +104,7 @@ function pmapGeom(level){
 
 /* ---- desenho ---- */
 function pmapSliceSVG(lv){
+  PMAP_SH = lv.id;
   const sc = lv.id==='apex' ? 74 : (lv.id==='mid' ? 84 : 80);
   const g = pmapGeom(lv.id);
   let paths='', labels='';
@@ -100,15 +118,15 @@ function pmapSliceSVG(lv){
       labels+=`<text x="${c[0].toFixed(1)}" y="${(c[1]+2.5).toFixed(1)}" class="pmap-lbl${own?' on':''}">${own?own:z}</text>`;
     });
   });
-  const W=sc*1.25+14, H=sc+14;
+  const F=PMAP_FORMA[lv.id], W=sc*F.w+14, H=sc+14, Hb=sc*F.post+16;   // altura até o contorno posterior
   return `<div class="pmap-slice">
     <div class="pmap-slice-t">${lv.nome}</div>
-    <svg viewBox="${-W} ${-H} ${2*W} ${2*H+12}" class="pmap-svg" role="img" aria-label="Corte axial — ${lv.nome}">
+    <svg viewBox="${-W} ${-H} ${2*W} ${H+Hb+12}" class="pmap-svg" role="img" aria-label="Corte axial — ${lv.nome}">
       <text x="${-W+4}" y="${-H+10}" class="pmap-side">D</text><text x="${W-12}" y="${-H+10}" class="pmap-side">E</text>
       <text x="0" y="${-H+8}" class="pmap-ori">anterior</text>
       ${paths}${labels}
-      <circle cx="0" cy="0" r="${(sc*0.1).toFixed(1)}" fill="var(--bg)" stroke="var(--dim)" stroke-width="1" pointer-events="none"/>
-      <text x="0" y="${H+6}" class="pmap-ori">posterior</text>
+      <path d="${pmapOutline(0.14,sc)}" fill="#fff4d6" stroke="var(--dim)" stroke-width="1" pointer-events="none"><title>Uretra</title></path>
+      <text x="0" y="${Hb+6}" class="pmap-ori">posterior</text>
     </svg>
   </div>`;
 }
@@ -216,7 +234,7 @@ function calcProstataSetoresHTML(){
     <div class="ti-card">
       <div class="tfg-sec-lbl">Mapa de setores — cortes axiais</div>
       <div class="ti-legend-row" style="margin:6px 0 4px"><span class="lt">Convenção radiológica: a direita do paciente (D) fica à esquerda da tela. Toque de novo para desmarcar.</span></div>
-      <div class="pmap-grid">${PMAP_LEVELS.map(pmapSliceSVG).join('')}${pmapExtraSVG()}</div>
+      <div class="pmap-grid">${typeof pzeSagitalSVG==='function' ? `<div class="pmap-slice"><div class="pmap-slice-t">Sagital — níveis dos cortes</div>${pzeSagitalSVG()}</div>` : ''}${PMAP_LEVELS.map(pmapSliceSVG).join('')}${pmapExtraSVG()}</div>
       <div id="pmap-frase">${pmapFraseHTML()}</div>
     </div>
     <div class="ti-card">
