@@ -17,6 +17,7 @@
      kind 'tirads' | 'birads' = frase com classificação (descritores +
           categoria; TI-RADS usa a mesma pontuação da calculadora)
      br categoria BI-RADS da frase (entra na categoria final do exame)
+     kind 'tend' | 'musc' = escolha do tendão/músculo (lista por articulação) e do tipo de lesão
      q  1 = aceita quantidade (único / vários semelhantes / diferentes); cp = conclusão no plural
    ========================================================================= */
 
@@ -465,18 +466,8 @@ const LAU_FRASES = [
    t:'Derrame pleural à direita XX esquerda com atelectasia passiva do parênquima adjacente.',
    c:'Derrame pleural à {0} com atelectasia adjacente.'},
   /* ================= MUSCULOESQUELÉTICO ================= */
-  {o:'tendao', n:'Tendinopatia', m:'sub',
-   t:'tendão do XXX espessado e hipoecogênico, com perda parcial do padrão fibrilar, sem sinais de rotura; demais com aspecto habitual.',
-   c:'Tendinopatia do {0}.'},
-  {o:'tendao', n:'Tendinopatia calcárea', m:'sub',
-   t:'tendão do XXX com foco de calcificação intrassubstancial medindo XXX cm; demais com aspecto habitual.',
-   c:'Tendinopatia calcárea do {0}.'},
-  {o:'tendao', n:'Rotura parcial', m:'sub',
-   t:'tendão do XXX com rotura parcial intrassubstancial XX articular XX bursal, medindo XXX cm; demais com aspecto habitual.',
-   c:'Rotura parcial do tendão do {0}.'},
-  {o:'tendao', n:'Rotura completa', m:'sub',
-   t:'tendão do XXX com rotura completa, com retração do coto de XXX cm; demais com aspecto habitual.',
-   c:'Rotura completa do tendão do {0}.'},
+  {o:'tendao', n:'Tendinopatia / rotura', m:'sub', kind:'tend', t:'',
+   c:''},
   {o:'tendao', n:'Tenossinovite', m:'add',
    t:'Distensão líquida da bainha do tendão XXX, com espessamento sinovial e hiperemia ao Doppler.',
    c:'Tenossinovite do {0}.'},
@@ -534,18 +525,8 @@ const LAU_FRASES = [
   {o:'nervo', n:'Subluxação do ulnar', m:'add',
    t:'Subluxação anterior do nervo ulnar sobre o epicôndilo medial à flexão do cotovelo.',
    c:'Instabilidade (subluxação) do nervo ulnar.'},
-  {o:'musculo', n:'Estiramento muscular', m:'sub',
-   t:'com área de alteração ecotextural no músculo XXX, sem descontinuidade de fibras.',
-   c:'Estiramento muscular ({0}).'},
-  {o:'musculo', n:'Rotura parcial', m:'sub',
-   t:'com rotura parcial de fibras do músculo XXX, com hematoma de XXX x XXX x XXX cm (volume estimado em XXX cm³).',
-   c:'Rotura parcial do músculo {0}.'},
-  {o:'musculo', n:'Hematoma intramuscular', m:'add',
-   t:'Coleção heterogênea intramuscular no XXX, medindo XXX x XXX x XXX cm, sem fluxo ao Doppler.',
-   c:'Hematoma intramuscular ({0}).'},
-  {o:'musculo', n:'Atrofia / lipossubstituição', m:'sub',
-   t:'com redução de volume e aumento da ecogenicidade do ventre do XXX (lipossubstituição).',
-   c:'Atrofia e lipossubstituição do {0}.'},
+  {o:'musculo', n:'Lesão muscular', m:'sub', kind:'musc', t:'',
+   c:''},
   {o:'partes', n:'Cisto sinovial (gânglio)', m:'add',
    t:'Formação cística anecogênica, lobulada, junto a XXX, medindo XXX cm, sem fluxo ao Doppler.',
    c:'Cisto sinovial (gânglio).'},
