@@ -7404,7 +7404,7 @@ const LAU_DMO_MASKS = [
 {
 "k": "referencia",
 "label": "Referência",
-"text": "Laudo elaborado com as Posições Oficiais do Consenso de 2006 da Sociedade Brasileira de Densitometria Clínica.",
+"text": "Laudo elaborado de acordo com as Posições Oficiais de 2023 da International Society for Clinical Densitometry (ISCD) e as Diretrizes Técnicas de Densitometria Óssea do PADI (Colégio Brasileiro de Radiologia).",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -7463,7 +7463,7 @@ const LAU_DMO_MASKS = [
 {
 "k": "referencia",
 "label": "Referência",
-"text": "Laudo elaborado com as Posições Oficiais do Consenso de 2006 da Sociedade Brasileira de Densitometria Clínica.",
+"text": "Laudo elaborado de acordo com as Posições Oficiais de 2023 da International Society for Clinical Densitometry (ISCD) e as Diretrizes Técnicas de Densitometria Óssea do PADI (Colégio Brasileiro de Radiologia).",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -7534,7 +7534,7 @@ const LAU_DMO_MASKS = [
 {
 "k": "referencia",
 "label": "Referência",
-"text": "Laudo elaborado com as Posições Oficiais do Consenso de 2006 da Sociedade Brasileira de Densitometria Clínica.",
+"text": "Laudo elaborado de acordo com as Posições Oficiais de 2023 da International Society for Clinical Densitometry (ISCD) e as Diretrizes Técnicas de Densitometria Óssea do PADI (Colégio Brasileiro de Radiologia).",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -7617,7 +7617,7 @@ const LAU_DMO_MASKS = [
 {
 "k": "referencia",
 "label": "Referência",
-"text": "Laudo elaborado com as Posições Oficiais do Consenso de 2006 da Sociedade Brasileira de Densitometria Clínica.",
+"text": "Laudo elaborado de acordo com as Posições Oficiais de 2023 da International Society for Clinical Densitometry (ISCD) e as Diretrizes Técnicas de Densitometria Óssea do PADI (Colégio Brasileiro de Radiologia).",
 "dash": true,
 "opts": [],
 "grp": ""
