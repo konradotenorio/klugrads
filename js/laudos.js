@@ -589,7 +589,7 @@ function lauBuildModel(mk){
     estruturado: items.filter(x=>x.sk).length>=2 };
 }
 const LAUDO_MODELOS = { us: (typeof LAU_US_MASKS!=='undefined' ? LAU_US_MASKS : []).map(lauBuildModel) };
-const LAU_GRUPOS = ['Medicina interna','Mama','Cabeça e pescoço','Musculoesquelético','Doppler','Obstétrico','Vascular'];
+const LAU_GRUPOS = ['Medicina interna','Mama','Cabeça e pescoço','Musculoesquelético','Obstétrico','Vascular'];
 function lauModelo(id){
   for(const k in LAUDO_MODELOS){ const m=LAUDO_MODELOS[k].find(x=>x.id===id); if(m) return m; }
   return null;

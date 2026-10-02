@@ -13,7 +13,7 @@ SRC = os.path.join(HERE, 'mascaras_us.txt')
 OUT = os.path.join(HERE, '..', '..', 'js', 'laudos-us-mascaras.js')
 
 DROP = re.compile(r'^(Nome do Paciente|Data de Nascimento|Data do Exame|Liberado por|CRM)\s*:', re.I)
-GROUPS = {'B':'Medicina interna','C':'Cabeça e pescoço','D':'Musculoesquelético','E':'Doppler','F':'Obstétrico','G':'Vascular','H':'Mama'}
+GROUPS = {'B':'Medicina interna','C':'Cabeça e pescoço','D':'Musculoesquelético','E':'Vascular','F':'Obstétrico','G':'Vascular','H':'Mama'}
 EXTRA = os.path.join(HERE, 'mascaras_klugrads.txt')   # máscaras escritas pelo KlugRads
 EXTRA_NOMES = {'MAMAS':'Mamas'}
 LABEL_DASH = re.compile(r'^-\s+([^:]{1,120}?):\s*(.*)$')

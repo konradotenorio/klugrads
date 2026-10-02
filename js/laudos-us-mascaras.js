@@ -4026,7 +4026,7 @@ const LAU_US_MASKS = [
 {
 "id": "us-doppler-abdome-superior",
 "nome": "Doppler: Abdome Superior",
-"grupo": "Doppler",
+"grupo": "Vascular",
 "titulo": [
 "ULTRASSONOGRAFIA DO ABDOME SUPERIOR COM DOPPLER"
 ],
@@ -4170,7 +4170,7 @@ const LAU_US_MASKS = [
 {
 "id": "us-doppler-figado-transplantado",
 "nome": "Doppler: Fígado Transplantado",
-"grupo": "Doppler",
+"grupo": "Vascular",
 "titulo": [
 "ULTRASSONOGRAFIA DO FÍGADO TRANSPLANTADO COM DOPPLER"
 ],
@@ -4324,7 +4324,7 @@ const LAU_US_MASKS = [
 {
 "id": "us-doppler-rim-transplantado",
 "nome": "Doppler: Rim Transplantado",
-"grupo": "Doppler",
+"grupo": "Vascular",
 "titulo": [
 "ULTRASSONOGRAFIA DOPPLER DO RIM TRANSPLANTADO"
 ],
@@ -4408,7 +4408,7 @@ const LAU_US_MASKS = [
 {
 "id": "us-doppler-bolsa-testicular",
 "nome": "Doppler: Bolsa Testicular",
-"grupo": "Doppler",
+"grupo": "Vascular",
 "titulo": [
 "ULTRASSONOGRAFIA DA BOLSA TESTICULAR COM DOPPLER"
 ],
@@ -4488,7 +4488,7 @@ const LAU_US_MASKS = [
 {
 "id": "us-doppler-penis",
 "nome": "Doppler: Pênis",
-"grupo": "Doppler",
+"grupo": "Vascular",
 "titulo": [
 "ULTRASSONOGRAFIA PENIANA COM DOPPLER"
 ],
@@ -4628,7 +4628,7 @@ const LAU_US_MASKS = [
 {
 "id": "us-doppler-transfontanela",
 "nome": "Doppler: Transfontanela",
-"grupo": "Doppler",
+"grupo": "Vascular",
 "titulo": [
 "ULTRASSONOGRAFIA TRANSFONTANELAR COM DOPPLER"
 ],
@@ -4720,7 +4720,7 @@ const LAU_US_MASKS = [
 {
 "id": "us-doppler-tireoide",
 "nome": "Doppler: Tireoide",
-"grupo": "Doppler",
+"grupo": "Vascular",
 "titulo": [
 "ULTRASSONOGRAFIA DA TIREOIDE COM DOPPLER"
 ],
@@ -4792,7 +4792,7 @@ const LAU_US_MASKS = [
 {
 "id": "us-doppler-transvaginal",
 "nome": "Doppler: Transvaginal",
-"grupo": "Doppler",
+"grupo": "Vascular",
 "titulo": [
 "ULTRASSONOGRAFIA PÉLVICA TRANSVAGINAL COM DOPPLER"
 ],
