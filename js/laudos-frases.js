@@ -648,7 +648,7 @@ const LAU_FRASES = [
    c:'Trombose da veia {L} no segmento {0}.'},
   /* ================= MAMA (léxico ACR BI-RADS US) ================= */
   {o:'mama', q:1, n:'Nódulo sólido (BI-RADS)', m:'add', kind:'birads', x:['nódulos','císticos'],
-   t:'localizado às XXX horas, a XXX cm do mamilo, medindo XXX x XXX x XXX cm'},
+   t:'às XXX horas, a XXX cm do mamilo, medindo XXX x XXX x XXX cm'},
   {o:'mama', q:1, cp:'Cistos simples na {L} (BI-RADS® 2).', n:'Cisto simples', m:'add', br:'2', x:['nódulos','císticos'],
    t:'Cisto simples (anecoico, circunscrito, com reforço acústico posterior) às XXX horas, a XXX cm do mamilo, medindo XXX x XXX cm.',
    c:'Cisto simples na {L} (BI-RADS® 2).'},

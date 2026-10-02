@@ -698,20 +698,38 @@ function lauFI(id){ return LAU_FRASES[parseInt(id,10)]; }
 /* quantidade: único | 'n' vários semelhantes (frase do maior + esta linha) | 'd' diferentes (uma frase por achado) */
 const LAU_QTPL = 'Identificam-se outras XXX formações de aspecto semelhante, a maior medindo XXX cm.';
 function lauQtd(f, bag, id){ return f.q ? ((bag['d'+id]||{}).qtd || '1') : '1'; }
+/* mama: em "vários semelhantes" informa-se a localização e as medidas de cada um */
+const LAU_LOCT = 'às XXX horas, a XXX cm do mamilo, medindo XXX x XXX x XXX cm';
+function lauMulti(f){ return f.o==='mama'; }
+function lauQn(d){ const n=parseInt((d||{}).qn,10); return isNaN(n) ? 2 : Math.max(2, Math.min(12, n)); }
+function lauLocs(f, id, bag, html){
+  const d=bag['d'+id]||{}; const out=[lauFill(f.kind?f.t:LAU_LOCT, f.kind?bag['f'+id]:bag['f'+id+'_1'], html)];
+  for(let j=2;j<=lauQn(d);j++) out.push(lauFill(LAU_LOCT, bag['f'+id+'_'+j], html));
+  return out;
+}
+/* "às 10 h, 1,2 x 0,8 x 0,9 cm" para a conclusão */
+function lauLocCurta(vals){
+  const v=i=> lauHas((vals||[])[i]) ? esc(lauN(vals[i])) : lauMk('___',true);
+  return `às ${v(0)} h, ${v(2)} x ${v(3)} x ${v(4)} cm`;
+}
 function lauFraseText(id, bag, html){
   const f=lauFI(id); if(!f) return '';
   let t;
   if(f.kind==='tirads') t = lauTiradsText(f, bag['f'+id], bag['d'+id]||{}, html);
   else if(f.kind==='birads') t = lauBiradsText(f, bag['f'+id], bag['d'+id]||{}, html);
   else t = lauFill(f.t, bag['f'+id], html);
-  if(lauQtd(f,bag,id)==='n') t += ' ' + lauFill(LAU_QTPL, bag['q'+id], html);
+  if(lauQtd(f,bag,id)==='n'){
+    if(f.kind==='birads') t = lauBiradsText(f, bag['f'+id], bag['d'+id]||{}, html, lauLocs(f,id,bag,html));
+    else if(lauMulti(f)) t += ` Outras formações semelhantes: ${lauLocs(f,id,bag,html).slice(1).join('; ')}.`;
+    else t += ' ' + lauFill(LAU_QTPL, bag['q'+id], html);
+  }
   return t;
 }
 function lauFraseConc(id, bag, lbl){
   const f=lauFI(id); if(!f) return '';
   const n = lauQtd(f,bag,id)==='n';
   if(f.kind==='tirads') return lauTiradsConc(f, bag['f'+id], bag['d'+id]||{}, n);
-  if(f.kind==='birads') return lauBiradsConc(f, bag['f'+id], bag['d'+id]||{}, lbl, n);
+  if(f.kind==='birads') return lauBiradsConc(f, bag['f'+id], bag['d'+id]||{}, lbl, n, n ? [bag['f'+id]].concat(Array.from({length:lauQn(bag['d'+id])-1},(_,j)=>bag['f'+id+'_'+(j+2)])) : null);
   return lauFraseConcHTML(n && f.cp ? Object.assign({}, f, {c:f.cp}) : f, bag['f'+id], lbl);
 }
 function lauFraseLines(list, bag, mode){
@@ -783,15 +801,19 @@ function lauBrSug(d){
   return susp===1 ? '4A' : susp===2 ? '4B' : '4C';
 }
 function lauBrCat(d){ return d.cat || lauBrSug(d); }
-function lauBiradsText(f, vals, d, html){
+function lauBiradsText(f, vals, d, html, locs){
   const w=(k,suf)=> d[k]==null ? lauMk('___',html) : (html?esc(LAU_BR[k].o[d[k]]):LAU_BR[k].o[d[k]])+(suf||'');
   const cat=lauBrCat(d);
   const opt=(k)=> d[k]==null ? '' : (html?esc(LAU_BR[k].o[d[k]]):LAU_BR[k].o[d[k]])+', ';
-  return `Nódulo de forma ${w('forma')}, orientação ${w('orient')} à pele, margem ${w('margem')}, ${w('eco')}, ${opt('post')}${opt('calc')}${lauFill(f.t, vals, html)}. Categoria BI-RADS®: ${cat?esc(cat):lauMk('?',html)}.`;
+  const catTxt = cat?esc(cat):lauMk('?',html);
+  if(locs) return `Identificam-se ${locs.length} nódulos com as mesmas características: forma ${w('forma')}, orientação ${w('orient')} à pele, margem ${w('margem')}, padrão ${w('eco')}, ${opt('post')}${opt('calc')}localizados ${locs.join('; ')}. Categoria BI-RADS®: ${catTxt}.`;
+  return `Nódulo de forma ${w('forma')}, orientação ${w('orient')} à pele, margem ${w('margem')}, ${w('eco')}, ${opt('post')}${opt('calc')}localizado ${lauFill(f.t, vals, html)}. Categoria BI-RADS®: ${catTxt}.`;
 }
-function lauBiradsConc(f, vals, d, lbl, plural){
+function lauBiradsConc(f, vals, d, lbl, plural, all){
   const cat=lauBrCat(d); const L=String(lbl||'').toLowerCase().replace(/:$/,'');
-  return `${plural?'Nódulos semelhantes':'Nódulo'} na ${esc(L||'mama')} — BI-RADS® ${cat?esc(cat)+': '+esc(LAU_BR_MANEJO[cat]):lauMk('?',true)}.`;
+  const meds = (all||[vals]).map(lauLocCurta).join('; ');
+  const nome = plural ? `${(all||[]).length} nódulos semelhantes` : 'Nódulo';
+  return `${nome} na ${esc(L||'mama')} (${meds}) — BI-RADS® ${cat?esc(cat)+': '+esc(LAU_BR_MANEJO[cat]):lauMk('?',true)}.`;
 }
 /* categoria BI-RADS de uma instância (frases de mama têm f.br fixo) */
 function lauBrOf(id, bag){ const f=lauFI(id); if(!f) return null; if(f.kind==='birads') return lauBrCat(bag['d'+id]||{}); return f.br||null; }
@@ -855,10 +877,10 @@ function lauConcs(m){
   (state.lau.xf||[]).forEach(id=>push(lauFraseConc(id, state.lau.xv, '')));
   (m.concOpts||[]).forEach((c,i)=>{ if(state.lau.conc.o[i]) out.push({html:lauFill(c.text, state.lau.conc.v['o'+i], true)}); });
   // categoria BI-RADS final do exame = a mais alta entre os achados
-  let br=null;
-  const seeBr=(list,bag)=>(list||[]).forEach(id=>{ const c=lauBrOf(id,bag); if(c && (br==null || LAU_BR_ORDEM.indexOf(c)>LAU_BR_ORDEM.indexOf(br))) br=c; });
+  let br=null; const cats=new Set();
+  const seeBr=(list,bag)=>(list||[]).forEach(id=>{ const c=lauBrOf(id,bag); if(c){ cats.add(c); if(br==null || LAU_BR_ORDEM.indexOf(c)>LAU_BR_ORDEM.indexOf(br)) br=c; } });
   m.items.forEach(it=>seeBr(state.lau.v[it.k].__f, state.lau.v[it.k].__v)); seeBr(state.lau.xf, state.lau.xv);
-  if(br) out.push({html:`Categoria BI-RADS® final do exame: ${esc(br)} (${esc(LAU_BR_MANEJO[br])}).`});
+  if(br && cats.size>1) out.push({html:`Categoria BI-RADS® final do exame: ${esc(br)} (${esc(LAU_BR_MANEJO[br])}).`});
   return out;
 }
 function lauConcHTML(m){
@@ -1093,6 +1115,7 @@ function lauFraseToggle(k, i){
   else list.push(i+'_'+(++_lauFseq));
   lauFraseAfter(k);
 }
+function lauQnSet(k, id, v){ const bag=lauPhBag(k); bag['d'+id]=Object.assign({}, bag['d'+id]||{}, {qn:v}); lauRenderLeft(); if(k==='__obs'){ lauPatchOpt('obs', lauObsHTML()); lauPatchConc(); lauSaveEd(); } else { lauPatch(k); lauUpdSum(k); } }
 function lauFraseAddDiff(k, i){
   const L=lauCur(); if(!L) return;
   const id=i+'_'+(++_lauFseq); lauFraseList(k).push(id);
@@ -1178,9 +1201,12 @@ function lauFrasesPanel(k, org, list, bag, estrut){
     seq[fi]=(seq[fi]||0)+1; const num = nOf(fi)>1 ? ' '+seq[fi] : '';
     const qtd = f.q ? (d.qtd||'1') : null;
     const qh = f.q ? `<div class="lau-row"><div class="lau-rl">Quantidade</div><div class="lau-chips">${[['1','Único'],['n','Vários semelhantes'],['d','Diferentes entre si']].map(o=>`<button type="button" class="ti-ftog ${qtd===o[0]?'on':''}" onclick="lauDescSet('${k}','${id}','qtd','${o[0]}')">${o[1]}</button>`).join('')}</div></div>`
-      + (qtd==='n' ? `<div class="lau-rl">Descreva acima o maior; os demais:</div>${lauInlineForm(k,'q'+id,LAU_QTPL,bag['q'+id])}` : '')
+      + (qtd==='n' && !lauMulti(f) ? `<div class="lau-rl">Descreva acima o maior; os demais:</div>${lauInlineForm(k,'q'+id,LAU_QTPL,bag['q'+id])}` : '')
+      + (qtd==='n' && lauMulti(f) ? `<div class="lau-row"><div class="lau-rl">Número de ${f.kind?'nódulos':'formações'}</div><div class="lau-num"><input type="number" min="2" max="12" value="${lauQn(d)}" onchange="lauQnSet('${k}','${id}',this.value)"></div></div>`
+          + (f.kind ? '' : `<div class="lau-rl">1 — descrito na frase abaixo</div>`)
+          + Array.from({length:lauQn(d)-1},(_,j)=>`<div class="lau-rl">${f.kind?'Nódulo':'Formação'} ${j+2} — localização e medidas</div>${lauInlineForm(k,'f'+id+'_'+(j+2),LAU_LOCT,bag['f'+id+'_'+(j+2)])}`).join('') : '')
       + (qtd==='d' ? `<button type="button" class="lau-addd" onclick="lauFraseAddDiff('${k}',${fi})">+ adicionar outro diferente</button>` : '') : '';
-    return `<div class="lau-fsel"><div class="lau-fsel-h"><b>${esc(f.n)}${num}</b><span>${f.m==='sub'?'substitui o texto':'linha acrescentada'}</span><button type="button" onclick="lauFraseDel('${k}','${id}')" aria-label="Remover">×</button></div>${qh}${f.kind?`<div id="desc-${k}-${id}">${lauDescHTML(k,id,f,d)}</div>`:''}${lauHasPh(f.t)?(f.kind?'<div class="lau-rl">Localização e medidas</div>':'')+lauInlineForm(k,'f'+id,f.t,bag['f'+id]):`<div class="lau-inl dim">${esc(f.t)}</div>`}</div>`; }).join('');
+    return `<div class="lau-fsel"><div class="lau-fsel-h"><b>${esc(f.n)}${num}</b><span>${f.m==='sub'?'substitui o texto':'linha acrescentada'}</span><button type="button" onclick="lauFraseDel('${k}','${id}')" aria-label="Remover">×</button></div>${qh}${f.kind?`<div id="desc-${k}-${id}">${lauDescHTML(k,id,f,d)}</div>`:''}${lauHasPh(f.t)?(f.kind?`<div class="lau-rl">${qtd==='n'&&lauMulti(f)?'Nódulo 1 — localização e medidas':'Localização e medidas'}</div>`:'')+lauInlineForm(k,'f'+id,f.t,bag['f'+id]):`<div class="lau-inl dim">${esc(f.t)}</div>`}</div>`; }).join('');
   return `<div class="lau-rl" style="margin-top:12px">Frases de alteração</div><div class="lau-chips lau-fchips">${chips}</div>${sel}`;
 }
 function lauItemPanel(m, it){
