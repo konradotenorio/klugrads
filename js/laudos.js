@@ -520,20 +520,28 @@ const LAU_MG_INC = [['mag','Magnificação com compressão seletiva','magnifica�
   ['rol','Mama “rolada”','mama “rolada”'],['perf','Perfil','perfil'],['cleo','Cleópatra','Cleópatra'],['axi','Incidência axilar','axilar']];
 LAU_STRUCT.mgtec = {k:'mgtec', label:'Técnica',
   normal:'exame realizado em mamógrafo digital, nas incidências craniocaudal e mediolateral oblíqua bilaterais.',
-  ctrls:[{t:'head', lbl:'Incidências complementares'}]
+  ctrls:[{t:'check', k:'eklund', lbl:'Implantes: incidências com manobra de Eklund'}, {t:'head', lbl:'Incidências complementares'}]
     .concat(LAU_MG_INC.map(o=>({t:'check', k:'i_'+o[0], lbl:o[1]})))
     .concat([{t:'text', k:'incOut', lbl:'Outra (opcional)', ph:'ex.: tangencial'},
              {t:'radio', k:'incL', lbl:'Mama', opts:[['ne','Não especificar'],['d','Direita'],['e','Esquerda'],['bi','Bilateral']], show:s=>LAU_MG_INC.some(o=>s['i_'+o[0]])||lauHas(s.incOut)}]),
   build(s){
     const l = LAU_MG_INC.filter(o=>s['i_'+o[0]]).map(o=>o[2]);
     if(lauHas(s.incOut)) l.push(s.incOut.trim());
-    if(!l.length) return {txt:null, conc:[]};
+    if(!l.length && !s.eklund) return {txt:null, conc:[]};
+    let base = LAU_NORMAL('mgtec').trim().replace(/\.?$/,'.');
+    if(s.eklund) base = base.replace(/\.$/, ', complementadas por incidências com deslocamento posterior dos implantes (manobra de Eklund).');
+    if(!l.length) return {txt:base, conc:[]};
     const lado = {d:' da mama direita', e:' da mama esquerda', bi:' bilaterais'}[s.incL]||'';
-    const base = LAU_NORMAL('mgtec').trim().replace(/\.?$/,'.');
     return {txt:`${base} ${l.length>1?'Realizadas incidências complementares':'Realizada incidência complementar'}${lado}: ${lauJuntaE(l)}.`, conc:[]};
   }};
 /* mama única (mamografia unilateral) ou as duas */
-function lauMgSing(){ const L=state.lau, m=L&&lauModelo(L.model); return !!(m && m.lado && !m.lado.bil); }
+function lauMgSing(){ const L=state.lau, m=L&&lauModelo(L.model); return !!(m && m.metodo==='mmg' && (L.lado==='d'||L.lado==='e')); }
+/* mamografia unilateral (lado escolhido no início): textos da máscara no singular */
+function lauMgUni(m){ const L=state.lau; return !!(m && m.metodo==='mmg' && L && L.model===m.id && (L.lado==='d'||L.lado==='e')); }
+function lauMgUniTxt(t){
+  return String(t||'').replace(/ bilaterais(?=[.,;])/g,'').replace(/^mamas com /,'mama com ')
+    .replace(/complexos areolopapilares/g,'complexo areolopapilar').replace(/nos prolongamentos axilares/g,'no prolongamento axilar');
+}
 LAU_STRUCT.mgcomp = {k:'mgcomp', label:'Composição mamária',
   normal:'mamas com densidades fibroglandulares esparsas (padrão ACR B).',
   ctrls:[
@@ -563,7 +571,7 @@ LAU_STRUCT.mgcir = {k:'mgcir', label:'Cirurgias prévias', hideNormal:true,   //
     {t:'check', k:'impl', lbl:'Implantes mamários'},
     {t:'radio', k:'implL', lbl:'Lado', opts:LAU_LADO, show:s=>s.impl, ind:1},
     {t:'radio', k:'implP', lbl:'Posição (opcional)', opts:[['ne','Não especificar'],['rg','Retroglandular'],['rp','Retropeitoral']], show:s=>s.impl, ind:1},
-    {t:'radio', k:'implI', lbl:'Aspecto', opts:[['ok','Contornos regulares'],['extra','Silicone livre (rotura extracapsular)']], show:s=>s.impl, ind:1},
+    {t:'radio', k:'implI', lbl:'Aspecto', opts:[['ok','Contornos regulares'],['irr','Contorno irregular'],['extra','Silicone livre (rotura extracapsular)']], show:s=>s.impl, ind:1},
   ],
   build(s){
     if(!s.cons && !s.mamo && !s.mast && !s.impl) return {txt:null, conc:[]};
@@ -590,10 +598,13 @@ LAU_STRUCT.mgcir = {k:'mgcir', label:'Cirurgias prévias', hideNormal:true,   //
       const pos = POS ? ' '+POS[pl?1:0] : '';
       const asp = s.implI==='extra'
         ? 'com material de densidade de silicone fora dos limites do implante, sugerindo rotura extracapsular'
+        : s.implI==='irr' ? `com contorno focalmente irregular, que pode corresponder a herniação ou dobra${pl?'':' do implante'}`
         : `de contornos regulares, sem sinais mamográficos de rotura extracapsular`;
       p.push(`${pl?'implantes mamários':'implante mamário'}${pos} ${lauLadoTxt(s.implL, pl)}, ${asp}.`);
       conc.push(s.implI==='extra' ? `Sinais de rotura extracapsular de implante mamário ${lauLadoTxt(s.implL)}.`
-                                  : (pl ? 'Implantes mamários sem sinais mamográficos de rotura extracapsular.' : `Implante mamário ${lauLadoTxt(s.implL)} sem sinais mamográficos de rotura extracapsular.`));
+              : s.implI==='irr' ? `Irregularidade de contorno de implante mamário ${lauLadoTxt(s.implL)}; a ressonância magnética pode ser considerada para avaliação da integridade.`
+              : (pl ? 'Implantes mamários sem sinais mamográficos de rotura extracapsular.' : `Implante mamário ${lauLadoTxt(s.implL)} sem sinais mamográficos de rotura extracapsular.`)
+                + ' A mamografia não avalia adequadamente a integridade intracapsular; quando necessário, a ressonância magnética é o método indicado.');
     }
     const t = p.map((x,i)=> i ? x.charAt(0).toUpperCase()+x.slice(1) : x).join(' ');
     return {txt:t, conc};
@@ -840,6 +851,7 @@ function lauBuildModel(mk){
   const mm = ult.match(/^(.*\b(DO|DA)\b.*?)\s+X{2,3}$/);
   if(mm){ lado={gen: mm[2]==='DA'?'f':'m', bil:false}; titulo = mk.titulo.slice(0,-1).concat(mm[1]).join('\n'); }
   else if(/DOS MEMBROS (INFERIORES|SUPERIORES)/.test(titulo)) lado={gen:'m', bil:true};
+  else if(mk.metodo==='mmg' && /BILATERAL/.test(titulo)) lado={gen:'f', bil:true, mg:true};
   return { id:mk.id, nome:mk.nome, grupo:mk.grupo, metodo:mk.metodo||'us', pronto:true, lado,
     titulo, concTitulo: mk.concTitulo, concNormal: mk.conc.filter(c=>!c.opt),
     concOpts: mk.conc.filter(c=>c.opt), trailer: mk.trailer, seq: mk.seq, items,
@@ -882,8 +894,9 @@ function lauConcNormalLines(m){
   if(lauHas(u.concNormal)) return u.concNormal.split('\n').filter(lauHas).map(t=>({text:t.replace(/^-\s*/,''), dash:/^-/.test(t)||true}));
   return m.concNormal;
 }
-function lauItemLabel(m,it){ const u=(lauMcfgPeek(m.id).items||{})[it.k]||{}; return lauHas(u.label)?u.label:it.label; }
-function lauItemNormal(m,it){ const u=(lauMcfgPeek(m.id).items||{})[it.k]||{}; return lauHas(u.normal)?u.normal:it.normal; }
+function lauItemLabel(m,it){ const u=(lauMcfgPeek(m.id).items||{})[it.k]||{}; const l=lauHas(u.label)?u.label:it.label;
+  return lauMgUni(m) && /^regiões axilares$/i.test(l||'') ? 'Região axilar '+(state.lau.lado==='d'?'direita':'esquerda') : l; }
+function lauItemNormal(m,it){ const u=(lauMcfgPeek(m.id).items||{})[it.k]||{}; const t=lauHas(u.normal)?u.normal:it.normal; return lauMgUni(m) ? lauMgUniTxt(t) : t; }
 /* usado dentro do build dos rins: texto normal já preenchido */
 function LAU_NORMAL(k){
   const L=lauCur(); const m=L&&lauModelo(L.model); if(!m) return '';
@@ -1313,7 +1326,7 @@ function lauItemHTML(m, it){
   }
   const adds = lauFraseLines(s.__f, s.__v, 'add');
   if(adds.length && !subs.length && r.txt==null){
-    const ws=[]; (s.__f||[]).forEach(id=>{ const f=lauFI(id); if(!f || f.m!=='add') return; const K=lauMgK(f); const xs = K ? K.x(s.__v['d'+id]||{}) : f.x; if(xs) ws.push(...xs); });
+    const ws=[]; (s.__f||[]).forEach(id=>{ const f=lauFI(id); if(!f || f.m!=='add') return; const K=lauMgK(f); const xs = K ? K.x(s.__v['d'+id]||{}) : (f.x || (/^mg/.test(f.o) ? ['\u0000'] : null)); if(xs) ws.push(...xs); });
     txt = lauNegStrip(txt, ws, true);
   }
   const ex = lauOptLines(it, s, true).concat(adds);
@@ -1335,7 +1348,8 @@ function lauConcs(m){
     }
     if(h && !seen[h]){ seen[h]=1; out.push({html:h}); }
   };
-  m.items.forEach(it=>{
+  const vis = m.items.filter(it=>!lauItemOutroLado(m,it));   // exame unilateral: ignora o outro lado
+  vis.forEach(it=>{
     (lauBuild(m,it).conc||[]).forEach(c=>push(esc(c)));
     const s=state.lau.v[it.k];
     (s.__f||[]).forEach(id=>push(lauFraseConc(id, s.__v, lauLblLado(m, lauItemLabel(m,it)))));
@@ -1348,7 +1362,12 @@ function lauConcs(m){
   // categoria BI-RADS final do exame = a mais alta entre os achados
   let br=null; const cats=new Set();
   const seeBr=(list,bag)=>(list||[]).forEach(id=>{ const c=lauBrOf(id,bag); if(c){ cats.add(c); if(br==null || LAU_BR_ORDEM.indexOf(c)>LAU_BR_ORDEM.indexOf(br)) br=c; } });
-  m.items.forEach(it=>seeBr(state.lau.v[it.k].__f, state.lau.v[it.k].__v)); seeBr(state.lau.xf, state.lau.xv);
+  vis.forEach(it=>seeBr(state.lau.v[it.k].__f, state.lau.v[it.k].__v)); seeBr(state.lau.xf, state.lau.xv);
+  const mgCir = m.metodo==='mmg' && m.items.some(it=>it.sk==='mgcir' && (lauBuild(m,it).conc||[]).length);
+  if(mgCir){
+    if(br==null) out.push({html:'Categoria BI-RADS®: 2 (achado benigno).'});
+    else { cats.add('2'); if(LAU_BR_ORDEM.indexOf('2')>LAU_BR_ORDEM.indexOf(br)) br='2'; }
+  }
   if(br && cats.size>1) out.push({html:`Categoria BI-RADS® final do exame: ${esc(br)} (${esc(lauManejo(br))}).`});
   return out;
 }
@@ -1374,6 +1393,7 @@ function lauLadoTitulo(m, t, html){
   const v=L.lado;
   if(m.lado.bil){
     if(v!=='d' && v!=='e') return t;
+    if(m.lado.mg) return t.replace(/BILATERAL/, `DA MAMA ${v==='d'?'DIREITA':'ESQUERDA'}`);
     return t.replace(/DOS MEMBROS (INFERIORES|SUPERIORES)/, (_,x)=>`DO MEMBRO ${x==='INFERIORES'?'INFERIOR':'SUPERIOR'} ${v==='d'?'DIREITO':'ESQUERDO'}`);
   }
   const f=m.lado.gen==='f';
@@ -1389,18 +1409,17 @@ function lauOutroLado(m, txt){
   const L=state.lau; if(!m.lado || !m.lado.bil || (L.lado!=='d' && L.lado!=='e')) return false;
   return L.lado==='d' ? /\besquerd[oa]s?\b/i.test(txt||'') : /\bdireit[oa]s?\b/i.test(txt||'');
 }
-function lauItemOutroLado(m, it){ return lauOutroLado(m, it.grp) || (/^(direit|esquerd)[oa]$/i.test(it.label||'') && lauOutroLado(m, it.label)); }
+function lauItemOutroLado(m, it){ return lauOutroLado(m, it.grp) || ((/^(direit|esquerd)[oa]$/i.test(it.label||'') || (m.lado&&m.lado.mg&&/^mama (direita|esquerda)$/i.test(it.label||''))) && lauOutroLado(m, it.label)); }
 function lauSetLado(v){
   const L=lauCur(); if(!L) return; const m=lauModelo(L.model);
   L.lado = L.lado===v ? null : v;
   if(m.lado && m.lado.bil){ lauSaveEd(); L.html=null; render(true); return; }   // reconstrói sem o outro lado
   lauRenderLeft(); lauPatchTit();
-  if(m.metodo==='mmg'){ m.items.filter(it=>/^(mama|região axilar)$/i.test(it.label||'')).forEach(it=>lauPatch(it.k)); lauPatchConc(); lauSaveEd(); }   // "Mama:" → "Mama direita/esquerda"
 }
 function lauLadoHTML(m){
   if(!m.lado) return '';
   const L=state.lau; const f=m.lado.gen==='f';
-  const ops = m.lado.bil ? [['bi','Bilateral'],['d','Direito'],['e','Esquerdo']] : [['d',f?'Direita':'Direito'],['e',f?'Esquerda':'Esquerdo']];
+  const ops = m.lado.bil ? [['bi','Bilateral'],['d',f?'Direita':'Direito'],['e',f?'Esquerda':'Esquerdo']] : [['d',f?'Direita':'Direito'],['e',f?'Esquerda':'Esquerdo']];
   const cur = m.lado.bil ? (L.lado||'bi') : L.lado;
   return `<div class="lau-lado"><span>Lado</span>${ops.map(o=>`<button type="button" class="ti-ftog ${cur===o[0]?'on':''}" onclick="lauSetLado('${o[0]}')">${o[1]}</button>`).join('')}</div>`;
 }

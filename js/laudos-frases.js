@@ -760,13 +760,7 @@ const LAU_FRASES = [
   {o:'mgaxila', n:'Tecido mamário acessório', m:'add', br:'2',
    t:'Tecido fibroglandular acessório na axila direita XX esquerda.',
    c:'Tecido mamário acessório axilar (BI-RADS® 2).'},
-  {o:'mgimpl', n:'Rotura extracapsular', m:'sub',
-   t:'implantes retroglandulares XX retropeitorais bilaterais; à direita XX à esquerda, material de densidade de silicone fora dos limites do implante, sugerindo rotura extracapsular.',
-   c:'Sinais de rotura extracapsular do implante mamário {1}.'},
-  {o:'mgimpl', n:'Contorno irregular / herniação', m:'sub',
-   t:'implantes retroglandulares XX retropeitorais bilaterais; à direita XX à esquerda, contorno focalmente irregular, que pode corresponder a herniação ou dobra do implante.',
-   c:'Irregularidade de contorno do implante mamário {1} — a ressonância magnética pode ser considerada para avaliação da integridade.'},
-  {o:'mgimpl', n:'Calcificações capsulares', m:'add', br:'2',
+  {o:'mgmama', n:'Calcificações capsulares (implante)', m:'add', br:'2',
    t:'Calcificações capsulares periprotéticas.',
    c:'Calcificações capsulares periprotéticas (BI-RADS® 2).'},
 ];
@@ -776,7 +770,6 @@ const LAU_FRASE_ORGAOS_MMG = [
   ['mgmama', /^mama\b/],
   ['mgpele', /^pele|areolopapilar/],
   ['mgaxila', /axila/],
-  ['mgimpl', /^implantes?/],
   ['comparacao', /^comparac/],
 ];
 function lauFraseOrgao(label, metodo){
