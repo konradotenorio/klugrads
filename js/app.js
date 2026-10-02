@@ -1659,6 +1659,7 @@ function calcViewHTML(){
   if(state.calcId === 'gdm') return calcGdmHTML();
   if(state.calcId === 'ptb') return calcPtbHTML();
   if(typeof FETAL_CALC_MAP!=='undefined' && FETAL_CALC_MAP[state.calcId]) return fetalCalcHTML(state.calcId);
+  { const c = state.calcId && findCalc(state.calcId); if(c && typeof c.page==='function') return c.page(); }   // páginas genéricas (ex.: protocolos)
   return calcListHTML();
 }
 /* Catálogo de calculadoras por especialidade (mesmos ids de SPECIALTIES). */
@@ -1705,7 +1706,9 @@ function openFavCalc(id){
 /* Subespecialidades por método (fora do US). O US usa SPECIALTIES. */
 const MOD_SPECS = {
   rm: [ {id:'medint', name:'Medicina Interna'} ],
-  tc: [ {id:'medint', name:'Medicina Interna'}, {id:'torax', name:'Tórax'} ],
+  tc: [ {id:'medint', name:'Medicina Interna'}, {id:'torax', name:'Tórax'},
+        {id:'gu', name:'Genitourinário'}, {id:'gi', name:'Gastrointestinal'}, {id:'card', name:'Cardíaco e Tórax'},
+        {id:'vasc', name:'Vascular'}, {id:'msk', name:'Musculoesquelético'} ],
 };
 /* Conteúdo/calculadoras de um método não-US, agrupado por subespecialidade. */
 function calcListModalityHTML(mid){
