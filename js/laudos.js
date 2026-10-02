@@ -932,7 +932,7 @@ function lauCfgAll(){
   return state.lauCfg;
 }
 function lauCfgSave(){ try{ localStorage.setItem(LAU_CFG_KEY, JSON.stringify(lauCfgAll())); }catch(_){} }
-function lauGen(){ const c=lauCfgAll(); return {font:c.font||'Arial', size:c.size||12, bold:c.bold!==false, hifen:c.hifen!==false, concTitulo:c.concTitulo||''}; }
+function lauGen(){ const c=lauCfgAll(); return {font:c.font||'Arial', size:c.size||12, bold:c.bold!==false, hifen:c.hifen!==false, concTitulo:c.concTitulo||'', les:c.les||'het'}; }
 function lauMcfg(id){ const c=lauCfgAll(); if(!c.models[id]) c.models[id]={items:{}}; if(!c.models[id].items) c.models[id].items={}; return c.models[id]; }
 function lauMcfgPeek(id){ const c=lauCfgAll(); return c.models[id]||{items:{}}; }
 function lauTitulo(m){ const u=lauMcfgPeek(m.id); return lauHas(u.titulo)?u.titulo:m.titulo; }
@@ -1362,8 +1362,10 @@ function lauItemOculto(m, it){
 }
 function lauExceto(txt, les){
   const l = les.map(x=>String(x).trim().replace(/[\s.]+$/,'')).map(x=>x.charAt(0).toLowerCase()+x.slice(1));
-  const re = /homogêne[oa](?=\.)/;
-  if(re.test(txt)) return txt.replace(re, m0=>`${m0}, exceto por ${lauJuntaE(l)}`);
+  const re = /homogêne([oa])(?=\.)/;
+  if(re.test(txt)) return lauGen().les==='exc'
+    ? txt.replace(re, m0=>`${m0}, exceto por ${lauJuntaE(l)}`)
+    : txt.replace(re, (m0,g)=>`heterogêne${g} pela presença de ${lauJuntaE(l)}`);
   return txt + ' ' + l.map(x=>x.charAt(0).toUpperCase()+x.slice(1)+'.').join(' ');
 }
 function lauItemHTML(m, it){
@@ -2057,6 +2059,7 @@ function laudoCfgHTML(){
       <div class="lau-row"><div class="lau-rl">Tamanho</div><div class="lau-chips">${LAU_SIZES.map(z=>`<button type="button" class="ti-ftog ${g.size===z?'on':''}" onclick="lauCfgGen('size',${z})">${z}</button>`).join('')}</div></div>
       <label class="lau-chk"><input type="checkbox" ${g.bold?'checked':''} onchange="lauCfgGen('bold',this.checked)"><span>Nomes dos órgãos em negrito</span></label>
       <label class="lau-chk"><input type="checkbox" ${g.hifen?'checked':''} onchange="lauCfgGen('hifen',this.checked)"><span>Hífen no início das linhas</span></label>
+      <div class="lau-row"><div class="lau-rl">Lesão focal em órgão de ecotextura homogênea (fígado, baço)</div><div class="lau-chips">${[['het','“heterogênea pela presença de …”'],['exc','“homogênea, exceto por …”']].map(o=>`<button type="button" class="ti-ftog ${g.les===o[0]?'on':''}" onclick="lauCfgGen('les','${o[0]}')">${o[1]}</button>`).join('')}</div></div>
       <div class="lau-cf"><div class="lau-rl">Título da conclusão</div><input class="lau-txt" type="text" placeholder="Conclusão:" value="${esc(g.concTitulo)}" oninput="lauCfgGen('concTitulo',this.value,true)"></div>
     </div>
     <div class="ti-card">
