@@ -2054,7 +2054,7 @@ function laudosHTML(){
 /* Lista com filtro por subespecialidade (chips) e busca. Com texto na busca,
    procura em todas as subespecialidades. */
 function lauListHTML(metodo, onclickFn, sub){
-  const all = [].concat(...[].concat(metodo).map(k=>LAUDO_MODELOS[k]||[]));
+  const all = [].concat(...[].concat(metodo).map(k=>LAUDO_MODELOS[k]||[])).slice().sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base',numeric:true}));
   const q = lauNorm(state.lauQ||'');
   const grupos = LAU_GRUPOS.filter(g=>all.some(m=>m.grupo===g));
   if(!state.lauGrp || grupos.indexOf(state.lauGrp)<0) state.lauGrp = grupos[0];
