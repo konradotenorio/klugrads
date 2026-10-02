@@ -1027,11 +1027,13 @@ const LAU_QTPL = 'Identificam-se outras XXX formações de aspecto semelhante, a
 function lauQtd(f, bag, id){ return f.q ? ((bag['d'+id]||{}).qtd || '1') : '1'; }
 /* mama: em "vários semelhantes" informa-se a localização e as medidas de cada um */
 const LAU_LOCT = 'às XXX horas, a XXX cm do mamilo, a XXX cm da pele, medindo XXX x XXX x XXX cm';
-function lauMulti(f){ return f.o==='mama'; }
+function lauMulti(f){ return f.o==='mama' || f.kind==='tirads'; }
+/* modelo de localização/medidas de cada achado semelhante */
+function lauLocTpl(f){ return f.kind==='tirads' ? f.t : LAU_LOCT; }
 function lauQn(d){ const n=parseInt((d||{}).qn,10); return isNaN(n) ? 2 : Math.max(2, Math.min(12, n)); }
 function lauLocs(f, id, bag, html){
   const d=bag['d'+id]||{}; const out=[lauFill(f.kind?f.t:LAU_LOCT, f.kind?bag['f'+id]:bag['f'+id+'_1'], html)];
-  for(let j=2;j<=lauQn(d);j++) out.push(lauFill(LAU_LOCT, bag['f'+id+'_'+j], html));
+  for(let j=2;j<=lauQn(d);j++) out.push(lauFill(lauLocTpl(f), bag['f'+id+'_'+j], html));
   return out;
 }
 /* "às 10 h, 1,2 x 0,8 x 0,9 cm" para a conclusão */
@@ -1071,6 +1073,7 @@ function lauFraseText(id, bag, html){
   if(f.medOpc && !lauMgK(f)) t = lauTiraMedVazia(t);
   if(lauQtd(f,bag,id)==='n'){
     if(f.kind==='birads') t = lauBiradsText(f, bag['f'+id], bag['d'+id]||{}, html, lauLocs(f,id,bag,html));
+    else if(f.kind==='tirads') t = lauTiradsText(f, bag['f'+id], bag['d'+id]||{}, html, lauLocs(f,id,bag,html));
     else if(lauMulti(f)) t += lauLocs(f,id,bag,html).slice(1).map((l,j)=>`${html?'<br>':'\n'}Formação semelhante ${j+2}: ${l}.`).join('');
     else t += ' ' + lauFill(LAU_QTPL, bag['q'+id], html);
   }
@@ -1083,7 +1086,7 @@ function lauFraseConc(id, bag, lbl){
   const n = lauQtd(f,bag,id)==='n';
   if(lauKindTE(f)) return lauTendConc(f, id, bag);
   if(lauMgK(f)) return lauMgConc(f, id, bag, lbl, n);
-  if(f.kind==='tirads') return lauTiradsConc(f, bag['f'+id], bag['d'+id]||{}, n);
+  if(f.kind==='tirads') return lauTiradsConc(f, bag['f'+id], bag['d'+id]||{}, n, n ? [bag['f'+id]].concat(Array.from({length:lauQn(bag['d'+id])-1},(_,j)=>bag['f'+id+'_'+(j+2)])) : null);
   if(f.kind==='birads') return lauBiradsConc(f, bag['f'+id], bag['d'+id]||{}, lbl, n, n ? [bag['f'+id]].concat(Array.from({length:lauQn(bag['d'+id])-1},(_,j)=>bag['f'+id+'_'+(j+2)])) : null);
   return lauFraseConcHTML(n && f.cp ? Object.assign({}, f, {c:f.cp}) : f, bag['f'+id], lbl);
 }
@@ -1210,22 +1213,27 @@ function lauMaxDim(f, vals){
   return mx;
 }
 function lauMk(v,html){ return html ? `<mark class="lau-ph">${esc(v)}</mark>` : v; }
-function lauTiradsText(f, vals, d, html){
+function lauTiradsText(f, vals, d, html, locs){
   const n=lauTrNod(d), ev=tiradsEval(n);
   const w=(k)=> n[k]==null ? lauMk('___',html) : (html?esc(LAU_TR_TXT[k][n[k]]):LAU_TR_TXT[k][n[k]]);
   const foci = n.foci.map(i=>LAU_TR_FOCI[i]).join(' e ').replace('sem focos ecogênicos e ','');
   const loc = lauFill(f.t, vals, html);
   const cat = ev.complete || ev.auto ? `TR${ev.tr} (${ev.pts} ponto${ev.pts===1?'':'s'})` : lauMk('TR?',html);
+  if(locs){ const br=html?'<br>':'\n';
+    return `Identificam-se ${locs.length} nódulos com as mesmas características: ${w('comp')}, ${w('echo')}, ${w('shape')}, ${w('margin')}, ${html?esc(foci):foci}. ACR TI-RADS: ${cat}.`
+      + locs.map((l,j)=>`${br}Nódulo ${j+1}: ${l}.`).join(''); }
   return `Nódulo ${w('comp')}, ${w('echo')}, ${w('shape')}, ${w('margin')}, ${html?esc(foci):foci}, ${loc}. ACR TI-RADS: ${cat}.`;
 }
-function lauTiradsConc(f, vals, d, plural){
+function lauTiradsConc(f, vals, d, plural, all){
   const n=lauTrNod(d), ev=tiradsEval(n);
-  const tpl=lauTpl(f.t); const lado=lauVal(tpl, vals||[], 1);
-  const ladoTxt = lado.ok ? esc(lado.v) : lauMk('direito / esquerdo',true);
+  const tpl=lauTpl(f.t); const lista=(plural&&all?all:[vals]);
+  const lados=[...new Set(lista.map(v=>lauVal(tpl, v||[], 1)).filter(x=>x.ok).map(x=>x.v))];
+  const ladoTxt = lados.length>1 ? 'em ambos os lobos' : lados.length ? 'no lobo '+esc(lados[0]) : 'no lobo '+lauMk('direito / esquerdo',true);
   const nome = plural ? 'Nódulos tireoidianos semelhantes' : 'Nódulo tireoidiano';
-  if(!(ev.complete||ev.auto)) return `${nome} no lobo ${ladoTxt} — ACR TI-RADS ${lauMk('TR?',true)}.`;
-  const r=tiradsRec(ev.tr, lauMaxDim(f, vals), ev.auto);
-  return `${nome} no lobo ${ladoTxt} — ACR TI-RADS TR${ev.tr} (${esc(TIRADS_TRC[ev.tr].name.toLowerCase())})${plural?', classificação pelo maior':''}. ${esc(r.a)}${r.a==='Informe o tamanho'?'':'.'}`;
+  if(!(ev.complete||ev.auto)) return `${nome} ${ladoTxt} — ACR TI-RADS ${lauMk('TR?',true)}.`;
+  const mx = lista.map(v=>lauMaxDim(f, v)).filter(x=>x!=null).reduce((a,b)=>Math.max(a,b), -Infinity);
+  const r=tiradsRec(ev.tr, mx===-Infinity?null:mx, ev.auto);
+  return `${nome} ${ladoTxt} — ACR TI-RADS TR${ev.tr} (${esc(TIRADS_TRC[ev.tr].name.toLowerCase())})${plural?'; conduta pelo maior':''}. ${esc(r.a)}${r.a==='Informe o tamanho'?'':'.'}`;
 }
 
 /* ---------- BI-RADS (léxico ACR BI-RADS US, 5ª ed.) ----------
@@ -1865,7 +1873,7 @@ function lauFrasesPanel(k, org, list, bag, estrut){
       ? (f.kind||multi ? `<div class="lau-rl">${multi?nome1+' 1 — localização e medidas':lauMgK(f)?(f.medOpc?'Medidas (opcional)':'Medidas'):'Localização e medidas'}</div>` : '') + lauInlineForm(k,'f'+id,f.t,bag['f'+id])
       : `<div class="lau-inl dim">${esc(f.t)}</div>`;
     const extras = multi
-      ? Array.from({length:lauQn(d)-1},(_,j)=>`<div class="lau-rl lau-rlx">${nome1} ${j+2} — localização e medidas <button type="button" class="lau-xs" onclick="lauQnDel('${k}','${id}',${j+2})" aria-label="Remover">×</button></div>${lauInlineForm(k,'f'+id+'_'+(j+2),LAU_LOCT,bag['f'+id+'_'+(j+2)])}`).join('')
+      ? Array.from({length:lauQn(d)-1},(_,j)=>`<div class="lau-rl lau-rlx">${nome1} ${j+2} — localização e medidas <button type="button" class="lau-xs" onclick="lauQnDel('${k}','${id}',${j+2})" aria-label="Remover">×</button></div>${lauInlineForm(k,'f'+id+'_'+(j+2),lauLocTpl(f),bag['f'+id+'_'+(j+2)])}`).join('')
         + `<button type="button" class="lau-addd" onclick="lauQnAdd('${k}','${id}')">+ adicionar ${f.kind?'nódulo':'formação'} semelhante</button>`
       : (qtd==='n' ? `<div class="lau-rl">Os demais:</div>${lauInlineForm(k,'q'+id,LAU_QTPL,bag['q'+id])}` : '');
     const mtx = f.mt ? Array.from({length:lauMtN(d)},(_,j)=>`<div class="lau-rl lau-rlx">${esc(f.mtn||'Nódulo')} ${j+2} <button type="button" class="lau-xs" onclick="lauMtDel('${k}','${id}',${j+2})" aria-label="Remover">×</button></div>${lauInlineForm(k,'f'+id+'_'+(j+2),f.mt,bag['f'+id+'_'+(j+2)])}`).join('')
