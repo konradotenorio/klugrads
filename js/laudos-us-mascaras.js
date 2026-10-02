@@ -7130,6 +7130,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "sem exame prévio disponível para comparação.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -7156,6 +7164,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "regioes-axilares"
+},
+{
+"t": "item",
+"k": "comparacao"
 }
 ],
 "concTitulo": "Conclusão:",

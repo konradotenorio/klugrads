@@ -46,6 +46,7 @@ const LAU_FRASE_ORGAOS = [
   ['mama', /^mama (direita|esquerda)/],
   ['ductos', /retroareolar|^ductos/],
   ['axila', /axila/],
+  ['comparacao', /^comparac/],
   ['__extra', /^__extra$/],
   /* musculoesquelético */
   ['tendao', /^tend(ao|oes)|tendine|^trato iliotibial|^compartimentos sinoviais/],
@@ -709,8 +710,20 @@ const LAU_FRASES = [
   {o:'axila', n:'Tecido mamário acessório', m:'add',
    t:'Tecido fibroglandular acessório na axila direita XX esquerda.',
    c:'Tecido mamário acessório axilar.'},
+  /* ================= COMPARAÇÃO COM EXAME PRÉVIO ================= */
+  {o:'comparacao', n:'Estabilidade', m:'sub',
+   t:'em relação ao exame prévio de XXX, nota-se estabilidade dos achados.',
+   c:'Estabilidade dos achados em relação ao exame de {0}.'},
+  {o:'comparacao', n:'Alterações', m:'sub',
+   t:'em relação ao exame prévio de XXX, notam-se as seguintes alterações: XXX.',
+   c:'Alterações em relação ao exame de {0}: {1}.'},
+  {o:'comparacao', n:'Estabilidade + achado novo', m:'sub',
+   t:'em relação ao exame prévio de XXX, nota-se estabilidade dos achados descritos anteriormente, com surgimento de: XXX.',
+   c:'Achado novo em relação ao exame de {0}: {1}.'},
+  {o:'comparacao', n:'Exame prévio sem achados', m:'sub',
+   t:'em relação ao exame prévio de XXX, que não apresentava alterações, notam-se: XXX.',
+   c:'Achados novos em relação ao exame de {0}.'},
 ];
-
 
 function lauFraseOrgao(label){
   const n = String(label||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();

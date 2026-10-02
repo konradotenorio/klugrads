@@ -720,7 +720,7 @@ function lauFraseText(id, bag, html){
   else t = lauFill(f.t, bag['f'+id], html);
   if(lauQtd(f,bag,id)==='n'){
     if(f.kind==='birads') t = lauBiradsText(f, bag['f'+id], bag['d'+id]||{}, html, lauLocs(f,id,bag,html));
-    else if(lauMulti(f)) t += ` Outras formações semelhantes: ${lauLocs(f,id,bag,html).slice(1).join('; ')}.`;
+    else if(lauMulti(f)) t += lauLocs(f,id,bag,html).slice(1).map((l,j)=>`${html?'<br>':'\n'}Formação semelhante ${j+2}: ${l}.`).join('');
     else t += ' ' + lauFill(LAU_QTPL, bag['q'+id], html);
   }
   return t;
@@ -806,14 +806,16 @@ function lauBiradsText(f, vals, d, html, locs){
   const cat=lauBrCat(d);
   const opt=(k)=> d[k]==null ? '' : (html?esc(LAU_BR[k].o[d[k]]):LAU_BR[k].o[d[k]])+', ';
   const catTxt = cat?esc(cat):lauMk('?',html);
-  if(locs) return `Identificam-se ${locs.length} nódulos com as mesmas características: forma ${w('forma')}, orientação ${w('orient')} à pele, margem ${w('margem')}, padrão ${w('eco')}, ${opt('post')}${opt('calc')}localizados ${locs.join('; ')}. Categoria BI-RADS®: ${catTxt}.`;
+  if(locs){ const br=html?'<br>':'\n';
+    return `Identificam-se ${locs.length} nódulos com as mesmas características: forma ${w('forma')}, orientação ${w('orient')} à pele, margem ${w('margem')}, padrão ${w('eco')}, ${opt('post')}${opt('calc')}categoria BI-RADS®: ${catTxt}.`
+      + locs.map((l,j)=>`${br}Nódulo ${j+1}: ${l}.`).join(''); }
   return `Nódulo de forma ${w('forma')}, orientação ${w('orient')} à pele, margem ${w('margem')}, ${w('eco')}, ${opt('post')}${opt('calc')}localizado ${lauFill(f.t, vals, html)}. Categoria BI-RADS®: ${catTxt}.`;
 }
 function lauBiradsConc(f, vals, d, lbl, plural, all){
   const cat=lauBrCat(d); const L=String(lbl||'').toLowerCase().replace(/:$/,'');
-  const meds = (all||[vals]).map(lauLocCurta).join('; ');
-  const nome = plural ? `${(all||[]).length} nódulos semelhantes` : 'Nódulo';
-  return `${nome} na ${esc(L||'mama')} (${meds}) — BI-RADS® ${cat?esc(cat)+': '+esc(LAU_BR_MANEJO[cat]):lauMk('?',true)}.`;
+  const manejo = `BI-RADS® ${cat?esc(cat)+': '+esc(LAU_BR_MANEJO[cat]):lauMk('?',true)}`;
+  if(!plural) return `Nódulo na ${esc(L||'mama')} (${lauLocCurta(vals)}) — ${manejo}.`;
+  return `${all.length} nódulos semelhantes na ${esc(L||'mama')} — ${manejo}:` + all.map((v,j)=>`<br>Nódulo ${j+1}: ${lauLocCurta(v)}.`).join('');
 }
 /* categoria BI-RADS de uma instância (frases de mama têm f.br fixo) */
 function lauBrOf(id, bag){ const f=lauFI(id); if(!f) return null; if(f.kind==='birads') return lauBrCat(bag['d'+id]||{}); return f.br||null; }
