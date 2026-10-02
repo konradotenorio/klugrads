@@ -71,7 +71,7 @@ const MODALITIES = [
    icon:'<rect x="5" y="2" width="14" height="20" rx="1.5"/><path d="M9 7h6M8 11h3M8 15h3M13 11h3M13 15h3"/>'},
   {id:'mamo', name:'Mamografia',                 label:'Mamografia',                   active:false,
    icon:'<path d="M6 19C6 12 9 5 12 5s6 7 6 14"/><line x1="3" y1="19" x2="21" y2="19"/><path d="M7.5 19c.8-3.5 2.5-5.5 4.5-5.5s3.7 2 4.5 5.5"/>'},
-  {id:'dxa',  name:'Densitometria Óssea',        label:'Densitometria<br>Óssea',       active:false,
+  {id:'dxa',  name:'Densitometria Óssea',        label:'Densitometria<br>Óssea',       active:true,
    icon:'<circle cx="9" cy="5" r="3"/><circle cx="15" cy="19" r="3"/><path d="M9 8l6 8"/>'},
   {id:'us',   name:'Ultrassonografia',           label:'Ultrassonografia',             active:true,
    icon:'<rect x="9" y="14" width="6" height="7" rx="3"/><path d="M7 12c1-2.5 2.5-4 5-4s4 1.5 5 4"/><path d="M4 10C5.5 5.5 8.5 4 12 4s6.5 1.5 8 6"/>'},
@@ -1053,6 +1053,7 @@ const HOME_CARDS = {
   us: {calcD:'TI-RADS, BI-RADS, escores e fórmulas', refD:'Medidas normais por órgão e idade', protoD:'Preparo e técnica de exame'},
   tc: {calcD:'CAD-RADS, Lung-RADS, MESA, escores e fórmulas', refD:'Nomenclaturas e conteúdo de apoio', protoD:'Aquisição, contraste e reconstrução'},
   rm: {calcD:'PI-RADS, O-RADS, PI-QUAL, escores e fórmulas', refD:'Nomenclaturas e conteúdo de apoio', protoD:'Sequências, contraste e indicação'},
+  dxa:{calcD:'Classificação densitométrica e mínima variação significativa', refD:'Critérios OMS/ISCD, indicações e requisitos do laudo', protoD:'Coluna, fêmur, antebraço, corpo inteiro e controle de qualidade'},
   rx: {calcD:'Idade óssea (IA) e ferramentas de apoio', refD:'Nomenclaturas e conteúdo de apoio', protoD:'Posicionamento e técnica'},
 };
 function homeHTML(){
@@ -1706,6 +1707,7 @@ function openFavCalc(id){
 /* Subespecialidades por método (fora do US). O US usa SPECIALTIES. */
 const MOD_SPECS = {
   rm: [ {id:'medint', name:'Medicina Interna'} ],
+  dxa: [ {id:'dxa', name:'Densitometria óssea'} ],
   tc: [ {id:'medint', name:'Medicina Interna'}, {id:'torax', name:'Tórax'},
         {id:'gu', name:'Genitourinário'}, {id:'gi', name:'Gastrointestinal'}, {id:'card', name:'Cardíaco e Tórax'},
         {id:'vasc', name:'Vascular'}, {id:'msk', name:'Musculoesquelético'} ],
