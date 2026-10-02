@@ -485,14 +485,18 @@ const LAU_STRUCT_LABELS = {
 LAU_STRUCT.elasto = {k:'elasto', label:'Elastografia hepática', noNF:true,
   normal:'realizada com a técnica “shear wave” (2D-SWE), com medidas múltiplas. Mediana das elasticidades (liver stiffness) no lobo direito calculada em XXX kPa (IQR/med: XXX%).',
   ctrls:[
+    {t:'radio', k:'marca', lbl:'Aparelho', opts:[['','Não informar'],['Samsung','Samsung'],['GE','GE'],['Philips','Philips'],['Mindray','Mindray'],['outra','Outra']]},
+    {t:'text', k:'modelo', lbl:'Modelo do aparelho (opcional)', ph:'ex.: RS85, LOGIQ E10, EPIQ Elite, Resona I9'},
     {t:'num', k:'kpa', lbl:'Mediana da elasticidade', unit:'kPa'},
     {t:'num', k:'iqr', lbl:'IQR/mediana', unit:'%'},
   ],
   build(s){
     const k=lauF(s.kpa), q=lauF(s.iqr);
-    if(k==null) return {txt:null, conc:['Elastografia hepática por 2D-SWE com índice de elasticidade calculado em ___ kPa.']};
-    const kv=lauN(s.kpa), qv=lauHas(s.iqr)?lauN(s.iqr):'';
-    let t=`realizada com a técnica “shear wave” (2D-SWE), com medidas múltiplas. Mediana das elasticidades (liver stiffness) no lobo direito calculada em ${kv} kPa${qv?` (IQR/med: ${qv}%)`:''}.`;
+    const ap = [s.marca&&s.marca!=='outra'?s.marca:'', lauHas(s.modelo)?s.modelo.trim():''].filter(Boolean).join(' ');
+    if(k==null && !ap) return {txt:null, conc:['Elastografia hepática por 2D-SWE com índice de elasticidade calculado em ___ kPa.']};
+    const kv=k==null?'___':lauN(s.kpa), qv=lauHas(s.iqr)?lauN(s.iqr):'';
+    let t=`realizada${ap?` em equipamento ${ap}`:''} com a técnica “shear wave” (2D-SWE), com medidas múltiplas. Mediana das elasticidades (liver stiffness) no lobo direito calculada em ${kv} kPa${qv?` (IQR/med: ${qv}%)`:''}.`;
+    if(k==null) return {txt:t, conc:['Elastografia hepática por 2D-SWE com índice de elasticidade calculado em ___ kPa.']};
     const inf = k<5 ? 'inferindo ausência de fibrose (normal)'
       : k<9 ? 'inferindo ausência de fibrose clinicamente significativa'
       : k<13 ? 'inferindo presença de fibrose clinicamente significativa'
