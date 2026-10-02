@@ -772,6 +772,14 @@ function lauLocCurta(vals){
 function lauSemDistVazia(t){
   return t.replace(/a (<mark class="lau-ph">)?XXX(<\/mark>)? cm d[ao] (mamilo|pele), /g, '');
 }
+/* trechos opcionais da frase (f.vaz): saem quando o campo ficou em branco */
+function lauTiraVazio(t, pats){
+  pats.forEach(p=>{
+    const re = new RegExp(p.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace('XXX','(?:<mark class="lau-ph">XXX</mark>|XXX)'), 'g');
+    t = t.replace(re,'');
+  });
+  return t;
+}
 function lauFraseText(id, bag, html){
   const f=lauFI(id); if(!f) return '';
   let t;
@@ -784,6 +792,7 @@ function lauFraseText(id, bag, html){
     else if(lauMulti(f)) t += lauLocs(f,id,bag,html).slice(1).map((l,j)=>`${html?'<br>':'\n'}Formação semelhante ${j+2}: ${l}.`).join('');
     else t += ' ' + lauFill(LAU_QTPL, bag['q'+id], html);
   }
+  if(f.vaz) t = lauTiraVazio(t, f.vaz);
   return f.o==='mama' ? lauSemDistVazia(t) : t;
 }
 function lauFraseConc(id, bag, lbl){
@@ -868,24 +877,25 @@ function lauTendText(f, id, bag, html){
     (f.kind==='tend'?'tendão ':'músculo ') + (html?esc(a.prep):a.prep)));
   return frases.map((x,i)=> i ? x.charAt(0).toUpperCase()+x.slice(1) : x).join(' ');
 }
+/* conclusão: objetos agrupáveis {g, pre, de, suf, musc}; lauConcs junta os do mesmo grupo
+   ("Tendinopatia da cabeça longa do bíceps, do supraespinal e do infraespinal, sem rotura.") */
 function lauTendConc(f, id, bag){
   const d=bag['d'+id]||{}; const det=d.det||{}; const al=lauAlvoList(f.kind, d);
-  const out = al.map(a=>{
+  return al.map(a=>{
     const t=det[a.key]||{}; const tipo=t.tipo;
-    if(!tipo && !t.bainha) return '';
+    if(!tipo && !t.bainha) return null;
     if(f.kind==='tend'){
-      const de = esc(/^(do|da|dos|das) /.test(a.prep) ? a.prep : 'do tendão '+a.prep);
+      const de = /^(do|da|dos|das) /.test(a.prep) ? a.prep : 'do tendão '+a.prep;
       const b = t.bainha && tipo ? ', com distensão líquida da bainha tendínea' : '';
-      if(!tipo) return `Distensão líquida da bainha tendínea ${de}.`;
-      if(tipo==='parcial') return `Tendinopatia ${de} com rotura parcial ${LAU_FACES[t.face||0]}${b}.`;
-      if(tipo==='completa') return `Rotura completa ${de.startsWith('do tendão')?de:'do tendão '+esc(a.prep).replace(/^(do|da|dos|das) /,'')}${b}.`;
-      if(tipo==='calc') return `Tendinopatia calcárea ${de}${b}.`;
-      return `Tendinopatia ${de}, sem rotura${b}.`;
+      if(!tipo) return {g:'bainha', pre:'Distensão líquida da bainha tendínea', de, suf:'.'};
+      if(tipo==='parcial') return {g:'parcial'+(t.face||0)+b, pre:'Tendinopatia', de, suf:` com rotura parcial ${LAU_FACES[t.face||0]}${b}.`};
+      if(tipo==='completa') return {g:'completa'+b, pre:'Rotura completa', de: /^do tendão /.test(de)?de:'do tendão '+a.prep.replace(/^(do|da|dos|das) /,''), suf:`${b}.`};
+      if(tipo==='calc') return {g:'calc'+b, pre:'Tendinopatia calcárea', de, suf:`${b}.`};
+      return {g:'tend'+b, pre:'Tendinopatia', de, suf:`, sem rotura${b}.`};
     }
-    const mus=esc(a.prep);
-    return {est:`Estiramento do músculo ${mus} (grau I).`, parcial:`Rotura parcial do músculo ${mus} (grau II).`, completa:`Rotura completa do músculo ${mus} (grau III).`, hemat:`Hematoma no músculo ${mus}.`, atrof:`Atrofia e lipossubstituição do músculo ${mus}.`}[tipo];
+    const T={est:['Estiramento',' (grau I).'], parcial:['Rotura parcial',' (grau II).'], completa:['Rotura completa',' (grau III).'], hemat:['Hematoma',''], atrof:['Atrofia e lipossubstituição','.']}[tipo];
+    return {g:'m'+tipo, pre:T[0], de:a.prep, suf:T[1]||'.', musc:true, hemat:tipo==='hemat'};
   }).filter(Boolean);
-  return out;   // várias linhas na conclusão (uma por tendão/músculo)
 }
 
 /* ---------- TI-RADS (mesma pontuação da calculadora: TIRADS_CATS / tiradsEval) ---------- */
@@ -1068,13 +1078,25 @@ function lauItemHTML(m, it){
 function lauConcs(m){
   const out=[];
   const seen={};
-  const push=(h)=>{ if(Array.isArray(h)) return h.forEach(push); if(h && !seen[h]){ seen[h]=1; out.push({html:h}); } };
+  const grupos={};
+  const push=(h)=>{
+    if(Array.isArray(h)) return h.forEach(push);
+    if(h && typeof h==='object'){            // achado agrupável (tendões / músculos)
+      if(!grupos[h.g]){ grupos[h.g]={pre:h.pre, suf:h.suf, musc:h.musc, hemat:h.hemat, des:[]}; out.push({grupo:h.g}); }
+      if(grupos[h.g].des.indexOf(h.de)<0) grupos[h.g].des.push(h.de);
+      return;
+    }
+    if(h && !seen[h]){ seen[h]=1; out.push({html:h}); }
+  };
   m.items.forEach(it=>{
     (lauBuild(m,it).conc||[]).forEach(c=>push(esc(c)));
     const s=state.lau.v[it.k];
     (s.__f||[]).forEach(id=>push(lauFraseConc(id, s.__v, lauItemLabel(m,it))));
   });
   (state.lau.xf||[]).forEach(id=>push(lauFraseConc(id, state.lau.xv, '')));
+  out.forEach(o=>{ if(o.grupo){ const g=grupos[o.grupo]; const pl=g.des.length>1;
+    const alvo = g.musc ? `${g.hemat?(pl?'nos músculos':'no músculo'):(pl?'dos músculos':'do músculo')} ${lauJuntaE(g.des)}` : g.des.join(', ').replace(/, ([^,]*)$/, pl&&g.des.length>2?', $1':', $1');
+    o.html = esc(`${g.pre} ${alvo}${g.suf}`); delete o.grupo; } });
   (m.concOpts||[]).forEach((c,i)=>{ if(state.lau.conc.o[i]) out.push({html:lauFill(c.text, state.lau.conc.v['o'+i], true)}); });
   // categoria BI-RADS final do exame = a mais alta entre os achados
   let br=null; const cats=new Set();
