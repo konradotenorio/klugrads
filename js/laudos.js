@@ -132,8 +132,9 @@ const LAU_ABD_ITEMS = [
      if(s.calc){ alt=true; ext.push(lauFrase(lauJoin([`foco hiperecogênico com sombra acústica posterior ${lauSeg(s.calcS)}`.trim(), lauMed(s.calcD,'cm')]) + ', compatível com calcificação (granuloma calcificado)'));
        conc.push('Calcificação hepática (granuloma calcificado).'); }
      if(!alt) return {txt:null, conc:[]};
-     const txt = `com dimensões ${dimTxt}${ld}, ${cont}. ${eco}` + (ext.length?' '+ext.join(' '):'');
-     return {txt, conc};
+     // lesões focais: "Ecotextura … homogênea, exceto por …" (montado em lauItemHTML)
+     const txt = `com dimensões ${dimTxt}${ld}, ${cont}. ${eco}`;
+     return {txt, conc, les:ext};
    }},
 
   /* ---------------- VEIAS PORTA E HEPÁTICAS ---------------- */
@@ -143,14 +144,31 @@ const LAU_ABD_ITEMS = [
      {t:'check', k:'pAum', lbl:'Veia porta com calibre aumentado'},
      {t:'num', k:'pD', lbl:'Calibre da veia porta', unit:'mm', show:s=>s.pAum, ind:1},
      {t:'check', k:'hDil', lbl:'Veias hepáticas e VCI dilatadas'},
+     {t:'check', k:'hp', lbl:'Sinais de hipertensão portal'},
+     {t:'check', k:'hpG', lbl:'Colaterais perigástricas', show:s=>s.hp, ind:1},
+     {t:'check', k:'hpE', lbl:'Colaterais periesofágicas', show:s=>s.hp, ind:1},
+     {t:'check', k:'hpR', lbl:'Colaterais esplenorrenais', show:s=>s.hp, ind:1},
+     {t:'check', k:'hpU', lbl:'Recanalização da veia paraumbilical', show:s=>s.hp, ind:1},
    ],
    build(s){
-     if(!s.pAum && !s.hDil) return {txt:null, conc:[]};
+     if(!s.pAum && !s.hDil && !s.hp) return {txt:null, conc:[]};
      const conc=[], p=[];
      p.push(s.pAum ? lauFrase(lauJoin(['veia porta com calibre aumentado', lauMed(s.pD,'mm')])) : 'Veia porta com calibre preservado.');
      p.push(s.hDil ? 'Veias hepáticas e veia cava inferior dilatadas.' : 'Veias hepáticas com calibres preservados.');
      if(s.pAum) conc.push('Aumento do calibre da veia porta' + (lauHas(s.pD)?` (${lauN(s.pD)} mm)`:'') + '.');
      if(s.hDil) conc.push('Dilatação das veias hepáticas e da veia cava inferior, que pode estar relacionada a congestão hepática.');
+     if(s.hp){
+       const col=[s.hpG&&'perigástricos', s.hpE&&'periesofágicos', s.hpR&&'esplenorrenais'].filter(Boolean);
+       const colC=[s.hpG&&'perigástricas', s.hpE&&'periesofágicas', s.hpR&&'esplenorrenais'].filter(Boolean);
+       if(col.length || s.hpU){
+         let f = col.length ? `vasos colaterais ${lauJuntaE(col)}` : '';
+         if(s.hpU) f = f ? `${f}, além de recanalização da veia paraumbilical` : 'recanalização da veia paraumbilical';
+         p.push(lauFrase('circulação colateral portossistêmica: ' + f));
+       } else p.push('Sinais de circulação colateral portossistêmica.');
+       const det=[colC.length?`colaterais ${lauJuntaE(colC)}`:'', s.hpU?'recanalização da veia paraumbilical':''].filter(Boolean);
+       conc.push(`Sinais de hipertensão portal${det.length?` (${det.join(' e ')})`:''}.`);
+       if(s.pAum){ const i=conc.findIndex(c=>/^Aumento do calibre da veia porta/.test(c)); if(i>=0) conc.splice(i,1); }
+     }
      /* o rótulo já diz "Veias porta e hepáticas:" — frase começa em minúscula */
      const t = p.join(' ');
      return {txt: t.charAt(0).toLowerCase()+t.slice(1), conc};
@@ -275,13 +293,14 @@ const LAU_ABD_ITEMS = [
        ? `com dimensões aumentadas${c?`, medindo ${c} no maior eixo`:''}, homogêneo.`
        : `com dimensões normais${c?` (${c} no maior eixo)`:''}, homogêneo.`;
      if(s.acs) t += ' ' + lauFrase(lauJoin(['pequena imagem nodular junto ao hilo esplênico, com ecogenicidade semelhante à do baço', lauMed(s.acsD,'cm')]) + ', compatível com baço acessório');
-     if(s.cal) t += ' Focos hiperecogênicos esparsos com sombra acústica posterior, compatíveis com calcificações (granulomas).';
-     if(s.cis) t += ' ' + lauFrase(lauJoin(['imagem cística simples no parênquima esplênico', lauMed(s.cisD,'cm')]));
+     const les=[];
+     if(s.cal) les.push('focos hiperecogênicos esparsos com sombra acústica posterior, compatíveis com calcificações (granulomas)');
+     if(s.cis) les.push(lauJoin(['imagem cística simples no parênquima esplênico', lauMed(s.cisD,'cm')]));
      if(s.dim==='aum') conc.push('Esplenomegalia' + (c?` (${c})`:'') + '.');
      if(s.acs) conc.push('Baço acessório.');
      if(s.cal) conc.push('Granulomas calcificados esplênicos.');
      if(s.cis) conc.push('Cisto esplênico.');
-     return {txt:t, conc};
+     return {txt:t, conc, les};
    }},
 
   /* ---------------- RINS ---------------- */
@@ -459,8 +478,42 @@ const LAU_STRUCT_LABELS = {
   'vias biliares intra e extra-hepaticas':'vias', 'pancreas':'pancreas', 'baco':'baco',
   'rins':'rins', 'bexiga':'bexiga', 'aorta abdominal':'aorta',
   'peritoneo e retroperitoneo':'peritoneo', 'peritoneo / retroperitoneo':'peritoneo',
-  'cirurgias previas':'cirurgia',
+  'cirurgias previas':'cirurgia', 'alcas intestinais':'alcas',
 };
+/* Alças intestinais — apêndice e intussuscepção */
+LAU_STRUCT.alcas = {k:'alcas', label:'Alças intestinais',
+  normal:'sem distensão ou espessamento parietal detectáveis ao método.',
+  ctrls:[
+    {t:'radio', k:'ap', lbl:'Apêndice cecal', opts:[['ns','Não descrever'],['n','Normal'],['nc','Não caracterizado'],['ap','Apendicite']]},
+    {t:'num', k:'apD', lbl:'Calibre (opcional)', unit:'mm', show:s=>s.ap==='n'||s.ap==='ap', ind:1},
+    {t:'check', k:'apL', lbl:'Apendicolito', show:s=>s.ap==='ap', ind:1},
+    {t:'check', k:'apG', lbl:'Densificação da gordura periapendicular', show:s=>s.ap==='ap', ind:1},
+    {t:'check', k:'apQ', lbl:'Líquido periapendicular', show:s=>s.ap==='ap', ind:1},
+    {t:'check', k:'apC', lbl:'Coleção / abscesso periapendicular', show:s=>s.ap==='ap', ind:1},
+    {t:'check', k:'int', lbl:'Intussuscepção'},
+    {t:'select', k:'intL', lbl:'Localização', opts:[['no flanco direito','Flanco direito'],['na fossa ilíaca direita','Fossa ilíaca direita'],['no hipocôndrio direito','Hipocôndrio direito'],['no mesogástrio','Mesogástrio'],['no epigástrio','Epigástrio'],['no hipocôndrio esquerdo','Hipocôndrio esquerdo'],['no flanco esquerdo','Flanco esquerdo'],['na fossa ilíaca esquerda','Fossa ilíaca esquerda']], show:s=>s.int, ind:1},
+    {t:'num', k:'intD', lbl:'Diâmetro (opcional)', unit:'cm', show:s=>s.int, ind:1},
+  ],
+  build(s){
+    if(s.ap==='ns' && !s.int) return {txt:null, conc:[]};
+    const conc=[]; const base = LAU_NORMAL('alcas') || 'sem distensão ou espessamento parietal detectáveis ao método.';
+    let t = s.int ? 'sem distensão difusa.' : base;
+    const d = lauHas(s.apD) ? ` (${lauN(s.apD)} mm)` : '';
+    if(s.ap==='n') t += ` Apêndice cecal caracterizado, compressível, de calibre normal${d}, sem sinais inflamatórios.`;
+    if(s.ap==='nc') t += ' Apêndice cecal não caracterizado.';
+    if(s.ap==='ap'){
+      const ex=[s.apL&&'apendicolito (imagem ecogênica com sombra acústica em sua luz)', s.apG&&'densificação (hiperecogenicidade) da gordura periapendicular', s.apQ&&'pequena quantidade de líquido periapendicular'].filter(Boolean);
+      t += ` Apêndice cecal não compressível, com calibre aumentado${d} e paredes espessadas${ex.length?', com '+lauJuntaE(ex):''}.`;
+      if(s.apC) t += ' Coleção periapendicular com conteúdo espesso, sugestiva de abscesso.';
+      conc.push(s.apC ? 'Achados ultrassonográficos compatíveis com apendicite aguda complicada com coleção periapendicular.'
+                      : 'Achados ultrassonográficos compatíveis com apendicite aguda' + (s.apL?', com apendicolito':'') + '.');
+    }
+    if(s.int){
+      t += ' ' + lauFrase(lauJoin([`imagem em "alvo" no corte transversal e em "pseudorrim" no longitudinal ${s.intL||'no flanco direito'}`, lauHas(s.intD)?`medindo ${lauN(s.intD)} cm de diâmetro`:'']) + ', compatível com intussuscepção intestinal');
+      conc.push('Achados compatíveis com intussuscepção intestinal.');
+    }
+    return {txt:t, conc};
+  }};
 
 /* Mama — cirurgias prévias (mamoplastia, mastectomia com/sem reconstrução, implantes) */
 const LAU_LADO = [['bi','Bilateral'],['d','Direita'],['e','Esquerda']];
@@ -1307,6 +1360,12 @@ function lauItemOculto(m, it){
   const s=state.lau.v[it.k], r=lauBuild(m,it);
   return r.txt==null && !(s.__f||[]).length && !(s.__o||[]).some(Boolean);
 }
+function lauExceto(txt, les){
+  const l = les.map(x=>String(x).trim().replace(/[\s.]+$/,'')).map(x=>x.charAt(0).toLowerCase()+x.slice(1));
+  const re = /homogêne[oa](?=\.)/;
+  if(re.test(txt)) return txt.replace(re, m0=>`${m0}, exceto por ${lauJuntaE(l)}`);
+  return txt + ' ' + l.map(x=>x.charAt(0).toUpperCase()+x.slice(1)+'.').join(' ');
+}
 function lauItemHTML(m, it){
   const L=state.lau, s=L.v[it.k], r=lauBuild(m,it), g=lauGen();
   if(lauItemOculto(m,it)) return '';
@@ -1324,7 +1383,11 @@ function lauItemHTML(m, it){
       if(!soFixo && sobra && /^(tend(ões|oes)|ventres|planos|musculatura|compartimentos|ligamentos)/i.test(lblRaw||'')) txt += ' Demais com aspecto habitual.';
     } else txt = subs[subs.length-1];
   }
-  const adds = lauFraseLines(s.__f, s.__v, 'add');
+  // lesões focais (estruturadas e frases marcadas com les) entram como "homogênea, exceto por …"
+  const lesF = (s.__f||[]).filter(id=>{ const f=lauFI(id); return f && f.m==='add' && f.les; });
+  const les = (r.les||[]).map(x=>esc(x)).concat(lesF.map(id=>lauFraseText(id, s.__v, true)));
+  if(les.length) txt = lauExceto(txt, les);
+  const adds = (s.__f||[]).filter(id=>{ const f=lauFI(id); return f && f.m==='add' && !f.les; }).map(id=>lauFraseText(id, s.__v, true));
   if(adds.length && !subs.length && r.txt==null){
     const ws=[]; (s.__f||[]).forEach(id=>{ const f=lauFI(id); if(!f || f.m!=='add') return; const K=lauMgK(f); const xs = K ? K.x(s.__v['d'+id]||{}) : (f.x || (/^mg/.test(f.o) ? ['\u0000'] : null)); if(xs) ws.push(...xs); });
     txt = lauNegStrip(txt, ws, true);

@@ -270,7 +270,15 @@ const LAU_US_MASKS = [
 {
 "k": "bexiga",
 "label": "Bexiga",
-"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.",
+"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "sem distensão ou espessamento parietal detectáveis ao método.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -316,6 +324,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "bexiga"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -984,6 +996,14 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "sem distensão ou espessamento parietal detectáveis ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
 "k": "prostata",
 "label": "Próstata",
 "text": "com forma habitual, medindo cerca de XX x XX x XX cm; massa estimada em XXX gramas.",
@@ -1060,6 +1080,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "bexiga"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
 },
 {
 "t": "item",

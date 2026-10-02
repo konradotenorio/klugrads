@@ -128,7 +128,8 @@ Data do Exame:
 - Rins: tópicos, de dimensões normais, com espessura e ecogenicidade parenquimatosas preservadas, sem hidronefrose ou cálculos detectáveis ao método.
 - Aorta abdominal: com calibre normal.
 - Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis.
-- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.
+- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico.
+- Alças intestinais: sem distensão ou espessamento parietal detectáveis ao método.
 Conclusão:
 - Exame sem alterações significativas.
 Liberado por: 
@@ -269,6 +270,7 @@ Exame realizado pela via suprapúbica.
 - Aorta abdominal: com calibre normal.
 - Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis.
 - Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.
+- Alças intestinais: sem distensão ou espessamento parietal detectáveis ao método.
 - Próstata: com forma habitual, medindo cerca de XX x XX x XX cm; massa estimada em XXX gramas.
 - Protrusão prostática intravesical (IPP): de cerca de XXX cm.
 - Vesículas seminais: simétricas e com ecotextura preservada.
