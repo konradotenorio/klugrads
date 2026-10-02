@@ -17,7 +17,7 @@
      kind 'tirads' | 'birads' = frase com classificação (descritores +
           categoria; TI-RADS usa a mesma pontuação da calculadora)
      br categoria BI-RADS da frase (entra na categoria final do exame)
-     kind 'tend' | 'musc' = escolha do tendão/músculo (lista por articulação) e do tipo de lesão
+     kind 'tend' | 'musc' | 'lig' = escolha do tendão/músculo (lista por articulação) e do tipo de lesão
      so  lista de laudos em que a frase aparece (ex.: só no ombro)
      vaz trechos que somem do laudo quando o campo (XXX) não for preenchido
      q  1 = aceita quantidade (único / vários semelhantes / diferentes); cp = conclusão no plural
@@ -473,7 +473,7 @@ const LAU_FRASES = [
   {o:'tendao', n:'Tenossinovite', m:'add',
    t:'Distensão líquida da bainha do tendão XXX, com espessamento sinovial e hiperemia ao Doppler.',
    c:'Tenossinovite do {0}.'},
-  {o:'tendao', n:'Entesopatia', m:'add',
+  {o:'tendao', n:'Entesopatia', m:'add', vaz:[' do tendão XXX'],
    t:'Irregularidades corticais e entesófitos na inserção do tendão XXX.',
    c:'Entesopatia do {0}.'},
   {o:'tendao', n:'Luxação do bíceps', m:'add', so:['us-ombro'],
@@ -500,15 +500,7 @@ const LAU_FRASES = [
   {o:'poplitea', n:'Cisto de Baker roto', m:'sub',
    t:'com formação cística entre o gastrocnêmio medial e o semimembranoso, de contornos afilados inferiormente, com líquido dissecando os planos da panturrilha, medindo XXX cm.',
    c:'Cisto de Baker com sinais de rotura.'},
-  {o:'ligamento', n:'Estiramento', m:'sub',
-   t:'ligamento XXX espessado e hipoecogênico, com fibras contínuas; demais com aspecto habitual.',
-   c:'Estiramento do ligamento {0}.'},
-  {o:'ligamento', n:'Rotura parcial', m:'sub',
-   t:'ligamento XXX com rotura parcial de suas fibras; demais com aspecto habitual.',
-   c:'Rotura parcial do ligamento {0}.'},
-  {o:'ligamento', n:'Rotura completa', m:'sub',
-   t:'ligamento XXX com descontinuidade completa de suas fibras; demais com aspecto habitual.',
-   c:'Rotura completa do ligamento {0}.'},
+  {o:'ligamento', n:'Estiramento / rotura', m:'sub', kind:'lig', t:'', c:''},
   {o:'ligamento', n:'Calcificação (Pellegrini-Stieda)', m:'add',
    t:'Calcificação junto à origem femoral do ligamento colateral medial.',
    c:'Calcificação de Pellegrini-Stieda.'},
