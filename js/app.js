@@ -1653,7 +1653,7 @@ function calcViewHTML(){
   if(state.calcId === 'renal') return calcRenalHTML();
   if(state.calcId === 'ccls') return calcCclsHTML();
   if(state.calcId === 'pirads') return calcPiradsHTML();
-  if(state.calcId === 'prostata-setores') return calcProstataSetoresHTML();
+  if(state.calcId === 'prostata-setores' && typeof PMAP_ATIVO!=='undefined' && PMAP_ATIVO) return calcProstataSetoresHTML();
   if(state.calcId === 'crads') return calcCradsHTML();
   if(state.calcId === 'pancr') return calcPancreatiteHTML();
   if(state.calcId === 'orads-mri') return calcOradsMriHTML();
