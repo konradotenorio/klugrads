@@ -1623,7 +1623,8 @@ function lauPatch(k){
       const ref=ed.querySelector('[data-k="concT"]'); ref?ed.insertBefore(p,ref):ed.appendChild(p);
     }
     const h=lauItemHTML(m,it); p.innerHTML = h; p.hidden = !h; if(h) lauFlash(p);
-    if(m.oct) m.items.forEach(o=>{ if(o.k===k) return; const q=ed.querySelector(`[data-k="${o.k}"]`); if(!q) return; const hh=lauItemHTML(m,o); if(q.innerHTML!==hh){ q.innerHTML=hh; q.hidden=!hh; } });   // frases que ocultam itens do mesmo olho
+    const outros = m.oct || (typeof lauAutoAfetaOutros==='function' && lauAutoAfetaOutros(m,it));
+    if(outros) m.items.forEach(o=>{ if(o.k===k) return; const q=ed.querySelector(`[data-k="${o.k}"]`); if(!q) return; const hh=lauItemHTML(m,o); if(q.innerHTML!==hh){ q.innerHTML=hh; q.hidden=!hh; } });   // frases que ocultam itens do mesmo olho
   }
   lauPatchConc(); lauSaveEd();
 }
