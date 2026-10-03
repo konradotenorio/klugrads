@@ -175,6 +175,13 @@ function lauAutoConcs(m){
   // obstetrícia: "embrião vivo" só com CCN e BCF; sem embrião medido, a IG é pelo DMSG
   if(m && /obstetric/.test(m.id) && lauAutoCfg().on){
     const ig=lauObsIG(m), bcf=lauObsCampo(m, /\bbcf$/);
+    // opção "BCF não caracterizado" marcada no embrião: tira o "vivo" e acrescenta a frase de controle
+    const semBcf = m.items.some(it=>{ const v=state.lau.v[it.k]; return it.alts && v && v.__alt>0 && /BCF não caracterizado/.test(it.alts[v.__alt]||''); });
+    if(semBcf){
+      reps.push([/com embrião vivo e de idade gestacional/, 'com embrião de idade gestacional']);
+      reps.push([/,? com embrião vivo(?= e|\.|,)/, ', com embrião']);
+      out.push('Batimentos cardíacos embrionários não caracterizados ao estudo atual. Sugere-se controle ultrassonográfico evolutivo.');
+    }
     if(ig && ig.fonte==='dmsg'){
       reps.push([/,? com embrião vivo e de idade gestacional/, ', de idade gestacional']);
       reps.push([/pela biometria atual/, 'pelo diâmetro médio do saco gestacional']);
