@@ -1428,6 +1428,7 @@ function lauItemHTML(m, it){
   const lbl = lblRaw ? lauFill(lblRaw, s.__v.l, true)+':' : '';
   let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : r.html ? r.txt : esc(r.txt).replace(/\n/g,'<br>');
   if(r.txt==null && it.generic && typeof lauAutoTxt==='function') txt = lauAutoTxt(m, it, txt);
+  if(r.txt==null && it.generic) txt = lauAteroTxt(m, txt);
   const subs = lauFraseLines(s.__f, s.__v, 'sub');
   if(subs.length){
     const multi = (s.__f||[]).filter(id=>{ const f=lauFI(id); return f && lauKindTE(f); }).length;
@@ -2041,10 +2042,22 @@ function lauAteroHTML(m){
   const cur = id ? (((L.xv||{})['f'+id]||[])[0] || 'leve') : '';
   return `<div class="lau-lado"><span>Ateromatose (achado geral, sem estenoses significativas)</span>${[['','Ausente'],['leve','Leve'],['moderada','Moderada'],['difusa','Difusa']].map(o=>`<button type="button" class="ti-ftog ${cur===o[0]?'on':''}" onclick="lauAteroSet('${o[0]}')">${o[1]}</button>`).join('')}</div>`;
 }
+/* com ateromatose marcada, as artérias deixam de ser descritas "sem placas" */
+const LAU_ATERO_TXT = [
+  [/com paredes regulares e calibre preservado, sem dilatações ou placas ateromatosas determinando estenoses significativas\./g,
+   'com calibre preservado e placas ateromatosas parietais, sem dilatações ou estenoses hemodinamicamente significativas.'],
+  [/de trajetos e calibres normais, sem espessamentos ou calcificações parietais\./g,
+   'de trajetos e calibres normais, com placas ateromatosas parietais, sem estenoses hemodinamicamente significativas.'],
+];
+function lauAteroAtivo(m){ const L=state.lau; if(!m || !LAU_ATERO_MODELOS.test(m.id) || !L || L.model!==m.id) return false; const i=lauAteroIdx(); return (L.xf||[]).some(x=>parseInt(x,10)===i); }
+function lauAteroTxt(m, txt){ return lauAteroAtivo(m) ? LAU_ATERO_TXT.reduce((t,[a,b])=>t.replace(a,b), txt) : txt; }
 function lauAteroSet(g){
   const L=lauCur(); if(!L) return; const i=lauAteroIdx();
   L.xf = L.xf.filter(x=>parseInt(x,10)!==i);
   if(g){ const id=i+'_'+(++_lauFseq); L.xf.push(id); L.xv['f'+id]=[g]; }
+  // redesenha as artérias (texto muda com/sem ateromatose)
+  const m=lauModelo(L.model), ed=lauEd();
+  if(ed) m.items.forEach(o=>{ const q=ed.querySelector(`[data-k="${o.k}"]`); if(!q) return; const h=lauItemHTML(m,o); if(q.innerHTML!==h){ q.innerHTML=h; q.hidden=!h; lauFlash(q); } });
   lauFraseAfter('__obs');
 }
 function lauRenderLeft(){
