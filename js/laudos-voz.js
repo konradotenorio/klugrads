@@ -295,7 +295,15 @@ function vozIniciar(){
       for(let i=e.resultIndex;i<e.results.length;i++){ const res=e.results[i];
         if(res.isFinal) vozProcessa(res[0].transcript); else interim+=res[0].transcript; }
       VOZ.interim=interim; vozRenderInterim(); };
-    r.onerror=e=>{ VOZ.erro = e.error==='not-allowed' ? 'Microfone bloqueado. Toque no ícone ao lado do endereço do site (cadeado/ajustes) → Microfone → Permitir, e recarregue a página.' : (e.error==='no-speech' ? '' : 'Erro no reconhecimento: '+e.error); vozRender(); };
+    r.onerror=e=>{
+      const M={ 'not-allowed':'Microfone bloqueado. Toque no ícone ao lado do endereço do site (cadeado/ajustes) → Microfone → Permitir, e recarregue a página.',
+        'service-not-allowed':'O navegador não liberou o serviço de voz (comum no Brave). Use o Chrome ou o Edge.',
+        'network':'Sem conexão com o serviço de voz do navegador (rede, VPN ou firewall).',
+        'audio-capture':'Nenhum microfone encontrado — confira se está conectado e não está em uso por outro programa.' };
+      if(e.error==='no-speech' || e.error==='aborted') return;
+      VOZ.erro = (M[e.error] || 'Erro no reconhecimento: '+e.error) + ' Diagnóstico completo em /teste-voz.';
+      if(e.error!=='network') VOZ.on=false;
+      vozRender(); };
     r.onend=()=>{ if(VOZ.on){ try{ r.start(); }catch(_){ } } else { VOZ.interim=''; vozRender(); } };   // o navegador encerra após silêncio: religa
     VOZ.rec=r;
   }

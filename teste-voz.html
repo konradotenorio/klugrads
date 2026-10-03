@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KlugRads — Teste do ditado por voz</title>
+<style>
+  :root{--bg:#0d1117;--sf:#161b22;--tx:#e6edf3;--dim:#8b949e;--line:#30363d;--ok:#22c55e;--bad:#ef4444;--warn:#f59e0b;--ac:#0e7490}
+  @media (prefers-color-scheme: light){:root{--bg:#f6f8fa;--sf:#fff;--tx:#1f2328;--dim:#59636e;--line:#d0d7de}}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 Arial,Helvetica,sans-serif}
+  main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+  h1{font-size:20px;margin:0 0 4px} p.sub{color:var(--dim);margin:0 0 16px;font-size:13px}
+  .card{background:var(--sf);border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 12px}
+  .card h2{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin:0 0 10px}
+  .row{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .row:last-child{border-bottom:0} .row b{font-weight:600}
+  .ok{color:var(--ok)} .bad{color:var(--bad)} .warn{color:var(--warn)}
+  button{font:inherit;font-weight:700;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--tx);padding:9px 16px;cursor:pointer;margin:0 8px 8px 0}
+  button.pri{background:var(--ac);border-color:var(--ac);color:#fff}
+  #meter{height:10px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:6px} #meter i{display:block;height:100%;width:0;background:var(--ok);transition:width .08s}
+  #txt{min-height:48px;font-size:17px;padding:8px 0} #txt .int{color:var(--dim);font-style:italic}
+  #log{font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;max-height:260px;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:8px}
+  .dica{font-size:13px;color:var(--dim);margin-top:6px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Teste do ditado por voz</h1>
+  <p class="sub">Página de diagnóstico do KlugRads. Nada do que você falar fica salvo. Tire um print desta página e mande no chat se algo falhar.</p>
+
+  <div class="card"><h2>1. Navegador</h2><div id="amb"></div></div>
+
+  <div class="card"><h2>2. Microfone</h2>
+    <button class="pri" id="bMic">Testar microfone</button>
+    <div id="mic"></div>
+    <div id="meter"><i></i></div>
+    <div class="dica">Fale algo: a barra verde deve se mexer. Se o Chrome não perguntar a permissão, clique no ícone à esquerda do endereço do site → Microfone → Permitir, e recarregue.</div>
+  </div>
+
+  <div class="card"><h2>3. Reconhecimento de voz</h2>
+    <button class="pri" id="bRec">Iniciar reconhecimento</button><button id="bStop">Parar</button>
+    <div id="txt"></div>
+    <div id="log"></div>
+  </div>
+</main>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const row=(k,v,cls)=>`<div class="row"><span>${k}</span><b class="${cls||''}">${v}</b></div>`;
+  const log=m=>{ const el=$('log'); el.textContent+=new Date().toLocaleTimeString()+'  '+m+'\n'; el.scrollTop=el.scrollHeight; };
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const ua=navigator.userAgent;
+  const nav = /Edg\//.test(ua)?'Edge':/OPR\//.test(ua)?'Opera':/Brave/.test(ua)||navigator.brave?'Brave':/CriOS/.test(ua)?'Chrome no iPhone/iPad':/Chrome\//.test(ua)?'Chrome':/Firefox\//.test(ua)?'Firefox':/Safari\//.test(ua)?'Safari':'outro';
+  let pp='não informado';
+  try{ const pol=document.permissionsPolicy||document.featurePolicy; if(pol && pol.allowsFeature) pp = pol.allowsFeature('microphone') ? 'liberado' : 'BLOQUEADO pelo site'; }catch(_){}
+  $('amb').innerHTML = row('Navegador', nav+(navigator.brave?' (Brave)':''))
+    + row('Conexão segura (https)', window.isSecureContext?'sim':'não', window.isSecureContext?'ok':'bad')
+    + row('Política do site para o microfone', pp, pp==='liberado'?'ok':pp.startsWith('BLOQ')?'bad':'warn')
+    + row('Reconhecimento de voz no navegador', SR?'disponível':'NÃO disponível', SR?'ok':'bad')
+    + row('Idioma do navegador', navigator.language||'—')
+    + `<div class="dica" style="word-break:break-all">${ua}</div>`;
+  if(navigator.permissions && navigator.permissions.query){
+    navigator.permissions.query({name:'microphone'}).then(p=>{
+      const show=()=>{ const m={granted:['permitido','ok'],denied:['BLOQUEADO (libere no ícone ao lado do endereço)','bad'],prompt:['vai perguntar','warn']}[p.state]||[p.state,'']; $('amb').insertAdjacentHTML('beforeend', row('Permissão do microfone', m[0], m[1])); };
+      show(); p.onchange=()=>location.reload();
+    }).catch(()=>{});
+  }
+  // microfone
+  $('bMic').onclick=async()=>{
+    $('mic').innerHTML='';
+    try{
+      const st=await navigator.mediaDevices.getUserMedia({audio:true});
+      $('mic').innerHTML=row('Acesso ao microfone','OK — fale para ver a barra','ok');
+      const ac=new (window.AudioContext||window.webkitAudioContext)(); const an=ac.createAnalyser(); ac.createMediaStreamSource(st).connect(an);
+      const d=new Uint8Array(an.fftSize); const bar=document.querySelector('#meter i');
+      (function tick(){ an.getByteTimeDomainData(d); let mx=0; for(const v of d) mx=Math.max(mx,Math.abs(v-128)); bar.style.width=Math.min(100,mx/1.2)+'%'; requestAnimationFrame(tick); })();
+    }catch(e){ $('mic').innerHTML=row('Acesso ao microfone','FALHOU: '+(e.name||'')+' — '+(e.message||''),'bad'); }
+  };
+  // reconhecimento
+  let rec=null, fin='';
+  const msg={ 'not-allowed':'microfone bloqueado (permissão negada ou política do site)', 'service-not-allowed':'o navegador não permite o serviço de voz (comum no Brave e em navegadores sem Google)', 'network':'sem conexão com o serviço de voz do navegador (rede, VPN, firewall ou navegador sem o serviço)', 'audio-capture':'nenhum microfone encontrado ou em uso por outro programa', 'no-speech':'nenhuma fala detectada', 'aborted':'interrompido', 'language-not-supported':'idioma não suportado' };
+  $('bRec').onclick=()=>{
+    if(!SR){ log('ERRO: este navegador não tem reconhecimento de voz. Use o Chrome ou o Edge no computador, ou o Safari no iPhone.'); return; }
+    rec=new SR(); rec.lang='pt-BR'; rec.continuous=true; rec.interimResults=true; fin='';
+    ['start','audiostart','soundstart','speechstart','speechend','soundend','audioend'].forEach(ev=>rec['on'+ev]=()=>log('evento: '+ev));
+    rec.onresult=e=>{ let it=''; for(let i=e.resultIndex;i<e.results.length;i++){ const r=e.results[i]; if(r.isFinal){ fin+=r[0].transcript+' '; log('texto final: '+r[0].transcript); } else it+=r[0].transcript; }
+      $('txt').innerHTML=fin.replace(/</g,'&lt;')+'<span class="int">'+it.replace(/</g,'&lt;')+'</span>'; };
+    rec.onerror=e=>log('ERRO: '+e.error+(msg[e.error]?' — '+msg[e.error]:'')+(e.message?' ('+e.message+')':''));
+    rec.onend=()=>log('evento: end (reconhecimento encerrado)');
+    try{ rec.start(); log('pedindo para iniciar…'); }catch(e){ log('ERRO ao iniciar: '+e.message); }
+  };
+  $('bStop').onclick=()=>{ try{ rec&&rec.stop(); }catch(_){} };
+})();
+</script>
+</body>
+</html>
