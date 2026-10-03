@@ -497,6 +497,24 @@
   .pmap-lbl.z{fill:#2b2b2b;}
   .pmap-lbl.z.on{fill:#fff;}
   .pmap-acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .voz{border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin:0 0 10px;background:var(--sf2);}
+  .voz.on{border-color:#e11d48;box-shadow:0 0 0 2px rgba(225,29,72,.18);}
+  .voz-top{display:flex;gap:8px;align-items:center;}
+  .voz-mic{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border:1px solid var(--line);background:var(--bg);color:var(--tx);border-radius:999px;padding:7px 12px;font-weight:700;font-size:13px;cursor:pointer;}
+  .voz-mic.on{background:#e11d48;border-color:#e11d48;color:#fff;animation:vozPulse 1.4s ease-in-out infinite;}
+  @keyframes vozPulse{0%,100%{box-shadow:0 0 0 0 rgba(225,29,72,.45);}50%{box-shadow:0 0 0 6px rgba(225,29,72,0);}}
+  .voz-in{flex:1;min-width:0;}
+  .voz-int{font-size:12.5px;color:var(--dim);font-style:italic;min-height:0;margin-top:4px;}
+  .voz-int:empty{display:none;}
+  .voz-err{font-size:12px;color:#e11d48;margin-top:6px;}
+  .voz-log{margin-top:6px;display:flex;flex-direction:column;gap:4px;}
+  .voz-li{display:flex;flex-direction:column;font-size:12px;border-left:3px solid var(--accent);padding:2px 0 2px 8px;}
+  .voz-li.free{border-left-color:#e07a1f;}
+  .voz-q{color:var(--dim);}
+  .voz-r{font-weight:700;color:var(--tx);}
+  .voz-help{margin-top:6px;font-size:12px;color:var(--dim);}
+  .voz-help summary{cursor:pointer;font-weight:700;}
+  .voz-help div{margin-top:4px;line-height:1.45;}
   .pmap-drawing .pmap-svg{touch-action:none;cursor:crosshair;}
   .pmap-drawing .pmap-sec{pointer-events:none;}
   .pmap-drawing .pmap-slice:has(svg[data-pid]){border-color:var(--accent);}
@@ -1053,56 +1071,57 @@
   </div>
 </noscript>
 
-<script src="/js/i18n.js?v=0.99.41"></script>
-<script src="/js/config.js?v=0.99.41"></script>
+<script src="/js/i18n.js?v=0.99.42"></script>
+<script src="/js/config.js?v=0.99.42"></script>
 <!-- Modo estático/aberto: o conteúdo (74 itens) é embutido aqui, antes do
      app.js, que o lê de window.SEED. Sem login e sem backend. -->
-<script src="/js/seed.js?v=0.99.41"></script>
-<script src="/js/sessao.js?v=0.99.41"></script>
-<script src="/js/app.js?v=0.99.41"></script>
-<script src="/js/contraste.js?v=0.99.41"></script>
-<script src="/js/laudos-us-mascaras.js?v=0.99.41"></script>
-<script src="/js/laudos-frases.js?v=0.99.41"></script>
-<script src="/js/laudos.js?v=0.99.41"></script>
-<script src="/js/laudos-dmo.js?v=0.99.41"></script>
-<script src="/js/laudos-frases-tc.js?v=0.99.41"></script>
-<script src="/js/laudos-oct.js?v=0.99.41"></script>
-<script src="/js/laudos-auto.js?v=0.99.41"></script>
-<script src="/js/calc-fetal.js?v=0.99.41"></script>
-<script src="/js/calc-orads.js?v=0.99.41"></script>
-<script src="/js/calc-volume-gastrico.js?v=0.99.41"></script>
-<script src="/js/calc-figo-miomas.js?v=0.99.41"></script>
-<script src="/js/ref-bosniak.js?v=0.99.41"></script>
-<script src="/js/protocolos-tc.js?v=0.99.41"></script>
-<script src="/js/dxa.js?v=0.99.41"></script>
-<script src="/js/calc-doppler-renais.js?v=0.99.41"></script>
-<script src="/js/calc-esteatose-rm.js?v=0.99.41"></script>
-<script src="/js/calc-esteatose-tc.js?v=0.99.41"></script>
-<script src="/js/calc-ferro-r2.js?v=0.99.41"></script>
-<script src="/js/calc-ferro-t2.js?v=0.99.41"></script>
-<script src="/js/calc-adrenal-tc.js?v=0.99.41"></script>
-<script src="/js/calc-adrenal-rm.js?v=0.99.41"></script>
-<script src="/js/calc-renal.js?v=0.99.41"></script>
-<script src="/js/calc-ccls.js?v=0.99.41"></script>
-<script src="/js/calc-pirads.js?v=0.99.41"></script>
-<script src="/js/calc-prostata-setores.js?v=0.99.41"></script>
-<script src="/js/prostata-esquema.js?v=0.99.41"></script>
-<script src="/js/calc-crads.js?v=0.99.41"></script>
-<script src="/js/calc-pancreatite.js?v=0.99.41"></script>
-<script src="/js/calc-orads-mri.js?v=0.99.41"></script>
-<script src="/js/calc-lung-rads.js?v=0.99.41"></script>
-<script src="/js/calc-fleischner.js?v=0.99.41"></script>
-<script src="/js/calc-idade-ossea.js?v=0.99.41"></script>
-<script src="/js/calc-cadrads.js?v=0.99.41"></script>
-<script src="/js/calc-mesa-cac.js?v=0.99.41"></script>
-<script src="/js/calc-pi-qual.js?v=0.99.41"></script>
-<script src="/js/calc-precise.js?v=0.99.41"></script>
-<script src="/js/calc-pi-rr.js?v=0.99.41"></script>
-<script src="/js/calc-trisomias.js?v=0.99.41"></script>
-<script src="/js/calc-preeclampsia.js?v=0.99.41"></script>
-<script src="/js/calc-sga.js?v=0.99.41"></script>
-<script src="/js/calc-gdm.js?v=0.99.41"></script>
-<script src="/js/calc-ptb.js?v=0.99.41"></script>
-<script src="/js/mapa-lesional.js?v=0.99.41"></script>
+<script src="/js/seed.js?v=0.99.42"></script>
+<script src="/js/sessao.js?v=0.99.42"></script>
+<script src="/js/app.js?v=0.99.42"></script>
+<script src="/js/contraste.js?v=0.99.42"></script>
+<script src="/js/laudos-us-mascaras.js?v=0.99.42"></script>
+<script src="/js/laudos-frases.js?v=0.99.42"></script>
+<script src="/js/laudos.js?v=0.99.42"></script>
+<script src="/js/laudos-dmo.js?v=0.99.42"></script>
+<script src="/js/laudos-frases-tc.js?v=0.99.42"></script>
+<script src="/js/laudos-oct.js?v=0.99.42"></script>
+<script src="/js/laudos-auto.js?v=0.99.42"></script>
+<script src="/js/laudos-voz.js?v=0.99.42"></script>
+<script src="/js/calc-fetal.js?v=0.99.42"></script>
+<script src="/js/calc-orads.js?v=0.99.42"></script>
+<script src="/js/calc-volume-gastrico.js?v=0.99.42"></script>
+<script src="/js/calc-figo-miomas.js?v=0.99.42"></script>
+<script src="/js/ref-bosniak.js?v=0.99.42"></script>
+<script src="/js/protocolos-tc.js?v=0.99.42"></script>
+<script src="/js/dxa.js?v=0.99.42"></script>
+<script src="/js/calc-doppler-renais.js?v=0.99.42"></script>
+<script src="/js/calc-esteatose-rm.js?v=0.99.42"></script>
+<script src="/js/calc-esteatose-tc.js?v=0.99.42"></script>
+<script src="/js/calc-ferro-r2.js?v=0.99.42"></script>
+<script src="/js/calc-ferro-t2.js?v=0.99.42"></script>
+<script src="/js/calc-adrenal-tc.js?v=0.99.42"></script>
+<script src="/js/calc-adrenal-rm.js?v=0.99.42"></script>
+<script src="/js/calc-renal.js?v=0.99.42"></script>
+<script src="/js/calc-ccls.js?v=0.99.42"></script>
+<script src="/js/calc-pirads.js?v=0.99.42"></script>
+<script src="/js/calc-prostata-setores.js?v=0.99.42"></script>
+<script src="/js/prostata-esquema.js?v=0.99.42"></script>
+<script src="/js/calc-crads.js?v=0.99.42"></script>
+<script src="/js/calc-pancreatite.js?v=0.99.42"></script>
+<script src="/js/calc-orads-mri.js?v=0.99.42"></script>
+<script src="/js/calc-lung-rads.js?v=0.99.42"></script>
+<script src="/js/calc-fleischner.js?v=0.99.42"></script>
+<script src="/js/calc-idade-ossea.js?v=0.99.42"></script>
+<script src="/js/calc-cadrads.js?v=0.99.42"></script>
+<script src="/js/calc-mesa-cac.js?v=0.99.42"></script>
+<script src="/js/calc-pi-qual.js?v=0.99.42"></script>
+<script src="/js/calc-precise.js?v=0.99.42"></script>
+<script src="/js/calc-pi-rr.js?v=0.99.42"></script>
+<script src="/js/calc-trisomias.js?v=0.99.42"></script>
+<script src="/js/calc-preeclampsia.js?v=0.99.42"></script>
+<script src="/js/calc-sga.js?v=0.99.42"></script>
+<script src="/js/calc-gdm.js?v=0.99.42"></script>
+<script src="/js/calc-ptb.js?v=0.99.42"></script>
+<script src="/js/mapa-lesional.js?v=0.99.42"></script>
 </body>
 </html>

@@ -2128,7 +2128,7 @@ function laudoEditHTML(){
       <button type="button" class="${L.tab==='txt'?'on':''}" onclick="lauTab('txt')">Laudo</button>
     </div>
     <div class="lau-split">
-      <div class="lau-pane lau-l"><div id="lau-left">${lauLeftHTML()}</div></div>
+      <div class="lau-pane lau-l"><div id="lau-voz">${typeof vozHTML==='function'?vozHTML():''}</div><div id="lau-left">${lauLeftHTML()}</div></div>
       <div class="lau-pane lau-r">
         ${lauToolbarHTML()}
         <div id="lau-ed" class="lau-ed" contenteditable="true" spellcheck="true" lang="pt-BR" oninput="lauSaveEd()"></div>
