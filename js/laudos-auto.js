@@ -182,17 +182,24 @@ function lauAutoConcs(m){
       reps.push([/,? com embrião vivo(?= e|\.|,)/, ', com embrião']);
       out.push('Batimentos cardíacos embrionários não caracterizados ao estudo atual. Sugere-se controle ultrassonográfico evolutivo.');
     }
-    if(ig && ig.fonte==='dmsg'){
+    const igx=lauObsIGBox();
+    if(igx){
+      // IG do quadro (DUM / exame prévio / informada): a conclusão diz de onde veio
+      reps.push([/ pela biometria atual/, ' '+igx.fonte]);
+      reps.push([/(estimada em \d+ semanas? e \d+ dias?)(?![a-zà-ú])(?! (pela|pelo|segundo))/, '$1 '+igx.fonte]);
+    } else if(ig && ig.fonte==='dmsg'){
       reps.push([/,? com embrião vivo e de idade gestacional/, ', de idade gestacional']);
       reps.push([/pela biometria atual/, 'pelo diâmetro médio do saco gestacional']);
     } else if(lauObsCampo(m, /\bccn =?$/)!=null && !bcf){
       reps.push([/com embrião vivo e de idade gestacional/, 'com embrião de idade gestacional']);
     }
+    reps.push([/ e 0 dias(?![a-zà-ú])/, ''], [/ e 1 dias(?![a-zà-ú])/, ' e 1 dia']);   // "30 semanas e 1 dia", "30 semanas"
   }
   const keep=[];
+  // obstétricos 2º/3º tri: peso (AIG/PIG/GIG) e Doppler; só quando há o que dizer além do texto padrão
   if(lauObsDopAtivo(m) && lauAutoCfg().on){
-    const d=lauObsDopConc(m); out.push(...d.out);
-    if(!d.dopAlt) keep.push(/^Estudo Doppler/);   // Doppler normal continua na conclusão mesmo com outro achado
+    const d=lauObsDopConc(m), dopN=(lauConcNormalLines(m).find(c=>/^Estudo Doppler/.test(c.text))||{}).text;
+    if(d.out.some(t=>t!==dopN)) out.push(...d.out); else if(dopN) keep.push(/^Estudo Doppler/);
   }
   m.items.forEach(it=>{ if(lauItemOutroLado(m,it)) return;
     lauAutoAtivas(m,it).forEach(({r,v,lbl})=>{
@@ -208,11 +215,11 @@ function lauAutoConcVals(m, text, user){
   const A=lauAutoCfg(); if(!A.on || !A.concLink) return user;
   const vals=(user||[]).slice(); const {campos}=lauAutoCampos(text);
   // obstetrícia: idade gestacional pela biometria (CCN; sem embrião, DMSG) nas tabelas de referência
-  if(/idade gestacional estimada em/i.test(text)){
-    const ig=lauObsIG(m);
+  if(/idade gestacional (\(IG\) )?estimada em/i.test(text)){
+    const ig=lauObsIGBox() || lauObsIG(m);
     if(ig) campos.forEach(c=>{
       if(lauHas(vals[c.i])) return;
-      if(/idade gestacional estimada em$/.test(c.antes)) vals[c.i]=String(ig.sem);
+      if(/estimada em$/.test(c.antes)) vals[c.i]=String(ig.sem);
       else if(/semanas e$/.test(c.antes)) vals[c.i]=String(ig.dias);
     });
   }
@@ -467,33 +474,41 @@ function lauObsDopCalc(m){
   });
   if(typeof lauPatchConc==='function') lauPatchConc();
 }
-/* achados da conclusão pelos percentis */
+/* frases da conclusão: peso (AIG / PIG / GIG) e Doppler (normal ou alterado), por feto no gemelar.
+   O pico de velocidade sistólica da ACM não entra na conclusão. */
 function lauObsDopConc(m){
-  const out=[]; let dopAlt=false;
-  if(!lauObsDopAtivo(m)) return {out, dopAlt};
-  const fetos=lauObsFetos(m), pesos=[];
+  const out=[];
+  if(!lauObsDopAtivo(m)) return {out};
+  const fetos=lauObsFetos(m), pesos=[], dops=[];
+  const dopNormal=(lauConcNormalLines(m).find(c=>/^Estudo Doppler/.test(c.text))||{}).text || null;   // só nos modelos com Doppler
+  const pctFrase=p=> p<1 ? 'abaixo do percentil 1' : p>99 ? 'acima do percentil 99' : 'no percentil '+Math.round(p);
   fetos.forEach(fet=>{
-  const pre = fet ? `Feto ${fet}: ` : '', P=t=>pre ? pre+t.charAt(0).toLowerCase()+t.slice(1) : t;
-  const D=lauObsDopDados(m, fet), v=k=>D.val(D.alvo[k]), ga=D.ga; if(fet) pesos.push(v('pfe')); if(ga==null) return;
-  const pfe=v('pfe');
-  if(pfe && ga>=14 && ga<=42){ const p=efwPercentile(pfe, ga).pct;
-    if(p<10) out.push(P('Peso fetal estimado abaixo do percentil 10 para a idade gestacional.'));
-    else if(p>90) out.push(P('Peso fetal estimado acima do percentil 90 para a idade gestacional.')); }
-  if(ga>=20 && ga<=41){
-    const au=v('au'), acm=v('acm'), dv=v('dv'), rcp=v('rcp');
-    const f=t=>{ out.push(P(t)); dopAlt=true; };
-    if(au && au>fmInterp(FM_UA_PI,ga,3)) f('Índice de pulsatilidade da artéria umbilical acima do percentil 95 para a idade gestacional.');
-    if(acm && acm<fmInterp(FM_MCA_PI,ga,1)) f('Índice de pulsatilidade da artéria cerebral média abaixo do percentil 5 para a idade gestacional.');
-    if(rcp && lauObsPctRcp(ga, rcp)<5) f('Relação cérebro-placentária abaixo do percentil 5 para a idade gestacional.');
-    if(dv && dv>fmInterp(FM_DV_PIV,ga,3)) f('Índice de pulsatilidade do ducto venoso acima do percentil 95 para a idade gestacional.');
-  }
-  const vps=v('vps');
-  if(vps && ga>=18 && ga<=41 && vps/Math.exp(2.31+0.046*ga)>=1.5){ out.push(P('Pico de velocidade sistólica da artéria cerebral média acima de 1,5 MoM para a idade gestacional.')); dopAlt=true; }
+    const pre = fet ? `Feto ${fet}: ` : '', P=t=>pre ? pre+t.charAt(0).toLowerCase()+t.slice(1) : t;
+    const D=lauObsDopDados(m, fet), v=k=>D.val(D.alvo[k]), ga=D.ga;
+    const pfe=v('pfe'); if(fet) pesos.push(pfe);
+    if(pfe && ga!=null && ga>=14 && ga<=42){ const p=efwPercentile(pfe, ga).pct;
+      const cls = p<10 ? 'pequeno para a idade gestacional (PIG)' : p>90 ? 'grande para a idade gestacional (GIG)' : 'adequado para a idade gestacional (AIG)';
+      out.push(P(`Peso fetal estimado ${pctFrase(p)}, ${cls}.`)); }
+    const alt=[];
+    if(ga!=null && ga>=20 && ga<=41){
+      const au=v('au'), acm=v('acm'), dv=v('dv'), rcp=v('rcp');
+      if(au && au>fmInterp(FM_UA_PI,ga,3)) alt.push('índice de pulsatilidade da artéria umbilical acima do percentil 95');
+      if(acm && acm<fmInterp(FM_MCA_PI,ga,1)) alt.push('índice de pulsatilidade da artéria cerebral média abaixo do percentil 5');
+      if(rcp && lauObsPctRcp(ga, rcp)<5) alt.push('relação cérebro-placentária abaixo do percentil 5');
+      if(dv && dv>fmInterp(FM_DV_PIV,ga,3)) alt.push('índice de pulsatilidade do ducto venoso acima do percentil 95');
+    }
+    dops.push({P, alt});
   });
+  if(dopNormal){
+    if(dops.every(d=>!d.alt.length)) out.push(dopNormal);
+    else dops.forEach(d=>out.push(d.alt.length
+      ? d.P(`Estudo Doppler da circulação fetoplacentária alterado: ${lauJuntaE(d.alt)} para a idade gestacional.`)
+      : d.P('Estudo Doppler da circulação fetoplacentária dentro dos limites da normalidade.')));
+  }
   // gemelar: discordância de peso estimado ≥ 25%
   if(pesos.length>=2 && pesos.every(x=>x)){ const d=(Math.max(...pesos)-Math.min(...pesos))/Math.max(...pesos)*100;
     if(d>=25) out.push(`Discordância de peso estimado entre os fetos de ${Math.round(d)}%.`); }
-  return {out, dopAlt};
+  return {out};
 }
 
 /* ---- Obstetrícia: IG pelo CCN (Hadlock) ou pelo DMSG (Hellman), tabelas da aba Referências ---- */
@@ -515,6 +530,13 @@ function lauObsCampo(m, re){
     const r=lauVal(lauTpl(nrm), (s.__v||{}).n||[], x.i); if(r.ok) return lauF(r.v);
   }
   return null;
+}
+/* IG do quadro de idade gestacional (laudos-ig.js): {sem, dias, fonte} */
+const LAU_IG_FONTE = {dum:'segundo a data da última menstruação (DUM)', exame:'segundo exame ultrassonográfico prévio', manual:'segundo a idade gestacional informada'};
+function lauObsIGBox(){
+  if(typeof lauIgCalc!=='function' || !state.lau || !state.lau.ig) return null;
+  const r=lauIgCalc(); if(!r || r.erro || r.dias==null) return null;
+  return {sem:Math.floor(r.dias/7), dias:r.dias%7, fonte:LAU_IG_FONTE[state.lau.ig.modo]||''};
 }
 function lauObsIG(m){
   if(!m || !/obstetric/.test(m.id)) return null;
