@@ -374,6 +374,7 @@ const LAU_ABD_ITEMS = [
      };
      const conc=[];
      const both=(fn)=>{ const d=fn('D'), e=fn('E'); return d||e ? lauSides(d,e) : null; };
+     ['D','E'].forEach(L=>{ if(s['est'+L]!=='cx' && s['est'+L]!=='nef' && s['dim'+L]!=='n'){ const c=lauHas(s['comp'+L])?` (${lauN(s['comp'+L])} cm)`:''; conc.push(`${L==='D'?'Rim direito':'Rim esquerdo'} de dimensões ${s['dim'+L]==='red'?'reduzidas':'aumentadas'}${c}.`); } });
      let x;
      if(s.estD==='cx') conc.push('Status pós-nefrectomia direita.');
      if(s.estE==='cx') conc.push('Status pós-nefrectomia esquerda.');
@@ -1022,7 +1023,7 @@ function lauCur(){ return state.lau && lauModelo(state.lau.model) ? state.lau : 
 function lauBuild(m, it){
   const s=state.lau.v[it.k];
   if(it.generic) return {txt: lauHas(s.alt)?s.alt.trim():null, conc: lauHas(s.conc)?[lauFrase(s.conc)]:[]};
-  return it.build(s);
+  return it.build(typeof lauAutoEstado==='function' ? lauAutoEstado(m, it, s) : s);   // regras automáticas pelas medidas
 }
 /* conclusão de uma frase da biblioteca: {n} = valor do campo n do texto */
 function lauFraseConcHTML(f, vals, lbl){
@@ -1422,6 +1423,7 @@ function lauItemHTML(m, it){
   const lblRaw = lauLblLado(m, lauItemLabel(m,it));
   const lbl = lblRaw ? lauFill(lblRaw, s.__v.l, true)+':' : '';
   let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : r.html ? r.txt : esc(r.txt).replace(/\n/g,'<br>');
+  if(r.txt==null && it.generic && typeof lauAutoTxt==='function') txt = lauAutoTxt(m, it, txt);
   const subs = lauFraseLines(s.__f, s.__v, 'sub');
   if(subs.length){
     const multi = (s.__f||[]).filter(id=>{ const f=lauFI(id); return f && lauKindTE(f); }).length;
@@ -1522,11 +1524,16 @@ function lauMgMergeConc(lines){
 }
 function lauConcHTML(m){
   const g=lauGen(); const f=lauConcs(m); const L=state.lau;
+  const au = (typeof lauAutoConcs==='function' && !m.semRot && m.metodo!=='mmg') ? lauAutoConcs(m) : {out:[], reps:[]};
+  au.out.forEach(t=>f.push({html:esc(t)}));
+  const cv = (x)=> typeof lauAutoConcVals==='function' ? lauAutoConcVals(m, x.c.text, L.conc.v['n'+x.i]) : L.conc.v['n'+x.i];
+  const crep = (h)=> au.reps.reduce((a,[re,b])=>a.replace(re,b), h);
   const norm = lauConcNormalLines(m).map((c,i)=>({c, i, ph:lauHasPh(c.text)}));
   let lines;
-  if(!f.length) lines = norm.map(x=>({html:lauFill(x.c.text, L.conc.v['n'+x.i], true), dash:x.c.dash}));
+  if(!f.length && !au.reps.length) lines = norm.map(x=>({html:lauFill(x.c.text, cv(x), true), dash:x.c.dash}));
+  else if(!f.length) lines = norm.map(x=>({html:crep(lauFill(x.c.text, cv(x), true)), dash:x.c.dash})).filter(x=>!/sem alterações|sem achados|dentro dos par/i.test(x.html) || !au.reps.length);
   else {
-    const keep = norm.filter(x=>x.ph).map(x=>({html:lauFill(x.c.text, L.conc.v['n'+x.i], true), dash:x.c.dash}));
+    const keep = norm.filter(x=>x.ph).map(x=>({html:crep(lauFill(x.c.text, cv(x), true)), dash:x.c.dash}));
     const tail = norm.filter(x=>!x.ph && /^Restante/i.test(x.c.text)).map(x=>({html:esc(x.c.text), dash:x.c.dash}));
     lines = keep.concat(f.map(x=>({html:x.html,dash:true})), tail);
   }
@@ -2162,6 +2169,7 @@ function laudoCfgHTML(){
       <div class="lau-row"><div class="lau-rl">Lesão focal em órgão de ecotextura homogênea (fígado, baço)</div><div class="lau-chips">${[['het','“heterogênea pela presença de …”'],['exc','“homogênea, exceto por …”']].map(o=>`<button type="button" class="ti-ftog ${g.les===o[0]?'on':''}" onclick="lauCfgGen('les','${o[0]}')">${o[1]}</button>`).join('')}</div></div>
       <div class="lau-cf"><div class="lau-rl">Título da conclusão</div><input class="lau-txt" type="text" placeholder="Conclusão:" value="${esc(g.concTitulo)}" oninput="lauCfgGen('concTitulo',this.value,true)"></div>
     </div>
+    ${typeof lauAutoCfgHTML==='function' ? lauAutoCfgHTML() : ''}
     <div class="ti-card">
       <div class="tfg-sec-lbl">Personalizar um laudo</div>
       <div class="ti-legend-row" style="margin:2px 0 8px"><span class="lt">Escolha o laudo para mudar o título, a conclusão normal e o texto de cada item.</span></div>
