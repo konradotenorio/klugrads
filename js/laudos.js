@@ -935,7 +935,7 @@ function lauBuildModel(mk){
   let titulo = mk.titulo.join('\n'), lado=null;
   const ult = mk.titulo[mk.titulo.length-1]||'';
   const mm = ult.match(/^(.*\b(DO|DA)\b.*?)\s+X{2,3}$/);
-  if(mm){ lado={gen: mm[2]==='DA'?'f':'m', bil:false}; titulo = mk.titulo.slice(0,-1).concat(mm[1]).join('\n'); }
+  if(mm){ lado={gen: mm[2]==='DA'?'f':'m', bil:false, ambos:/DO MEMBRO (INFERIOR|SUPERIOR)$/.test(mm[1])}; titulo = mk.titulo.slice(0,-1).concat(mm[1]).join('\n'); }   // ambos: membro também pode ser bilateral
   else if(/DOS MEMBROS (INFERIORES|SUPERIORES)/.test(titulo)) lado={gen:'m', bil:true};
   else if(mk.metodo==='mmg' && /BILATERAL/.test(titulo)) lado={gen:'f', bil:true, mg:true};
   const oct = (mk.flags||[]).indexOf('oct')>=0;
@@ -1429,6 +1429,7 @@ function lauItemHTML(m, it){
   let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : r.html ? r.txt : esc(r.txt).replace(/\n/g,'<br>');
   if(r.txt==null && it.generic && typeof lauAutoTxt==='function') txt = lauAutoTxt(m, it, txt);
   if(r.txt==null && it.generic) txt = lauAteroTxt(m, txt);
+  if(m.lado && m.lado.ambos && state.lau.lado==='b') txt = lauBilPlural(txt);
   const subs = lauFraseLines(s.__f, s.__v, 'sub');
   if(subs.length){
     const multi = (s.__f||[]).filter(id=>{ const f=lauFI(id); return f && lauKindTE(f); }).length;
@@ -1550,6 +1551,10 @@ function lauTecTxt(){
   const t=state.lau.tec, l=lauTecOpts().filter(o=>t[o[0]]).map(o=>o[1]);
   return l.length ? `Exame com limitação técnica devido a ${lauJuntaE(l)}.` : '';
 }
+/* membro bilateral (opção "Bilateral" nos exames de um membro): plural das veias/artérias */
+const LAU_BIL_PLURAL = [[/\bpoplítea, tibiais e fibular\b/g,'poplíteas, tibiais e fibulares'],[/\bsafenas magna e parva\b/g,'safenas magnas e parvas'],
+  [/\bVeias subclávia, axilar, braquial, radial, ulnar,/g,'Veias subclávias, axilares, braquiais, radiais, ulnares,'],[/\bcefálica\b/g,'cefálicas'],[/\bbasílica\b/g,'basílicas']];
+function lauBilPlural(t){ return LAU_BIL_PLURAL.reduce((x,[a,b])=>x.replace(a,b), t); }
 function lauLadoTitulo(m, t, html){
   const L=state.lau; if(!m.lado) return t;
   const v=L.lado;
@@ -1558,6 +1563,7 @@ function lauLadoTitulo(m, t, html){
     if(m.lado.mg) return t.replace(/BILATERAL/, `DA MAMA ${v==='d'?'DIREITA':'ESQUERDA'}`);
     return t.replace(/DOS MEMBROS (INFERIORES|SUPERIORES)/, (_,x)=>`DO MEMBRO ${x==='INFERIORES'?'INFERIOR':'SUPERIOR'} ${v==='d'?'DIREITO':'ESQUERDO'}`);
   }
+  if(v==='b' && m.lado.ambos) return t.replace(/DO MEMBRO (INFERIOR|SUPERIOR)/, (_,x)=>`DOS MEMBROS ${x}ES`);
   const f=m.lado.gen==='f';
   const txt = v==='d' ? (f?'DIREITA':'DIREITO') : v==='e' ? (f?'ESQUERDA':'ESQUERDO') : null;
   return txt ? t+' '+txt : t + ' ' + (html?`<mark class="lau-ph">${f?'DIREITA / ESQUERDA':'DIREITO / ESQUERDO'}</mark>`:'XXX');
@@ -1577,11 +1583,12 @@ function lauSetLado(v){
   L.lado = L.lado===v ? null : v;
   if(m.lado && m.lado.bil){ lauSaveEd(); L.html=null; render(true); return; }   // reconstrói sem o outro lado
   lauRenderLeft(); lauPatchTit();
+  if(m.lado && m.lado.ambos){ const ed=lauEd(); if(ed) m.items.forEach(o=>{ const q=ed.querySelector(`[data-k="${o.k}"]`); if(!q) return; const h=lauItemHTML(m,o); if(q.innerHTML!==h){ q.innerHTML=h; q.hidden=!h; } }); lauSaveEd(); }
 }
 function lauLadoHTML(m){
   if(!m.lado) return '';
   const L=state.lau; const f=m.lado.gen==='f';
-  const ops = m.lado.eye ? [['bi','Ambos os olhos'],['d','Só olho direito'],['e','Só olho esquerdo']] : m.lado.bil ? [['bi','Bilateral'],['d',f?'Direita':'Direito'],['e',f?'Esquerda':'Esquerdo']] : [['d',f?'Direita':'Direito'],['e',f?'Esquerda':'Esquerdo']];
+  const ops = m.lado.eye ? [['bi','Ambos os olhos'],['d','Só olho direito'],['e','Só olho esquerdo']] : m.lado.bil ? [['bi','Bilateral'],['d',f?'Direita':'Direito'],['e',f?'Esquerda':'Esquerdo']] : [['d',f?'Direita':'Direito'],['e',f?'Esquerda':'Esquerdo']].concat(m.lado.ambos ? [['b','Bilateral']] : []);
   const cur = m.lado.bil ? (L.lado||'bi') : L.lado;
   return `<div class="lau-lado"><span>${m.lado.eye?'Olhos':'Lado'}</span>${ops.map(o=>`<button type="button" class="ti-ftog ${cur===o[0]?'on':''}" onclick="lauSetLado('${o[0]}')">${o[1]}</button>`).join('')}</div>`;
 }
