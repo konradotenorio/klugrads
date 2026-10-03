@@ -124,6 +124,8 @@ const LAU_AUTO_TXT = [
   {id:'endometrio', item:/^endometrio/, campo:/espessura bilaminar de$/,
    cond:(v,A)=>{ const l=A.fase==='meno'?A.endoMeno:A.endoMenac; return l && v > l; },
    conc:v=>`Endométrio espessado (${LAU_N(v)} cm).`},
+  {id:'endoHet', item:/^endometrio/, escolha:'heterogêneo',
+   conc:()=>'Endométrio heterogêneo.'},
   {id:'residuo', item:/^residuo/, campo:/estimado em$/,
    cond:(v,A)=> A.residMin && v >= A.residMin,
    conc:v=>`Resíduo pós-miccional ${lauResidGrau(v)} (estimado em ${LAU_N(v)} mL).`,
@@ -140,6 +142,11 @@ function lauAutoAtivas(m, it){
   const s=state.lau.v[it.k]; if(lauHas(s.alt)) return [];
   const lbl=lauNorm(lauItemLabel(m,it));
   return LAU_AUTO_TXT.filter(r=>r.item.test(lbl) && !A.off[r.id]).map(r=>{
+    if(r.escolha){   // regra de escolha (ex.: endométrio heterogêneo)
+      const tpl=lauTpl(lauItemNormal(m,it)); const tk=tpl.lines.flat().find(t=>t.t==='c' && t.o.indexOf(r.escolha)>=0);
+      if(!tk) return null; const val=lauVal(tpl, (s.__v||{}).n||[], tk.i);
+      return val.ok && val.v===r.escolha ? {r, v:val.v, lbl:lauItemLabel(m,it)} : null;
+    }
     const v=lauAutoValor(lauItemNormal(m,it), (s.__v||{}).n, r.campo, r.ctx);
     return v!=null && r.cond(v,A) ? {r, v, lbl:lauItemLabel(m,it)} : null;
   }).filter(Boolean);

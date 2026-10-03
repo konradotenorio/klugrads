@@ -1442,10 +1442,14 @@ const LAU_US_MASKS = [
 {
 "k": "endometrio",
 "label": "Endométrio",
-"text": "filiforme / não caracterizado XX centrado e homogêneo, com espessura bilaminar de XX cm.",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.",
 "dash": true,
 "opts": [],
-"grp": ""
+"grp": "",
+"alts": [
+"centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.",
+"filiforme / não caracterizado."
+]
 },
 {
 "k": "ovario-direito",
@@ -1513,12 +1517,12 @@ const LAU_US_MASKS = [
 "dash": true
 },
 {
-"text": "XX - Não há sinais ultrassonográficos de estimulação hormonal.",
-"dash": false
+"opt": true,
+"text": "Não há sinais ultrassonográficos de estimulação hormonal."
 },
 {
-"text": "XX - Útero e ovários apresentando sinais de estimulação hormonal.",
-"dash": false
+"opt": true,
+"text": "Útero e ovários apresentando sinais de estimulação hormonal."
 }
 ],
 "trailer": [],
@@ -1560,7 +1564,7 @@ const LAU_US_MASKS = [
 {
 "k": "endometrio",
 "label": "Endométrio",
-"text": "centrado e homogêneo, com espessura bilaminar de XX cm.",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -1666,7 +1670,7 @@ const LAU_US_MASKS = [
 {
 "k": "endometrio",
 "label": "Endométrio",
-"text": "centrado e homogêneo, com espessura bilaminar de XX cm.",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -1784,7 +1788,7 @@ const LAU_US_MASKS = [
 {
 "k": "endometrio",
 "label": "Endométrio",
-"text": "centrado e homogêneo, com espessura bilaminar de XX cm.",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -2035,7 +2039,7 @@ const LAU_US_MASKS = [
 {
 "k": "endometrio",
 "label": "Endométrio",
-"text": "centrado e homogêneo, com espessura bilaminar de XX cm.",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.",
 "dash": true,
 "opts": [
 "Dispositivo contraceptivo: centrado na cavidade endometrial. Distância DIU-serosa fúndica: XXX ; distância DIU-fundo da cavidade: XXX cm."
@@ -4928,7 +4932,7 @@ const LAU_US_MASKS = [
 {
 "k": "endometrio",
 "label": "Endométrio",
-"text": "centrado e homogêneo, com espessura bilaminar de XX cm, sem focos de vascularização anômala.",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm, sem focos de vascularização anômala.",
 "dash": true,
 "opts": [],
 "grp": ""
