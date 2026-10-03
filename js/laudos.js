@@ -1782,8 +1782,7 @@ function lauPh(k, tpl, i, v, str){
   else if(k==='__obs'){ lauPatchOpt('obs', lauObsHTML()); lauPatchConc(); lauSaveEd(); }
   else { lauPatch(k); lauUpdSum(k);
     if(typeof lauEcoCalc==='function'){ const L=lauCur(), m=L&&lauModelo(L.model); const it=m&&m.items.find(x=>x.k===k);
-      if(it && /^(DDVE|DSVE)$/.test(it.label)) lauEcoCalc(m);
-      else if(it && /^(FEVE|Delta D)/.test(it.label)) L.v[k].__ecoAuto=false; } }
+      if(it && m.id==='us-ecocardio'){ if(L.v[k].__ecoAuto) delete L.v[k].__ecoAuto[i]; lauEcoCalc(m); } } }
 }
 function lauOpt(k, i){
   const L=lauCur(); if(!L) return;
@@ -1989,7 +1988,7 @@ function lauItemPanel(m, it){
     const tw=lauOctGemeo(m,it);
     h += `<div class="lau-rl">Olho direito</div>${lauInlineForm(k,'n',normal,s.__v.n)}`;
     if(tw) h += `<div class="lau-rl" style="margin-top:8px">Olho esquerdo</div>${lauInlineForm(tw.k,'n',lauItemNormal(m,tw),state.lau.v[tw.k].__v.n)}`;
-  } else if(lauHasPh(normal) && !it.noNF) h += `<div class="lau-rl">${it.generic?'Texto da máscara — preencha os campos':'Medidas do texto padrão'}</div>${lauInlineForm(k,'n',normal,s.__v.n)}`;
+  } else if(lauHasPh(normal) && !it.noNF) h += `<div class="lau-rl">${it.generic?'Texto da máscara — preencha os campos':'Medidas do texto padrão'}</div>${lauInlineForm(k,'n',String(normal).replace(/^\n+/,''),s.__v.n)}`;
   else if(it.generic) h += `<div class="lau-rl">Texto da máscara</div><div class="lau-inl dim">${esc(normal).replace(/\n/g,'<br>')}</div>`;
   if(!it.generic) h += it.ctrls.map(c=>lauCtrlHTML(k,s,c)).join('');
   if(typeof lauAutoBoxHTML==='function') h += lauAutoBoxHTML(m, it);

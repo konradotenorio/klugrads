@@ -7479,81 +7479,25 @@ const LAU_US_MASKS = [
 ]
 },
 {
-"k": "ao",
-"label": "Ao",
-"text": "XXX mm",
+"k": "medidas",
+"label": "Medidas",
+"text": "\nAo: XXX mm\nAE: XXX mm\nDDVE: XXX mm (escore Z: XXX)\nDSVE: XXX mm\nSIV: XXX mm\nPP: XXX mm\nDDVD: XXX mm",
 "dash": false,
 "opts": [],
 "grp": ""
 },
 {
-"k": "ae",
-"label": "AE",
-"text": "XXX mm",
+"k": "parametros-funcionais",
+"label": "Parâmetros funcionais",
+"text": "\nFEVE (Teichholz): XXX%\nDelta D: XXX%",
 "dash": false,
 "opts": [],
 "grp": ""
 },
 {
-"k": "ddve",
-"label": "DDVE",
-"text": "XXX mm (escore Z: XXX)",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
-"k": "dsve",
-"label": "DSVE",
-"text": "XXX mm",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
-"k": "siv",
-"label": "SIV",
-"text": "XXX mm",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
-"k": "pp",
-"label": "PP",
-"text": "XXX mm",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
-"k": "ddvd",
-"label": "DDVD",
-"text": "XXX mm",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
-"k": "feve-teichholz",
-"label": "FEVE (Teichholz)",
-"text": "XXX%",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
-"k": "delta-d",
-"label": "Delta D",
-"text": "XXX%",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
-"k": "psvd",
-"label": "PSVD",
-"text": "XXX mmHg, considerando PAD = XXX mmHg, pelo refluxo tricúspide.",
+"k": "parametros-hemodinamicos",
+"label": "Parâmetros hemodinâmicos",
+"text": "\nPSVD: XXX mmHg, considerando PAD = XXX mmHg, pelo refluxo tricúspide.",
 "dash": false,
 "opts": [],
 "grp": ""
@@ -7620,62 +7564,16 @@ const LAU_US_MASKS = [
 "t": "blank"
 },
 {
-"t": "line",
-"text": "MEDIDAS:"
+"t": "item",
+"k": "medidas"
 },
 {
 "t": "item",
-"k": "ao"
+"k": "parametros-funcionais"
 },
 {
 "t": "item",
-"k": "ae"
-},
-{
-"t": "item",
-"k": "ddve"
-},
-{
-"t": "item",
-"k": "dsve"
-},
-{
-"t": "item",
-"k": "siv"
-},
-{
-"t": "item",
-"k": "pp"
-},
-{
-"t": "item",
-"k": "ddvd"
-},
-{
-"t": "blank"
-},
-{
-"t": "line",
-"text": "PARÂMETROS FUNCIONAIS:"
-},
-{
-"t": "item",
-"k": "feve-teichholz"
-},
-{
-"t": "item",
-"k": "delta-d"
-},
-{
-"t": "blank"
-},
-{
-"t": "line",
-"text": "PARÂMETROS HEMODINÂMICOS:"
-},
-{
-"t": "item",
-"k": "psvd"
+"k": "parametros-hemodinamicos"
 }
 ],
 "concTitulo": "Conclusão:",

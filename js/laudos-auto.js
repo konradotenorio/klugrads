@@ -301,16 +301,20 @@ function lauAutoFase(f){ lauAutoLocal().fase=f; lauAutoRefresh(); }
    Só preenche se o campo estiver vazio ou tiver sido preenchido por este cálculo. */
 function lauEcoCalc(m){
   if(!m || m.id!=='us-ecocardio') return;
-  const L=state.lau, it=lbl=>m.items.find(i=>i.label===lbl);
-  const v=lbl=>{ const i=it(lbl); return i ? lauF(((L.v[i.k].__v||{}).n||[])[0]) : null; };
-  const dd=v('DDVE'), ds=v('DSVE');
-  const put=(lbl, val)=>{ const i=it(lbl); if(!i) return; const s=L.v[i.k]; const cur=((s.__v.n||[])[0]);
-    if(lauHas(cur) && !s.__ecoAuto) return;
-    const a=(s.__v.n||[]).slice(); a[0]= val==null ? '' : String(val); s.__v.n=a; s.__ecoAuto = val!=null;
-    lauPatch(i.k); lauUpdSum(i.k); };
+  const L=state.lau;
+  // acha o campo pelo texto logo antes dele (ex.: "DDVE:") em qualquer item do laudo
+  const campo=re=>{ for(const it of m.items){ const c=lauAutoCampos(lauItemNormal(m,it)).campos.find(x=>re.test(x.antes)); if(c) return {it, i:c.i}; } return null; };
+  const val=c=>c ? lauF(((L.v[c.it.k].__v||{}).n||[])[c.i]) : null;
+  const dd=val(campo(/\bddve$/)), ds=val(campo(/\bdsve$/));
+  const put=(c, v)=>{ if(!c) return; const s=L.v[c.it.k]; s.__ecoAuto=s.__ecoAuto||{};
+    const cur=((s.__v.n||[])[c.i]); if(lauHas(cur) && !s.__ecoAuto[c.i]) return;
+    const a=(s.__v.n||[]).slice(); a[c.i]= v==null ? '' : String(v); s.__v.n=a; s.__ecoAuto[c.i] = v!=null;
+    lauPatch(c.it.k); lauUpdSum(c.it.k);
+    if(state.lau.open===c.it.k) lauRenderLeft(); };
+  const fe=campo(/feve teichholz$/), dl=campo(/\bdelta d$/);
   if(dd && ds && dd>ds){
     const V=D=>7*Math.pow(D/10,3)/(2.4+D/10);
-    put('FEVE (Teichholz)', Math.round((V(dd)-V(ds))/V(dd)*100));
-    put('Delta D', Math.round((dd-ds)/dd*100));
-  } else { put('FEVE (Teichholz)', null); put('Delta D', null); }
+    put(fe, Math.round((V(dd)-V(ds))/V(dd)*100));
+    put(dl, Math.round((dd-ds)/dd*100));
+  } else { put(fe, null); put(dl, null); }
 }

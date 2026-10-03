@@ -41,21 +41,19 @@ Não foi visibilizado fluxo na topografia do canal arterial. || Canal arterial p
 As artérias coronárias apresentam origem e trajeto habituais.
 Ausência de derrame pericárdico. || Derrame pericárdico de pequeno XX moderado XX grande volume, sem sinais de restrição ao enchimento ventricular.
 
-MEDIDAS:
-Ao: XXX mm
-AE: XXX mm
-DDVE: XXX mm (escore Z: XXX)
-DSVE: XXX mm
-SIV: XXX mm
-PP: XXX mm
-DDVD: XXX mm
-
-PARÂMETROS FUNCIONAIS:
-FEVE (Teichholz): XXX%
-Delta D: XXX%
-
-PARÂMETROS HEMODINÂMICOS:
-PSVD: XXX mmHg, considerando PAD = XXX mmHg, pelo refluxo tricúspide.
+Medidas:
+  Ao: XXX mm
+  AE: XXX mm
+  DDVE: XXX mm (escore Z: XXX)
+  DSVE: XXX mm
+  SIV: XXX mm
+  PP: XXX mm
+  DDVD: XXX mm
+Parâmetros funcionais:
+  FEVE (Teichholz): XXX%
+  Delta D: XXX%
+Parâmetros hemodinâmicos:
+  PSVD: XXX mmHg, considerando PAD = XXX mmHg, pelo refluxo tricúspide.
 
 Conclusão:
 Ecocardiograma compatível com a normalidade.

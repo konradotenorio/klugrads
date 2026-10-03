@@ -103,8 +103,13 @@ for md in models:
     def add(label, text, dash):
         it = {'k':key_for(label or text[:30]), 'label':label, 'text':text, 'dash':dash, 'opts':[], 'grp': grp if dash else ctx['dash']}
         items.append(it); seq.append({'t':'item','k':it['k']}); return it
-    for l in body:
+    for bi, l in enumerate(body):
         s = l.strip()
+        # bloco: "Rótulo:" seguido de linhas recuadas → um único item (cada linha recuada numa linha do laudo)
+        if l.startswith(('  ','\t')) and s and last is not None and last.get('bloco'):
+            last['text'] += '\n' + s; continue
+        if s.endswith(':') and bi+1 < len(body) and body[bi+1].startswith(('  ','\t')) and body[bi+1].strip():
+            last = add(s[:-1].strip(), '', False); last['bloco'] = True; continue
         if not s:
             if seq and seq[-1]['t']!='blank': seq.append({'t':'blank'})
             last = None; continue
@@ -134,6 +139,7 @@ for md in models:
         if ' || ' in it['text']:
             alts = [x.strip() for x in it['text'].split(' || ')]
             it['text'] = alts[0]; it['alts'] = alts
+    for it in items: it.pop('bloco', None)
     labs = {}
     for it in items: labs[it['label']] = labs.get(it['label'],0)+1
     for it in items:
