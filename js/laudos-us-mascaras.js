@@ -5408,7 +5408,7 @@ const LAU_US_MASKS = [
 {
 "k": "feto-1",
 "label": "Feto 1",
-"text": "único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.",
+"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -5440,7 +5440,7 @@ const LAU_US_MASKS = [
 {
 "k": "peso-fetal-estimado-hadlock",
 "label": "Peso fetal estimado (Hadlock)",
-"text": "XXX g (variação de ± 15%).",
+"text": "XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
 "dash": false,
 "opts": [],
 "grp": "Feto 1"
@@ -5448,7 +5448,7 @@ const LAU_US_MASKS = [
 {
 "k": "feto-2",
 "label": "Feto 2",
-"text": "único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.",
+"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -5480,10 +5480,18 @@ const LAU_US_MASKS = [
 {
 "k": "peso-fetal-estimado-hadlock-2",
 "label": "Peso fetal estimado (Hadlock)",
-"text": "XXX g (variação de ± 15%).",
+"text": "XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
 "dash": false,
 "opts": [],
 "grp": "Feto 2"
+},
+{
+"k": "discordancia-de-peso-estimado-entre-os-f",
+"label": "Discordância de peso estimado entre os fetos",
+"text": "XXX%.",
+"dash": false,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -5565,6 +5573,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "peso-fetal-estimado-hadlock-2"
+},
+{
+"t": "item",
+"k": "discordancia-de-peso-estimado-entre-os-f"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -7567,6 +7579,284 @@ const LAU_US_MASKS = [
 {
 "text": "Ecocardiograma compatível com a normalidade.",
 "dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "us-obstetrico-gemelar-com-doppler",
+"metodo": "us",
+"nome": "Obstétrico Gemelar com Doppler",
+"grupo": "Obstétrico",
+"titulo": [
+"ULTRASSONOGRAFIA OBSTÉTRICA GEMELAR COM DOPPLER"
+],
+"items": [
+{
+"k": "exame-realizado-por-via-suprap",
+"label": "",
+"text": "Exame realizado por via suprapúbica (abdominal).",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "utero",
+"label": "Útero",
+"text": "gravídico, globoso.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "colo-uterino",
+"label": "Colo uterino",
+"text": "de aspecto aparentemente preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "placenta",
+"label": "Placenta XX placentas",
+"text": "com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): XXX.",
+"dash": true,
+"opts": [
+"Não é possível determinar a corionicidade por este estudo."
+],
+"grp": ""
+},
+{
+"k": "cordoes-umbilicais",
+"label": "Cordões umbilicais",
+"text": "de aspecto habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "liquido-amniotico",
+"label": "Líquido amniótico",
+"text": "em quantidade normal nas duas cavidades, com maior bolsão vertical (MBV) estimado em XXX mm (feto 1) e XXX mm (feto 2).",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"em quantidade normal nas duas cavidades, com maior bolsão vertical (MBV) estimado em XXX mm (feto 1) e XXX mm (feto 2).",
+"em quantidade normal, com índice de líquido amniótico (ILA) estimado em XXX cm."
+]
+},
+{
+"k": "feto-1",
+"label": "Feto 1",
+"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "cabeca",
+"label": "Cabeça",
+"text": "DBP = XXX mm; PC = XXX mm.",
+"dash": false,
+"opts": [],
+"grp": "Feto 1"
+},
+{
+"k": "abdome",
+"label": "Abdome",
+"text": "CA = XXX mm.",
+"dash": false,
+"opts": [],
+"grp": "Feto 1"
+},
+{
+"k": "femur",
+"label": "Fêmur",
+"text": "CF = XXX mm.",
+"dash": false,
+"opts": [],
+"grp": "Feto 1"
+},
+{
+"k": "peso-fetal-estimado-hadlock",
+"label": "Peso fetal estimado (Hadlock)",
+"text": "XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
+"dash": false,
+"opts": [],
+"grp": "Feto 1"
+},
+{
+"k": "dopplervelocimetria",
+"label": "Dopplervelocimetria",
+"text": "\nArtéria umbilical: IR = XXX e IP = XXX (percentil XXX).\nArtéria cerebral média: IR = XXX e IP = XXX (percentil XXX).\nRelação cérebro-placentária (IP ACM / IP AU): XXX (percentil XXX).",
+"dash": false,
+"opts": [
+"Pico de velocidade sistólica da artéria cerebral média: XXX cm/s (XXX MoM).",
+"Ducto venoso: IP = XXX (percentil XXX)."
+],
+"grp": "Feto 1"
+},
+{
+"k": "feto-2",
+"label": "Feto 2",
+"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "cabeca-2",
+"label": "Cabeça",
+"text": "DBP = XXX mm; PC = XXX mm.",
+"dash": false,
+"opts": [],
+"grp": "Feto 2"
+},
+{
+"k": "abdome-2",
+"label": "Abdome",
+"text": "CA = XXX mm.",
+"dash": false,
+"opts": [],
+"grp": "Feto 2"
+},
+{
+"k": "femur-2",
+"label": "Fêmur",
+"text": "CF = XXX mm.",
+"dash": false,
+"opts": [],
+"grp": "Feto 2"
+},
+{
+"k": "peso-fetal-estimado-hadlock-2",
+"label": "Peso fetal estimado (Hadlock)",
+"text": "XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
+"dash": false,
+"opts": [],
+"grp": "Feto 2"
+},
+{
+"k": "dopplervelocimetria-2",
+"label": "Dopplervelocimetria",
+"text": "\nArtéria umbilical: IR = XXX e IP = XXX (percentil XXX).\nArtéria cerebral média: IR = XXX e IP = XXX (percentil XXX).\nRelação cérebro-placentária (IP ACM / IP AU): XXX (percentil XXX).",
+"dash": false,
+"opts": [
+"Pico de velocidade sistólica da artéria cerebral média: XXX cm/s (XXX MoM).",
+"Ducto venoso: IP = XXX (percentil XXX).",
+"Índices de resistividade das artérias uterinas: XXX à direita e XXX à esquerda."
+],
+"grp": "Feto 2"
+},
+{
+"k": "discordancia-de-peso-estimado-entre-os-f",
+"label": "Discordância de peso estimado entre os fetos",
+"text": "XXX%.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "exame-realizado-por-via-suprap"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "utero"
+},
+{
+"t": "item",
+"k": "colo-uterino"
+},
+{
+"t": "item",
+"k": "placenta"
+},
+{
+"t": "item",
+"k": "cordoes-umbilicais"
+},
+{
+"t": "item",
+"k": "liquido-amniotico"
+},
+{
+"t": "item",
+"k": "feto-1"
+},
+{
+"t": "line",
+"text": "Medidas:"
+},
+{
+"t": "item",
+"k": "cabeca"
+},
+{
+"t": "item",
+"k": "abdome"
+},
+{
+"t": "item",
+"k": "femur"
+},
+{
+"t": "item",
+"k": "peso-fetal-estimado-hadlock"
+},
+{
+"t": "item",
+"k": "dopplervelocimetria"
+},
+{
+"t": "item",
+"k": "feto-2"
+},
+{
+"t": "line",
+"text": "Medidas:"
+},
+{
+"t": "item",
+"k": "cabeca-2"
+},
+{
+"t": "item",
+"k": "abdome-2"
+},
+{
+"t": "item",
+"k": "femur-2"
+},
+{
+"t": "item",
+"k": "peso-fetal-estimado-hadlock-2"
+},
+{
+"t": "item",
+"k": "dopplervelocimetria-2"
+},
+{
+"t": "item",
+"k": "discordancia-de-peso-estimado-entre-os-f"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Gestação gemelar, com fetos vivos, de idade gestacional estimada em XXX semanas e XXX dias.",
+"dash": true
+},
+{
+"text": "Estudo Doppler da circulação fetoplacentária de ambos os fetos dentro dos limites da normalidade.",
+"dash": true
 }
 ],
 "trailer": [],

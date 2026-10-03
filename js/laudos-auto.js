@@ -359,15 +359,15 @@ function lauEcoCalc(m){
    (js/calc-fetal.js: hadlockEFW, efwPercentile, FM_UA_PI, FM_MCA_PI, FM_DV_PIV, VPS-ACM de Mari).
    IG: quadro de idade gestacional (DUM / exame anterior / digitada); senão, a IG digitada na conclusão.
    Só preenche campo vazio ou preenchido por este cálculo (o médico pode sobrescrever). */
-function lauObsDopAtivo(m){ return !!(m && /^us-obstetrico-(2-e-3-trimestre|doppler)$/.test(m.id)); }
+function lauObsDopAtivo(m){ return !!(m && /^us-obstetrico-(2-e-3-trimestre|doppler|gemelar|gemelar-com-doppler)$/.test(m.id)); }
 function lauObsGA(m){
   if(typeof lauIgCalc==='function'){ const r=lauIgCalc(); if(r && !r.erro && r.dias!=null) return r.dias/7; }
   const L=state.lau; let ga=null;
   lauConcNormalLines(m).forEach((c,i)=>{
-    if(ga!=null || !/idade gestacional estimada em/i.test(c.text)) return;
+    if(ga!=null || !/idade gestacional (\(IG\) )?estimada em/i.test(c.text)) return;
     const vals=lauAutoConcVals(m, c.text, L.conc.v['n'+i]); const {tpl, campos}=lauAutoCampos(c.text);
     const g=re=>{ const x=campos.find(y=>re.test(y.antes)); if(!x) return null; const r=lauVal(tpl, vals||[], x.i); return r.ok ? lauF(r.v) : null; };
-    const sem=g(/idade gestacional estimada em$/), d=g(/semanas e$/);
+    const sem=g(/estimada em$/), d=g(/semanas e$/);
     if(sem!=null) ga=sem+(d||0)/7;
   });
   return ga;
@@ -375,14 +375,16 @@ function lauObsGA(m){
 /* campos por linha: {it, s, tpl, i, linha (texto normalizado), antes, ord, on} */
 function lauObsDopCampos(m){
   const out=[], nz=v=>lauNorm(v).replace(/[():;,.]/g,'').replace(/\s+/g,' ').trim();
+  let fet=0;   // gemelar: itens depois de "Feto 1" / "Feto 2" pertencem a esse feto
   m.items.forEach(it=>{
     if(!it.generic) return; const s=state.lau.v[it.k]; const lbl=nz(lauItemLabel(m,it)||'');
+    const mf=/^feto (\d)/.exec(lbl); if(mf) fet=+mf[1];
     const add=(str, tpl, on)=>{
       lauTpl(str).lines.forEach(toks=>{
         const linha=nz(toks.filter(t=>t.t==='w').map(t=>t.s).join(' ')); let ord=0;
         toks.forEach((t,j)=>{ if(t.t!=='p') return;
           const ws=[]; for(let x=j-1; x>=0 && ws.length<3; x--){ if(toks[x].t==='w') ws.unshift(toks[x].s); else break; }
-          out.push({it, s, tpl, i:t.i, lbl, linha, antes:nz(ws.join(' ')), ord:ord++, on});
+          out.push({it, s, tpl, i:t.i, lbl, linha, antes:nz(ws.join(' ')), ord:ord++, on, fet});
         });
       });
     };
@@ -401,8 +403,9 @@ function lauObsPctRcp(ga, r){ const p50=fmInterp(FM_MCA_PI,ga,2)/fmInterp(FM_UA_
 function lauObsPctTxt(p){ return p<1 ? '< 1' : p>99 ? '> 99' : String(Math.round(p)); }
 function lauObsNum(v, d){ return v.toFixed(d).replace('.',','); }
 /* lê as medidas e calcula tudo; devolve {campos, alvo, val, res} */
-function lauObsDopDados(m){
-  const C=lauObsDopCampos(m);
+function lauObsFetos(m){ const f=[...new Set(lauObsDopCampos(m).map(c=>c.fet))].filter(x=>x>0); return f.length ? f : [0]; }
+function lauObsDopDados(m, fet){
+  const T=lauObsDopCampos(m), C=fet ? T.filter(c=>c.fet===fet) : T;
   const ach=(linha, antes, ord)=>C.find(c=>c.on && (!linha || linha.test(c.linha) || linha.test(c.lbl)) && (antes ? antes.test(c.antes) : c.ord===(ord||0)));
   const val=c=>{ if(!c) return null; const r=lauVal(lauTpl(c.tpl==='n'?lauItemNormal(m,c.it):c.it.opts[+c.tpl.slice(1)]), (c.s.__v||{})[c.tpl]||[], c.i); return r.ok ? lauF(r.v) : null; };
   const alvo={
@@ -415,11 +418,12 @@ function lauObsDopDados(m){
     vps:ach(/^pico de velocidade sistolica/,null,0), vpsM:ach(/^pico de velocidade sistolica/,null,1),
     dv:ach(/^ducto venoso/,/\bip =$/), dvP:ach(/^ducto venoso/,/percentil$/),
   };
+  alvo.disc=T.find(c=>c.on && /^discordancia de peso/.test(c.lbl) && c.ord===0);
   return {C, alvo, val, ga:lauObsGA(m)};
 }
 function lauObsDopCalc(m){
   if(!lauObsDopAtivo(m) || !lauAutoCfg().on) return;
-  const D=lauObsDopDados(m), A=D.alvo, v=k=>D.val(A[k]), ga=D.ga, mud={};
+  const mud={}, pesos=[]; let D0=null;
   const auto=c=>{ const s=c.s; s.__obsAuto=s.__obsAuto||{}; return s.__obsAuto; };
   const put=(c, x)=>{ if(!c) return;
     const key=c.tpl+':'+c.i, arr=(c.s.__v[c.tpl]||[]), cur=arr[c.i];
@@ -429,6 +433,8 @@ function lauObsDopCalc(m){
     if(x!=null) auto(c)[key]=1; else delete auto(c)[key];
     mud[c.it.k]=1;
   };
+  lauObsFetos(m).forEach(fet=>{
+  const D=lauObsDopDados(m, fet), A=D.alvo, v=k=>D.val(A[k]), ga=D.ga; D0=D0||D;
   // PFE (Hadlock CC/CA/CF) e percentil (Hadlock 1991)
   const pc=v('pc'), ca=v('ca'), cf=v('cf');
   put(A.pfe, pc&&ca&&cf ? Math.round(hadlockEFW(pc/10, ca/10, cf/10)) : null);
@@ -446,11 +452,17 @@ function lauObsDopCalc(m){
   // VPS da ACM em MoM (Mari 2000)
   const vps=v('vps');
   put(A.vpsM, vps && ga!=null && ga>=18 && ga<=41 ? lauObsNum(vps/Math.exp(2.31+0.046*ga), 2) : null);
+  if(fet) pesos.push(v('pfe'));
+  });
+  // gemelar: discordância de peso = (maior − menor) / maior
+  if(D0 && D0.alvo.disc){ const D=D0, A=D.alvo; const ok=pesos.length>=2 && pesos.every(x=>x);
+    put(A.disc, ok ? Math.round((Math.max(...pesos)-Math.min(...pesos))/Math.max(...pesos)*100) : null); }
+  const C0=lauObsDopCampos(m);
   Object.keys(mud).forEach(k=>{
     lauPatch(k); lauUpdSum(k);
     const s=state.lau.v[k];
     // atualiza os campos abertos no painel sem redesenhar (não perde o foco)
-    D.C.filter(c=>c.it.k===k).forEach(c=>{ const el=document.getElementById(`ph-${k}-${c.tpl}-${c.i}`);
+    C0.filter(c=>c.it.k===k).forEach(c=>{ const el=document.getElementById(`ph-${k}-${c.tpl}-${c.i}`);
       if(el && el!==document.activeElement){ const x=((s.__v[c.tpl]||[])[c.i])||''; if(el.value!==x) el.value=x; } });
   });
   if(typeof lauPatchConc==='function') lauPatchConc();
@@ -459,21 +471,28 @@ function lauObsDopCalc(m){
 function lauObsDopConc(m){
   const out=[]; let dopAlt=false;
   if(!lauObsDopAtivo(m)) return {out, dopAlt};
-  const D=lauObsDopDados(m), v=k=>D.val(D.alvo[k]), ga=D.ga; if(ga==null) return {out, dopAlt};
+  const fetos=lauObsFetos(m), pesos=[];
+  fetos.forEach(fet=>{
+  const pre = fet ? `Feto ${fet}: ` : '', P=t=>pre ? pre+t.charAt(0).toLowerCase()+t.slice(1) : t;
+  const D=lauObsDopDados(m, fet), v=k=>D.val(D.alvo[k]), ga=D.ga; if(fet) pesos.push(v('pfe')); if(ga==null) return;
   const pfe=v('pfe');
   if(pfe && ga>=14 && ga<=42){ const p=efwPercentile(pfe, ga).pct;
-    if(p<10) out.push('Peso fetal estimado abaixo do percentil 10 para a idade gestacional.');
-    else if(p>90) out.push('Peso fetal estimado acima do percentil 90 para a idade gestacional.'); }
+    if(p<10) out.push(P('Peso fetal estimado abaixo do percentil 10 para a idade gestacional.'));
+    else if(p>90) out.push(P('Peso fetal estimado acima do percentil 90 para a idade gestacional.')); }
   if(ga>=20 && ga<=41){
     const au=v('au'), acm=v('acm'), dv=v('dv'), rcp=v('rcp');
-    const f=t=>{ out.push(t); dopAlt=true; };
+    const f=t=>{ out.push(P(t)); dopAlt=true; };
     if(au && au>fmInterp(FM_UA_PI,ga,3)) f('Índice de pulsatilidade da artéria umbilical acima do percentil 95 para a idade gestacional.');
     if(acm && acm<fmInterp(FM_MCA_PI,ga,1)) f('Índice de pulsatilidade da artéria cerebral média abaixo do percentil 5 para a idade gestacional.');
     if(rcp && lauObsPctRcp(ga, rcp)<5) f('Relação cérebro-placentária abaixo do percentil 5 para a idade gestacional.');
     if(dv && dv>fmInterp(FM_DV_PIV,ga,3)) f('Índice de pulsatilidade do ducto venoso acima do percentil 95 para a idade gestacional.');
   }
   const vps=v('vps');
-  if(vps && ga>=18 && ga<=41 && vps/Math.exp(2.31+0.046*ga)>=1.5){ out.push('Pico de velocidade sistólica da artéria cerebral média acima de 1,5 MoM para a idade gestacional.'); dopAlt=true; }
+  if(vps && ga>=18 && ga<=41 && vps/Math.exp(2.31+0.046*ga)>=1.5){ out.push(P('Pico de velocidade sistólica da artéria cerebral média acima de 1,5 MoM para a idade gestacional.')); dopAlt=true; }
+  });
+  // gemelar: discordância de peso estimado ≥ 25%
+  if(pesos.length>=2 && pesos.every(x=>x)){ const d=(Math.max(...pesos)-Math.min(...pesos))/Math.max(...pesos)*100;
+    if(d>=25) out.push(`Discordância de peso estimado entre os fetos de ${Math.round(d)}%.`); }
   return {out, dopAlt};
 }
 

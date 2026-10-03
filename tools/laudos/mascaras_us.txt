@@ -1209,18 +1209,19 @@ Exame realizado em caráter de urgência no pronto-socorro, por via suprapúbica
 XXX Não é possível determinar corionicidade por este estudo.
 - Cordão umbilical: de aspecto habitual.
 - Líquido amniótico: em quantidade aparentemente normal, com maior bolsão vertical (MBV) estimado em XXX mm. Não é possível determinar amnionicidade por este estudo. || em quantidade aparentemente normal, com índice de líquido amniótico (ILA) estimado em XXX cm. Não é possível determinar amnionicidade por este estudo.
-- Feto 1: único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.
+- Feto 1: em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.
 Medidas:
 Cabeça: DBP = XXX mm; PC = XXX mm.
 Abdome: CA = XXX mm.
 Fêmur: CF = XXX mm.
-Peso fetal estimado (Hadlock): XXX g (variação de ± 15%).
-- Feto 2: único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.
+Peso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.
+- Feto 2: em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.
 Medidas:
 Cabeça: DBP = XXX mm; PC = XXX mm.
 Abdome: CA = XXX mm.
 Fêmur: CF = XXX mm.
-Peso fetal estimado (Hadlock): XXX g (variação de ± 15%).
+Peso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.
+Discordância de peso estimado entre os fetos: XXX%.
 Conclusão:
 - Gestação gemelar, com fetos vivos e com pesos estimados acima. Idade gestacional (IG) estimada em XXX semanas e XXX dias
 Obs: O exame obstétrico de pronto-atendimento tem como objetivo primordial o de avaliar a vitalidade imediata da gestação, não se destinando à pesquisa de malformações fetais nem substituindo os exames de rotina do pré-natal.
