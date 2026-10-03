@@ -12,7 +12,7 @@
      lista de traços (vetorial): desfazer/refazer e re-render após qualquer
      render() do app (que recria o DOM) são só "repintar os traços".
    - Tudo roda no navegador: nenhuma imagem ou desenho sai do aparelho.
-   - Gestos: 1 dedo/mouse = pincel (ou borracha/mão, conforme a ferramenta);
+   - Gestos: 1 dedo/mouse = pincel (ou borracha, conforme a ferramenta);
      2 dedos = zoom e mover; roda do mouse = zoom; botão direito/do meio = mover.
 
    Para acrescentar outro órgão: incluir uma entrada em MSL_ORGAOS (imagem
@@ -49,7 +49,6 @@ const MSL_ZMAX = 8;          // zoom máximo
 const MSL_IC = {
   pen:'<path d="M16.5 3.5l4 4L8 20l-5 1 1-5z"/><path d="M14 6l4 4"/>',
   eraser:'<path d="M20 20H9.5L4 14.5a2 2 0 0 1 0-2.8l7.7-7.7a2 2 0 0 1 2.8 0l5.5 5.5a2 2 0 0 1 0 2.8L13 20"/><path d="M8.5 9.5l6 6"/>',
-  hand:'<path d="M12 3v18M3 12h18M8 7l4-4 4 4M8 17l4 4 4-4M7 8l-4 4 4 4M17 8l4 4-4 4"/>',
   undo:'<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>',
   redo:'<path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/>',
   zin:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/>',
@@ -87,12 +86,12 @@ function mapaLesionalHTML(){
   const legInputs = MSL_CORES.map(c=>`<div class="msl-leg-row"><span class="msl-dot" style="--c:${c.cor}"></span><input type="text" class="msl-in" maxlength="30" placeholder="Lesão ${c.id}" value="${esc(s.labels[c.id-1])}" oninput="mslSetLabel(${c.id},this.value)" aria-label="Legenda da cor ${esc(c.nome)}"></div>`).join('');
   return `<div class="msl-wrap">
     ${orgs}
-    <div class="ti-legend-row" style="margin:0 0 10px"><span class="lt">Escolha a cor (cada cor é uma lesão), pinte sobre o mapa e copie a imagem para o laudo. Com dois dedos (ou a roda do mouse) você dá zoom e move a imagem.</span></div>
+    <div class="ti-legend-row" style="margin:0 0 10px"><span class="lt">Escolha a cor (cada cor é uma lesão), pinte sobre o mapa e copie a imagem para o laudo. Zoom: roda do mouse ou dois dedos. Para mover a imagem ampliada: arraste com o botão direito do mouse ou com dois dedos.</span></div>
     <div class="msl-ed${s.full?' full':''}" id="msl-ed">
       <div class="msl-bar">
         <div class="msl-cores">${cores}</div>
         <div class="msl-row">
-          ${tbtn('brush','pen','Pincel')}${tbtn('erase','eraser','Borracha')}${tbtn('hand','hand','Mover')}
+          ${tbtn('brush','pen','Pincel')}${tbtn('erase','eraser','Borracha')}
           <label class="msl-size" title="Espessura do pincel"><span>Espessura</span><input type="range" id="msl-w" min="6" max="90" step="1" value="${s.w}" oninput="mslSetW(this.value)"></label>
         </div>
         <div class="msl-row">
@@ -213,7 +212,7 @@ function mslDown(e){
   if(MSL.ptrs.size===2){ mslCancelStroke(); mslPinchStart(); return; }
   if(MSL.ptrs.size>2) return;
   const s=mslState();
-  const mover = s.tool==='hand' || (e.pointerType==='mouse' && (e.button===1||e.button===2));
+  const mover = e.pointerType==='mouse' && (e.button===1||e.button===2);   // botão do meio/direito arrasta a imagem
   if(mover){ MSL.pan={x:e.clientX,y:e.clientY,tx:MSL.tx,ty:MSL.ty}; st.classList.add('grabbing'); return; }
   if(e.pointerType==='mouse' && e.button!==0) return;
   mslStrokeStart(e);
@@ -256,7 +255,7 @@ function mslPinchMove(){
 /* círculo que mostra o tamanho do pincel (mouse/caneta) */
 function mslCursor(e){
   const c=$('msl-cur'), st=$('msl-stage'), s=mslState(); if(!c||!st) return;
-  if(e.pointerType==='touch' || s.tool==='hand'){ c.style.display='none'; return; }
+  if(e.pointerType==='touch'){ c.style.display='none'; return; }
   const r=st.getBoundingClientRect(), d=Math.max(4, s.w*MSL.side*MSL.k/MSL.N);
   c.style.display='block'; c.style.width=c.style.height=d+'px';
   c.style.left=(e.clientX-r.left)+'px'; c.style.top=(e.clientY-r.top)+'px';
@@ -387,7 +386,7 @@ function mslSyncUI(){
   set('msl-undo',!s.strokes.length); set('msl-redo',!s.redo.length); set('msl-clear',!s.strokes.length);
 }
 function mslSetCor(i){ const s=mslState(); s.cor=i; if(s.tool!=='brush') s.tool='brush'; mslSyncUI(); }
-function mslSetTool(t){ mslState().tool=t; mslSyncUI(); const c=$('msl-cur'); if(c&&t==='hand') c.style.display='none'; }
+function mslSetTool(t){ mslState().tool=t; mslSyncUI(); }
 function mslSetW(v){ mslState().w=+v; }
 function mslSetOrg(k){ const s=mslState(); if(!MSL_ORGAOS[k]||s.org===k) return; s.org=k; s.strokes=[]; s.redo=[]; render(true); }
 function mslSetLabel(i,v){
