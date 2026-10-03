@@ -1417,7 +1417,7 @@ function lauExceto(txt, les){
 }
 function lauItemHTML(m, it){
   if(m.oct && typeof lauOctItemOculto==='function' && lauOctItemOculto(m,it)) return '';
-  const L=state.lau, s=L.v[it.k], r=lauBuild(m,it), g=lauGen();
+  const L=state.lau, s=(m.oct && typeof lauOctShadow==='function') ? lauOctShadow(m,it) : L.v[it.k], r=lauBuild(m,it), g=lauGen();
   if(lauItemOculto(m,it)) return '';
   const lblRaw = lauLblLado(m, lauItemLabel(m,it));
   const lbl = lblRaw ? lauFill(lblRaw, s.__v.l, true)+':' : '';
@@ -1913,7 +1913,10 @@ function lauFrasesPanel(k, org, list, bag, estrut){
   const sel = list.map(id=>{ const f=lauFI(id); const d=bag['d'+id]||{}; const fi=parseInt(id,10);
     seq[fi]=(seq[fi]||0)+1; const num = nOf(fi)>1 ? ' '+seq[fi] : '';
     const qtd = f.q ? (d.qtd||'1') : null;
-    const qh = f.q ? `<div class="lau-row"><div class="lau-rl">Quantidade</div><div class="lau-chips">${[['1','Único'],['n','Vários semelhantes'],['d','Diferentes entre si']].map(o=>`<button type="button" class="ti-ftog ${qtd===o[0]?'on':''}" onclick="lauDescSet('${k}','${id}','qtd','${o[0]}')">${o[1]}</button>`).join('')}</div></div>` : '';
+    const octM = (()=>{ const L=state.lau, m=L&&lauModelo(L.model); return m&&m.oct; })();
+    const olhoAtual = octM ? lauOctOlhoDe(d) : null;
+    const oh = octM ? `<div class="lau-row"><div class="lau-rl">Olho afetado${olhoAtual?'':' <mark class="lau-ph">escolha</mark>'}</div><div class="lau-chips">${[['d','Olho direito'],['e','Olho esquerdo'],['a','Ambos']].map(o=>`<button type="button" class="ti-ftog ${olhoAtual===o[0]?'on':''}" onclick="lauDescSet('${k}','${id}','olho','${o[0]}')">${o[1]}</button>`).join('')}</div></div>` : '';
+    const qh = oh + (f.q ? `<div class="lau-row"><div class="lau-rl">Quantidade</div><div class="lau-chips">${[['1','Único'],['n','Vários semelhantes'],['d','Diferentes entre si']].map(o=>`<button type="button" class="ti-ftog ${qtd===o[0]?'on':''}" onclick="lauDescSet('${k}','${id}','qtd','${o[0]}')">${o[1]}</button>`).join('')}</div></div>` : '');
     const multi = qtd==='n' && lauMulti(f);
     const nome1 = f.kind ? 'Nódulo' : 'Formação';
     // 1º achado (descrição principal) logo após os descritores; depois os demais e o botão +
@@ -1936,12 +1939,16 @@ function lauItemPanel(m, it){
   const normal=lauItemNormal(m,it), lbl=lauItemLabel(m,it);
   let h='';
   if(lauHasPh(lbl)) h += `<div class="lau-rl">Rótulo</div>${lauInlineForm(k,'l',lbl,s.__v.l)}`;
-  if(lauHasPh(normal) && !it.noNF) h += `<div class="lau-rl">${it.generic?'Texto da máscara — preencha os campos':'Medidas do texto padrão'}</div>${lauInlineForm(k,'n',normal,s.__v.n)}`;
+  if(m.oct && lauHasPh(normal)){
+    const tw=lauOctGemeo(m,it);
+    h += `<div class="lau-rl">Olho direito</div>${lauInlineForm(k,'n',normal,s.__v.n)}`;
+    if(tw) h += `<div class="lau-rl" style="margin-top:8px">Olho esquerdo</div>${lauInlineForm(tw.k,'n',lauItemNormal(m,tw),state.lau.v[tw.k].__v.n)}`;
+  } else if(lauHasPh(normal) && !it.noNF) h += `<div class="lau-rl">${it.generic?'Texto da máscara — preencha os campos':'Medidas do texto padrão'}</div>${lauInlineForm(k,'n',normal,s.__v.n)}`;
   else if(it.generic) h += `<div class="lau-rl">Texto da máscara</div><div class="lau-inl dim">${esc(normal).replace(/\n/g,'<br>')}</div>`;
   if(!it.generic) h += it.ctrls.map(c=>lauCtrlHTML(k,s,c)).join('');
   h += lauOptsHTML(k, it.opts, s.__o, s.__v);
   h += lauFrasesPanel(k, it.sk ? [it.sk] : lauFraseOrgao(lbl || String(normal).slice(0,60), m.metodo), s.__f, s.__v, !!it.sk);
-  if(it.generic){
+  if(it.generic && !m.oct){
     h += `<div class="lau-row"><div class="lau-rl">Substituir o texto por (alteração)</div><textarea class="lau-ta" rows="3" placeholder="Deixe em branco para manter o texto da máscara" oninput="lauSetQ('${k}','alt',this.value)">${esc(s.alt)}</textarea></div>`;
     h += `<div class="lau-row"><div class="lau-rl">Frase para a conclusão</div><input class="lau-txt" type="text" value="${esc(s.conc)}" placeholder="ex.: Tendinopatia do supraespinal." oninput="lauSetQ('${k}','conc',this.value)"></div>`;
   }
@@ -1968,10 +1975,10 @@ function lauLeftHTML(){
     ()=>`${lauHasPh(tit)?`<div class="lau-rl">Título</div>${tit.split('\n').map((t,i)=>lauHasPh(t)?lauInlineForm('__tit','t'+i,t,L.tit['t'+i]):'').join('')}`:''}
         <div class="lau-row"><div class="lau-rl">Indicação clínica</div><input class="lau-txt" type="text" value="${esc(L.ind)}" placeholder="${m.metodo==='mmg'?'ex.: rastreamento':'ex.: dor abdominal'}" oninput="lauSetInd(this.value)">${indChips}</div>
         ${lauTecOpts().map(o=>`<label class="lau-chk"><input type="checkbox" ${L.tec[o[0]]?'checked':''} onchange="lauSetTec('${o[0]}')"><span>Limitação: ${esc(o[1])}</span></label>`).join('')}`);
-  h += m.items.filter(it=>!lauItemOutroLado(m,it)).map(it=>{
+  h += m.items.filter(it=> m.oct ? lauOctOlho(it)==='d' : !lauItemOutroLado(m,it)).map(it=>{
     const sum=lauSum(m,it);
     const nm = lauItemLabel(m,it) ? lauFill(lauItemLabel(m,it), L.v[it.k].__v.l) : lauFill(lauItemNormal(m,it), L.v[it.k].__v.n).slice(0,48)+'…';
-    const title = esc(nm.replace(/:$/,'')) + (it.grp?` <span class="lau-grp">${esc(it.grp)}</span>`:'');
+    const title = esc(nm.replace(/:$/,'')) + (it.grp&&!m.oct?` <span class="lau-grp">${esc(it.grp)}</span>`:'');
     return lauCard(it.k, title, `<div id="lau-sum-${it.k}" class="lau-sum ${sum.cls}">${esc(sum.t)}</div>`, ()=>lauItemPanel(m,it));
   }).join('');
   h += lauCard('__obs', 'Achados adicionais', `<div class="lau-sum ${(L.obs||L.xf.length)?'alt':'ok'}">${(L.obs||L.xf.length)?'Preenchido':'Opcional'}</div>`,
