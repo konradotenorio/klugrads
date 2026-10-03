@@ -7939,5 +7939,12905 @@ const LAU_TC_MASKS = [
 "flags": [
 "oct"
 ]
+},
+{
+"id": "tc-cranio",
+"metodo": "tc",
+"nome": "Crânio",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO CRÂNIO"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Realizados cortes axiais sem a injeção do meio de contraste endovenoso.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Realizados cortes axiais sem a injeção do meio de contraste endovenoso.",
+"Realizados cortes axiais antes e após a injeção do meio de contraste endovenoso."
+]
+},
+{
+"k": "sistema-ventricular",
+"label": "Sistema ventricular",
+"text": "com forma e dimensões conservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "sulcos-corticais-e-cisternas-basais",
+"label": "Sulcos corticais e cisternas basais",
+"text": "de amplitude preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "parenquima-encefalico",
+"label": "Parênquima encefálico",
+"text": "com forma e atenuação normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "hemorragia-intracraniana-recente",
+"label": "Hemorragia intracraniana recente",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "calota-craniana",
+"label": "Calota craniana",
+"text": "sem alterações focais evidentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "realces-focais-anomalos",
+"label": "Realces focais anômalos",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "sistema-ventricular"
+},
+{
+"t": "item",
+"k": "sulcos-corticais-e-cisternas-basais"
+},
+{
+"t": "item",
+"k": "parenquima-encefalico"
+},
+{
+"t": "item",
+"k": "hemorragia-intracraniana-recente"
+},
+{
+"t": "item",
+"k": "calota-craniana"
+},
+{
+"t": "item",
+"k": "realces-focais-anomalos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame tomográfico do crânio dentro dos parâmetros da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-sela-turcica",
+"metodo": "tc",
+"nome": "Sela túrcica",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DA SELA TÚRCICA"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Adquiridos cortes axiais antes e durante a injeção do meio de contraste endovenoso.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "cavidade-selar",
+"label": "Cavidade selar",
+"text": "com forma e dimensões normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "glandula-hipofisaria",
+"label": "Glândula hipofisária",
+"text": "com forma e atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "cisterna-suprasselar",
+"label": "Cisterna suprasselar",
+"text": "livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "seios-cavernosos",
+"label": "Seios cavernosos",
+"text": "livres.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "cavidade-selar"
+},
+{
+"t": "item",
+"k": "glandula-hipofisaria"
+},
+{
+"t": "item",
+"k": "cisterna-suprasselar"
+},
+{
+"t": "item",
+"k": "seios-cavernosos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame tomográfico sem alterações significativas.",
+"dash": false
+},
+{
+"text": "Caso persista dúvida clínica, o estudo de ressonância magnética poderá trazer informações adicionais.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-cranio-protocolo-avc",
+"metodo": "tc",
+"nome": "Crânio — protocolo AVC",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO CRÂNIO",
+"ANGIOTOMOGRAFIA ARTERIAL CERVICAL E INTRACRANIANA",
+"PROTOCOLO AVC"
+],
+"items": [
+{
+"k": "hora-da-assessoria-verbal",
+"label": "Hora da assessoria verbal",
+"text": "XXX",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "contato",
+"label": "Contato",
+"text": "Dr(a). XXX",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "hemorragia-subaracnoide",
+"label": "Hemorragia subaracnoide",
+"text": "não.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"não.",
+"sim."
+]
+},
+{
+"k": "hemorragia-subdural",
+"label": "Hemorragia subdural",
+"text": "não.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"não.",
+"sim."
+]
+},
+{
+"k": "hemorragia-extradural",
+"label": "Hemorragia extradural",
+"text": "não.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"não.",
+"sim."
+]
+},
+{
+"k": "hemorragia-intraparenquimatosa",
+"label": "Hemorragia intraparenquimatosa",
+"text": "não.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"não.",
+"sim, com volume estimado em XXX mL."
+]
+},
+{
+"k": "apagamento-insular",
+"label": "Apagamento insular",
+"text": "não.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"não.",
+"sim."
+]
+},
+{
+"k": "hipodensidade-nucleocapsular",
+"label": "Hipodensidade nucleocapsular",
+"text": "não.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"não.",
+"sim."
+]
+},
+{
+"k": "arteria-densa",
+"label": "Artéria densa",
+"text": "não.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"não.",
+"sim."
+]
+},
+{
+"k": "assimetria-de-sulcos-corticais",
+"label": "Assimetria de sulcos corticais",
+"text": "não.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"não.",
+"sim."
+]
+},
+{
+"k": "aspects-total",
+"label": "ASPECTS total",
+"text": "10.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"10.",
+"XXX, com hipoatenuação nos territórios XXX."
+]
+},
+{
+"k": "angiotc-das-arterias-cervicais-e-intracr",
+"label": "AngioTC das artérias cervicais e intracranianas",
+"text": "realizada.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"realizada.",
+"não realizada."
+]
+},
+{
+"k": "oclusao-de-grande-tronco-arterial",
+"label": "Oclusão de grande tronco arterial",
+"text": "não.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"não.",
+"sim, acometendo XXX."
+]
+},
+{
+"k": "escore-de-colaterais-oclusao-da-aci-ou-a",
+"label": "Escore de colaterais (oclusão da ACI ou ACM)",
+"text": "não se aplica.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"não se aplica.",
+"menor que o lado contralateral normal.",
+"igual ao lado contralateral normal.",
+"maior que o lado contralateral normal."
+]
+},
+{
+"k": "sinais-de-isquemia-antiga",
+"label": "Sinais de isquemia antiga",
+"text": "não.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"não.",
+"sim, em XXX."
+]
+},
+{
+"k": "outros-achados-relevantes",
+"label": "Outros achados relevantes",
+"text": "não há.",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "hora-da-assessoria-verbal"
+},
+{
+"t": "item",
+"k": "contato"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "SINAIS TOMOGRÁFICOS DE HEMORRAGIA RECENTE:"
+},
+{
+"t": "item",
+"k": "hemorragia-subaracnoide"
+},
+{
+"t": "item",
+"k": "hemorragia-subdural"
+},
+{
+"t": "item",
+"k": "hemorragia-extradural"
+},
+{
+"t": "item",
+"k": "hemorragia-intraparenquimatosa"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "SINAIS TOMOGRÁFICOS DE ISQUEMIA RECENTE:"
+},
+{
+"t": "item",
+"k": "apagamento-insular"
+},
+{
+"t": "item",
+"k": "hipodensidade-nucleocapsular"
+},
+{
+"t": "item",
+"k": "arteria-densa"
+},
+{
+"t": "item",
+"k": "assimetria-de-sulcos-corticais"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "ASPECTS (TERRITÓRIO DA ACM):"
+},
+{
+"t": "item",
+"k": "aspects-total"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "ANGIOTOMOGRAFIA:"
+},
+{
+"t": "item",
+"k": "angiotc-das-arterias-cervicais-e-intracr"
+},
+{
+"t": "item",
+"k": "oclusao-de-grande-tronco-arterial"
+},
+{
+"t": "item",
+"k": "escore-de-colaterais-oclusao-da-aci-ou-a"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "OUTROS ACHADOS:"
+},
+{
+"t": "item",
+"k": "sinais-de-isquemia-antiga"
+},
+{
+"t": "item",
+"k": "outros-achados-relevantes"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Ausência de sinais tomográficos de hemorragia intracraniana recente ou de oclusão de grande tronco arterial.",
+"dash": false
+}
+],
+"trailer": [
+"Obs.: Os achados atuais são preliminares e sujeitos à reinterpretação a partir de novas informações clínicas e de eventuais exames de seguimento ou de ressonância magnética."
+],
+"flags": []
+},
+{
+"id": "tc-cranio-idoso",
+"metodo": "tc",
+"nome": "Crânio — idoso",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO CRÂNIO"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Realizados cortes axiais sem a administração do meio de contraste iodado endovenoso.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Realizados cortes axiais sem a administração do meio de contraste iodado endovenoso.",
+"Realizados cortes axiais antes e após a injeção do meio de contraste iodado endovenoso."
+]
+},
+{
+"k": "sistema-ventricular",
+"label": "Sistema ventricular",
+"text": "leve alargamento dos ventrículos supratentoriais, preservando morfologia e simetria habituais. IV ventrículo sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "sulcos-corticais-e-cisternas-basais",
+"label": "Sulcos corticais e cisternas basais",
+"text": "leve proeminência difusa (em detrimento do parênquima encefálico), sem predomínio lobar ou sinais hipertensivos, de aspecto compensatório.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "parenquima-encefalico",
+"label": "Parênquima encefálico",
+"text": "tênues hipodensidades confluentes na substância branca periventricular em regiões peritrigonais e junto aos ângulos anteriores dos ventrículos laterais.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"tênues hipodensidades confluentes na substância branca periventricular em regiões peritrigonais e junto aos ângulos anteriores dos ventrículos laterais.",
+"hipodensidades confluentes na substância branca periventricular, predominando nas regiões peritrigonais, junto aos ângulos anteriores dos ventrículos laterais e nas coroas radiadas / centros semiovais."
+]
+},
+{
+"k": "arterias-intracranianas",
+"label": "Artérias intracranianas",
+"text": "calcificações parietais nos sifões carotídeos.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"calcificações parietais nos sifões carotídeos.",
+"grandes troncos arteriais intracranianos alongados e tortuosos."
+]
+},
+{
+"k": "hemorragia-intracraniana-recente",
+"label": "Hemorragia intracraniana recente",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "calota-craniana",
+"label": "Calota craniana",
+"text": "sem alterações focais evidentes.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"sem alterações focais evidentes.",
+"hiperostose benigna da calota craniana, com predomínio frontal."
+]
+},
+{
+"k": "realces-focais-anomalos",
+"label": "Realces focais anômalos",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "sistema-ventricular"
+},
+{
+"t": "item",
+"k": "sulcos-corticais-e-cisternas-basais"
+},
+{
+"t": "item",
+"k": "parenquima-encefalico"
+},
+{
+"t": "item",
+"k": "arterias-intracranianas"
+},
+{
+"t": "item",
+"k": "hemorragia-intracraniana-recente"
+},
+{
+"t": "item",
+"k": "calota-craniana"
+},
+{
+"t": "item",
+"k": "realces-focais-anomalos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Sinais de redução volumétrica do parênquima encefálico e de ateromatose intracraniana.",
+"dash": false
+},
+{
+"text": "Discreto alargamento dos espaços liquóricos, dentro dos parâmetros da normalidade para o grupo etário.",
+"dash": false
+},
+{
+"text": "Hipodensidades na substância branca periventricular bi-hemisférica, habitualmente relacionadas a gliose por microangiopatia.",
+"dash": false
+},
+{
+"opt": true,
+"text": "Alterações volumétricas encefálicas, que podem ser encontradas nesta faixa etária."
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-orbitas",
+"metodo": "tc",
+"nome": "Órbitas",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DAS ÓRBITAS"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Realizados cortes axiais sem a administração intravenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Realizados cortes axiais sem a administração intravenosa do meio de contraste iodado.",
+"Realizados cortes axiais antes e após a administração intravenosa do meio de contraste iodado."
+]
+},
+{
+"k": "estruturas-osseas-orbitarias",
+"label": "Estruturas ósseas orbitárias",
+"text": "sem alterações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "globos-oculares",
+"label": "Globos oculares",
+"text": "contornos regulares e atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "musculatura-extrinseca",
+"label": "Musculatura extrínseca",
+"text": "atenuação e espessura dentro dos limites da normalidade.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "gordura-orbitaria-intra-e-extraconal",
+"label": "Gordura orbitária intra e extraconal",
+"text": "preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "nervos-opticos",
+"label": "Nervos ópticos",
+"text": "sem alterações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "glandulas-lacrimais",
+"label": "Glândulas lacrimais",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [
+"Realces anômalos: ausentes."
+],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores indisponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "estruturas-osseas-orbitarias"
+},
+{
+"t": "item",
+"k": "globos-oculares"
+},
+{
+"t": "item",
+"k": "musculatura-extrinseca"
+},
+{
+"t": "item",
+"k": "gordura-orbitaria-intra-e-extraconal"
+},
+{
+"t": "item",
+"k": "nervos-opticos"
+},
+{
+"t": "item",
+"k": "glandulas-lacrimais"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame tomográfico das órbitas dentro dos parâmetros da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-angiotomografia-arterial-cervical",
+"metodo": "tc",
+"nome": "Angiotomografia arterial cervical",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"ANGIOTOMOGRAFIA ARTERIAL CERVICAL"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Realizados cortes axiais durante a injeção do meio de contraste endovenoso, com reconstruções tridimensionais.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arco-aortico",
+"label": "Arco aórtico",
+"text": "sem particularidades. Origem habitual dos troncos supra-aórticos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "tronco-braquiocefalico-e-arterias-subcla",
+"label": "Tronco braquiocefálico e artérias subclávias proximais",
+"text": "trajeto e calibre preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-carotidas-comuns-e-segmento-cer",
+"label": "Artérias carótidas comuns e segmento cervical das artérias carótidas internas",
+"text": "calibre e contornos preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "segmentos-cervicais-das-arterias-vertebr",
+"label": "Segmentos cervicais das artérias vertebrais",
+"text": "trajeto, calibre e contornos normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estenoses-hemodinamicamente-significativ",
+"label": "Estenoses hemodinamicamente significativas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "dilatacoes-aneurismaticas",
+"label": "Dilatações aneurismáticas",
+"text": "ausentes.",
+"dash": true,
+"opts": [
+"Variações anatômicas: artéria vertebral direita XX esquerda dominante."
+],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "arco-aortico"
+},
+{
+"t": "item",
+"k": "tronco-braquiocefalico-e-arterias-subcla"
+},
+{
+"t": "item",
+"k": "arterias-carotidas-comuns-e-segmento-cer"
+},
+{
+"t": "item",
+"k": "segmentos-cervicais-das-arterias-vertebr"
+},
+{
+"t": "item",
+"k": "estenoses-hemodinamicamente-significativ"
+},
+{
+"t": "item",
+"k": "dilatacoes-aneurismaticas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Angiotomografia arterial cervical dentro dos parâmetros da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-angiotomografia-arterial-intracraniana",
+"metodo": "tc",
+"nome": "Angiotomografia arterial intracraniana",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"ANGIOTOMOGRAFIA ARTERIAL INTRACRANIANA"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Realizada aquisição axial por técnica helicoidal multislice durante a injeção do meio de contraste endovenoso.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-carotidas-internas-intracranian",
+"label": "Artérias carótidas internas intracranianas",
+"text": "trajeto, calibre e contornos preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-vertebrais-intracranianas-e-art",
+"label": "Artérias vertebrais intracranianas e artéria basilar",
+"text": "trajeto, calibre e contornos preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-cerebrais-anteriores-medias-e-p",
+"label": "Artérias cerebrais anteriores, médias e posteriores",
+"text": "trajeto, calibre e contornos preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estenoses-hemodinamicamente-significativ",
+"label": "Estenoses hemodinamicamente significativas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "dilatacoes-aneurismaticas",
+"label": "Dilatações aneurismáticas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "variacoes-anatomicas",
+"label": "Variações anatômicas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"ausentes.",
+"padrão fetal da circulação posterior à direita XX esquerda."
+]
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "arterias-carotidas-internas-intracranian"
+},
+{
+"t": "item",
+"k": "arterias-vertebrais-intracranianas-e-art"
+},
+{
+"t": "item",
+"k": "arterias-cerebrais-anteriores-medias-e-p"
+},
+{
+"t": "item",
+"k": "estenoses-hemodinamicamente-significativ"
+},
+{
+"t": "item",
+"k": "dilatacoes-aneurismaticas"
+},
+{
+"t": "item",
+"k": "variacoes-anatomicas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Angiotomografia arterial intracraniana dentro dos parâmetros da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-angiotomografia-venosa-cervical",
+"metodo": "tc",
+"nome": "Angiotomografia venosa cervical",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"ANGIOTOMOGRAFIA VENOSA CERVICAL"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Exame realizado pela técnica multislice após a injeção do meio de contraste endovenoso.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veias-jugulares-internas",
+"label": "Veias jugulares internas",
+"text": "pérvias, com calibre e trajeto preservados, sem tromboses.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "porcoes-acessiveis-das-veias-subclavias",
+"label": "Porções acessíveis das veias subclávias",
+"text": "pérvias, com calibre e trajeto preservados, sem tromboses.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "porcoes-acessiveis-das-veias-inominadas",
+"label": "Porções acessíveis das veias inominadas",
+"text": "pérvias, com calibre e trajeto preservados, sem tromboses.",
+"dash": true,
+"opts": [
+"Variações anatômicas: assimetria de calibres entre as veias jugulares internas, menor à direita XX esquerda.",
+"Veia cava superior e porção cranial da veia cava inferior: pérvias, com calibre e trajeto preservados, sem tromboses.",
+"Porções contrastadas das artérias e veias pulmonares: pérvias, com calibre e trajeto preservados, sem tromboses."
+],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "veias-jugulares-internas"
+},
+{
+"t": "item",
+"k": "porcoes-acessiveis-das-veias-subclavias"
+},
+{
+"t": "item",
+"k": "porcoes-acessiveis-das-veias-inominadas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Angiotomografia venosa dentro dos parâmetros da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-angiotomografia-venosa-intracraniana",
+"metodo": "tc",
+"nome": "Angiotomografia venosa intracraniana",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"ANGIOTOMOGRAFIA VENOSA CEREBRAL"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Exame realizado pela técnica multislice após a injeção do meio de contraste endovenoso.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "porcao-cranial-das-veias-jugulares-inter",
+"label": "Porção cranial das veias jugulares internas",
+"text": "calibre, trajeto e contrastação preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "seios-sagital-superior-reto-transversos",
+"label": "Seios sagital superior, reto, transversos e sigmoides",
+"text": "calibre, trajeto e contrastação preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veia-de-galeno-e-veias-cerebrais-interna",
+"label": "Veia de Galeno e veias cerebrais internas",
+"text": "calibre, trajeto e contrastação preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "circulacao-patologica",
+"label": "Circulação patológica",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "trombose-venosa-recente",
+"label": "Trombose venosa recente",
+"text": "ausente.",
+"dash": true,
+"opts": [
+"Variações anatômicas: assimetria do calibre entre as veias jugulares internas e os seios sigmoides e transversos, menores à direita XX esquerda."
+],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "porcao-cranial-das-veias-jugulares-inter"
+},
+{
+"t": "item",
+"k": "seios-sagital-superior-reto-transversos"
+},
+{
+"t": "item",
+"k": "veia-de-galeno-e-veias-cerebrais-interna"
+},
+{
+"t": "item",
+"k": "circulacao-patologica"
+},
+{
+"t": "item",
+"k": "trombose-venosa-recente"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Angiotomografia venosa cerebral dentro dos parâmetros da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-articulacoes-temporomandibulares",
+"metodo": "tc",
+"nome": "Articulações temporomandibulares",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DAS ARTICULAÇÕES TEMPOROMANDIBULARES"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Realizados cortes axiais sem a administração intravenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "cavidades-articulares",
+"label": "Cavidades articulares",
+"text": "contornos regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "condilos-mandibulares",
+"label": "Côndilos mandibulares",
+"text": "morfologia preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "excursao-dos-condilos-a-abertura-bucal",
+"label": "Excursão dos côndilos à abertura bucal",
+"text": "simétrica e adequada.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"simétrica e adequada.",
+"assimétrica, menor à direita XX esquerda.",
+"reduzida."
+]
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores indisponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "cavidades-articulares"
+},
+{
+"t": "item",
+"k": "condilos-mandibulares"
+},
+{
+"t": "item",
+"k": "excursao-dos-condilos-a-abertura-bucal"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame tomográfico das articulações temporomandibulares dentro dos parâmetros da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-face",
+"metodo": "tc",
+"nome": "Face",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DA FACE"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Imagens obtidas por aquisição axial sem a administração intravenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Imagens obtidas por aquisição axial sem a administração intravenosa do meio de contraste iodado.",
+"Imagens obtidas por aquisição axial após a administração intravenosa do meio de contraste iodado."
+]
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "orbitas",
+"label": "Órbitas",
+"text": "sem alterações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "septo-nasal",
+"label": "Septo nasal",
+"text": "sinuoso.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"sinuoso.",
+"desviado para a direita XX esquerda."
+]
+},
+{
+"k": "cavidades-paranasais",
+"label": "Cavidades paranasais",
+"text": "normoaeradas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "glandulas-salivares-maiores",
+"label": "Glândulas salivares maiores",
+"text": "sem alterações focais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rino-e-orofaringe",
+"label": "Rino e orofaringe",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [
+"Realces anômalos: ausentes."
+],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores indisponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "orbitas"
+},
+{
+"t": "item",
+"k": "septo-nasal"
+},
+{
+"t": "item",
+"k": "cavidades-paranasais"
+},
+{
+"t": "item",
+"k": "glandulas-salivares-maiores"
+},
+{
+"t": "item",
+"k": "rino-e-orofaringe"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame tomográfico da face dentro dos parâmetros da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-ouvidos-e-mastoides",
+"metodo": "tc",
+"nome": "Ouvidos e mastoides",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DOS OSSOS TEMPORAIS"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Realizados cortes axiais sem a administração intravenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Realizados cortes axiais sem a administração intravenosa do meio de contraste iodado.",
+"Realizados cortes axiais após a administração intravenosa do meio de contraste iodado."
+]
+},
+{
+"k": "mastoides",
+"label": "Mastoides",
+"text": "normopneumatizadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "caixas-timpanicas",
+"label": "Caixas timpânicas",
+"text": "normoaeradas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "cadeias-ossiculares",
+"label": "Cadeias ossiculares",
+"text": "sem alterações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "labirinto-osseo",
+"label": "Labirinto ósseo",
+"text": "cócleas, vestíbulos, canais semicirculares e condutos auditivos internos preservados. Não se observam focos de desmineralização óssea na cápsula ótica.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "canais-dos-nervos-faciais",
+"label": "Canais dos nervos faciais",
+"text": "preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "bulbos-jugulares-e-canais-carotideos",
+"label": "Bulbos jugulares e canais carotídeos",
+"text": "sem alterações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "angulos-pontocerebelares",
+"label": "Ângulos pontocerebelares",
+"text": "ausência de realces anômalos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores indisponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "mastoides"
+},
+{
+"t": "item",
+"k": "caixas-timpanicas"
+},
+{
+"t": "item",
+"k": "cadeias-ossiculares"
+},
+{
+"t": "item",
+"k": "labirinto-osseo"
+},
+{
+"t": "item",
+"k": "canais-dos-nervos-faciais"
+},
+{
+"t": "item",
+"k": "bulbos-jugulares-e-canais-carotideos"
+},
+{
+"t": "item",
+"k": "angulos-pontocerebelares"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame tomográfico dos ossos temporais dentro dos parâmetros da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-pescoco",
+"metodo": "tc",
+"nome": "Pescoço",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO PESCOÇO"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Imagens obtidas por aquisição axial sem a administração intravenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Imagens obtidas por aquisição axial sem a administração intravenosa do meio de contraste iodado.",
+"Imagens obtidas por aquisição axial após a administração intravenosa do meio de contraste iodado."
+]
+},
+{
+"k": "faringe",
+"label": "Faringe",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "glandulas-salivares-maiores",
+"label": "Glândulas salivares maiores",
+"text": "sem alterações focais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "laringe",
+"label": "Laringe",
+"text": "epiglote, pregas ariepiglóticas, bandas ventriculares e cordas vocais apresentando coeficientes de atenuação preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "linfonodos",
+"label": "Linfonodos",
+"text": "não se evidenciam linfonodomegalias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "glandula-tireoide",
+"label": "Glândula tireoide",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [
+"Realces focais anômalos: ausentes."
+],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores indisponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "faringe"
+},
+{
+"t": "item",
+"k": "glandulas-salivares-maiores"
+},
+{
+"t": "item",
+"k": "laringe"
+},
+{
+"t": "item",
+"k": "linfonodos"
+},
+{
+"t": "item",
+"k": "glandula-tireoide"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame tomográfico do pescoço dentro dos parâmetros da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-seios-da-face",
+"metodo": "tc",
+"nome": "Seios da face",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DOS SEIOS PARANASAIS"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Realizados cortes axiais sem a administração do meio de contraste endovenoso.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Realizados cortes axiais sem a administração do meio de contraste endovenoso.",
+"Realizados cortes axiais após a injeção do meio de contraste endovenoso."
+]
+},
+{
+"k": "septo-nasal",
+"label": "Septo nasal",
+"text": "sinuoso.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"sinuoso.",
+"desviado para a direita XX esquerda."
+]
+},
+{
+"k": "foveas-etmoidais",
+"label": "Fóveas etmoidais",
+"text": "sem assimetrias significativas.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"sem assimetrias significativas.",
+"assimétricas, mais baixa à direita XX esquerda."
+]
+},
+{
+"k": "fossas-nasais",
+"label": "Fossas nasais",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [
+"Aumento do componente mucoso das fossas nasais e das conchas nasais inferiores, contribuindo para a redução da amplitude da coluna aérea nestas topografias."
+],
+"grp": ""
+},
+{
+"k": "variantes-anatomicas",
+"label": "Variantes anatômicas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "cavidades-paranasais",
+"label": "Cavidades paranasais",
+"text": "normoaeradas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-de-drenagem-sinusal",
+"label": "Vias de drenagem sinusal",
+"text": "pérvias.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"pérvias.",
+"XXX obliteradas. Demais vias de drenagem sinusal pérvias."
+]
+},
+{
+"k": "rinofaringe",
+"label": "Rinofaringe",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [
+"Realces focais anômalos: ausentes."
+],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores indisponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "septo-nasal"
+},
+{
+"t": "item",
+"k": "foveas-etmoidais"
+},
+{
+"t": "item",
+"k": "fossas-nasais"
+},
+{
+"t": "item",
+"k": "variantes-anatomicas"
+},
+{
+"t": "item",
+"k": "cavidades-paranasais"
+},
+{
+"t": "item",
+"k": "vias-de-drenagem-sinusal"
+},
+{
+"t": "item",
+"k": "rinofaringe"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": true
+},
+{
+"opt": true,
+"text": "Sinais de rinopatia / rinite."
+},
+{
+"opt": true,
+"text": "Discreta sinusopatia."
+},
+{
+"opt": true,
+"text": "Espessamento mucoso e secreção nos seios XXX, que podem estar relacionados a processo inflamatório sinusal agudo ou secreção residual, em contexto clínico apropriado."
+},
+{
+"opt": true,
+"text": "Desvio do septo nasal."
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-apneia-do-sono",
+"metodo": "tc",
+"nome": "Apneia do sono",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DA FACE"
+],
+"items": [
+{
+"k": "dados-clinicos",
+"label": "Dados clínicos",
+"text": "apneia do sono.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Realizados cortes axiais sem a administração do meio de contraste endovenoso.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "septo-nasal",
+"label": "Septo nasal",
+"text": "sinuoso.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"sinuoso.",
+"desviado para a direita XX esquerda."
+]
+},
+{
+"k": "foveas-etmoidais",
+"label": "Fóveas etmoidais",
+"text": "sem assimetrias significativas.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"sem assimetrias significativas.",
+"assimétricas, mais baixa à direita XX esquerda."
+]
+},
+{
+"k": "fossas-nasais",
+"label": "Fossas nasais",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "variantes-anatomicas",
+"label": "Variantes anatômicas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "cavidades-paranasais",
+"label": "Cavidades paranasais",
+"text": "normoaeradas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-de-drenagem-sinusal",
+"label": "Vias de drenagem sinusal",
+"text": "pérvias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rinofaringe",
+"label": "Rinofaringe",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "paredes-laterais-da-orofaringe",
+"label": "Paredes laterais da orofaringe",
+"text": "proeminentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "medidas-direcionadas-a-avaliacao-de-saos",
+"label": "Medidas direcionadas à avaliação de SAOS",
+"text": "coluna aérea retropalatal com menor área de secção transversa estimada em XXX mm². Espessura e comprimento do palato mole de XXX cm e XXX cm, respectivamente. Eixos anteroposterior e laterolateral da língua de XXX cm e XXX cm, respectivamente. Distância do osso hioide ao corpo da mandíbula de XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores indisponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "dados-clinicos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "septo-nasal"
+},
+{
+"t": "item",
+"k": "foveas-etmoidais"
+},
+{
+"t": "item",
+"k": "fossas-nasais"
+},
+{
+"t": "item",
+"k": "variantes-anatomicas"
+},
+{
+"t": "item",
+"k": "cavidades-paranasais"
+},
+{
+"t": "item",
+"k": "vias-de-drenagem-sinusal"
+},
+{
+"t": "item",
+"k": "rinofaringe"
+},
+{
+"t": "item",
+"k": "paredes-laterais-da-orofaringe"
+},
+{
+"t": "item",
+"k": "medidas-direcionadas-a-avaliacao-de-saos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Medidas direcionadas à avaliação de SAOS dentro dos limites da normalidade.",
+"dash": false
+},
+{
+"opt": true,
+"text": "Desvio do septo nasal."
+},
+{
+"opt": true,
+"text": "Sinusopatia."
+},
+{
+"opt": true,
+"text": "Espessamento do palato mole. Redução da amplitude da coluna aérea retropalatal. Aumento dos eixos anteroposterior e laterolateral da língua. Osso hioide em posição baixa."
+},
+{
+"opt": true,
+"text": "Demais medidas direcionadas à avaliação de SAOS dentro dos limites da normalidade."
+},
+{
+"opt": true,
+"text": "As medidas obtidas da coluna aérea retropalatal, do palato mole, da língua e da posição do hioide em relação à mandíbula podem ser observadas em casos de síndrome da apneia-hipopneia obstrutiva do sono, a depender da correlação com dados clínicos e polissonográficos."
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-antebraco",
+"metodo": "tc",
+"nome": "Antebraço",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO ANTEBRAÇO XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-braco",
+"metodo": "tc",
+"nome": "Braço",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO BRAÇO XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-cotovelo",
+"metodo": "tc",
+"nome": "Cotovelo",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO COTOVELO XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-mao",
+"metodo": "tc",
+"nome": "Mão",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DA MÃO XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-ombro",
+"metodo": "tc",
+"nome": "Ombro",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO OMBRO XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-punho",
+"metodo": "tc",
+"nome": "Punho",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO PUNHO XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-bacia",
+"metodo": "tc",
+"nome": "Bacia",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DA BACIA"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculares",
+"label": "Planos musculares",
+"text": "preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculares"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-coxa",
+"metodo": "tc",
+"nome": "Coxa",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DA COXA XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-joelho",
+"metodo": "tc",
+"nome": "Joelho",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO JOELHO XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-pe",
+"metodo": "tc",
+"nome": "Pé",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO PÉ XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-perna",
+"metodo": "tc",
+"nome": "Perna",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DA PERNA XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-quadril",
+"metodo": "tc",
+"nome": "Quadril",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO QUADRIL XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-sacroiliacas",
+"metodo": "tc",
+"nome": "Sacroilíacas",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DAS ARTICULAÇÕES SACROILÍACAS"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pecas-sacrococcigeas",
+"label": "Peças sacrococcigeas",
+"text": "alinhadas e de morfologia preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "articulacoes-sacroiliacas",
+"label": "Articulações sacroilíacas",
+"text": "regulares, sem erosões subcondrais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "forames-sacrais",
+"label": "Forames sacrais",
+"text": "amplos, com livre emergência das raízes neurais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "pecas-sacrococcigeas"
+},
+{
+"t": "item",
+"k": "articulacoes-sacroiliacas"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "forames-sacrais"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-tornozelo",
+"metodo": "tc",
+"nome": "Tornozelo",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO TORNOZELO XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-perfil-torsional",
+"metodo": "tc",
+"nome": "Perfil torsional",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA PARA MEDIDA DO PERFIL TORSIONAL DO FÊMUR E TÍBIA"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica multislice dos quadris, joelhos e tornozelos. Obtidas sobreposições de imagens para a medida de versão femoral e torsão tibial.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "versao-do-colo-femoral",
+"label": "Versão do colo femoral",
+"text": "direito XXX°; esquerdo XXX° (valor positivo = anteversão; valor negativo = retroversão).",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "torsao-tibial",
+"label": "Torsão tibial",
+"text": "direita XXX°; esquerda XXX° (valor positivo = rotação externa; valor negativo = rotação interna).",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-achados",
+"label": "Demais achados",
+"text": "sem outras alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise (medidas em graus):"
+},
+{
+"t": "item",
+"k": "versao-do-colo-femoral"
+},
+{
+"t": "item",
+"k": "torsao-tibial"
+},
+{
+"t": "item",
+"k": "demais-achados"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-artroplastia-do-quadril",
+"metodo": "tc",
+"nome": "Artroplastia do quadril",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO QUADRIL XX",
+"PARA ESTUDO DE ARTROPLASTIA TOTAL"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste, com reformatações multiplanares e tridimensionais.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "osteolise",
+"label": "Osteólise",
+"text": "não há osteólise ou reabsorção óssea.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"não há osteólise ou reabsorção óssea.",
+"sinais de osteólise na região XXX do componente acetabular XX femoral, estimada em XXX mm."
+]
+},
+{
+"k": "componente-femoral",
+"label": "Componente femoral",
+"text": "sem subsidência.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"sem subsidência.",
+"subsidência estimada em XXX mm."
+]
+},
+{
+"k": "parafusos-de-fixacao-acetabular",
+"label": "Parafusos de fixação acetabular",
+"text": "sem insinuação para os planos de partes moles adjacentes.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"sem insinuação para os planos de partes moles adjacentes.",
+"insinuação para os planos de partes moles adjacentes, estimada em XXX mm."
+]
+},
+{
+"k": "ventres-musculares",
+"label": "Ventres musculares",
+"text": "normotróficos.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"normotróficos.",
+"hipotróficos.",
+"atróficos e lipossubstituídos."
+]
+},
+{
+"k": "cabeca-femoral",
+"label": "Cabeça femoral",
+"text": "centralizada no componente acetabular.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"centralizada no componente acetabular.",
+"descentralizada no componente acetabular."
+]
+},
+{
+"k": "proeminencia-anterior-do-componente-acet",
+"label": "Proeminência anterior do componente acetabular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"ausente.",
+"estimada em XXX mm (normal: até 12 mm)."
+]
+},
+{
+"k": "versao-do-componente-acetabular",
+"label": "Versão do componente acetabular",
+"text": "XXX° (normal: anteversão de 15° ± 10°).",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "inclinacao-lateral-do-componente-acetabu",
+"label": "Inclinação lateral do componente acetabular",
+"text": "XXX° (normal: 30° a 50°).",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "offset-femoral",
+"label": "Offset femoral",
+"text": "XXX mm (normal: 43 ± 7 mm).",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "osteolise"
+},
+{
+"t": "item",
+"k": "componente-femoral"
+},
+{
+"t": "item",
+"k": "parafusos-de-fixacao-acetabular"
+},
+{
+"t": "item",
+"k": "ventres-musculares"
+},
+{
+"t": "item",
+"k": "cabeca-femoral"
+},
+{
+"t": "item",
+"k": "proeminencia-anterior-do-componente-acet"
+},
+{
+"t": "item",
+"k": "versao-do-componente-acetabular"
+},
+{
+"t": "item",
+"k": "inclinacao-lateral-do-componente-acetabu"
+},
+{
+"t": "item",
+"k": "offset-femoral"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [
+"Referências: Cyteval et al. J Comput Assist Tomogr. 2003;27(2):183-8 (proeminência acetabular). Lewinnek et al. JBJS Am. 1978;60:217-20 (versão acetabular). McCollum DE, Gray WJ. Clin Orthop Relat Res. 1990;261:159-70 (inclinação). Noble et al. Clin Orthop. 2003;417:242-52 (offset)."
+],
+"flags": []
+},
+{
+"id": "tc-joelho-tagt-femoropatelar",
+"metodo": "tc",
+"nome": "Joelho — TAGT (femoropatelar)",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DOS JOELHOS",
+"ESTUDO FEMOROPATELAR (TAGT)"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "patelas",
+"label": "Patelas",
+"text": "tipo XXX de Wiberg, centradas.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"tipo XXX de Wiberg, centradas.",
+"tipo XXX de Wiberg, lateralizadas e inclinadas lateralmente com os joelhos em extensão, com redução progressiva da inclinação e centralização com a flexão de 15° e 30°."
+]
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "tagt",
+"label": "TAGT",
+"text": "direito XXX mm; esquerdo XXX mm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "angulo-do-sulco-troclear",
+"label": "Ângulo do sulco troclear",
+"text": "direito XXX°; esquerdo XXX°.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "altura-patelar-indice-de-caton",
+"label": "Altura patelar (índice de Caton)",
+"text": "direita XXX; esquerda XXX.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "inclinacao-patelar-tilt-a-0",
+"label": "Inclinação patelar (tilt) a 0°",
+"text": "direita XXX°; esquerda XXX°.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "inclinacao-patelar-tilt-a-15",
+"label": "Inclinação patelar (tilt) a 15°",
+"text": "direita XXX°; esquerda XXX°.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "inclinacao-patelar-tilt-a-30",
+"label": "Inclinação patelar (tilt) a 30°",
+"text": "direita XXX°; esquerda XXX°.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "patelas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "MEDIDAS:"
+},
+{
+"t": "item",
+"k": "tagt"
+},
+{
+"t": "item",
+"k": "angulo-do-sulco-troclear"
+},
+{
+"t": "item",
+"k": "altura-patelar-indice-de-caton"
+},
+{
+"t": "item",
+"k": "inclinacao-patelar-tilt-a-0"
+},
+{
+"t": "item",
+"k": "inclinacao-patelar-tilt-a-15"
+},
+{
+"t": "item",
+"k": "inclinacao-patelar-tilt-a-30"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [
+"Valores de referência considerados: TAGT de 15 ± 4 mm; ângulo do sulco troclear menor ou igual a 145°; altura patelar (índice de Caton) de 0,8 a 1,2; inclinação patelar (tilt) menor que 20°."
+],
+"flags": []
+},
+{
+"id": "tc-coluna-cervical",
+"metodo": "tc",
+"nome": "Coluna cervical",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DA COLUNA CERVICAL"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "manipulacao-cirurgica",
+"label": "Manipulação cirúrgica",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"ausente.",
+"XXX"
+]
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-craniocervical",
+"label": "Transição craniocervical",
+"text": "articulação atlantodental de contornos regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alinhamentos-sagital-e-coronal",
+"label": "Alinhamentos sagital e coronal",
+"text": "preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "corpos-vertebrais",
+"label": "Corpos vertebrais",
+"text": "de alturas preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "discos-intervertebrais",
+"label": "Discos intervertebrais",
+"text": "sem protrusões significativas.",
+"dash": true,
+"opts": [
+"C2-C3: XXX",
+"C3-C4: XXX",
+"C4-C5: XXX",
+"C5-C6: XXX",
+"C6-C7: XXX",
+"C7-T1: XXX"
+],
+"grp": ""
+},
+{
+"k": "articulacoes-interfacetarias-e-uncoverte",
+"label": "Articulações interfacetárias e uncovertebrais",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "canal-vertebral-e-forames-neurais",
+"label": "Canal vertebral e forames neurais",
+"text": "de amplitude normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-paravertebrais",
+"label": "Estruturas paravertebrais",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "manipulacao-cirurgica"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "transicao-craniocervical"
+},
+{
+"t": "item",
+"k": "alinhamentos-sagital-e-coronal"
+},
+{
+"t": "item",
+"k": "corpos-vertebrais"
+},
+{
+"t": "item",
+"k": "discos-intervertebrais"
+},
+{
+"t": "item",
+"k": "articulacoes-interfacetarias-e-uncoverte"
+},
+{
+"t": "item",
+"k": "canal-vertebral-e-forames-neurais"
+},
+{
+"t": "item",
+"k": "estruturas-paravertebrais"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-coluna-dorsal",
+"metodo": "tc",
+"nome": "Coluna dorsal",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DA COLUNA TORÁCICA"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "manipulacao-cirurgica",
+"label": "Manipulação cirúrgica",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"ausente.",
+"XXX"
+]
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alinhamentos-sagital-e-coronal",
+"label": "Alinhamentos sagital e coronal",
+"text": "preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "corpos-vertebrais",
+"label": "Corpos vertebrais",
+"text": "de alturas preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "discos-intervertebrais",
+"label": "Discos intervertebrais",
+"text": "sem protrusões significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "articulacoes-interfacetarias",
+"label": "Articulações interfacetárias",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "canal-vertebral-e-forames-neurais",
+"label": "Canal vertebral e forames neurais",
+"text": "de amplitude normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-paravertebrais",
+"label": "Estruturas paravertebrais",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "manipulacao-cirurgica"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "alinhamentos-sagital-e-coronal"
+},
+{
+"t": "item",
+"k": "corpos-vertebrais"
+},
+{
+"t": "item",
+"k": "discos-intervertebrais"
+},
+{
+"t": "item",
+"k": "articulacoes-interfacetarias"
+},
+{
+"t": "item",
+"k": "canal-vertebral-e-forames-neurais"
+},
+{
+"t": "item",
+"k": "estruturas-paravertebrais"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-coluna-lombar",
+"metodo": "tc",
+"nome": "Coluna lombar",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DA COLUNA LOMBAR"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "manipulacao-cirurgica",
+"label": "Manipulação cirúrgica",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"ausente.",
+"XXX"
+]
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alinhamentos-sagital-e-coronal",
+"label": "Alinhamentos sagital e coronal",
+"text": "preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "corpos-vertebrais",
+"label": "Corpos vertebrais",
+"text": "de alturas preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "discos-intervertebrais",
+"label": "Discos intervertebrais",
+"text": "sem protrusões significativas.",
+"dash": true,
+"opts": [
+"L1-L2: XXX",
+"L2-L3: XXX",
+"L3-L4: XXX",
+"L4-L5: XXX",
+"L5-S1: XXX"
+],
+"grp": ""
+},
+{
+"k": "articulacoes-interfacetarias",
+"label": "Articulações interfacetárias",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "canal-vertebral-e-forames-neurais",
+"label": "Canal vertebral e forames neurais",
+"text": "de amplitude normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-paravertebrais",
+"label": "Estruturas paravertebrais",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "manipulacao-cirurgica"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "alinhamentos-sagital-e-coronal"
+},
+{
+"t": "item",
+"k": "corpos-vertebrais"
+},
+{
+"t": "item",
+"k": "discos-intervertebrais"
+},
+{
+"t": "item",
+"k": "articulacoes-interfacetarias"
+},
+{
+"t": "item",
+"k": "canal-vertebral-e-forames-neurais"
+},
+{
+"t": "item",
+"k": "estruturas-paravertebrais"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-sacrococcix",
+"metodo": "tc",
+"nome": "Sacrocóccix",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DA COLUNA SACROCOCCÍGEA"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "corpos-vertebrais-sacrais-e-pecas-coccig",
+"label": "Corpos vertebrais sacrais e peças coccígeas",
+"text": "de morfologia preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "articulacoes-sacrococcigea-e-intercoccig",
+"label": "Articulações sacrococcígea e intercoccígeas",
+"text": "de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "articulacoes-sacroiliacas-e-sinfise-pubi",
+"label": "Articulações sacroilíacas e sínfise púbica",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "forames-sacrais",
+"label": "Forames sacrais",
+"text": "amplos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "corpos-vertebrais-sacrais-e-pecas-coccig"
+},
+{
+"t": "item",
+"k": "articulacoes-sacrococcigea-e-intercoccig"
+},
+{
+"t": "item",
+"k": "articulacoes-sacroiliacas-e-sinfise-pubi"
+},
+{
+"t": "item",
+"k": "forames-sacrais"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-arcos-costais",
+"metodo": "tc",
+"nome": "Arcos costais",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DOS ARCOS COSTAIS"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica sem contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-agressivas",
+"label": "Lesões ósseas agressivas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "derrame-articular",
+"label": "Derrame articular",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-musculoadiposos",
+"label": "Planos musculoadiposos",
+"text": "preservados, sem formações com efeito expansivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-agressivas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "planos-musculoadiposos"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-corpo-total-lesoes-osseas",
+"metodo": "tc",
+"nome": "Corpo total (lesões ósseas)",
+"grupo": "Musculoesquelético",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE CORPO TOTAL"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica de corpo inteiro em protocolo de baixa dose e sem administração do meio de contraste para pesquisa de lesões ósseas.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesoes-osseas-suspeitas",
+"label": "Lesões ósseas suspeitas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"ausentes.",
+"presentes, assim dispostas: XXX"
+]
+},
+{
+"k": "fraturas",
+"label": "Fraturas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-achados",
+"label": "Demais achados",
+"text": "sem outras alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "lesoes-osseas-suspeitas"
+},
+{
+"t": "item",
+"k": "fraturas"
+},
+{
+"t": "item",
+"k": "demais-achados"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Não se observam lesões ósseas suspeitas para mieloma múltiplo.",
+"dash": false
+}
+],
+"trailer": [
+"Obs.: caso haja necessidade de avaliação detalhada de alguma região anatômica, é conveniente a complementação com estudo dirigido."
+],
+"flags": []
+},
+{
+"id": "tc-desfiladeiro-toracico",
+"metodo": "tc",
+"nome": "Desfiladeiro torácico",
+"grupo": "Musculoesquelético",
+"titulo": [
+"ANGIOTOMOGRAFIA TORÁCICA",
+"(PROTOCOLO PARA SÍNDROME DO DESFILADEIRO TORÁCICO)"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Exame realizado após a injeção intravenosa do meio de contraste iodado, com protocolo para pesquisa de síndrome do desfiladeiro torácico (com braços em posição neutra e elevados).",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arcabouco-osseo-cervicotoracico",
+"label": "Arcabouço ósseo cervicotorácico",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [
+"Alongamento dos processos transversos de C7, medindo cerca de XXX cm cada.",
+"Clavícula comprimindo os vasos XXX.",
+"Calos ósseos XXX.",
+"Costela cervical XXX."
+],
+"grp": ""
+},
+{
+"k": "musculatura-escalena",
+"label": "Musculatura escalena",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arco-aortico",
+"label": "Arco aórtico",
+"text": "pérvio, sem aneurismas, estenoses, dissecções ou ulcerações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "emergencia-dos-ramos-supra-aorticos",
+"label": "Emergência dos ramos supra-aórticos",
+"text": "sem estenoses.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-subclavia-direita",
+"label": "Artéria subclávia direita",
+"text": "pérvia, com trajeto e calibre preservados. Não há sinais de compressão vascular significativa no espaço costoclavicular em repouso ou durante a manobra de elevação dos membros superiores.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-subclavia-esquerda",
+"label": "Artéria subclávia esquerda",
+"text": "pérvia, com trajeto e calibre preservados. Não há sinais de compressão vascular significativa no espaço costoclavicular em repouso ou durante a manobra de elevação dos membros superiores.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "arcabouco-osseo-cervicotoracico"
+},
+{
+"t": "item",
+"k": "musculatura-escalena"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "SISTEMA ARTERIAL:"
+},
+{
+"t": "item",
+"k": "arco-aortico"
+},
+{
+"t": "item",
+"k": "emergencia-dos-ramos-supra-aorticos"
+},
+{
+"t": "item",
+"k": "arteria-subclavia-direita"
+},
+{
+"t": "item",
+"k": "arteria-subclavia-esquerda"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-artrotc-articulacoes",
+"metodo": "tc",
+"nome": "ArtroTC — articulações",
+"grupo": "Musculoesquelético",
+"titulo": [
+"ARTROTOMOGRAFIA COMPUTADORIZADA DO XXX XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição volumétrica. Administrada previamente solução de contraste iodado intra-articular.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fibrocartilagens-labio-meniscos",
+"label": "Fibrocartilagens (lábio / meniscos)",
+"text": "de morfologia preservada e sem sinais de lesão.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "superficies-articulares",
+"label": "Superfícies articulares",
+"text": "ausência de lesões osteocondrais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-estruturas-osseas",
+"label": "Demais estruturas ósseas",
+"text": "morfologia conservada. Ausência de fraturas ou de lesões ósseas focais de aspecto agressivo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-musculotendineas",
+"label": "Estruturas musculotendíneas",
+"text": "ausência de lesões musculares ou tendíneas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "planos-superficiais",
+"label": "Planos superficiais",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para análise comparativa.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Estudos anteriores não disponíveis para análise comparativa.",
+"Em relação ao exame de XXX, não se observam alterações significativas."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "fibrocartilagens-labio-meniscos"
+},
+{
+"t": "item",
+"k": "superficies-articulares"
+},
+{
+"t": "item",
+"k": "demais-estruturas-osseas"
+},
+{
+"t": "item",
+"k": "estruturas-musculotendineas"
+},
+{
+"t": "item",
+"k": "planos-superficiais"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos limites da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-superior-com-contraste",
+"metodo": "tc",
+"nome": "Abdome superior — com contraste",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE ABDOME SUPERIOR"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Obtidas imagens axiais por metodologia multislice, sem XX com* a injeção intravenosa do meio de contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "com morfologia e atenuação preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "não há dilatação das vias biliares intra ou extra-hepáticas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "dimensões normais e atenuação preservada. Não há dilatação do ducto principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "alças do intestino delgado e grosso incluídas no estudo sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritoneo-e-retroperitoneo",
+"label": "Peritôneo e retroperitôneo",
+"text": "não há linfonodomegalias ou líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta, veia cava inferior e veia porta de calibre e morfologia habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritoneo-e-retroperitoneo"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-superior-sem-contraste",
+"metodo": "tc",
+"nome": "Abdome superior — sem contraste",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE ABDOME SUPERIOR"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Obtidas imagens axiais por metodologia multislice, sem a injeção intravenosa do meio de contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "não há lesões focais ou alterações difusas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "não há dilatação das vias biliares intra ou extra-hepáticas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "alças do intestino delgado e grosso incluídas no estudo sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritoneo-e-retroperitoneo",
+"label": "Peritôneo e retroperitôneo",
+"text": "ausência de linfonodomegalias ou líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta, veia cava inferior e veia porta de calibre e morfologia habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritoneo-e-retroperitoneo"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-superior-adrenais",
+"metodo": "tc",
+"nome": "Abdome superior — adrenais",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE ABDOME SUPERIOR"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Obtidas imagens axiais por metodologia multislice, sem XX com a injeção intravenosa do meio de contraste. Protocolo dirigido para a avaliação das adrenais.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "morfologia e atenuação preservadas, sem lesões focais identificáveis.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"morfologia e atenuação preservadas, sem lesões focais identificáveis.",
+"nódulo na adrenal direita XX esquerda, localizado XXX, medindo XXX cm, com atenuação de XXX UH na fase sem contraste e realce XXX."
+]
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "não há lesões focais ou alterações difusas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "não há dilatação das vias biliares intra ou extra-hepáticas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "alças do intestino delgado e grosso incluídas no estudo sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritoneo-e-retroperitoneo",
+"label": "Peritôneo e retroperitôneo",
+"text": "ausência de linfonodomegalias ou líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta, veia cava inferior e veia porta de calibre e morfologia habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "DEMAIS ACHADOS:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritoneo-e-retroperitoneo"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-total-com-contraste",
+"metodo": "tc",
+"nome": "Abdome total — com contraste",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Helicoidal multislice, com a injeção endovenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "de morfologia e atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "intra e extra-hepáticas sem dilatações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "de dimensões normais e atenuação preservada. Não há dilatação do ducto principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "alças do intestino delgado e grosso sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
+"text": "não há linfonodomegalias ou líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta abdominal com calibre normal. Veias cava inferior, porta e hepáticas pérvias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-pelvicas",
+"label": "Estruturas pélvicas",
+"text": "bexiga com conteúdo homogêneo. Demais estruturas pélvicas sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações evidentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritonio-e-retroperitonio"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-total-sem-contraste",
+"metodo": "tc",
+"nome": "Abdome total — sem contraste",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Helicoidal multislice, sem a injeção endovenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "de contornos regulares e atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "intra e extra-hepáticas sem dilatações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "de dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "alças do intestino delgado e grosso sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
+"text": "não se observam linfonodomegalias. Ausência de líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta abdominal com calibre normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-pelvicas",
+"label": "Estruturas pélvicas",
+"text": "bexiga com conteúdo homogêneo. Demais estruturas pélvicas sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações evidentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritonio-e-retroperitonio"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-total-litiase",
+"metodo": "tc",
+"nome": "Abdome total — litíase",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Imagens obtidas por tecnologia de múltiplos detectores, sem meio de contraste (protocolo direcionado para litíase das vias urinárias).",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rim-direito",
+"label": "Rim direito",
+"text": "tópico, de dimensões normais e contornos regulares, com atenuação e espessura do parênquima sem alterações significativas. Ausência de cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"tópico, de dimensões normais e contornos regulares, com atenuação e espessura do parênquima sem alterações significativas. Ausência de cálculos ou hidronefrose.",
+"tópico, de dimensões normais e contornos regulares, com atenuação e espessura do parênquima sem alterações significativas. Cálculos calicinais não obstrutivos, assim distribuídos: grupamento superior XXX cm (XXX UH); grupamento médio XXX cm (XXX UH); grupamento inferior XXX cm (XXX UH)."
+]
+},
+{
+"k": "ureter-direito",
+"label": "Ureter direito",
+"text": "com trajeto e calibre preservados, sem cálculos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rim-esquerdo",
+"label": "Rim esquerdo",
+"text": "tópico, de dimensões normais e contornos regulares, com atenuação e espessura do parênquima sem alterações significativas. Ausência de cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"tópico, de dimensões normais e contornos regulares, com atenuação e espessura do parênquima sem alterações significativas. Ausência de cálculos ou hidronefrose.",
+"tópico, de dimensões normais e contornos regulares, com atenuação e espessura do parênquima sem alterações significativas. Cálculos calicinais não obstrutivos, assim distribuídos: grupamento superior XXX cm (XXX UH); grupamento médio XXX cm (XXX UH); grupamento inferior XXX cm (XXX UH)."
+]
+},
+{
+"k": "ureter-esquerdo",
+"label": "Ureter esquerdo",
+"text": "com trajeto e calibre preservados, sem cálculos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "com boa repleção de conteúdo homogêneo e paredes regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-achados",
+"label": "Demais achados",
+"text": "restante do exame sem particularidades pelo protocolo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "rim-direito"
+},
+{
+"t": "item",
+"k": "ureter-direito"
+},
+{
+"t": "item",
+"k": "rim-esquerdo"
+},
+{
+"t": "item",
+"k": "ureter-esquerdo"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "demais-achados"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+},
+{
+"opt": true,
+"text": "Nefrolitíase não obstrutiva à direita XX esquerda XX bilateral."
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-total-urotomografia",
+"metodo": "tc",
+"nome": "Abdome total — urotomografia",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE",
+"(UROTOMOGRAFIA)"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Helicoidal multislice, com a injeção endovenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rim-direito",
+"label": "Rim direito",
+"text": "de dimensões normais e espessura do parênquima preservada. Boa concentração e excreção do meio de contraste. Ausência de cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "ureter-direito",
+"label": "Ureter direito",
+"text": "com trajeto e calibre preservados, sem cálculos ou falhas de enchimento.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rim-esquerdo",
+"label": "Rim esquerdo",
+"text": "de dimensões normais e espessura do parênquima preservada. Boa concentração e excreção do meio de contraste. Ausência de cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "ureter-esquerdo",
+"label": "Ureter esquerdo",
+"text": "com trajeto e calibre preservados, sem cálculos ou falhas de enchimento.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "com boa XX moderada XX pequena repleção de conteúdo homogêneo, exibindo paredes regulares e de espessura normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "de contornos regulares e atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "intra e extra-hepáticas sem dilatações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "de dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "alças do intestino delgado e grosso sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
+"text": "não se observam linfonodomegalias. Ausência de líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta abdominal com calibre normal. Veias cava inferior, porta e hepáticas pérvias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-pelvicas",
+"label": "Estruturas pélvicas",
+"text": "demais estruturas pélvicas sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações evidentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "rim-direito"
+},
+{
+"t": "item",
+"k": "ureter-direito"
+},
+{
+"t": "item",
+"k": "rim-esquerdo"
+},
+{
+"t": "item",
+"k": "ureter-esquerdo"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Demais achados:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritonio-e-retroperitonio"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-total-via-oral",
+"metodo": "tc",
+"nome": "Abdome total — via oral",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado. Administrado previamente contraste iodado diluído por via oral.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "de morfologia e atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "intra e extra-hepáticas sem dilatações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "de dimensões normais e atenuação preservada. Não há dilatação do ducto principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "houve progressão do meio de contraste ingerido até XXX. Alças do intestino delgado e grosso sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
+"text": "não há linfonodomegalias ou líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta abdominal com calibre normal. Veias cava inferior, porta e hepáticas pérvias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-pelvicas",
+"label": "Estruturas pélvicas",
+"text": "bexiga com conteúdo homogêneo. Demais estruturas pélvicas sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações evidentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritonio-e-retroperitonio"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-enterotomografia",
+"metodo": "tc",
+"nome": "Enterotomografia",
+"grupo": "Medicina interna",
+"titulo": [
+"ENTEROGRAFIA POR TOMOGRAFIA COMPUTADORIZADA"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Foram obtidas imagens sem XX com a administração intravenosa do meio de contraste iodado. Foi administrado meio de contraste neutro por via oral para distensão de alças intestinais.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "distensao-das-alcas",
+"label": "Distensão das alças",
+"text": "houve progressão do meio de contraste administrado por via oral até o XXX, com distensão satisfatória das alças delgadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "cirurgias-pregressas",
+"label": "Cirurgias pregressas",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"ausentes.",
+"XXX"
+]
+},
+{
+"k": "estomago-e-duodeno",
+"label": "Estômago e duodeno",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "intestino-delgado",
+"label": "Intestino delgado",
+"text": "distribuição, calibre e realce mucoso de aspecto usual. Íleo terminal e válvula ileocecal com boa distensão, com aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "intestino-grosso",
+"label": "Intestino grosso",
+"text": "moldura cólica com calibre e posicionamento habitual, sem lesões focais detectáveis ao método.",
+"dash": true,
+"opts": [
+"Sinais de doença inflamatória predominantemente ativa XX inativa, com XX sem padrão estenosante, em segmentos contínuos XX descontínuos de XXX, destacando-se o segmento de XXX, com extensão de XXX cm e espessamento parietal leve XX moderado XX acentuado (XXX mm).",
+"Segmento de XXX, com extensão de XXX cm e espessamento parietal leve XX moderado XX acentuado (XXX mm).",
+"Sinais de doença fistulizante ativa XX inativa: XXX."
+],
+"grp": ""
+},
+{
+"k": "peritonio",
+"label": "Peritônio",
+"text": "não há líquido livre peritoneal, pneumoperitônio ou coleções intra-abdominais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "mesenterio",
+"label": "Mesentério",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"sem particularidades.",
+"densificação da gordura mesentérica adjacente aos segmentos envolvidos.",
+"ingurgitamento dos vasos retos adjacentes aos segmentos envolvidos.",
+"proliferação da gordura mesentérica adjacente aos segmentos envolvidos.",
+"linfonodos proeminentes adjacentes aos segmentos envolvidos."
+]
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"sem particularidades.",
+"sinais de sacroileíte.",
+"sinais de necrose avascular XXX."
+]
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "com morfologia e atenuação preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "não há dilatação das vias biliares intra ou extra-hepáticas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "dimensões normais e atenuação preservada. Não há dilatação do ducto principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta, veia cava inferior e veia porta de calibre e morfologia habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-estruturas-pelvicas",
+"label": "Demais estruturas pélvicas",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Não há exames anteriores disponíveis para comparação.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "distensao-das-alcas"
+},
+{
+"t": "item",
+"k": "cirurgias-pregressas"
+},
+{
+"t": "item",
+"k": "estomago-e-duodeno"
+},
+{
+"t": "item",
+"k": "intestino-delgado"
+},
+{
+"t": "item",
+"k": "intestino-grosso"
+},
+{
+"t": "item",
+"k": "peritonio"
+},
+{
+"t": "item",
+"k": "mesenterio"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "ACHADOS ADICIONAIS:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "demais-estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+},
+{
+"opt": true,
+"text": "Sinais de doença inflamatória intestinal predominantemente ativa XX inativa, com XX sem padrão estenosante, com XX sem fístulas, com XX sem coleções, em segmentos contínuos XX descontínuos de XXX."
+}
+],
+"trailer": [
+"Referência: adaptado de Wildman-Tobriner B, et al. Structured reporting of CT enterography for inflammatory bowel disease. Abdom Radiol. 2017;42(9):2243-50."
+],
+"flags": []
+},
+{
+"id": "tc-abdome-total-parede-abdominal",
+"metodo": "tc",
+"nome": "Abdome total — parede abdominal",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Obtidas imagens axiais por metodologia multislice, sem XX com a injeção intravenosa do meio de contraste. Realizada aquisição adicional durante manobra de esforço para avaliação da parede abdominal.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "parede-abdominal",
+"label": "Parede abdominal",
+"text": "subcutâneo da parede abdominal com atenuação preservada.\nGrupos musculares da parede abdominal com morfologia preservada, simétricos.\nNão há diástase dos músculos retos abdominais.\nNão se caracterizam hérnias ventrais, dorsais ou nas regiões inguinais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "com morfologia e atenuação preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "não há dilatação das vias biliares intra ou extra-hepáticas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas-baco-e-adrenais",
+"label": "Pâncreas, baço e adrenais",
+"text": "sem alterações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos e de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "alças do intestino delgado e grosso sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritoneo-e-retroperitoneo",
+"label": "Peritôneo e retroperitôneo",
+"text": "não há linfonodomegalias ou líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta, veia cava inferior e veia porta de calibre e morfologia habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "com conteúdo homogêneo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-estruturas-pelvicas",
+"label": "Demais estruturas pélvicas",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-osseas",
+"label": "Estruturas ósseas",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "parede-abdominal"
+},
+{
+"t": "line",
+"text": "Demais achados:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas-baco-e-adrenais"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritoneo-e-retroperitoneo"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "demais-estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-total-quantificacao-de-gordura",
+"metodo": "tc",
+"nome": "Abdome total — quantificação de gordura",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE",
+"(PROTOCOLO GORDURA ABDOMINAL)"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Foram obtidas imagens em aparelho multislice, sem a administração intravenosa do meio de contraste iodado. Análise direcionada no plano do espaço discal L4-L5, para estimativa de superfície de gordura abdominal com utilização de valores de atenuação entre -50 e -250 UH.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "gordura-subcutanea",
+"label": "Gordura subcutânea",
+"text": "superfície estimada em XXX cm².",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "gordura-visceral",
+"label": "Gordura visceral",
+"text": "superfície estimada em XXX cm².",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "de contornos regulares e atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "intra e extra-hepáticas sem dilatações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "de dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "alças do intestino delgado e grosso sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
+"text": "não se observam linfonodomegalias. Ausência de líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta abdominal com calibre normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-pelvicas",
+"label": "Estruturas pélvicas",
+"text": "bexiga com conteúdo homogêneo. Demais estruturas pélvicas sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações evidentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "gordura-subcutanea"
+},
+{
+"t": "item",
+"k": "gordura-visceral"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "DEMAIS ACHADOS:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritonio-e-retroperitonio"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Superfície de gordura subcutânea estimada em XXX cm².",
+"dash": false
+},
+{
+"text": "Superfície de gordura visceral estimada em XXX cm².",
+"dash": false
+},
+{
+"text": "Exame sem outros achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-total-li-rads-pre-tratamento",
+"metodo": "tc",
+"nome": "Abdome total — LI-RADS (pré-tratamento)",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO ABDOME E PELVE"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Obtidas imagens axiais por metodologia multislice, antes e após a injeção intravenosa do meio de contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "sinais de hepatopatia crônica caracterizados por redução das dimensões hepáticas, hipertrofia dos segmentos laterais do lobo esquerdo e do lobo caudado, alargamento das fissuras, contornos lobulados e parênquima heterogêneo.",
+"dash": true,
+"opts": [
+"Caracterizam-se as seguintes lesões focais:",
+"Lesão 1: nódulo no segmento XXX, medindo XXX cm, com XX sem hiper-realce arterial, com XX sem lavagem do meio de contraste, com XX sem cápsula com realce, com XX sem crescimento acima do limiar (LI-RADS XXX).",
+"Lesão 2: nódulo no segmento XXX, medindo XXX cm, com XX sem hiper-realce arterial, com XX sem lavagem do meio de contraste, com XX sem cápsula com realce, com XX sem crescimento acima do limiar (LI-RADS XXX).",
+"Lesão 3: nódulo no segmento XXX, medindo XXX cm, com XX sem hiper-realce arterial, com XX sem lavagem do meio de contraste, com XX sem cápsula com realce, com XX sem crescimento acima do limiar (LI-RADS XXX).",
+"Utilizados critérios auxiliares para elevar XX rebaixar a categoria."
+],
+"grp": "",
+"alts": [
+"sinais de hepatopatia crônica caracterizados por redução das dimensões hepáticas, hipertrofia dos segmentos laterais do lobo esquerdo e do lobo caudado, alargamento das fissuras, contornos lobulados e parênquima heterogêneo.",
+"de dimensões e contornos preservados."
+]
+},
+{
+"k": "vascularizacao-hepatica",
+"label": "Vascularização hepática",
+"text": "veias hepáticas e porta pérvias. Não há sinais de trombose tumoral. Tronco celíaco sem variações anatômicas. Ausência de circulação colateral.",
+"dash": true,
+"opts": [
+"Artéria hepática esquerda acessória com origem na artéria gástrica esquerda.",
+"Artéria hepática direita acessória com origem na artéria mesentérica superior.",
+"Sinais de hipertensão portal, com vasos colaterais de fino calibre periesofágicos, perigástricos e periesplênicos.",
+"Recanalização da veia paraumbilical."
+],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "não há dilatação das vias biliares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "ascite",
+"label": "Ascite",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"ausente.",
+"pequena XX moderada XX acentuada quantidade de líquido livre na cavidade."
+]
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"normal.",
+"esplenomegalia (índice esplênico de XXX; normal até 480)."
+]
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "dimensões normais e espessura do parênquima preservada. Não há cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "alças do intestino delgado e grosso sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritoneo-e-retroperitoneo",
+"label": "Peritôneo e retroperitôneo",
+"text": "ausência de linfonodomegalias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta e veia cava inferior de calibre e morfologia habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-estruturas-pelvicas",
+"label": "Demais estruturas pélvicas",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Não há exames anteriores disponíveis para comparação.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vascularizacao-hepatica"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "ascite"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "DEMAIS ACHADOS:"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritoneo-e-retroperitoneo"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "demais-estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Sinais de hepatopatia crônica.",
+"dash": false
+},
+{
+"opt": true,
+"text": "Nódulo hepático com XX sem características de carcinoma hepatocelular (LI-RADS XXX)."
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-total-li-rads-pos-tratamento",
+"metodo": "tc",
+"nome": "Abdome total — LI-RADS (pós-tratamento)",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Obtidas imagens axiais por metodologia multislice, antes e após a injeção intravenosa do meio de contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "sinais de hepatopatia crônica caracterizados por redução das dimensões hepáticas, hipertrofia dos segmentos laterais do lobo esquerdo e do lobo caudado, alargamento das fissuras, contornos lobulados e parênquima heterogêneo.",
+"dash": true,
+"opts": [
+"Caracterizam-se as seguintes lesões focais:",
+"Lesão 1: lesão tratada por ablação XX TACE no segmento XXX, com conteúdo de necrose coagulativa, sem sinais de neoplasia viável, medindo XXX cm (LR-TR não viável).",
+"Lesão 1: lesão tratada por ablação XX TACE no segmento XXX, com conteúdo de necrose coagulativa e duvidosa área de realce XXX, medindo XXX cm, de aspecto indeterminado (LR-TR equívoco).",
+"Lesão 1: lesão tratada por ablação XX TACE no segmento XXX, com conteúdo de necrose coagulativa, medindo XXX cm. Destaca-se componente de tumor viável com hiper-realce arterial XX lavagem, localizado XXX, medindo XXX cm no maior eixo axial (LR-TR viável).",
+"Lesão 1: lesão tratada por SBRT XX TARE no segmento XXX, sem realce evidente, sem sinais de neoplasia viável, medindo XXX cm (LR-TR não viável).",
+"Lesão 1: lesão tratada por SBRT XX TARE no segmento XXX, medindo XXX cm, com redução XX estabilidade das dimensões e da vascularização (LR-TR sem progressão).",
+"Lesão 1: lesão tratada por SBRT XX TARE no segmento XXX, medindo XXX cm, com aumento das dimensões e da vascularização XXX (LR-TR viável)."
+],
+"grp": "",
+"alts": [
+"sinais de hepatopatia crônica caracterizados por redução das dimensões hepáticas, hipertrofia dos segmentos laterais do lobo esquerdo e do lobo caudado, alargamento das fissuras, contornos lobulados e parênquima heterogêneo.",
+"de dimensões e contornos preservados."
+]
+},
+{
+"k": "vascularizacao-hepatica",
+"label": "Vascularização hepática",
+"text": "veias hepáticas e porta pérvias. Não há sinais de trombose tumoral. Tronco celíaco sem variações anatômicas. Ausência de circulação colateral.",
+"dash": true,
+"opts": [
+"Artéria hepática esquerda acessória com origem na artéria gástrica esquerda.",
+"Artéria hepática direita acessória com origem na artéria mesentérica superior.",
+"Sinais de hipertensão portal, com vasos colaterais de fino calibre periesofágicos, perigástricos e periesplênicos.",
+"Recanalização da veia paraumbilical."
+],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "não há dilatação das vias biliares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "ascite",
+"label": "Ascite",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"ausente.",
+"pequena XX moderada XX acentuada quantidade de líquido livre na cavidade."
+]
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"normal.",
+"esplenomegalia (índice esplênico de XXX; normal até 480)."
+]
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "dimensões normais e espessura do parênquima preservada. Não há cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "alças do intestino delgado e grosso sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritoneo-e-retroperitoneo",
+"label": "Peritôneo e retroperitôneo",
+"text": "ausência de linfonodomegalias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta e veia cava inferior de calibre e morfologia habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-estruturas-pelvicas",
+"label": "Demais estruturas pélvicas",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Não há exames anteriores disponíveis para comparação.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vascularizacao-hepatica"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "ascite"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "DEMAIS ACHADOS:"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritoneo-e-retroperitoneo"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "demais-estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Sinais de hepatopatia crônica.",
+"dash": false
+},
+{
+"opt": true,
+"text": "Lesão hepática com sinais de tratamento (LR-TR XXX)."
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-total-volumetria-gastrica-e-hernia-hiatal",
+"metodo": "tc",
+"nome": "Abdome total — volumetria gástrica e hérnia hiatal",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA DE ABDOME E PELVE",
+"(PROTOCOLO VOLUMETRIA GÁSTRICA - HÉRNIA HIATAL)"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Foram obtidas imagens em aparelho multislice, sem a administração intravenosa do meio de contraste iodado. Foi administrado previamente meio de contraste iodado diluído por via oral.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estomago",
+"label": "Estômago",
+"text": "volume estimado em XXX cm³.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "hernia-hiatal",
+"label": "Hérnia hiatal",
+"text": "volume estimado em XXX cm³.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "hiato-diafragmatico",
+"label": "Hiato diafragmático",
+"text": "medindo XXX x XXX cm (laterolateral x anteroposterior).",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-esofagogastrica",
+"label": "Transição esofagogástrica",
+"text": "distância ao hiato esofágico de XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "diafragma",
+"label": "Diafragma",
+"text": "espessura ao nível do hiato de XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-delgadas",
+"label": "Alças delgadas",
+"text": "contrastadas, sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fistulas-ou-colecoes",
+"label": "Fístulas ou coleções",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "gordura-periepigastrica",
+"label": "Gordura periepigástrica",
+"text": "preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "não há lesões focais ou alterações difusas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "não há dilatação das vias biliares intra ou extra-hepáticas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritoneo-e-retroperitoneo",
+"label": "Peritôneo e retroperitôneo",
+"text": "ausência de linfonodomegalias ou líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta, veia cava inferior e veia porta de calibre e morfologia habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-estruturas-pelvicas",
+"label": "Demais estruturas pélvicas",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "estomago"
+},
+{
+"t": "item",
+"k": "hernia-hiatal"
+},
+{
+"t": "item",
+"k": "hiato-diafragmatico"
+},
+{
+"t": "item",
+"k": "transicao-esofagogastrica"
+},
+{
+"t": "item",
+"k": "diafragma"
+},
+{
+"t": "item",
+"k": "alcas-delgadas"
+},
+{
+"t": "item",
+"k": "fistulas-ou-colecoes"
+},
+{
+"t": "item",
+"k": "gordura-periepigastrica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "ACHADOS ADICIONAIS:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "peritoneo-e-retroperitoneo"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "demais-estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-total-volumetria-gastrica-gastroplastia",
+"metodo": "tc",
+"nome": "Abdome total — volumetria gástrica (gastroplastia)",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA DE ABDOME E PELVE",
+"(PROTOCOLO VOLUMETRIA GÁSTRICA)"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Foram obtidas imagens em aparelho multislice, sem XX com uso do contraste intravenoso. Administrado previamente meio de contraste iodado diluído por via oral.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "gastroplastia",
+"label": "Gastroplastia",
+"text": "sinais de gastroplastia redutora.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "anastomose-gastrojejunal",
+"label": "Anastomose gastrojejunal",
+"text": "pérvia, sem XX com anel.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "reservatorio-gastrico-pouch",
+"label": "Reservatório gástrico (pouch)",
+"text": "volume estimado em XXX cm³.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "herniacao-do-pouch-pelo-hiato-diafragmat",
+"label": "Herniação do pouch pelo hiato diafragmático",
+"text": "ausente.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"ausente.",
+"presente."
+]
+},
+{
+"k": "alcas-delgadas",
+"label": "Alças delgadas",
+"text": "contrastadas, sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fistulas-ou-colecoes",
+"label": "Fístulas ou coleções",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "bases pulmonares de aspecto preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "de contornos regulares e atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "intra e extra-hepáticas sem dilatações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "de dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
+"text": "não se observam linfonodomegalias. Ausência de líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta abdominal com calibre normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-pelvicas",
+"label": "Estruturas pélvicas",
+"text": "bexiga com moderada XX pequena repleção. Demais estruturas pélvicas sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações evidentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "gastroplastia"
+},
+{
+"t": "item",
+"k": "anastomose-gastrojejunal"
+},
+{
+"t": "item",
+"k": "reservatorio-gastrico-pouch"
+},
+{
+"t": "item",
+"k": "herniacao-do-pouch-pelo-hiato-diafragmat"
+},
+{
+"t": "item",
+"k": "alcas-delgadas"
+},
+{
+"t": "item",
+"k": "fistulas-ou-colecoes"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "DEMAIS ACHADOS:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "peritonio-e-retroperitonio"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-total-doador-hepatico",
+"metodo": "tc",
+"nome": "Abdome total — doador hepático",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição helicoidal multislice, sem XX com a administração endovenosa do meio de contraste iodado. Protocolo dirigido para avaliação de candidato a doador hepático.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "de contornos regulares e atenuação homogênea. Volume hepático total estimado em XXX cm³; volume do lobo direito de XXX cm³; volume do lobo esquerdo de XXX cm³.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-hepaticas",
+"label": "Artérias hepáticas",
+"text": "artéria hepática comum originando-se do tronco celíaco e ramificando-se em artérias hepáticas direita e esquerda, sem estenoses ou aneurismas. Extensão da artéria hepática direita de XXX cm. A artéria que irriga o segmento IV origina-se da artéria hepática direita XX esquerda.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "variacoes-anatomicas-arteriais",
+"label": "Variações anatômicas arteriais",
+"text": "ausentes.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"ausentes.",
+"artéria hepática esquerda acessória originada da artéria gástrica esquerda.",
+"origem precoce da artéria hepática direita, que tem extensão de XXX cm.",
+"artéria hepática direita originada da artéria mesentérica superior, com extensão de XXX cm."
+]
+},
+{
+"k": "veias-hepaticas",
+"label": "Veias hepáticas",
+"text": "pérvias.",
+"dash": true,
+"opts": [
+"Veia hepática originária do segmento XXX, com calibre de XXX cm, drenando na veia hepática média a cerca de XXX cm do seu óstio na veia cava inferior.",
+"Veia hepática acessória inferior drenando diretamente na veia cava inferior, com calibre de XXX cm."
+],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "intra e extra-hepáticas sem dilatações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "de dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "alças do intestino delgado e grosso sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
+"text": "não se observam linfonodomegalias. Ausência de líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta abdominal com calibre normal. Veias cava inferior, porta e hepáticas pérvias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-pelvicas",
+"label": "Estruturas pélvicas",
+"text": "bexiga com repleção parcial, sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações evidentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "VASCULARIZAÇÃO:"
+},
+{
+"t": "item",
+"k": "arterias-hepaticas"
+},
+{
+"t": "item",
+"k": "variacoes-anatomicas-arteriais"
+},
+{
+"t": "item",
+"k": "veias-hepaticas"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "DEMAIS ACHADOS:"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritonio-e-retroperitonio"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-abdome-total-doador-renal",
+"metodo": "tc",
+"nome": "Abdome total — doador renal",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA DO ABDOME TOTAL",
+"(PROTOCOLO PARA DOADOR RENAL)"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Helicoidal multislice, sem XX com meio de contraste iodado endovenoso. Foi realizado o fracionamento da injeção do contraste com aquisição única, visando a redução da dose de radiação.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões e contornos normais. Rim direito medindo XXX x XXX x XXX cm; rim esquerdo medindo XXX x XXX x XXX cm. Parênquima com boa espessura e atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-renais",
+"label": "Artérias renais",
+"text": "únicas, pérvias e com calibres normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veia-renal-direita",
+"label": "Veia renal direita",
+"text": "única, pérvia e anatômica, com comprimento de XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veia-renal-esquerda",
+"label": "Veia renal esquerda",
+"text": "única, pérvia e anatômica, com comprimento de XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "sistema-coletor",
+"label": "Sistema coletor",
+"text": "sistemas pielocalicinais de morfologia normal, sem dilatações ou variações anatômicas. Ausência de cálculos. Ureteres com trajetos e calibres normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "de contornos regulares e atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "intra e extra-hepáticas sem dilatações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "de dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "alças do intestino delgado e grosso sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
+"text": "não se observam linfonodomegalias. Ausência de líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta abdominal com calibre normal. Veias cava inferior, porta e hepáticas pérvias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "estruturas-pelvicas",
+"label": "Estruturas pélvicas",
+"text": "bexiga com moderada repleção, sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações evidentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "VASOS RENAIS:"
+},
+{
+"t": "item",
+"k": "arterias-renais"
+},
+{
+"t": "item",
+"k": "veia-renal-direita"
+},
+{
+"t": "item",
+"k": "veia-renal-esquerda"
+},
+{
+"t": "item",
+"k": "sistema-coletor"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "DEMAIS ACHADOS:"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritonio-e-retroperitonio"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-colonoscopia-virtual",
+"metodo": "tc",
+"nome": "Colonoscopia virtual",
+"grupo": "Medicina interna",
+"titulo": [
+"COLONOSCOPIA VIRTUAL (COLONOGRAFIA POR TC)"
+],
+"items": [
+{
+"k": "indicacao",
+"label": "Indicação",
+"text": "colonoscopia convencional (óptica) incompleta.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"colonoscopia convencional (óptica) incompleta.",
+"rastreamento."
+]
+},
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Multislice, após preparo intestinal e insuflação cólica, sem XX com administração de contraste iodado endovenoso. Realizadas reconstruções para avaliação endoluminal do cólon.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "colon",
+"label": "Cólon",
+"text": "visualizado em toda a sua extensão, com calibre, distensibilidade e haustrações preservados. Reto com aspecto morfológico habitual ao método. Não se caracterizam pólipos, lesões estenosantes ou infiltrativas.",
+"dash": true,
+"opts": [
+"Redundâncias cólicas, principalmente no sigmoide e no cólon direito.",
+"Divertículos cólicos, com predomínio no XXX.",
+"Formação polipoide séssil XX pediculada XX plana de XXX mm no cólon XXX.",
+"Lesão estenosante com extensão aproximada de XXX cm no cólon XXX."
+],
+"grp": ""
+},
+{
+"k": "demais-achados-extracolonicos",
+"label": "Demais achados (extracolônicos)",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "indicacao"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "colon"
+},
+{
+"t": "item",
+"k": "demais-achados-extracolonicos"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame nos limites da normalidade.",
+"dash": false
+},
+{
+"opt": true,
+"text": "Diverticulose cólica."
+}
+],
+"trailer": [
+"Obs.: A colonoscopia virtual (colonografia por TC) está incluída nas diretrizes de rastreamento de pólipos e câncer colorretal de diversas sociedades médicas internacionais, incluindo a American Cancer Society e a US Preventive Services Task Force (USPSTF). O objetivo primário do método é a pesquisa de lesões polipoides com dimensões a partir de 6 mm. Não faz parte do seu escopo a detecção de micropólipos (abaixo de 5 mm), clinicamente não significativos em um contexto de rastreamento populacional, bem como a detecção de hemorroidas, úlceras, telangiectasias ou alterações inflamatórias da mucosa. A avaliação das estruturas extracolônicas é limitada neste protocolo tomográfico.",
+"Referências: US Preventive Services Task Force. Screening for colorectal cancer: recommendation statement. JAMA. 2016;315:2564-75. de Haan MC, et al. CT colonography: accuracy, acceptance, safety and position in organised population screening. Gut. 2015;64:342-50."
+],
+"flags": []
+},
+{
+"id": "tc-pelve-feminina",
+"metodo": "tc",
+"nome": "Pelve feminina",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE PELVE"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Obtidas imagens axiais por metodologia multislice, sem XX com a injeção intravenosa do meio de contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "boa repleção, paredes regulares e conteúdo homogêneo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "utero",
+"label": "Útero",
+"text": "dimensões e contornos preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "ovarios",
+"label": "Ovários",
+"text": "de dimensões e contornos preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritoneo-e-retroperitoneo",
+"label": "Peritôneo e retroperitôneo",
+"text": "ausência de linfonodomegalias ou líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-estruturas-pelvicas",
+"label": "Demais estruturas pélvicas",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Não há exames anteriores disponíveis para comparação.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "utero"
+},
+{
+"t": "item",
+"k": "ovarios"
+},
+{
+"t": "item",
+"k": "peritoneo-e-retroperitoneo"
+},
+{
+"t": "item",
+"k": "demais-estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos padrões da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-pelve-masculina",
+"metodo": "tc",
+"nome": "Pelve masculina",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE PELVE"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Obtidas imagens axiais por metodologia multislice, sem XX com a injeção intravenosa do meio de contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "boa repleção, paredes regulares e conteúdo homogêneo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "prostata",
+"label": "Próstata",
+"text": "dimensões e contornos preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vesiculas-seminais",
+"label": "Vesículas seminais",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritoneo-e-retroperitoneo",
+"label": "Peritôneo e retroperitôneo",
+"text": "ausência de linfonodomegalias ou líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-estruturas-pelvicas",
+"label": "Demais estruturas pélvicas",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Não há exames anteriores disponíveis para comparação.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "prostata"
+},
+{
+"t": "item",
+"k": "vesiculas-seminais"
+},
+{
+"t": "item",
+"k": "peritoneo-e-retroperitoneo"
+},
+{
+"t": "item",
+"k": "demais-estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos padrões da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-torax-com-contraste",
+"metodo": "tc",
+"nome": "Tórax — com contraste",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO TÓRAX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Helicoidal multislice, com meio de contraste iodado endovenoso.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta e tronco pulmonar com calibres externos preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "mediastino",
+"label": "Mediastino",
+"text": "não se observam linfonodomegalias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "traqueia-e-arvore-bronquica",
+"label": "Traqueia e árvore brônquica",
+"text": "de calibres normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pulmoes",
+"label": "Pulmões",
+"text": "com atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "espacos-pleurais",
+"label": "Espaços pleurais",
+"text": "ausência de derrame pleural. Não há pneumotórax.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-cervicotoracica",
+"label": "Transição cervicotorácica",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "mediastino"
+},
+{
+"t": "item",
+"k": "traqueia-e-arvore-bronquica"
+},
+{
+"t": "item",
+"k": "pulmoes"
+},
+{
+"t": "item",
+"k": "espacos-pleurais"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "transicao-cervicotoracica"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-torax-sem-contraste",
+"metodo": "tc",
+"nome": "Tórax — sem contraste",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO TÓRAX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Helicoidal multislice, sem meio de contraste.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta e tronco pulmonar com calibres externos preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "mediastino",
+"label": "Mediastino",
+"text": "não se observam linfonodomegalias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "traqueia-e-arvore-bronquica",
+"label": "Traqueia e árvore brônquica",
+"text": "de calibres normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pulmoes",
+"label": "Pulmões",
+"text": "com atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "espacos-pleurais",
+"label": "Espaços pleurais",
+"text": "ausência de derrame pleural. Não há pneumotórax.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-cervicotoracica",
+"label": "Transição cervicotorácica",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "mediastino"
+},
+{
+"t": "item",
+"k": "traqueia-e-arvore-bronquica"
+},
+{
+"t": "item",
+"k": "pulmoes"
+},
+{
+"t": "item",
+"k": "espacos-pleurais"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "transicao-cervicotoracica"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-torax-tep",
+"metodo": "tc",
+"nome": "Tórax — TEP",
+"grupo": "Medicina interna",
+"titulo": [
+"ANGIOTOMOGRAFIA COMPUTADORIZADA DO TÓRAX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Helicoidal multislice, durante a injeção endovenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "tronco da artéria pulmonar e ramos pérvios, com calibre preservado, sem falhas de enchimento. Não há sinais de sobrecarga hemodinâmica das câmaras cardíacas direitas (relação VD / VE preservada). Aorta com calibre normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "mediastino",
+"label": "Mediastino",
+"text": "não se observam linfonodomegalias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "traqueia-e-arvore-bronquica",
+"label": "Traqueia e árvore brônquica",
+"text": "de calibres normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pulmoes",
+"label": "Pulmões",
+"text": "com atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "espacos-pleurais",
+"label": "Espaços pleurais",
+"text": "ausência de derrame pleural. Não há pneumotórax.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "sem alterações evidentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-cervicotoracica",
+"label": "Transição cervicotorácica",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "mediastino"
+},
+{
+"t": "item",
+"k": "traqueia-e-arvore-bronquica"
+},
+{
+"t": "item",
+"k": "pulmoes"
+},
+{
+"t": "item",
+"k": "espacos-pleurais"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "transicao-cervicotoracica"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame negativo para tromboembolismo pulmonar.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-torax-covid-19",
+"metodo": "tc",
+"nome": "Tórax — COVID-19",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DO TÓRAX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Helicoidal multislice, sem XX com meio de contraste iodado endovenoso.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta e tronco pulmonar com calibres externos preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "mediastino",
+"label": "Mediastino",
+"text": "não se observam linfonodomegalias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "traqueia-e-arvore-bronquica",
+"label": "Traqueia e árvore brônquica",
+"text": "de calibres normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pulmoes",
+"label": "Pulmões",
+"text": "com atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"com atenuação preservada.",
+"opacidades em vidro fosco esparsas pelos pulmões, algumas com morfologia arredondada, predominantemente periféricas. Não há francas consolidações alveolares.",
+"opacidades em vidro fosco com pequenos focos consolidativos de permeio, dispersas pelos pulmões."
+]
+},
+{
+"k": "espacos-pleurais",
+"label": "Espaços pleurais",
+"text": "ausência de derrame pleural. Não há pneumotórax.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "sem alterações evidentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-cervicotoracica",
+"label": "Transição cervicotorácica",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Estudos anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "mediastino"
+},
+{
+"t": "item",
+"k": "traqueia-e-arvore-bronquica"
+},
+{
+"t": "item",
+"k": "pulmoes"
+},
+{
+"t": "item",
+"k": "espacos-pleurais"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "transicao-cervicotoracica"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem alterações significativas.",
+"dash": false
+},
+{
+"opt": true,
+"text": "A tomografia de tórax pode não apresentar alterações, principalmente nas primeiras 48 horas após o início dos sintomas de infecção viral."
+},
+{
+"opt": true,
+"text": "Alterações pulmonares bilaterais de aspecto inflamatório, acometendo menos de 25% do parênquima. Considerar pneumonia viral."
+},
+{
+"opt": true,
+"text": "Alterações pulmonares bilaterais de aspecto inflamatório, acometendo entre 25% e 50% do parênquima. Considerar pneumonia viral."
+},
+{
+"opt": true,
+"text": "Alterações pulmonares bilaterais de aspecto inflamatório, acometendo mais de 50% do parênquima. Considerar pneumonia viral."
+},
+{
+"opt": true,
+"text": "Achados não sugestivos de pneumonia viral."
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-torax-abdome-e-pelve",
+"metodo": "tc",
+"nome": "Tórax, abdome e pelve",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA COMPUTADORIZADA DE TÓRAX, ABDOME E PELVE"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta e tronco pulmonar com calibres externos preservados.",
+"dash": true,
+"opts": [],
+"grp": "Análise"
+},
+{
+"k": "mediastino",
+"label": "Mediastino",
+"text": "não se observam linfonodomegalias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "traqueia-e-arvore-bronquica",
+"label": "Traqueia e árvore brônquica",
+"text": "de calibres normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pulmoes",
+"label": "Pulmões",
+"text": "com atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "espacos-pleurais",
+"label": "Espaços pleurais",
+"text": "ausência de derrame pleural. Não há pneumotórax.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "de morfologia e atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "intra e extra-hepáticas sem dilatações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "de dimensões normais e atenuação preservada. Não há dilatação do ducto principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "alças do intestino delgado e grosso sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
+"text": "não há linfonodomegalias ou líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos-2",
+"label": "Vasos",
+"text": "aorta abdominal com calibre normal. Veias cava inferior, porta e hepáticas pérvias.",
+"dash": true,
+"opts": [],
+"grp": "Análise"
+},
+{
+"k": "estruturas-pelvicas",
+"label": "Estruturas pélvicas",
+"text": "bexiga com conteúdo homogêneo. Demais estruturas pélvicas sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações evidentes.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "mediastino"
+},
+{
+"t": "item",
+"k": "traqueia-e-arvore-bronquica"
+},
+{
+"t": "item",
+"k": "pulmoes"
+},
+{
+"t": "item",
+"k": "espacos-pleurais"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "peritonio-e-retroperitonio"
+},
+{
+"t": "item",
+"k": "vasos-2"
+},
+{
+"t": "item",
+"k": "estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-torax-abdome-e-pelve-recist-1-1",
+"metodo": "tc",
+"nome": "Tórax, abdome e pelve — RECIST 1.1",
+"grupo": "Medicina interna",
+"titulo": [
+"TOMOGRAFIA DE TÓRAX, ABDOME E PELVE",
+"(LAUDO ESTRUTURADO)"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Foram obtidas imagens em aparelho multislice antes e após a administração intravenosa do meio de contraste iodado. As imagens foram analisadas segundo o protocolo RECIST 1.1 (Response Evaluation Criteria in Solid Tumors).",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "data-do-estudo-baseline",
+"label": "Data do estudo baseline",
+"text": "XXX",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesao-alvo-1",
+"label": "Lesão-alvo 1",
+"text": "XXX",
+"dash": true,
+"opts": [
+"Lesão-alvo 2: XXX",
+"Lesão-alvo 3: XXX",
+"Lesão-alvo 4: XXX",
+"Lesão-alvo 5: XXX"
+],
+"grp": ""
+},
+{
+"k": "soma-dos-diametros-das-lesoes-alvo",
+"label": "Soma dos diâmetros das lesões-alvo",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "lesao-nao-alvo-1",
+"label": "Lesão não-alvo 1",
+"text": "XXX",
+"dash": true,
+"opts": [
+"Lesão não-alvo 2: XXX",
+"Lesão não-alvo 3: XXX",
+"Lesão não-alvo 4: XXX",
+"Lesão não-alvo 5: XXX"
+],
+"grp": ""
+},
+{
+"k": "novas-lesoes",
+"label": "Novas lesões",
+"text": "estudo baseline.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"estudo baseline.",
+"não surgiram novas lesões.",
+"surgiram novas lesões: XXX"
+]
+},
+{
+"k": "vasos",
+"label": "Vasos",
+"text": "aorta e tronco pulmonar com calibres externos preservados.",
+"dash": true,
+"opts": [],
+"grp": "Achados adicionais — tórax"
+},
+{
+"k": "mediastino",
+"label": "Mediastino",
+"text": "não se observam linfonodomegalias.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "traqueia-e-arvore-bronquica",
+"label": "Traqueia e árvore brônquica",
+"text": "de calibres normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pulmoes",
+"label": "Pulmões",
+"text": "com atenuação preservada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "espacos-pleurais",
+"label": "Espaços pleurais",
+"text": "ausência de derrame pleural. Não há pneumotórax.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": "Achados adicionais — tórax"
+},
+{
+"k": "transicao-cervicotoracica",
+"label": "Transição cervicotorácica",
+"text": "sem particularidades.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "figado",
+"label": "Fígado",
+"text": "não há lesões focais ou alterações difusas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares",
+"label": "Vias biliares",
+"text": "não há dilatação das vias biliares intra ou extra-hepáticas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, sem cálculos ou hidronefrose.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "adrenais",
+"label": "Adrenais",
+"text": "sem nódulos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritoneo-e-retroperitoneo",
+"label": "Peritôneo e retroperitôneo",
+"text": "ausência de linfonodomegalias ou líquido livre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vasos-2",
+"label": "Vasos",
+"text": "aorta, veia cava inferior e veia porta de calibre e morfologia habitual.",
+"dash": true,
+"opts": [],
+"grp": "Achados adicionais — abdome"
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-estruturas-pelvicas",
+"label": "Demais estruturas pélvicas",
+"text": "sem particularidades ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "partes-moles-e-estruturas-osseas-2",
+"label": "Partes moles e estruturas ósseas",
+"text": "sem alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": "Achados adicionais — abdome"
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "item",
+"k": "data-do-estudo-baseline"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "LESÕES-ALVO:"
+},
+{
+"t": "item",
+"k": "lesao-alvo-1"
+},
+{
+"t": "item",
+"k": "soma-dos-diametros-das-lesoes-alvo"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "LESÕES NÃO-ALVO:"
+},
+{
+"t": "item",
+"k": "lesao-nao-alvo-1"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "novas-lesoes"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "ACHADOS ADICIONAIS — TÓRAX:"
+},
+{
+"t": "item",
+"k": "vasos"
+},
+{
+"t": "item",
+"k": "mediastino"
+},
+{
+"t": "item",
+"k": "traqueia-e-arvore-bronquica"
+},
+{
+"t": "item",
+"k": "pulmoes"
+},
+{
+"t": "item",
+"k": "espacos-pleurais"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas"
+},
+{
+"t": "item",
+"k": "transicao-cervicotoracica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "ACHADOS ADICIONAIS — ABDOME:"
+},
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vias-biliares"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "adrenais"
+},
+{
+"t": "item",
+"k": "peritoneo-e-retroperitoneo"
+},
+{
+"t": "item",
+"k": "vasos-2"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "demais-estruturas-pelvicas"
+},
+{
+"t": "item",
+"k": "partes-moles-e-estruturas-osseas-2"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Avaliação segundo os critérios RECIST 1.1: XXX",
+"dash": false
+},
+{
+"opt": true,
+"text": "Estudo baseline."
+},
+{
+"opt": true,
+"text": "Resposta completa."
+},
+{
+"opt": true,
+"text": "Resposta parcial."
+},
+{
+"opt": true,
+"text": "Doença estável."
+},
+{
+"opt": true,
+"text": "Progressão de doença."
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-aorta-toracica-e-abdominal-tavi",
+"metodo": "tc",
+"nome": "Aorta torácica e abdominal — TAVI",
+"grupo": "Medicina interna",
+"titulo": [
+"ANGIOTOMOGRAFIA DE AORTA TORÁCICA E ABDOMINAL",
+"(PROTOCOLO TAVI)"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição helicoidal multislice com a injeção endovenosa do meio de contraste iodado. Realizadas reformatações multiplanares e tridimensionais (3D).",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "coracao",
+"label": "Coração",
+"text": "de dimensões normais.",
+"dash": true,
+"opts": [
+"Hipertrofia ventricular esquerda."
+],
+"grp": "",
+"alts": [
+"de dimensões normais.",
+"aumentado à custa das câmaras esquerdas."
+]
+},
+{
+"k": "valva-aortica",
+"label": "Valva aórtica",
+"text": "trivalvular, com calcificação moderada XX importante.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "via-de-saida-do-ventriculo-esquerdo",
+"label": "Via de saída do ventrículo esquerdo",
+"text": "com calcificação discreta XX moderada.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "coronarias",
+"label": "Coronárias",
+"text": "ateromatose discreta XX exuberante.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-toracica",
+"label": "Aorta torácica",
+"text": "com trajeto e calibre preservados. Paredes lisas e regulares, sem placas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas.",
+"dash": true,
+"opts": [
+"Associam-se discretas irregularidades da superfície luminal, indicativas de ulcerações rasas."
+],
+"grp": "",
+"alts": [
+"com trajeto e calibre preservados. Paredes lisas e regulares, sem placas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas.",
+"com trajeto e calibre preservados. Ateromatose discreta XX difusa, caracterizada por placas parietais parcialmente calcificadas esparsas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas."
+]
+},
+{
+"k": "ramos-supra-aorticos",
+"label": "Ramos supra-aórticos",
+"text": "com trajeto e calibre preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "tronco-celiaco-e-seus-ramos",
+"label": "Tronco celíaco e seus ramos",
+"text": "com trajeto e calibre preservados.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"com trajeto e calibre preservados.",
+"com discreta estenose na sua origem por placa ateromatosa.",
+"com discreta estenose na sua origem por provável compressão promovida pelo ligamento arqueado do diafragma, com leve ectasia a jusante."
+]
+},
+{
+"k": "arterias-mesentericas-superior-e-inferio",
+"label": "Artérias mesentéricas superior e inferior",
+"text": "com trajeto e calibre preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-renais",
+"label": "Artérias renais",
+"text": "únicas, com trajeto e calibre preservados, sem estenoses significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-iliacas",
+"label": "Artérias ilíacas",
+"text": "comuns, internas e externas com trajeto e calibre preservados, sem estenoses significativas ou dilatações aneurismáticas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "anel-valvar-aortico",
+"label": "Anel valvar aórtico",
+"text": "diâmetros de XXX x XXX mm (média de XXX mm); perímetro de XXX mm; área de XXX mm².",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "altura-dos-ostios-coronarios-em-relacao",
+"label": "Altura dos óstios coronários em relação ao anel valvar",
+"text": "direito XXX mm; esquerdo XXX mm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "seio-de-valsalva",
+"label": "Seio de Valsalva",
+"text": "XXX x XXX x XXX mm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "juncao-sinotubular",
+"label": "Junção sinotubular",
+"text": "XXX mm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "segmento-tubular-ascendente",
+"label": "Segmento tubular ascendente",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "croca-da-aorta",
+"label": "Croça da aorta",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-toracica-descendente-terco-superio",
+"label": "Aorta torácica descendente (terço superior)",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-toracica-descendente-tercos-medio",
+"label": "Aorta torácica descendente (terços médio e inferior)",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-abdominal-segmento-suprarrenal",
+"label": "Aorta abdominal (segmento suprarrenal)",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-abdominal-segmento-infrarrenal",
+"label": "Aorta abdominal (segmento infrarrenal)",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-iliaca-comum-direita",
+"label": "Artéria ilíaca comum direita",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-iliaca-comum-esquerda",
+"label": "Artéria ilíaca comum esquerda",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-achados",
+"label": "Demais achados",
+"text": "sem outras alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "coracao"
+},
+{
+"t": "item",
+"k": "valva-aortica"
+},
+{
+"t": "item",
+"k": "via-de-saida-do-ventriculo-esquerdo"
+},
+{
+"t": "item",
+"k": "coronarias"
+},
+{
+"t": "item",
+"k": "aorta-toracica"
+},
+{
+"t": "item",
+"k": "ramos-supra-aorticos"
+},
+{
+"t": "item",
+"k": "tronco-celiaco-e-seus-ramos"
+},
+{
+"t": "item",
+"k": "arterias-mesentericas-superior-e-inferio"
+},
+{
+"t": "item",
+"k": "arterias-renais"
+},
+{
+"t": "item",
+"k": "arterias-iliacas"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "MEDIDAS:"
+},
+{
+"t": "item",
+"k": "anel-valvar-aortico"
+},
+{
+"t": "item",
+"k": "altura-dos-ostios-coronarios-em-relacao"
+},
+{
+"t": "item",
+"k": "seio-de-valsalva"
+},
+{
+"t": "item",
+"k": "juncao-sinotubular"
+},
+{
+"t": "item",
+"k": "segmento-tubular-ascendente"
+},
+{
+"t": "item",
+"k": "croca-da-aorta"
+},
+{
+"t": "item",
+"k": "aorta-toracica-descendente-terco-superio"
+},
+{
+"t": "item",
+"k": "aorta-toracica-descendente-tercos-medio"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "aorta-abdominal-segmento-suprarrenal"
+},
+{
+"t": "item",
+"k": "aorta-abdominal-segmento-infrarrenal"
+},
+{
+"t": "item",
+"k": "arteria-iliaca-comum-direita"
+},
+{
+"t": "item",
+"k": "arteria-iliaca-comum-esquerda"
+},
+{
+"t": "item",
+"k": "demais-achados"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-aorta-abdominal",
+"metodo": "tc",
+"nome": "Aorta abdominal",
+"grupo": "Medicina interna",
+"titulo": [
+"ANGIOTOMOGRAFIA COMPUTADORIZADA DA AORTA ABDOMINAL"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-abdominal",
+"label": "Aorta abdominal",
+"text": "com trajeto e calibre preservados, paredes lisas e regulares, sem placas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas.",
+"dash": true,
+"opts": [
+"Associam-se discretas irregularidades da superfície luminal, indicativas de ulcerações rasas.",
+"Aneurisma fusiforme do segmento infrarrenal da aorta abdominal, que se inicia num plano cerca de XXX cm abaixo da origem da artéria renal direita XX esquerda (mais inferior) e se estende por XXX cm até a bifurcação aórtica. O calibre máximo do aneurisma é de XXX cm. O calibre da aorta é de XXX cm superiormente à dilatação e de XXX cm inferiormente à mesma. O aneurisma apresenta angulação de XXX° em relação ao colo proximal. Há trombose mural ao longo da luz do segmento dilatado, sem XX com sinais de instabilidade.",
+"No plano da origem das artérias renais, inicia-se sequência de endopróteses metálicas aortobi-ilíacas para tratamento de aneurisma da aorta abdominal infrarrenal. As endopróteses estão pérvias, preservam arquitetura usual, estendem-se até o terço distal das artérias ilíacas comuns e não mostram trombos intraluminais. O saco aneurismático tratado tem contornos regulares, está preenchido por trombos e atinge diâmetro transverso máximo de XXX cm. Não se identifica endoleak."
+],
+"grp": "",
+"alts": [
+"com trajeto e calibre preservados, paredes lisas e regulares, sem placas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas.",
+"com trajeto e calibre preservados. Ateromatose discreta XX moderada XX acentuada, caracterizada por placas parietais parcialmente calcificadas esparsas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas."
+]
+},
+{
+"k": "tronco-celiaco-e-seus-ramos",
+"label": "Tronco celíaco e seus ramos",
+"text": "com trajeto e calibre preservados.",
+"dash": true,
+"opts": [
+"Artéria hepática direita é ramo da artéria mesentérica superior (variação anatômica).",
+"Artéria hepática esquerda acessória é ramo da artéria gástrica esquerda (variação anatômica)."
+],
+"grp": "",
+"alts": [
+"com trajeto e calibre preservados.",
+"com discreta estenose na sua origem por placa ateromatosa.",
+"com discreta estenose na sua origem por provável compressão promovida pelo ligamento arqueado do diafragma, com leve ectasia a jusante."
+]
+},
+{
+"k": "arterias-mesentericas-superior-e-inferio",
+"label": "Artérias mesentéricas superior e inferior",
+"text": "com trajeto e calibre preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-renais",
+"label": "Artérias renais",
+"text": "únicas, com trajeto e calibre preservados, sem estenoses significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-iliacas",
+"label": "Artérias ilíacas",
+"text": "comuns, internas e externas com trajeto e calibre preservados, sem estenoses significativas ou dilatações aneurismáticas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-abdominal-segmento-suprarrenal",
+"label": "Aorta abdominal (segmento suprarrenal)",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-abdominal-segmento-infrarrenal",
+"label": "Aorta abdominal (segmento infrarrenal)",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-iliaca-comum-direita",
+"label": "Artéria ilíaca comum direita",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-iliaca-comum-esquerda",
+"label": "Artéria ilíaca comum esquerda",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-achados",
+"label": "Demais achados",
+"text": "sem outras alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "aorta-abdominal"
+},
+{
+"t": "item",
+"k": "tronco-celiaco-e-seus-ramos"
+},
+{
+"t": "item",
+"k": "arterias-mesentericas-superior-e-inferio"
+},
+{
+"t": "item",
+"k": "arterias-renais"
+},
+{
+"t": "item",
+"k": "arterias-iliacas"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "DIÂMETROS MÁXIMOS:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "aorta-abdominal-segmento-suprarrenal"
+},
+{
+"t": "item",
+"k": "aorta-abdominal-segmento-infrarrenal"
+},
+{
+"t": "item",
+"k": "arteria-iliaca-comum-direita"
+},
+{
+"t": "item",
+"k": "arteria-iliaca-comum-esquerda"
+},
+{
+"t": "item",
+"k": "demais-achados"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-aorta-toracica",
+"metodo": "tc",
+"nome": "Aorta torácica",
+"grupo": "Medicina interna",
+"titulo": [
+"ANGIOTOMOGRAFIA COMPUTADORIZADA DA AORTA TORÁCICA"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Exame realizado com aquisição multislice, sem XX com a injeção intravenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-toracica",
+"label": "Aorta torácica",
+"text": "contornos regulares, com trajeto e calibre preservados. Não há evidências de aneurismas ou dissecções.",
+"dash": true,
+"opts": [
+"Sinais de ateromatose difusa, caracterizados por espessamento e calcificações parietais.",
+"Irregularidades da superfície luminal, indicativas de ulcerações.",
+"Aneurisma fusiforme da aorta torácica, que se inicia cerca de XXX cm após a origem da artéria subclávia esquerda e se estende por cerca de XXX cm. O calibre máximo do aneurisma é de XXX cm. O calibre da aorta é de XXX cm superiormente à dilatação e de XXX cm distalmente. Nota-se trombose mural ao longo da luz do segmento dilatado.",
+"Controle pós-operatório de correção endovascular de aneurisma da aorta torácica, com colocação de endoprótese metálica. Endoprótese com posicionamento habitual e sem sinais de extravasamento do meio de contraste. O diâmetro máximo do saco aneurismático é de XXX cm.",
+"Controle pós-operatório de correção de aneurisma da aorta torácica com colocação de prótese, sem sinais de extravasamento. Não são identificadas coleções no leito cirúrgico."
+],
+"grp": ""
+},
+{
+"k": "ramos-supra-aorticos",
+"label": "Ramos supra-aórticos",
+"text": "com trajeto e calibre preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "seio-de-valsalva",
+"label": "Seio de Valsalva",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-ascendente",
+"label": "Aorta ascendente",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "croca-da-aorta",
+"label": "Croça da aorta",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-descendente",
+"label": "Aorta descendente",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "achados-adicionais",
+"label": "Achados adicionais",
+"text": "sem outras alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Não há exames anteriores disponíveis para comparação.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "aorta-toracica"
+},
+{
+"t": "item",
+"k": "ramos-supra-aorticos"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "DIÂMETROS MÁXIMOS:"
+},
+{
+"t": "item",
+"k": "seio-de-valsalva"
+},
+{
+"t": "item",
+"k": "aorta-ascendente"
+},
+{
+"t": "item",
+"k": "croca-da-aorta"
+},
+{
+"t": "item",
+"k": "aorta-descendente"
+},
+{
+"t": "item",
+"k": "achados-adicionais"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos padrões da normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-aorta-toracica-e-abdominal",
+"metodo": "tc",
+"nome": "Aorta torácica e abdominal",
+"grupo": "Medicina interna",
+"titulo": [
+"ANGIOTOMOGRAFIA COMPUTADORIZADA DA AORTA TORACOABDOMINAL"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-toracica-e-abdominal",
+"label": "Aorta torácica e abdominal",
+"text": "com trajeto e calibre preservados, paredes lisas e regulares, sem placas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas.",
+"dash": true,
+"opts": [
+"Associam-se discretas irregularidades da superfície luminal, indicativas de ulcerações rasas.",
+"Aneurisma fusiforme da aorta torácica, que se inicia cerca de XXX cm após a origem da artéria subclávia esquerda, progredindo por XXX cm, até XXX cm acima da emergência do tronco celíaco. O calibre máximo do aneurisma é de XXX cm. O calibre da aorta é de XXX cm superiormente à dilatação e de XXX cm inferiormente à mesma. Há trombose mural ao longo da luz do segmento dilatado, sem XX com sinais de instabilidade.",
+"Aneurisma fusiforme do segmento infrarrenal da aorta abdominal, que se inicia num plano cerca de XXX cm abaixo da origem da artéria renal direita XX esquerda (mais inferior) e se estende por XXX cm até a bifurcação aórtica. O calibre máximo do aneurisma é de XXX cm. O calibre da aorta é de XXX cm superiormente à dilatação e de XXX cm inferiormente à mesma. O aneurisma apresenta angulação de XXX° em relação ao colo proximal. Há trombose mural ao longo da luz do segmento dilatado, sem XX com sinais de instabilidade.",
+"Dissecção aórtica crônica, iniciada após a emergência da artéria subclávia esquerda, estendendo-se por XXX. A principal área de comunicação entre as luzes falsa e verdadeira situa-se cerca de XXX cm após a emergência da artéria subclávia esquerda, com diâmetro de XXX cm. Luz falsa pérvia, de maior calibre e com fluxo lento. Ramos viscerais originando-se da luz XXX, sem estenoses.",
+"Controle pós-operatório de correção endovascular XX aberta de aneurisma da aorta torácica XX abdominal, com colocação de endoprótese XX prótese, íntegra, com posicionamento habitual e sem extravasamento do meio de contraste. O diâmetro máximo do saco aneurismático é de XXX cm. Ausência de coleções junto ao leito cirúrgico."
+],
+"grp": "",
+"alts": [
+"com trajeto e calibre preservados, paredes lisas e regulares, sem placas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas.",
+"com trajeto e calibre preservados. Ateromatose discreta XX moderada XX acentuada, caracterizada por placas parietais parcialmente calcificadas esparsas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas."
+]
+},
+{
+"k": "ramos-supra-aorticos",
+"label": "Ramos supra-aórticos",
+"text": "com trajeto e calibre preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "tronco-celiaco-e-seus-ramos",
+"label": "Tronco celíaco e seus ramos",
+"text": "com trajeto e calibre preservados.",
+"dash": true,
+"opts": [
+"Artéria hepática direita é ramo da artéria mesentérica superior (variação anatômica).",
+"Artéria hepática esquerda acessória é ramo da artéria gástrica esquerda (variação anatômica)."
+],
+"grp": "",
+"alts": [
+"com trajeto e calibre preservados.",
+"com discreta estenose na sua origem por placa ateromatosa.",
+"com discreta estenose na sua origem por provável compressão promovida pelo ligamento arqueado do diafragma, com leve ectasia a jusante."
+]
+},
+{
+"k": "arterias-mesentericas-superior-e-inferio",
+"label": "Artérias mesentéricas superior e inferior",
+"text": "com trajeto e calibre preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-renais",
+"label": "Artérias renais",
+"text": "únicas, com trajeto e calibre preservados, sem estenoses significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-iliacas",
+"label": "Artérias ilíacas",
+"text": "comuns, internas e externas com trajeto e calibre preservados, sem estenoses significativas ou dilatações aneurismáticas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "plano-valvar",
+"label": "Plano valvar",
+"text": "XXX x XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "seio-de-valsalva",
+"label": "Seio de Valsalva",
+"text": "XXX x XXX x XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "juncao-sinotubular",
+"label": "Junção sinotubular",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "segmento-tubular-ascendente",
+"label": "Segmento tubular ascendente",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "croca-da-aorta",
+"label": "Croça da aorta",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-toracica-descendente-terco-superio",
+"label": "Aorta torácica descendente (terço superior)",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-toracica-descendente-tercos-medio",
+"label": "Aorta torácica descendente (terços médio e inferior)",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-abdominal-segmento-suprarrenal",
+"label": "Aorta abdominal (segmento suprarrenal)",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-abdominal-segmento-infrarrenal",
+"label": "Aorta abdominal (segmento infrarrenal)",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-iliaca-comum-direita",
+"label": "Artéria ilíaca comum direita",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-iliaca-comum-esquerda",
+"label": "Artéria ilíaca comum esquerda",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-achados",
+"label": "Demais achados",
+"text": "sem outras alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "aorta-toracica-e-abdominal"
+},
+{
+"t": "item",
+"k": "ramos-supra-aorticos"
+},
+{
+"t": "item",
+"k": "tronco-celiaco-e-seus-ramos"
+},
+{
+"t": "item",
+"k": "arterias-mesentericas-superior-e-inferio"
+},
+{
+"t": "item",
+"k": "arterias-renais"
+},
+{
+"t": "item",
+"k": "arterias-iliacas"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "DIÂMETROS MÁXIMOS:"
+},
+{
+"t": "item",
+"k": "plano-valvar"
+},
+{
+"t": "item",
+"k": "seio-de-valsalva"
+},
+{
+"t": "item",
+"k": "juncao-sinotubular"
+},
+{
+"t": "item",
+"k": "segmento-tubular-ascendente"
+},
+{
+"t": "item",
+"k": "croca-da-aorta"
+},
+{
+"t": "item",
+"k": "aorta-toracica-descendente-terco-superio"
+},
+{
+"t": "item",
+"k": "aorta-toracica-descendente-tercos-medio"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "aorta-abdominal-segmento-suprarrenal"
+},
+{
+"t": "item",
+"k": "aorta-abdominal-segmento-infrarrenal"
+},
+{
+"t": "item",
+"k": "arteria-iliaca-comum-direita"
+},
+{
+"t": "item",
+"k": "arteria-iliaca-comum-esquerda"
+},
+{
+"t": "item",
+"k": "demais-achados"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-aorta-abdominal-e-ramos-viscerais",
+"metodo": "tc",
+"nome": "Aorta abdominal e ramos viscerais",
+"grupo": "Medicina interna",
+"titulo": [
+"ANGIOTOMOGRAFIA COMPUTADORIZADA DA AORTA ABDOMINAL E RAMOS VISCERAIS"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta",
+"label": "Aorta",
+"text": "trajeto e calibre preservados, sem estenoses significativas ou dilatações aneurismáticas. Diâmetro máximo de XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "tronco-celiaco",
+"label": "Tronco celíaco",
+"text": "trajeto e calibre preservados, sem estenoses ou dissecções. Artérias hepáticas comum, própria, direita e esquerda, bem como artérias esplênica, pancreatoduodenal e gástrica esquerda com trajeto e calibre preservados.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"trajeto e calibre preservados, sem estenoses ou dissecções. Artérias hepáticas comum, própria, direita e esquerda, bem como artérias esplênica, pancreatoduodenal e gástrica esquerda com trajeto e calibre preservados.",
+"leve ectasia difusa, sem estenoses ou dissecções. Artérias hepáticas comum, própria, direita e esquerda, bem como artérias esplênica, pancreatoduodenal e gástrica esquerda com trajeto e calibre preservados."
+]
+},
+{
+"k": "arteria-mesenterica-superior",
+"label": "Artéria mesentérica superior",
+"text": "trajeto e calibre preservados, bem como seus primeiros ramos, sem dilatações aneurismáticas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-mesenterica-inferior",
+"label": "Artéria mesentérica inferior",
+"text": "trajeto e calibre preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-renais",
+"label": "Artérias renais",
+"text": "únicas, com trajeto e calibre preservados, sem estenoses significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-iliacas",
+"label": "Artérias ilíacas",
+"text": "ilíacas comuns, internas e externas de trajeto e calibre preservados, sem estenoses significativas ou dilatações aneurismáticas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "achados-adicionais",
+"label": "Achados adicionais",
+"text": "sem outras alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "aorta"
+},
+{
+"t": "item",
+"k": "tronco-celiaco"
+},
+{
+"t": "item",
+"k": "arteria-mesenterica-superior"
+},
+{
+"t": "item",
+"k": "arteria-mesenterica-inferior"
+},
+{
+"t": "item",
+"k": "arterias-renais"
+},
+{
+"t": "item",
+"k": "arterias-iliacas"
+},
+{
+"t": "item",
+"k": "achados-adicionais"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-aorta-abdominal-e-membros-inferiores",
+"metodo": "tc",
+"nome": "Aorta abdominal e membros inferiores",
+"grupo": "Medicina interna",
+"titulo": [
+"ANGIOTOMOGRAFIA COMPUTADORIZADA DA AORTA ABDOMINAL E DOS MEMBROS INFERIORES"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-abdominal",
+"label": "Aorta abdominal",
+"text": "com trajeto e calibre preservados, paredes lisas e regulares, sem placas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas.",
+"dash": true,
+"opts": [
+"Associam-se discretas irregularidades da superfície luminal, indicativas de ulcerações rasas.",
+"Aneurisma fusiforme do segmento infrarrenal da aorta abdominal, que se inicia num plano cerca de XXX cm abaixo da origem da artéria renal direita XX esquerda (mais inferior) e se estende por XXX cm até a bifurcação aórtica. O calibre máximo do aneurisma é de XXX cm. O calibre da aorta é de XXX cm superiormente à dilatação e de XXX cm inferiormente à mesma. O aneurisma apresenta angulação de XXX° em relação ao colo proximal. Há trombose mural ao longo da luz do segmento dilatado, sem XX com sinais de instabilidade.",
+"No plano da origem das artérias renais, inicia-se sequência de endopróteses metálicas aortobi-ilíacas para tratamento de aneurisma da aorta abdominal infrarrenal. As endopróteses estão pérvias, preservam arquitetura usual, estendem-se até o terço distal das artérias ilíacas comuns e não mostram trombos intraluminais. O saco aneurismático tratado tem contornos regulares, está preenchido por trombos e atinge diâmetro transverso máximo de XXX cm. Não se identifica endoleak."
+],
+"grp": "",
+"alts": [
+"com trajeto e calibre preservados, paredes lisas e regulares, sem placas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas.",
+"com trajeto e calibre preservados. Ateromatose discreta XX moderada XX acentuada, caracterizada por placas parietais parcialmente calcificadas esparsas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas."
+]
+},
+{
+"k": "tronco-celiaco-e-seus-ramos",
+"label": "Tronco celíaco e seus ramos",
+"text": "com trajeto e calibre preservados.",
+"dash": true,
+"opts": [
+"Artéria hepática direita é ramo da artéria mesentérica superior (variação anatômica).",
+"Artéria hepática esquerda acessória é ramo da artéria gástrica esquerda (variação anatômica)."
+],
+"grp": "",
+"alts": [
+"com trajeto e calibre preservados.",
+"com discreta estenose na sua origem por placa ateromatosa.",
+"com discreta estenose na sua origem por provável compressão promovida pelo ligamento arqueado do diafragma, com leve ectasia a jusante."
+]
+},
+{
+"k": "arterias-mesentericas-superior-e-inferio",
+"label": "Artérias mesentéricas superior e inferior",
+"text": "com trajeto e calibre preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-renais",
+"label": "Artérias renais",
+"text": "únicas, com trajeto e calibre preservados, sem estenoses significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arterias-iliacas",
+"label": "Artérias ilíacas",
+"text": "comuns, internas e externas com trajeto e calibre preservados, sem estenoses significativas ou dilatações aneurismáticas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "membro-inferior-direito",
+"label": "Membro inferior direito",
+"text": "artérias femorais comum, superficial e profunda pérvias, com calibre preservado. Artéria poplítea, tronco tibiofibular, tibiais anterior e posterior, fibular e pediosa pérvias, sem alterações significativas de calibre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "membro-inferior-esquerdo",
+"label": "Membro inferior esquerdo",
+"text": "artérias femorais comum, superficial e profunda pérvias, com calibre preservado. Artéria poplítea, tronco tibiofibular, tibiais anterior e posterior, fibular e pediosa pérvias, sem alterações significativas de calibre.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "transicao-toracoabdominal",
+"label": "Transição toracoabdominal",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-abdominal-segmento-suprarrenal",
+"label": "Aorta abdominal (segmento suprarrenal)",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-abdominal-segmento-infrarrenal",
+"label": "Aorta abdominal (segmento infrarrenal)",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-iliaca-comum-direita",
+"label": "Artéria ilíaca comum direita",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-iliaca-comum-esquerda",
+"label": "Artéria ilíaca comum esquerda",
+"text": "XXX cm.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-achados",
+"label": "Demais achados",
+"text": "sem outras alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "aorta-abdominal"
+},
+{
+"t": "item",
+"k": "tronco-celiaco-e-seus-ramos"
+},
+{
+"t": "item",
+"k": "arterias-mesentericas-superior-e-inferio"
+},
+{
+"t": "item",
+"k": "arterias-renais"
+},
+{
+"t": "item",
+"k": "arterias-iliacas"
+},
+{
+"t": "item",
+"k": "membro-inferior-direito"
+},
+{
+"t": "item",
+"k": "membro-inferior-esquerdo"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "DIÂMETROS MÁXIMOS:"
+},
+{
+"t": "item",
+"k": "transicao-toracoabdominal"
+},
+{
+"t": "item",
+"k": "aorta-abdominal-segmento-suprarrenal"
+},
+{
+"t": "item",
+"k": "aorta-abdominal-segmento-infrarrenal"
+},
+{
+"t": "item",
+"k": "arteria-iliaca-comum-direita"
+},
+{
+"t": "item",
+"k": "arteria-iliaca-comum-esquerda"
+},
+{
+"t": "item",
+"k": "demais-achados"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
+},
+{
+"id": "tc-membro-superior",
+"metodo": "tc",
+"nome": "Membro superior",
+"grupo": "Medicina interna",
+"titulo": [
+"ANGIOTOMOGRAFIA COMPUTADORIZADA DO MEMBRO SUPERIOR XX"
+],
+"items": [
+{
+"k": "tecnica",
+"label": "Técnica",
+"text": "Aquisição helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "paredes-arteriais",
+"label": "Paredes arteriais",
+"text": "lisas e regulares, sem placas.",
+"dash": true,
+"opts": [
+"Associam-se discretas irregularidades da superfície luminal, indicativas de ulcerações rasas."
+],
+"grp": "",
+"alts": [
+"lisas e regulares, sem placas.",
+"ateromatose discreta XX difusa, caracterizada por placas parietais parcialmente calcificadas esparsas."
+]
+},
+{
+"k": "ramos-supra-aorticos-porcoes-proximais-i",
+"label": "Ramos supra-aórticos (porções proximais inclusas)",
+"text": "com trajeto e calibre preservados, sem estenoses significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-axilar",
+"label": "Artéria axilar",
+"text": "pérvia, com trajeto e calibre preservados, sem estenoses significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-braquial",
+"label": "Artéria braquial",
+"text": "pérvia, com trajeto e calibre preservados, sem estenoses significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-radial",
+"label": "Artéria radial",
+"text": "pérvia, com trajeto e calibre preservados, sem estenoses significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-ulnar",
+"label": "Artéria ulnar",
+"text": "pérvia, com trajeto e calibre preservados, sem estenoses significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veias-axilar-braquiais-cefalica-basilica",
+"label": "Veias axilar, braquiais, cefálica, basílica, radiais e ulnares",
+"text": "pérvias, com calibres normais, sem tromboses.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "demais-achados",
+"label": "Demais achados",
+"text": "sem outras alterações significativas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "comparacao",
+"label": "Comparação",
+"text": "Exames anteriores não disponíveis para a análise.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "tecnica"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "Análise:"
+},
+{
+"t": "item",
+"k": "paredes-arteriais"
+},
+{
+"t": "item",
+"k": "ramos-supra-aorticos-porcoes-proximais-i"
+},
+{
+"t": "item",
+"k": "arteria-axilar"
+},
+{
+"t": "item",
+"k": "arteria-braquial"
+},
+{
+"t": "item",
+"k": "arteria-radial"
+},
+{
+"t": "item",
+"k": "arteria-ulnar"
+},
+{
+"t": "item",
+"k": "veias-axilar-braquiais-cefalica-basilica"
+},
+{
+"t": "item",
+"k": "demais-achados"
+},
+{
+"t": "blank"
+},
+{
+"t": "item",
+"k": "comparacao"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
 }
 ];

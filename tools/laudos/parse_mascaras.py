@@ -49,7 +49,9 @@ def read_models(lns, extra=False, metodo='us'):
         m = re.match(r'^(\d+)\.\s+(.+)$', ln)
         if m and group:
             cur = {'n':int(m.group(1)), 'grupo':group, 'raw':[], 'metodo':metodo}
-            if extra: cur['nome'] = EXTRA_NOMES.get(m.group(2).strip(), m.group(2).strip().capitalize())
+            if extra:
+                h = m.group(2).strip()
+                cur['nome'] = EXTRA_NOMES.get(h, h.capitalize() if h.isupper() else h)   # nome em caixa mista fica como está
             models.append(cur); continue
         if ln.startswith('-----') or ln.startswith('====='): cur = None; continue
         if cur is not None: cur['raw'].append(ln.rstrip())
@@ -127,6 +129,11 @@ for md in models:
         last = add('', s, s.startswith('-'))
     while seq and seq[0]['t']=='blank': seq.pop(0)
     while seq and seq[-1]['t']=='blank': seq.pop()
+    # alternativas do item: "texto padrão || variação 2 || variação 3"
+    for it in items:
+        if ' || ' in it['text']:
+            alts = [x.strip() for x in it['text'].split(' || ')]
+            it['text'] = alts[0]; it['alts'] = alts
     labs = {}
     for it in items: labs[it['label']] = labs.get(it['label'],0)+1
     for it in items:

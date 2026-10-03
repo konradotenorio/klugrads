@@ -921,9 +921,9 @@ function lauHasPh(str){ return lauTpl(str).n>0; }
 function lauBuildModel(mk){
   const used={};
   const items = mk.items.map(mi=>{
-    const smap = mk.metodo==='mmg' ? LAU_STRUCT_LABELS_MMG : mk.metodo==='dmo' ? (typeof LAU_STRUCT_LABELS_DMO!=='undefined'?LAU_STRUCT_LABELS_DMO:{}) : LAU_STRUCT_LABELS;
+    const smap = mk.metodo==='mmg' ? LAU_STRUCT_LABELS_MMG : mk.metodo==='dmo' ? (typeof LAU_STRUCT_LABELS_DMO!=='undefined'?LAU_STRUCT_LABELS_DMO:{}) : mk.metodo==='tc' ? {} : LAU_STRUCT_LABELS;   // TC: itens de texto (os estruturados de US usam termos de US)
     const sk = smap[lauNorm(mi.label)] || null;
-    const base = { k:mi.k, label:mi.label, grp:mi.grp||'', dash:mi.dash, normal:mi.text, opts:mi.opts||[] };
+    const base = { k:mi.k, label:mi.label, grp:mi.grp||'', dash:mi.dash, normal:mi.text, opts:mi.opts||[], alts:mi.alts||null };
     if(sk && !used[sk]){
       used[sk]=1;
       const d=LAU_STRUCT[sk];
@@ -988,7 +988,11 @@ function lauConcNormalLines(m){
 }
 function lauItemLabel(m,it){ const u=(lauMcfgPeek(m.id).items||{})[it.k]||{}; const l=lauHas(u.label)?u.label:it.label;
   return lauMgUni(m) && /^regiões axilares$/i.test(l||'') ? 'Região axilar '+(state.lau.lado==='d'?'direita':'esquerda') : l; }
-function lauItemNormal(m,it){ const u=(lauMcfgPeek(m.id).items||{})[it.k]||{}; const t=lauHas(u.normal)?u.normal:it.normal; return lauMgUni(m) ? lauMgUniTxt(t) : t; }
+function lauItemNormal(m,it){
+  // variação da máscara escolhida no painel (alternativas "a || b")
+  const L=state.lau, sv = it.alts && L && L.model===m.id && L.v && L.v[it.k];
+  if(sv && sv.__alt>0 && it.alts[sv.__alt]) return it.alts[sv.__alt];
+  const u=(lauMcfgPeek(m.id).items||{})[it.k]||{}; const t=lauHas(u.normal)?u.normal:it.normal; return lauMgUni(m) ? lauMgUniTxt(t) : t; }
 /* usado dentro do build dos rins: texto normal já preenchido */
 function LAU_NORMAL(k){
   const L=lauCur(); const m=L&&lauModelo(L.model); if(!m) return '';
@@ -1775,6 +1779,24 @@ function lauOpt(k, i){
   if(k==='__conc'){ L.conc.o[i]=!L.conc.o[i]; lauRenderLeft(); lauPatchConc(); lauSaveEd(); return; }
   const s=L.v[k]; s.__o[i]=!s.__o[i]; lauRenderLeft(); lauPatch(k);
 }
+/* rótulo curto do botão de cada alternativa: começo do texto (sem campos) */
+function lauAltRotulo(a, todas){
+  let t=String(a).replace(/\bX{2,3}\b/g,'…').replace(/\s+/g,' ').trim();
+  // começo igual em todas as opções (ex.: "Realizados cortes axiais …"): mostra só o que muda
+  if(todas && todas.length>1){
+    const ws=todas.map(x=>String(x).split(/\s+/)); let n=0;
+    while(ws.every(w=>w[n]!=null && w[n]===ws[0][n])) n++;
+    if(n>=2) t='… '+t.split(/\s+/).slice(n).join(' ');
+  }
+  t=t.split(/(?<=[.;])\s/)[0].replace(/[.;]$/,'');
+  return t.length>48 ? t.slice(0,46).replace(/\s+\S*$/,'')+'…' : t;
+}
+function lauAltSet(k, i){
+  const L=lauCur(); if(!L) return; const s=L.v[k]; if(!s) return;
+  if((s.__alt||0)===i) return;
+  s.__alt=i; s.__v.n=[];   // os campos mudam de posição entre as variações
+  lauRenderLeft(); lauPatch(k); lauUpdSum(k);
+}
 function lauItemReset(k){
   const L=lauCur(); if(!L) return;
   const it=lauModelo(L.model).items.find(x=>x.k===k);
@@ -1864,6 +1886,7 @@ function lauSum(m,it){
   const s=state.lau.v[it.k]; const r=lauBuild(m,it);
   if(r.sum) return {cls: /Preencher/.test(r.sum)?'ok':'alt', t:r.sum};
   const opt=(s.__o||[]).some(Boolean) || (s.__f||[]).length>0;
+  if(r.txt==null && !r.conc.length && !opt && it.alts && s.__alt>0) return {cls:'alt', t:lauAltRotulo(it.alts[s.__alt])};
   if(r.txt==null && !r.conc.length && !opt){
     const filled = Object.values(s.__v||{}).some(a=>(a||[]).some(lauHas));
     return filled ? {cls:'ok', t:'Medidas preenchidas'} : {cls:'ok', t:'Normal'};
@@ -1948,6 +1971,7 @@ function lauItemPanel(m, it){
   const normal=lauItemNormal(m,it), lbl=lauItemLabel(m,it);
   let h='';
   if(lauHasPh(lbl)) h += `<div class="lau-rl">Rótulo</div>${lauInlineForm(k,'l',lbl,s.__v.l)}`;
+  if(it.alts && it.alts.length>1) h += `<div class="lau-row"><div class="lau-rl">Opções da máscara</div><div class="lau-chips">${it.alts.map((a,i)=>`<button type="button" class="ti-ftog ${(s.__alt||0)===i?'on':''}" title="${esc(a)}" onclick="lauAltSet('${k}',${i})">${esc(lauAltRotulo(a, it.alts))}</button>`).join('')}</div></div>`;
   if(m.oct && lauHasPh(normal)){
     const tw=lauOctGemeo(m,it);
     h += `<div class="lau-rl">Olho direito</div>${lauInlineForm(k,'n',normal,s.__v.n)}`;
@@ -1957,7 +1981,7 @@ function lauItemPanel(m, it){
   if(!it.generic) h += it.ctrls.map(c=>lauCtrlHTML(k,s,c)).join('');
   if(typeof lauAutoBoxHTML==='function') h += lauAutoBoxHTML(m, it);
   h += lauOptsHTML(k, it.opts, s.__o, s.__v);
-  h += lauFrasesPanel(k, it.sk ? [it.sk] : lauFraseOrgao(lbl || String(normal).slice(0,60), m.metodo), s.__f, s.__v, !!it.sk);
+  h += lauFrasesPanel(k, it.sk ? [it.sk] : lauFraseOrgao(lbl || String(normal).slice(0,60), m.metodo==='tc' && !m.oct ? 'tcg' : m.metodo), s.__f, s.__v, !!it.sk);
   if(it.generic && !m.oct){
     h += `<div class="lau-row"><div class="lau-rl">Substituir o texto por (alteração)</div><textarea class="lau-ta" rows="3" placeholder="Deixe em branco para manter o texto da máscara" oninput="lauSetQ('${k}','alt',this.value)">${esc(s.alt)}</textarea></div>`;
     h += `<div class="lau-row"><div class="lau-rl">Frase para a conclusão</div><input class="lau-txt" type="text" value="${esc(s.conc)}" placeholder="ex.: Tendinopatia do supraespinal." oninput="lauSetQ('${k}','conc',this.value)"></div>`;
