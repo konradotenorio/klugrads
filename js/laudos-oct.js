@@ -163,9 +163,24 @@ LAU_OCT_FRASES.forEach(f=>LAU_FRASES.push(f));
 /* ---- conclusão por olho ---- */
 function lauOctOlho(it){ return /esquerd/i.test(it.grp||'') ? 'e' : 'd'; }
 /* itens ocultados por frases do mesmo olho (ex.: MER oculta a linha da depressão foveal) */
+/* Um campo por item no painel (item do olho direito = "mestre"); cada frase
+   escolhida recebe o olho afetado (d.olho: 'd' | 'e' | 'a' = ambos). Sem olho
+   escolhido, vale o olho do exame quando só um olho foi examinado. */
+function lauOctMestre(m, it){ return lauOctOlho(it)==='d' ? it : (m.items.find(x=>x.label===it.label && lauOctOlho(x)==='d') || it); }
+function lauOctGemeo(m, it){ return m.items.find(x=>x.label===it.label && lauOctOlho(x)==='e'); }
+function lauOctOlhoDe(d){ const L=state.lau; return (d&&d.olho) || ((L.lado==='d'||L.lado==='e') ? L.lado : null); }
+function lauOctLista(m, it){
+  const L=state.lau, mm=lauOctMestre(m,it), sm=L.v[mm.k], o=lauOctOlho(it);
+  return (sm.__f||[]).filter(id=>{ const e=lauOctOlhoDe(sm.__v['d'+id]); return e==='a' || e===o; });
+}
+/* "sombra" do estado do item com as frases do mestre que valem para este olho */
+function lauOctShadow(m, it){
+  const L=state.lau, s=L.v[it.k], mm=lauOctMestre(m,it), sm=L.v[mm.k];
+  return Object.assign({}, s, {__f: lauOctLista(m,it), __v: Object.assign({}, sm.__v, {n: s.__v.n, l: s.__v.l})});
+}
 function lauOctSup(m){
-  const L=state.lau, sup={d:{}, e:{}};
-  m.items.forEach(it=>{ (L.v[it.k].__f||[]).forEach(id=>{ const f=lauFI(id); (f&&f.sup||[]).forEach(x=>sup[lauOctOlho(it)][x]=1); }); });
+  const sup={d:{}, e:{}};
+  m.items.forEach(it=>{ lauOctLista(m,it).forEach(id=>{ const f=lauFI(id); (f&&f.sup||[]).forEach(x=>sup[lauOctOlho(it)][x]=1); }); });
   return sup;
 }
 function lauOctItemOculto(m, it){ return !!lauOctSup(m)[lauOctOlho(it)][lauNorm(it.label)]; }
@@ -173,11 +188,10 @@ function lauOctConcs(m){
   const L=state.lau, frag={d:[], e:[]}; let cat='';
   m.items.forEach(it=>{
     if(lauItemOutroLado(m,it)) return;
-    const s=L.v[it.k], o=lauOctOlho(it);
+    const s=lauOctShadow(m,it), o=lauOctOlho(it);
     (s.__f||[]).forEach(id=>{ const f=lauFI(id); if(!f) return;
       if(f.cat==='multi') cat='multi'; else if(f.cat==='fundo' && cat!=='multi') cat='fundo';
       const c=lauFraseConcHTML(f, s.__v['f'+id], ''); if(c && frag[o].indexOf(c)<0) frag[o].push(c); });
-    if(lauHas(s.conc)) frag[o].push(esc(s.conc.trim().replace(/\.$/,'')));
   });
   if(!frag.d.length && !frag.e.length) return [];
   const um = L.lado==='d' ? ['d'] : L.lado==='e' ? ['e'] : ['d','e'];

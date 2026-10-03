@@ -1,5 +1,6 @@
 Máscaras de tomografia escritas pelo KlugRads (mesmo formato de mascaras_us.txt).
 [oct] = OCT de mácula: frases corridas (sem rótulos), um bloco por olho, conclusão por olho.
+Alternativas de um item: separar com " || " (a primeira é o texto padrão; as outras aparecem como botões no painel do item).
 =====
 
 C. CABEÇA E PESCOÇO:
@@ -34,5 +35,1895 @@ OLHO ESQUERDO
 Conclusão:
 - Exame dentro dos parâmetros de normalidade em ambos os olhos.
 - Correlacionar com dados clínicos para definição diagnóstica.
+
+-----
+
+C. CABEÇA E PESCOÇO:
+
+2. Crânio
+TOMOGRAFIA COMPUTADORIZADA DO CRÂNIO
+
+Técnica: Realizados cortes axiais sem a injeção do meio de contraste endovenoso. || Realizados cortes axiais antes e após a injeção do meio de contraste endovenoso.
+
+Análise:
+- Sistema ventricular: com forma e dimensões conservadas.
+- Sulcos corticais e cisternas basais: de amplitude preservada.
+- Parênquima encefálico: com forma e atenuação normais.
+- Hemorragia intracraniana recente: ausente.
+- Calota craniana: sem alterações focais evidentes.
+- Realces focais anômalos: ausentes.
+
+Comparação: Estudos anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame tomográfico do crânio dentro dos parâmetros da normalidade.
+
+-----
+
+3. Sela túrcica
+TOMOGRAFIA COMPUTADORIZADA DA SELA TÚRCICA
+
+Técnica: Adquiridos cortes axiais antes e durante a injeção do meio de contraste endovenoso.
+
+Análise:
+- Cavidade selar: com forma e dimensões normais.
+- Glândula hipofisária: com forma e atenuação preservada.
+- Cisterna suprasselar: livre.
+- Seios cavernosos: livres.
+
+Comparação: Estudos anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame tomográfico sem alterações significativas.
+Caso persista dúvida clínica, o estudo de ressonância magnética poderá trazer informações adicionais.
+
+-----
+
+4. Crânio — protocolo AVC
+TOMOGRAFIA COMPUTADORIZADA DO CRÂNIO
+ANGIOTOMOGRAFIA ARTERIAL CERVICAL E INTRACRANIANA
+PROTOCOLO AVC
+
+Hora da assessoria verbal: XXX
+Contato: Dr(a). XXX
+
+SINAIS TOMOGRÁFICOS DE HEMORRAGIA RECENTE:
+- Hemorragia subaracnoide: não. || sim.
+- Hemorragia subdural: não. || sim.
+- Hemorragia extradural: não. || sim.
+- Hemorragia intraparenquimatosa: não. || sim, com volume estimado em XXX mL.
+
+SINAIS TOMOGRÁFICOS DE ISQUEMIA RECENTE:
+- Apagamento insular: não. || sim.
+- Hipodensidade nucleocapsular: não. || sim.
+- Artéria densa: não. || sim.
+- Assimetria de sulcos corticais: não. || sim.
+
+ASPECTS (TERRITÓRIO DA ACM):
+- ASPECTS total: 10. || XXX, com hipoatenuação nos territórios XXX.
+
+ANGIOTOMOGRAFIA:
+- AngioTC das artérias cervicais e intracranianas: realizada. || não realizada.
+- Oclusão de grande tronco arterial: não. || sim, acometendo XXX.
+- Escore de colaterais (oclusão da ACI ou ACM): não se aplica. || menor que o lado contralateral normal. || igual ao lado contralateral normal. || maior que o lado contralateral normal.
+
+OUTROS ACHADOS:
+- Sinais de isquemia antiga: não. || sim, em XXX.
+- Outros achados relevantes: não há.
+
+Conclusão:
+Ausência de sinais tomográficos de hemorragia intracraniana recente ou de oclusão de grande tronco arterial.
+
+Obs.: Os achados atuais são preliminares e sujeitos à reinterpretação a partir de novas informações clínicas e de eventuais exames de seguimento ou de ressonância magnética.
+
+-----
+
+5. Crânio — idoso
+TOMOGRAFIA COMPUTADORIZADA DO CRÂNIO
+
+Técnica: Realizados cortes axiais sem a administração do meio de contraste iodado endovenoso. || Realizados cortes axiais antes e após a injeção do meio de contraste iodado endovenoso.
+
+Análise:
+- Sistema ventricular: leve alargamento dos ventrículos supratentoriais, preservando morfologia e simetria habituais. IV ventrículo sem particularidades.
+- Sulcos corticais e cisternas basais: leve proeminência difusa (em detrimento do parênquima encefálico), sem predomínio lobar ou sinais hipertensivos, de aspecto compensatório.
+- Parênquima encefálico: tênues hipodensidades confluentes na substância branca periventricular em regiões peritrigonais e junto aos ângulos anteriores dos ventrículos laterais. || hipodensidades confluentes na substância branca periventricular, predominando nas regiões peritrigonais, junto aos ângulos anteriores dos ventrículos laterais e nas coroas radiadas / centros semiovais.
+- Artérias intracranianas: calcificações parietais nos sifões carotídeos. || grandes troncos arteriais intracranianos alongados e tortuosos.
+- Hemorragia intracraniana recente: ausente.
+- Calota craniana: sem alterações focais evidentes. || hiperostose benigna da calota craniana, com predomínio frontal.
+- Realces focais anômalos: ausentes.
+
+Comparação: Estudos anteriores não disponíveis para a análise.
+
+Conclusão:
+Sinais de redução volumétrica do parênquima encefálico e de ateromatose intracraniana.
+Discreto alargamento dos espaços liquóricos, dentro dos parâmetros da normalidade para o grupo etário.
+Hipodensidades na substância branca periventricular bi-hemisférica, habitualmente relacionadas a gliose por microangiopatia.
+XXX Alterações volumétricas encefálicas, que podem ser encontradas nesta faixa etária.
+
+-----
+
+6. Órbitas
+TOMOGRAFIA COMPUTADORIZADA DAS ÓRBITAS
+
+Técnica: Realizados cortes axiais sem a administração intravenosa do meio de contraste iodado. || Realizados cortes axiais antes e após a administração intravenosa do meio de contraste iodado.
+
+Análise:
+- Estruturas ósseas orbitárias: sem alterações.
+- Globos oculares: contornos regulares e atenuação preservada.
+- Musculatura extrínseca: atenuação e espessura dentro dos limites da normalidade.
+- Gordura orbitária intra e extraconal: preservada.
+- Nervos ópticos: sem alterações.
+- Glândulas lacrimais: sem particularidades.
+XXX Realces anômalos: ausentes.
+
+Comparação: Exames anteriores indisponíveis para a análise.
+
+Conclusão:
+Exame tomográfico das órbitas dentro dos parâmetros da normalidade.
+
+-----
+
+7. Angiotomografia arterial cervical
+ANGIOTOMOGRAFIA ARTERIAL CERVICAL
+
+Técnica: Realizados cortes axiais durante a injeção do meio de contraste endovenoso, com reconstruções tridimensionais.
+
+Análise:
+- Arco aórtico: sem particularidades. Origem habitual dos troncos supra-aórticos.
+- Tronco braquiocefálico e artérias subclávias proximais: trajeto e calibre preservados.
+- Artérias carótidas comuns e segmento cervical das artérias carótidas internas: calibre e contornos preservados.
+- Segmentos cervicais das artérias vertebrais: trajeto, calibre e contornos normais.
+- Estenoses hemodinamicamente significativas: ausentes.
+- Dilatações aneurismáticas: ausentes.
+XXX Variações anatômicas: artéria vertebral direita XX esquerda dominante.
+
+Comparação: Estudos anteriores não disponíveis.
+
+Conclusão:
+Angiotomografia arterial cervical dentro dos parâmetros da normalidade.
+
+-----
+
+8. Angiotomografia arterial intracraniana
+ANGIOTOMOGRAFIA ARTERIAL INTRACRANIANA
+
+Técnica: Realizada aquisição axial por técnica helicoidal multislice durante a injeção do meio de contraste endovenoso.
+
+Análise:
+- Artérias carótidas internas intracranianas: trajeto, calibre e contornos preservados.
+- Artérias vertebrais intracranianas e artéria basilar: trajeto, calibre e contornos preservados.
+- Artérias cerebrais anteriores, médias e posteriores: trajeto, calibre e contornos preservados.
+- Estenoses hemodinamicamente significativas: ausentes.
+- Dilatações aneurismáticas: ausentes.
+- Variações anatômicas: ausentes. || padrão fetal da circulação posterior à direita XX esquerda.
+
+Comparação: Estudos anteriores não disponíveis.
+
+Conclusão:
+Angiotomografia arterial intracraniana dentro dos parâmetros da normalidade.
+
+-----
+
+9. Angiotomografia venosa cervical
+ANGIOTOMOGRAFIA VENOSA CERVICAL
+
+Técnica: Exame realizado pela técnica multislice após a injeção do meio de contraste endovenoso.
+
+Análise:
+- Veias jugulares internas: pérvias, com calibre e trajeto preservados, sem tromboses.
+- Porções acessíveis das veias subclávias: pérvias, com calibre e trajeto preservados, sem tromboses.
+- Porções acessíveis das veias inominadas: pérvias, com calibre e trajeto preservados, sem tromboses.
+XXX Variações anatômicas: assimetria de calibres entre as veias jugulares internas, menor à direita XX esquerda.
+XXX Veia cava superior e porção cranial da veia cava inferior: pérvias, com calibre e trajeto preservados, sem tromboses.
+XXX Porções contrastadas das artérias e veias pulmonares: pérvias, com calibre e trajeto preservados, sem tromboses.
+
+Comparação: Estudos anteriores não disponíveis.
+
+Conclusão:
+Angiotomografia venosa dentro dos parâmetros da normalidade.
+
+-----
+
+10. Angiotomografia venosa intracraniana
+ANGIOTOMOGRAFIA VENOSA CEREBRAL
+
+Técnica: Exame realizado pela técnica multislice após a injeção do meio de contraste endovenoso.
+
+Análise:
+- Porção cranial das veias jugulares internas: calibre, trajeto e contrastação preservados.
+- Seios sagital superior, reto, transversos e sigmoides: calibre, trajeto e contrastação preservados.
+- Veia de Galeno e veias cerebrais internas: calibre, trajeto e contrastação preservados.
+- Circulação patológica: ausente.
+- Trombose venosa recente: ausente.
+XXX Variações anatômicas: assimetria do calibre entre as veias jugulares internas e os seios sigmoides e transversos, menores à direita XX esquerda.
+
+Comparação: Estudos anteriores não disponíveis.
+
+Conclusão:
+Angiotomografia venosa cerebral dentro dos parâmetros da normalidade.
+
+-----
+
+11. Articulações temporomandibulares
+TOMOGRAFIA COMPUTADORIZADA DAS ARTICULAÇÕES TEMPOROMANDIBULARES
+
+Técnica: Realizados cortes axiais sem a administração intravenosa do meio de contraste iodado.
+
+Análise:
+- Cavidades articulares: contornos regulares.
+- Côndilos mandibulares: morfologia preservada.
+- Excursão dos côndilos à abertura bucal: simétrica e adequada. || assimétrica, menor à direita XX esquerda. || reduzida.
+
+Comparação: Exames anteriores indisponíveis para a análise.
+
+Conclusão:
+Exame tomográfico das articulações temporomandibulares dentro dos parâmetros da normalidade.
+
+-----
+
+12. Face
+TOMOGRAFIA COMPUTADORIZADA DA FACE
+
+Técnica: Imagens obtidas por aquisição axial sem a administração intravenosa do meio de contraste iodado. || Imagens obtidas por aquisição axial após a administração intravenosa do meio de contraste iodado.
+
+Análise:
+- Estruturas ósseas: sem particularidades.
+- Órbitas: sem alterações.
+- Septo nasal: sinuoso. || desviado para a direita XX esquerda.
+- Cavidades paranasais: normoaeradas.
+- Glândulas salivares maiores: sem alterações focais.
+- Rino e orofaringe: sem particularidades.
+XXX Realces anômalos: ausentes.
+
+Comparação: Exames anteriores indisponíveis para a análise.
+
+Conclusão:
+Exame tomográfico da face dentro dos parâmetros da normalidade.
+
+-----
+
+13. Ouvidos e mastoides
+TOMOGRAFIA COMPUTADORIZADA DOS OSSOS TEMPORAIS
+
+Técnica: Realizados cortes axiais sem a administração intravenosa do meio de contraste iodado. || Realizados cortes axiais após a administração intravenosa do meio de contraste iodado.
+
+Análise:
+- Mastoides: normopneumatizadas.
+- Caixas timpânicas: normoaeradas.
+- Cadeias ossiculares: sem alterações.
+- Labirinto ósseo: cócleas, vestíbulos, canais semicirculares e condutos auditivos internos preservados. Não se observam focos de desmineralização óssea na cápsula ótica.
+- Canais dos nervos faciais: preservados.
+- Bulbos jugulares e canais carotídeos: sem alterações.
+- Ângulos pontocerebelares: ausência de realces anômalos.
+
+Comparação: Exames anteriores indisponíveis para a análise.
+
+Conclusão:
+Exame tomográfico dos ossos temporais dentro dos parâmetros da normalidade.
+
+-----
+
+14. Pescoço
+TOMOGRAFIA COMPUTADORIZADA DO PESCOÇO
+
+Técnica: Imagens obtidas por aquisição axial sem a administração intravenosa do meio de contraste iodado. || Imagens obtidas por aquisição axial após a administração intravenosa do meio de contraste iodado.
+
+Análise:
+- Faringe: sem particularidades.
+- Glândulas salivares maiores: sem alterações focais.
+- Laringe: epiglote, pregas ariepiglóticas, bandas ventriculares e cordas vocais apresentando coeficientes de atenuação preservados.
+- Linfonodos: não se evidenciam linfonodomegalias.
+- Glândula tireoide: sem particularidades ao método.
+- Estruturas ósseas: sem alterações significativas.
+XXX Realces focais anômalos: ausentes.
+
+Comparação: Exames anteriores indisponíveis para a análise.
+
+Conclusão:
+Exame tomográfico do pescoço dentro dos parâmetros da normalidade.
+
+-----
+
+15. Seios da face
+TOMOGRAFIA COMPUTADORIZADA DOS SEIOS PARANASAIS
+
+Técnica: Realizados cortes axiais sem a administração do meio de contraste endovenoso. || Realizados cortes axiais após a injeção do meio de contraste endovenoso.
+
+Análise:
+- Septo nasal: sinuoso. || desviado para a direita XX esquerda.
+- Fóveas etmoidais: sem assimetrias significativas. || assimétricas, mais baixa à direita XX esquerda.
+- Fossas nasais: sem particularidades.
+XXX Aumento do componente mucoso das fossas nasais e das conchas nasais inferiores, contribuindo para a redução da amplitude da coluna aérea nestas topografias.
+- Variantes anatômicas: ausentes.
+- Cavidades paranasais: normoaeradas.
+- Vias de drenagem sinusal: pérvias. || XXX obliteradas. Demais vias de drenagem sinusal pérvias.
+- Rinofaringe: sem particularidades.
+XXX Realces focais anômalos: ausentes.
+
+Comparação: Exames anteriores indisponíveis para a análise.
+
+Conclusão:
+- Exame sem achados significativos.
+XXX - Sinais de rinopatia / rinite.
+XXX - Discreta sinusopatia.
+XXX - Espessamento mucoso e secreção nos seios XXX, que podem estar relacionados a processo inflamatório sinusal agudo ou secreção residual, em contexto clínico apropriado.
+XXX - Desvio do septo nasal.
+
+-----
+
+16. Apneia do sono
+TOMOGRAFIA COMPUTADORIZADA DA FACE
+
+Dados clínicos: apneia do sono.
+
+Técnica: Realizados cortes axiais sem a administração do meio de contraste endovenoso.
+
+Análise:
+- Septo nasal: sinuoso. || desviado para a direita XX esquerda.
+- Fóveas etmoidais: sem assimetrias significativas. || assimétricas, mais baixa à direita XX esquerda.
+- Fossas nasais: sem particularidades.
+- Variantes anatômicas: ausentes.
+- Cavidades paranasais: normoaeradas.
+- Vias de drenagem sinusal: pérvias.
+- Rinofaringe: sem particularidades.
+- Paredes laterais da orofaringe: proeminentes.
+- Medidas direcionadas à avaliação de SAOS: coluna aérea retropalatal com menor área de secção transversa estimada em XXX mm². Espessura e comprimento do palato mole de XXX cm e XXX cm, respectivamente. Eixos anteroposterior e laterolateral da língua de XXX cm e XXX cm, respectivamente. Distância do osso hioide ao corpo da mandíbula de XXX cm.
+
+Comparação: Exames anteriores indisponíveis para a análise.
+
+Conclusão:
+Medidas direcionadas à avaliação de SAOS dentro dos limites da normalidade.
+XXX Desvio do septo nasal.
+XXX Sinusopatia.
+XXX Espessamento do palato mole. Redução da amplitude da coluna aérea retropalatal. Aumento dos eixos anteroposterior e laterolateral da língua. Osso hioide em posição baixa.
+XXX Demais medidas direcionadas à avaliação de SAOS dentro dos limites da normalidade.
+XXX As medidas obtidas da coluna aérea retropalatal, do palato mole, da língua e da posição do hioide em relação à mandíbula podem ser observadas em casos de síndrome da apneia-hipopneia obstrutiva do sono, a depender da correlação com dados clínicos e polissonográficos.
+
+-----
+
+D. MUSCULOESQUELÉTICO:
+
+1. Antebraço
+TOMOGRAFIA COMPUTADORIZADA DO ANTEBRAÇO XX
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+2. Braço
+TOMOGRAFIA COMPUTADORIZADA DO BRAÇO XX
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+3. Cotovelo
+TOMOGRAFIA COMPUTADORIZADA DO COTOVELO XX
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+4. Mão
+TOMOGRAFIA COMPUTADORIZADA DA MÃO XX
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+5. Ombro
+TOMOGRAFIA COMPUTADORIZADA DO OMBRO XX
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+6. Punho
+TOMOGRAFIA COMPUTADORIZADA DO PUNHO XX
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+7. Bacia
+TOMOGRAFIA COMPUTADORIZADA DA BACIA
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculares: preservados.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+8. Coxa
+TOMOGRAFIA COMPUTADORIZADA DA COXA XX
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+9. Joelho
+TOMOGRAFIA COMPUTADORIZADA DO JOELHO XX
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+10. Pé
+TOMOGRAFIA COMPUTADORIZADA DO PÉ XX
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+11. Perna
+TOMOGRAFIA COMPUTADORIZADA DA PERNA XX
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+12. Quadril
+TOMOGRAFIA COMPUTADORIZADA DO QUADRIL XX
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+13. Sacroilíacas
+TOMOGRAFIA COMPUTADORIZADA DAS ARTICULAÇÕES SACROILÍACAS
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Peças sacrococcigeas: alinhadas e de morfologia preservadas.
+- Articulações sacroilíacas: regulares, sem erosões subcondrais.
+- Derrame articular: ausente.
+- Forames sacrais: amplos, com livre emergência das raízes neurais.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+14. Tornozelo
+TOMOGRAFIA COMPUTADORIZADA DO TORNOZELO XX
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+15. Perfil torsional
+TOMOGRAFIA COMPUTADORIZADA PARA MEDIDA DO PERFIL TORSIONAL DO FÊMUR E TÍBIA
+
+Técnica: Aquisição volumétrica multislice dos quadris, joelhos e tornozelos. Obtidas sobreposições de imagens para a medida de versão femoral e torsão tibial.
+
+Análise (medidas em graus):
+- Versão do colo femoral: direito XXX°; esquerdo XXX° (valor positivo = anteversão; valor negativo = retroversão).
+- Torsão tibial: direita XXX°; esquerda XXX° (valor positivo = rotação externa; valor negativo = rotação interna).
+- Demais achados: sem outras alterações significativas.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+16. Artroplastia do quadril
+TOMOGRAFIA COMPUTADORIZADA DO QUADRIL XX
+PARA ESTUDO DE ARTROPLASTIA TOTAL
+
+Técnica: Aquisição volumétrica sem contraste, com reformatações multiplanares e tridimensionais.
+
+Análise:
+- Osteólise: não há osteólise ou reabsorção óssea. || sinais de osteólise na região XXX do componente acetabular XX femoral, estimada em XXX mm.
+- Componente femoral: sem subsidência. || subsidência estimada em XXX mm.
+- Parafusos de fixação acetabular: sem insinuação para os planos de partes moles adjacentes. || insinuação para os planos de partes moles adjacentes, estimada em XXX mm.
+- Ventres musculares: normotróficos. || hipotróficos. || atróficos e lipossubstituídos.
+- Cabeça femoral: centralizada no componente acetabular. || descentralizada no componente acetabular.
+- Proeminência anterior do componente acetabular: ausente. || estimada em XXX mm (normal: até 12 mm).
+- Versão do componente acetabular: XXX° (normal: anteversão de 15° ± 10°).
+- Inclinação lateral do componente acetabular: XXX° (normal: 30° a 50°).
+- Offset femoral: XXX mm (normal: 43 ± 7 mm).
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+Referências: Cyteval et al. J Comput Assist Tomogr. 2003;27(2):183-8 (proeminência acetabular). Lewinnek et al. JBJS Am. 1978;60:217-20 (versão acetabular). McCollum DE, Gray WJ. Clin Orthop Relat Res. 1990;261:159-70 (inclinação). Noble et al. Clin Orthop. 2003;417:242-52 (offset).
+
+-----
+
+17. Joelho — TAGT (femoropatelar)
+TOMOGRAFIA COMPUTADORIZADA DOS JOELHOS
+ESTUDO FEMOROPATELAR (TAGT)
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Patelas: tipo XXX de Wiberg, centradas. || tipo XXX de Wiberg, lateralizadas e inclinadas lateralmente com os joelhos em extensão, com redução progressiva da inclinação e centralização com a flexão de 15° e 30°.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+MEDIDAS:
+- TAGT: direito XXX mm; esquerdo XXX mm.
+- Ângulo do sulco troclear: direito XXX°; esquerdo XXX°.
+- Altura patelar (índice de Caton): direita XXX; esquerda XXX.
+- Inclinação patelar (tilt) a 0°: direita XXX°; esquerda XXX°.
+- Inclinação patelar (tilt) a 15°: direita XXX°; esquerda XXX°.
+- Inclinação patelar (tilt) a 30°: direita XXX°; esquerda XXX°.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+Valores de referência considerados: TAGT de 15 ± 4 mm; ângulo do sulco troclear menor ou igual a 145°; altura patelar (índice de Caton) de 0,8 a 1,2; inclinação patelar (tilt) menor que 20°.
+
+-----
+
+18. Coluna cervical
+TOMOGRAFIA COMPUTADORIZADA DA COLUNA CERVICAL
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Manipulação cirúrgica: ausente. || XXX
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Transição craniocervical: articulação atlantodental de contornos regulares.
+- Alinhamentos sagital e coronal: preservados.
+- Corpos vertebrais: de alturas preservadas.
+- Discos intervertebrais: sem protrusões significativas.
+XXX C2-C3: XXX
+XXX C3-C4: XXX
+XXX C4-C5: XXX
+XXX C5-C6: XXX
+XXX C6-C7: XXX
+XXX C7-T1: XXX
+- Articulações interfacetárias e uncovertebrais: preservadas.
+- Canal vertebral e forames neurais: de amplitude normal.
+- Estruturas paravertebrais: sem particularidades.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+19. Coluna dorsal
+TOMOGRAFIA COMPUTADORIZADA DA COLUNA TORÁCICA
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Manipulação cirúrgica: ausente. || XXX
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Alinhamentos sagital e coronal: preservados.
+- Corpos vertebrais: de alturas preservadas.
+- Discos intervertebrais: sem protrusões significativas.
+- Articulações interfacetárias: preservadas.
+- Canal vertebral e forames neurais: de amplitude normal.
+- Estruturas paravertebrais: sem particularidades.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+20. Coluna lombar
+TOMOGRAFIA COMPUTADORIZADA DA COLUNA LOMBAR
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Manipulação cirúrgica: ausente. || XXX
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Alinhamentos sagital e coronal: preservados.
+- Corpos vertebrais: de alturas preservadas.
+- Discos intervertebrais: sem protrusões significativas.
+XXX L1-L2: XXX
+XXX L2-L3: XXX
+XXX L3-L4: XXX
+XXX L4-L5: XXX
+XXX L5-S1: XXX
+- Articulações interfacetárias: preservadas.
+- Canal vertebral e forames neurais: de amplitude normal.
+- Estruturas paravertebrais: sem particularidades.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+21. Sacrocóccix
+TOMOGRAFIA COMPUTADORIZADA DA COLUNA SACROCOCCÍGEA
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Corpos vertebrais sacrais e peças coccígeas: de morfologia preservadas.
+- Articulações sacrococcígea e intercoccígeas: de aspecto preservado.
+- Articulações sacroilíacas e sínfise púbica: sem particularidades.
+- Forames sacrais: amplos.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+22. Arcos costais
+TOMOGRAFIA COMPUTADORIZADA DOS ARCOS COSTAIS
+
+Técnica: Aquisição volumétrica sem contraste.
+
+Análise:
+- Fraturas: ausentes.
+- Lesões ósseas agressivas: ausentes.
+- Estruturas ósseas: preservadas.
+- Superfícies articulares: regulares.
+- Derrame articular: ausente.
+- Planos musculoadiposos: preservados, sem formações com efeito expansivo.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+23. Corpo total (lesões ósseas)
+TOMOGRAFIA COMPUTADORIZADA DE CORPO TOTAL
+
+Técnica: Aquisição volumétrica de corpo inteiro em protocolo de baixa dose e sem administração do meio de contraste para pesquisa de lesões ósseas.
+
+Análise:
+- Lesões ósseas suspeitas: ausentes. || presentes, assim dispostas: XXX
+- Fraturas: ausentes.
+- Demais achados: sem outras alterações significativas.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Não se observam lesões ósseas suspeitas para mieloma múltiplo.
+
+Obs.: caso haja necessidade de avaliação detalhada de alguma região anatômica, é conveniente a complementação com estudo dirigido.
+
+-----
+
+24. Desfiladeiro torácico
+ANGIOTOMOGRAFIA TORÁCICA
+(PROTOCOLO PARA SÍNDROME DO DESFILADEIRO TORÁCICO)
+
+Técnica: Exame realizado após a injeção intravenosa do meio de contraste iodado, com protocolo para pesquisa de síndrome do desfiladeiro torácico (com braços em posição neutra e elevados).
+
+Análise:
+- Arcabouço ósseo cervicotorácico: sem alterações significativas.
+XXX Alongamento dos processos transversos de C7, medindo cerca de XXX cm cada.
+XXX Clavícula comprimindo os vasos XXX.
+XXX Calos ósseos XXX.
+XXX Costela cervical XXX.
+- Musculatura escalena: sem particularidades.
+
+SISTEMA ARTERIAL:
+- Arco aórtico: pérvio, sem aneurismas, estenoses, dissecções ou ulcerações.
+- Emergência dos ramos supra-aórticos: sem estenoses.
+- Artéria subclávia direita: pérvia, com trajeto e calibre preservados. Não há sinais de compressão vascular significativa no espaço costoclavicular em repouso ou durante a manobra de elevação dos membros superiores.
+- Artéria subclávia esquerda: pérvia, com trajeto e calibre preservados. Não há sinais de compressão vascular significativa no espaço costoclavicular em repouso ou durante a manobra de elevação dos membros superiores.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+25. ArtroTC — articulações
+ARTROTOMOGRAFIA COMPUTADORIZADA DO XXX XX
+
+Técnica: Aquisição volumétrica. Administrada previamente solução de contraste iodado intra-articular.
+
+Análise:
+- Fibrocartilagens (lábio / meniscos): de morfologia preservada e sem sinais de lesão.
+- Superfícies articulares: ausência de lesões osteocondrais.
+- Demais estruturas ósseas: morfologia conservada. Ausência de fraturas ou de lesões ósseas focais de aspecto agressivo.
+- Estruturas musculotendíneas: ausência de lesões musculares ou tendíneas.
+- Planos superficiais: sem alterações significativas.
+
+Comparação: Estudos anteriores não disponíveis para análise comparativa. || Em relação ao exame de XXX, não se observam alterações significativas.
+
+Conclusão:
+Exame dentro dos limites da normalidade.
+
+-----
+
+B. MEDICINA INTERNA:
+
+1. Abdome superior — com contraste
+TOMOGRAFIA COMPUTADORIZADA DE ABDOME SUPERIOR
+
+Técnica: Obtidas imagens axiais por metodologia multislice, sem XX com* a injeção intravenosa do meio de contraste.
+
+Análise:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: com morfologia e atenuação preservadas.
+- Vias biliares: não há dilatação das vias biliares intra ou extra-hepáticas.
+- Pâncreas: dimensões normais e atenuação preservada. Não há dilatação do ducto principal.
+- Baço: normal.
+- Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Alças intestinais: alças do intestino delgado e grosso incluídas no estudo sem particularidades.
+- Peritôneo e retroperitôneo: não há linfonodomegalias ou líquido livre.
+- Vasos: aorta, veia cava inferior e veia porta de calibre e morfologia habitual.
+- Partes moles e estruturas ósseas: sem alterações significativas.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+2. Abdome superior — sem contraste
+TOMOGRAFIA COMPUTADORIZADA DE ABDOME SUPERIOR
+
+Técnica: Obtidas imagens axiais por metodologia multislice, sem a injeção intravenosa do meio de contraste.
+
+Análise:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: não há lesões focais ou alterações difusas.
+- Vias biliares: não há dilatação das vias biliares intra ou extra-hepáticas.
+- Pâncreas: dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.
+- Baço: normal.
+- Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Alças intestinais: alças do intestino delgado e grosso incluídas no estudo sem particularidades ao método.
+- Peritôneo e retroperitôneo: ausência de linfonodomegalias ou líquido livre.
+- Vasos: aorta, veia cava inferior e veia porta de calibre e morfologia habitual.
+- Partes moles e estruturas ósseas: sem alterações significativas.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+3. Abdome superior — adrenais
+TOMOGRAFIA COMPUTADORIZADA DE ABDOME SUPERIOR
+
+Técnica: Obtidas imagens axiais por metodologia multislice, sem XX com a injeção intravenosa do meio de contraste. Protocolo dirigido para a avaliação das adrenais.
+
+Análise:
+- Adrenais: morfologia e atenuação preservadas, sem lesões focais identificáveis. || nódulo na adrenal direita XX esquerda, localizado XXX, medindo XXX cm, com atenuação de XXX UH na fase sem contraste e realce XXX.
+
+DEMAIS ACHADOS:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: não há lesões focais ou alterações difusas.
+- Vias biliares: não há dilatação das vias biliares intra ou extra-hepáticas.
+- Pâncreas: dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.
+- Baço: normal.
+- Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
+- Alças intestinais: alças do intestino delgado e grosso incluídas no estudo sem particularidades ao método.
+- Peritôneo e retroperitôneo: ausência de linfonodomegalias ou líquido livre.
+- Vasos: aorta, veia cava inferior e veia porta de calibre e morfologia habitual.
+- Partes moles e estruturas ósseas: sem alterações significativas.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+4. Abdome total — com contraste
+TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE
+
+Técnica: Helicoidal multislice, com a injeção endovenosa do meio de contraste iodado.
+
+Análise:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: de morfologia e atenuação preservada.
+- Vias biliares: intra e extra-hepáticas sem dilatações.
+- Pâncreas: de dimensões normais e atenuação preservada. Não há dilatação do ducto principal.
+- Baço: normal.
+- Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Alças intestinais: alças do intestino delgado e grosso sem particularidades.
+- Peritônio e retroperitônio: não há linfonodomegalias ou líquido livre.
+- Vasos: aorta abdominal com calibre normal. Veias cava inferior, porta e hepáticas pérvias.
+- Estruturas pélvicas: bexiga com conteúdo homogêneo. Demais estruturas pélvicas sem particularidades ao método.
+- Partes moles e estruturas ósseas: sem alterações evidentes.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+5. Abdome total — sem contraste
+TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE
+
+Técnica: Helicoidal multislice, sem a injeção endovenosa do meio de contraste iodado.
+
+Análise:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: de contornos regulares e atenuação preservada.
+- Vias biliares: intra e extra-hepáticas sem dilatações.
+- Pâncreas: de dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.
+- Baço: normal.
+- Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Alças intestinais: alças do intestino delgado e grosso sem particularidades ao método.
+- Peritônio e retroperitônio: não se observam linfonodomegalias. Ausência de líquido livre.
+- Vasos: aorta abdominal com calibre normal.
+- Estruturas pélvicas: bexiga com conteúdo homogêneo. Demais estruturas pélvicas sem particularidades ao método.
+- Partes moles e estruturas ósseas: sem alterações evidentes.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+6. Abdome total — litíase
+TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE
+
+Técnica: Imagens obtidas por tecnologia de múltiplos detectores, sem meio de contraste (protocolo direcionado para litíase das vias urinárias).
+
+Análise:
+- Rim direito: tópico, de dimensões normais e contornos regulares, com atenuação e espessura do parênquima sem alterações significativas. Ausência de cálculos ou hidronefrose. || tópico, de dimensões normais e contornos regulares, com atenuação e espessura do parênquima sem alterações significativas. Cálculos calicinais não obstrutivos, assim distribuídos: grupamento superior XXX cm (XXX UH); grupamento médio XXX cm (XXX UH); grupamento inferior XXX cm (XXX UH).
+- Ureter direito: com trajeto e calibre preservados, sem cálculos.
+- Rim esquerdo: tópico, de dimensões normais e contornos regulares, com atenuação e espessura do parênquima sem alterações significativas. Ausência de cálculos ou hidronefrose. || tópico, de dimensões normais e contornos regulares, com atenuação e espessura do parênquima sem alterações significativas. Cálculos calicinais não obstrutivos, assim distribuídos: grupamento superior XXX cm (XXX UH); grupamento médio XXX cm (XXX UH); grupamento inferior XXX cm (XXX UH).
+- Ureter esquerdo: com trajeto e calibre preservados, sem cálculos.
+- Bexiga: com boa repleção de conteúdo homogêneo e paredes regulares.
+- Demais achados: restante do exame sem particularidades pelo protocolo.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+XXX Nefrolitíase não obstrutiva à direita XX esquerda XX bilateral.
+
+-----
+
+7. Abdome total — urotomografia
+TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE
+(UROTOMOGRAFIA)
+
+Técnica: Helicoidal multislice, com a injeção endovenosa do meio de contraste iodado.
+
+Análise:
+- Rim direito: de dimensões normais e espessura do parênquima preservada. Boa concentração e excreção do meio de contraste. Ausência de cálculos ou hidronefrose.
+- Ureter direito: com trajeto e calibre preservados, sem cálculos ou falhas de enchimento.
+- Rim esquerdo: de dimensões normais e espessura do parênquima preservada. Boa concentração e excreção do meio de contraste. Ausência de cálculos ou hidronefrose.
+- Ureter esquerdo: com trajeto e calibre preservados, sem cálculos ou falhas de enchimento.
+- Bexiga: com boa XX moderada XX pequena repleção de conteúdo homogêneo, exibindo paredes regulares e de espessura normal.
+
+Demais achados:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: de contornos regulares e atenuação preservada.
+- Vias biliares: intra e extra-hepáticas sem dilatações.
+- Pâncreas: de dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.
+- Baço: normal.
+- Adrenais: sem nódulos.
+- Alças intestinais: alças do intestino delgado e grosso sem particularidades ao método.
+- Peritônio e retroperitônio: não se observam linfonodomegalias. Ausência de líquido livre.
+- Vasos: aorta abdominal com calibre normal. Veias cava inferior, porta e hepáticas pérvias.
+- Estruturas pélvicas: demais estruturas pélvicas sem particularidades ao método.
+- Partes moles e estruturas ósseas: sem alterações evidentes.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+8. Abdome total — via oral
+TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE
+
+Técnica: Helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado. Administrado previamente contraste iodado diluído por via oral.
+
+Análise:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: de morfologia e atenuação preservada.
+- Vias biliares: intra e extra-hepáticas sem dilatações.
+- Pâncreas: de dimensões normais e atenuação preservada. Não há dilatação do ducto principal.
+- Baço: normal.
+- Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Alças intestinais: houve progressão do meio de contraste ingerido até XXX. Alças do intestino delgado e grosso sem particularidades.
+- Peritônio e retroperitônio: não há linfonodomegalias ou líquido livre.
+- Vasos: aorta abdominal com calibre normal. Veias cava inferior, porta e hepáticas pérvias.
+- Estruturas pélvicas: bexiga com conteúdo homogêneo. Demais estruturas pélvicas sem particularidades ao método.
+- Partes moles e estruturas ósseas: sem alterações evidentes.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+9. Enterotomografia
+ENTEROGRAFIA POR TOMOGRAFIA COMPUTADORIZADA
+
+Técnica: Foram obtidas imagens sem XX com a administração intravenosa do meio de contraste iodado. Foi administrado meio de contraste neutro por via oral para distensão de alças intestinais.
+
+Análise:
+- Distensão das alças: houve progressão do meio de contraste administrado por via oral até o XXX, com distensão satisfatória das alças delgadas.
+- Cirurgias pregressas: ausentes. || XXX
+- Estômago e duodeno: sem particularidades ao método.
+- Intestino delgado: distribuição, calibre e realce mucoso de aspecto usual. Íleo terminal e válvula ileocecal com boa distensão, com aspecto preservado.
+- Intestino grosso: moldura cólica com calibre e posicionamento habitual, sem lesões focais detectáveis ao método.
+XXX Sinais de doença inflamatória predominantemente ativa XX inativa, com XX sem padrão estenosante, em segmentos contínuos XX descontínuos de XXX, destacando-se o segmento de XXX, com extensão de XXX cm e espessamento parietal leve XX moderado XX acentuado (XXX mm).
+XXX Segmento de XXX, com extensão de XXX cm e espessamento parietal leve XX moderado XX acentuado (XXX mm).
+XXX Sinais de doença fistulizante ativa XX inativa: XXX.
+- Peritônio: não há líquido livre peritoneal, pneumoperitônio ou coleções intra-abdominais.
+- Mesentério: sem particularidades. || densificação da gordura mesentérica adjacente aos segmentos envolvidos. || ingurgitamento dos vasos retos adjacentes aos segmentos envolvidos. || proliferação da gordura mesentérica adjacente aos segmentos envolvidos. || linfonodos proeminentes adjacentes aos segmentos envolvidos.
+- Estruturas ósseas: sem particularidades. || sinais de sacroileíte. || sinais de necrose avascular XXX.
+
+ACHADOS ADICIONAIS:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: com morfologia e atenuação preservadas.
+- Vias biliares: não há dilatação das vias biliares intra ou extra-hepáticas.
+- Pâncreas: dimensões normais e atenuação preservada. Não há dilatação do ducto principal.
+- Baço: normal.
+- Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Vasos: aorta, veia cava inferior e veia porta de calibre e morfologia habitual.
+- Bexiga: sem particularidades ao método.
+- Demais estruturas pélvicas: sem particularidades ao método.
+- Partes moles e estruturas ósseas: sem alterações significativas.
+
+Comparação: Não há exames anteriores disponíveis para comparação.
+
+Conclusão:
+Exame sem achados significativos.
+XXX Sinais de doença inflamatória intestinal predominantemente ativa XX inativa, com XX sem padrão estenosante, com XX sem fístulas, com XX sem coleções, em segmentos contínuos XX descontínuos de XXX.
+
+Referência: adaptado de Wildman-Tobriner B, et al. Structured reporting of CT enterography for inflammatory bowel disease. Abdom Radiol. 2017;42(9):2243-50.
+
+-----
+
+10. Abdome total — parede abdominal
+TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE
+
+Técnica: Obtidas imagens axiais por metodologia multislice, sem XX com a injeção intravenosa do meio de contraste. Realizada aquisição adicional durante manobra de esforço para avaliação da parede abdominal.
+
+Análise:
+- Parede abdominal: subcutâneo da parede abdominal com atenuação preservada.
+Grupos musculares da parede abdominal com morfologia preservada, simétricos.
+Não há diástase dos músculos retos abdominais.
+Não se caracterizam hérnias ventrais, dorsais ou nas regiões inguinais.
+Demais achados:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: com morfologia e atenuação preservadas.
+- Vias biliares: não há dilatação das vias biliares intra ou extra-hepáticas.
+- Pâncreas, baço e adrenais: sem alterações.
+- Rins: tópicos e de dimensões normais, sem cálculos ou hidronefrose.
+- Alças intestinais: alças do intestino delgado e grosso sem particularidades ao método.
+- Peritôneo e retroperitôneo: não há linfonodomegalias ou líquido livre.
+- Vasos: aorta, veia cava inferior e veia porta de calibre e morfologia habitual.
+- Bexiga: com conteúdo homogêneo.
+- Demais estruturas pélvicas: sem particularidades ao método.
+- Estruturas ósseas: sem alterações significativas.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+11. Abdome total — quantificação de gordura
+TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE
+(PROTOCOLO GORDURA ABDOMINAL)
+
+Técnica: Foram obtidas imagens em aparelho multislice, sem a administração intravenosa do meio de contraste iodado. Análise direcionada no plano do espaço discal L4-L5, para estimativa de superfície de gordura abdominal com utilização de valores de atenuação entre -50 e -250 UH.
+
+Análise:
+- Gordura subcutânea: superfície estimada em XXX cm².
+- Gordura visceral: superfície estimada em XXX cm².
+
+DEMAIS ACHADOS:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: de contornos regulares e atenuação preservada.
+- Vias biliares: intra e extra-hepáticas sem dilatações.
+- Pâncreas: de dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.
+- Baço: normal.
+- Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Alças intestinais: alças do intestino delgado e grosso sem particularidades ao método.
+- Peritônio e retroperitônio: não se observam linfonodomegalias. Ausência de líquido livre.
+- Vasos: aorta abdominal com calibre normal.
+- Estruturas pélvicas: bexiga com conteúdo homogêneo. Demais estruturas pélvicas sem particularidades ao método.
+- Partes moles e estruturas ósseas: sem alterações evidentes.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Superfície de gordura subcutânea estimada em XXX cm².
+Superfície de gordura visceral estimada em XXX cm².
+Exame sem outros achados significativos.
+
+-----
+
+12. Abdome total — LI-RADS (pré-tratamento)
+TOMOGRAFIA COMPUTADORIZADA DO ABDOME E PELVE
+
+Técnica: Obtidas imagens axiais por metodologia multislice, antes e após a injeção intravenosa do meio de contraste.
+
+Análise:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: sinais de hepatopatia crônica caracterizados por redução das dimensões hepáticas, hipertrofia dos segmentos laterais do lobo esquerdo e do lobo caudado, alargamento das fissuras, contornos lobulados e parênquima heterogêneo. || de dimensões e contornos preservados.
+XXX Caracterizam-se as seguintes lesões focais:
+XXX Lesão 1: nódulo no segmento XXX, medindo XXX cm, com XX sem hiper-realce arterial, com XX sem lavagem do meio de contraste, com XX sem cápsula com realce, com XX sem crescimento acima do limiar (LI-RADS XXX).
+XXX Lesão 2: nódulo no segmento XXX, medindo XXX cm, com XX sem hiper-realce arterial, com XX sem lavagem do meio de contraste, com XX sem cápsula com realce, com XX sem crescimento acima do limiar (LI-RADS XXX).
+XXX Lesão 3: nódulo no segmento XXX, medindo XXX cm, com XX sem hiper-realce arterial, com XX sem lavagem do meio de contraste, com XX sem cápsula com realce, com XX sem crescimento acima do limiar (LI-RADS XXX).
+XXX Utilizados critérios auxiliares para elevar XX rebaixar a categoria.
+- Vascularização hepática: veias hepáticas e porta pérvias. Não há sinais de trombose tumoral. Tronco celíaco sem variações anatômicas. Ausência de circulação colateral.
+XXX Artéria hepática esquerda acessória com origem na artéria gástrica esquerda.
+XXX Artéria hepática direita acessória com origem na artéria mesentérica superior.
+XXX Sinais de hipertensão portal, com vasos colaterais de fino calibre periesofágicos, perigástricos e periesplênicos.
+XXX Recanalização da veia paraumbilical.
+- Vias biliares: não há dilatação das vias biliares.
+- Ascite: ausente. || pequena XX moderada XX acentuada quantidade de líquido livre na cavidade.
+- Baço: normal. || esplenomegalia (índice esplênico de XXX; normal até 480).
+
+DEMAIS ACHADOS:
+- Pâncreas: dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.
+- Rins: dimensões normais e espessura do parênquima preservada. Não há cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Alças intestinais: alças do intestino delgado e grosso sem particularidades ao método.
+- Peritôneo e retroperitôneo: ausência de linfonodomegalias.
+- Vasos: aorta e veia cava inferior de calibre e morfologia habitual.
+- Bexiga: sem particularidades ao método.
+- Demais estruturas pélvicas: sem particularidades ao método.
+- Partes moles e estruturas ósseas: sem alterações significativas.
+
+Comparação: Não há exames anteriores disponíveis para comparação.
+
+Conclusão:
+Sinais de hepatopatia crônica.
+XXX Nódulo hepático com XX sem características de carcinoma hepatocelular (LI-RADS XXX).
+
+-----
+
+13. Abdome total — LI-RADS (pós-tratamento)
+TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE
+
+Técnica: Obtidas imagens axiais por metodologia multislice, antes e após a injeção intravenosa do meio de contraste.
+
+Análise:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: sinais de hepatopatia crônica caracterizados por redução das dimensões hepáticas, hipertrofia dos segmentos laterais do lobo esquerdo e do lobo caudado, alargamento das fissuras, contornos lobulados e parênquima heterogêneo. || de dimensões e contornos preservados.
+XXX Caracterizam-se as seguintes lesões focais:
+XXX Lesão 1: lesão tratada por ablação XX TACE no segmento XXX, com conteúdo de necrose coagulativa, sem sinais de neoplasia viável, medindo XXX cm (LR-TR não viável).
+XXX Lesão 1: lesão tratada por ablação XX TACE no segmento XXX, com conteúdo de necrose coagulativa e duvidosa área de realce XXX, medindo XXX cm, de aspecto indeterminado (LR-TR equívoco).
+XXX Lesão 1: lesão tratada por ablação XX TACE no segmento XXX, com conteúdo de necrose coagulativa, medindo XXX cm. Destaca-se componente de tumor viável com hiper-realce arterial XX lavagem, localizado XXX, medindo XXX cm no maior eixo axial (LR-TR viável).
+XXX Lesão 1: lesão tratada por SBRT XX TARE no segmento XXX, sem realce evidente, sem sinais de neoplasia viável, medindo XXX cm (LR-TR não viável).
+XXX Lesão 1: lesão tratada por SBRT XX TARE no segmento XXX, medindo XXX cm, com redução XX estabilidade das dimensões e da vascularização (LR-TR sem progressão).
+XXX Lesão 1: lesão tratada por SBRT XX TARE no segmento XXX, medindo XXX cm, com aumento das dimensões e da vascularização XXX (LR-TR viável).
+- Vascularização hepática: veias hepáticas e porta pérvias. Não há sinais de trombose tumoral. Tronco celíaco sem variações anatômicas. Ausência de circulação colateral.
+XXX Artéria hepática esquerda acessória com origem na artéria gástrica esquerda.
+XXX Artéria hepática direita acessória com origem na artéria mesentérica superior.
+XXX Sinais de hipertensão portal, com vasos colaterais de fino calibre periesofágicos, perigástricos e periesplênicos.
+XXX Recanalização da veia paraumbilical.
+- Vias biliares: não há dilatação das vias biliares.
+- Ascite: ausente. || pequena XX moderada XX acentuada quantidade de líquido livre na cavidade.
+- Baço: normal. || esplenomegalia (índice esplênico de XXX; normal até 480).
+
+DEMAIS ACHADOS:
+- Pâncreas: dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.
+- Rins: dimensões normais e espessura do parênquima preservada. Não há cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Alças intestinais: alças do intestino delgado e grosso sem particularidades ao método.
+- Peritôneo e retroperitôneo: ausência de linfonodomegalias.
+- Vasos: aorta e veia cava inferior de calibre e morfologia habitual.
+- Bexiga: sem particularidades ao método.
+- Demais estruturas pélvicas: sem particularidades ao método.
+- Partes moles e estruturas ósseas: sem alterações significativas.
+
+Comparação: Não há exames anteriores disponíveis para comparação.
+
+Conclusão:
+Sinais de hepatopatia crônica.
+XXX Lesão hepática com sinais de tratamento (LR-TR XXX).
+
+-----
+
+14. Abdome total — volumetria gástrica e hérnia hiatal
+TOMOGRAFIA DE ABDOME E PELVE
+(PROTOCOLO VOLUMETRIA GÁSTRICA - HÉRNIA HIATAL)
+
+Técnica: Foram obtidas imagens em aparelho multislice, sem a administração intravenosa do meio de contraste iodado. Foi administrado previamente meio de contraste iodado diluído por via oral.
+
+Análise:
+- Estômago: volume estimado em XXX cm³.
+- Hérnia hiatal: volume estimado em XXX cm³.
+- Hiato diafragmático: medindo XXX x XXX cm (laterolateral x anteroposterior).
+- Transição esofagogástrica: distância ao hiato esofágico de XXX cm.
+- Diafragma: espessura ao nível do hiato de XXX cm.
+- Alças delgadas: contrastadas, sem particularidades.
+- Fístulas ou coleções: ausentes.
+- Gordura periepigástrica: preservada.
+
+ACHADOS ADICIONAIS:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: não há lesões focais ou alterações difusas.
+- Vias biliares: não há dilatação das vias biliares intra ou extra-hepáticas.
+- Pâncreas: dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.
+- Baço: normal.
+- Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Peritôneo e retroperitôneo: ausência de linfonodomegalias ou líquido livre.
+- Vasos: aorta, veia cava inferior e veia porta de calibre e morfologia habitual.
+- Bexiga: sem particularidades ao método.
+- Demais estruturas pélvicas: sem particularidades ao método.
+- Partes moles e estruturas ósseas: sem alterações significativas.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+15. Abdome total — volumetria gástrica (gastroplastia)
+TOMOGRAFIA DE ABDOME E PELVE
+(PROTOCOLO VOLUMETRIA GÁSTRICA)
+
+Técnica: Foram obtidas imagens em aparelho multislice, sem XX com uso do contraste intravenoso. Administrado previamente meio de contraste iodado diluído por via oral.
+
+Análise:
+- Gastroplastia: sinais de gastroplastia redutora.
+- Anastomose gastrojejunal: pérvia, sem XX com anel.
+- Reservatório gástrico (pouch): volume estimado em XXX cm³.
+- Herniação do pouch pelo hiato diafragmático: ausente. || presente.
+- Alças delgadas: contrastadas, sem particularidades.
+- Fístulas ou coleções: ausentes.
+
+DEMAIS ACHADOS:
+- Transição toracoabdominal: bases pulmonares de aspecto preservado.
+- Fígado: de contornos regulares e atenuação preservada.
+- Vias biliares: intra e extra-hepáticas sem dilatações.
+- Pâncreas: de dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.
+- Baço: normal.
+- Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Peritônio e retroperitônio: não se observam linfonodomegalias. Ausência de líquido livre.
+- Vasos: aorta abdominal com calibre normal.
+- Estruturas pélvicas: bexiga com moderada XX pequena repleção. Demais estruturas pélvicas sem particularidades ao método.
+- Partes moles e estruturas ósseas: sem alterações evidentes.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+16. Abdome total — doador hepático
+TOMOGRAFIA COMPUTADORIZADA DE ABDOME E PELVE
+
+Técnica: Aquisição helicoidal multislice, sem XX com a administração endovenosa do meio de contraste iodado. Protocolo dirigido para avaliação de candidato a doador hepático.
+
+Análise:
+- Fígado: de contornos regulares e atenuação homogênea. Volume hepático total estimado em XXX cm³; volume do lobo direito de XXX cm³; volume do lobo esquerdo de XXX cm³.
+
+VASCULARIZAÇÃO:
+- Artérias hepáticas: artéria hepática comum originando-se do tronco celíaco e ramificando-se em artérias hepáticas direita e esquerda, sem estenoses ou aneurismas. Extensão da artéria hepática direita de XXX cm. A artéria que irriga o segmento IV origina-se da artéria hepática direita XX esquerda.
+- Variações anatômicas arteriais: ausentes. || artéria hepática esquerda acessória originada da artéria gástrica esquerda. || origem precoce da artéria hepática direita, que tem extensão de XXX cm. || artéria hepática direita originada da artéria mesentérica superior, com extensão de XXX cm.
+- Veias hepáticas: pérvias.
+XXX Veia hepática originária do segmento XXX, com calibre de XXX cm, drenando na veia hepática média a cerca de XXX cm do seu óstio na veia cava inferior.
+XXX Veia hepática acessória inferior drenando diretamente na veia cava inferior, com calibre de XXX cm.
+- Vias biliares: intra e extra-hepáticas sem dilatações.
+
+DEMAIS ACHADOS:
+- Pâncreas: de dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.
+- Baço: normal.
+- Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Alças intestinais: alças do intestino delgado e grosso sem particularidades ao método.
+- Peritônio e retroperitônio: não se observam linfonodomegalias. Ausência de líquido livre.
+- Vasos: aorta abdominal com calibre normal. Veias cava inferior, porta e hepáticas pérvias.
+- Estruturas pélvicas: bexiga com repleção parcial, sem particularidades.
+- Partes moles e estruturas ósseas: sem alterações evidentes.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+17. Abdome total — doador renal
+TOMOGRAFIA DO ABDOME TOTAL
+(PROTOCOLO PARA DOADOR RENAL)
+
+Técnica: Helicoidal multislice, sem XX com meio de contraste iodado endovenoso. Foi realizado o fracionamento da injeção do contraste com aquisição única, visando a redução da dose de radiação.
+
+Análise:
+- Rins: tópicos, de dimensões e contornos normais. Rim direito medindo XXX x XXX x XXX cm; rim esquerdo medindo XXX x XXX x XXX cm. Parênquima com boa espessura e atenuação preservada.
+
+VASOS RENAIS:
+- Artérias renais: únicas, pérvias e com calibres normais.
+- Veia renal direita: única, pérvia e anatômica, com comprimento de XXX cm.
+- Veia renal esquerda: única, pérvia e anatômica, com comprimento de XXX cm.
+- Sistema coletor: sistemas pielocalicinais de morfologia normal, sem dilatações ou variações anatômicas. Ausência de cálculos. Ureteres com trajetos e calibres normais.
+
+DEMAIS ACHADOS:
+- Fígado: de contornos regulares e atenuação preservada.
+- Vias biliares: intra e extra-hepáticas sem dilatações.
+- Pâncreas: de dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.
+- Baço: normal.
+- Adrenais: sem nódulos.
+- Alças intestinais: alças do intestino delgado e grosso sem particularidades ao método.
+- Peritônio e retroperitônio: não se observam linfonodomegalias. Ausência de líquido livre.
+- Vasos: aorta abdominal com calibre normal. Veias cava inferior, porta e hepáticas pérvias.
+- Estruturas pélvicas: bexiga com moderada repleção, sem particularidades.
+- Partes moles e estruturas ósseas: sem alterações evidentes.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+18. Colonoscopia virtual
+COLONOSCOPIA VIRTUAL (COLONOGRAFIA POR TC)
+
+- Indicação: colonoscopia convencional (óptica) incompleta. || rastreamento.
+
+Técnica: Multislice, após preparo intestinal e insuflação cólica, sem XX com administração de contraste iodado endovenoso. Realizadas reconstruções para avaliação endoluminal do cólon.
+
+Análise:
+- Cólon: visualizado em toda a sua extensão, com calibre, distensibilidade e haustrações preservados. Reto com aspecto morfológico habitual ao método. Não se caracterizam pólipos, lesões estenosantes ou infiltrativas.
+XXX Redundâncias cólicas, principalmente no sigmoide e no cólon direito.
+XXX Divertículos cólicos, com predomínio no XXX.
+XXX Formação polipoide séssil XX pediculada XX plana de XXX mm no cólon XXX.
+XXX Lesão estenosante com extensão aproximada de XXX cm no cólon XXX.
+- Demais achados (extracolônicos): sem alterações significativas.
+
+Conclusão:
+Exame nos limites da normalidade.
+XXX Diverticulose cólica.
+
+Obs.: A colonoscopia virtual (colonografia por TC) está incluída nas diretrizes de rastreamento de pólipos e câncer colorretal de diversas sociedades médicas internacionais, incluindo a American Cancer Society e a US Preventive Services Task Force (USPSTF). O objetivo primário do método é a pesquisa de lesões polipoides com dimensões a partir de 6 mm. Não faz parte do seu escopo a detecção de micropólipos (abaixo de 5 mm), clinicamente não significativos em um contexto de rastreamento populacional, bem como a detecção de hemorroidas, úlceras, telangiectasias ou alterações inflamatórias da mucosa. A avaliação das estruturas extracolônicas é limitada neste protocolo tomográfico.
+Referências: US Preventive Services Task Force. Screening for colorectal cancer: recommendation statement. JAMA. 2016;315:2564-75. de Haan MC, et al. CT colonography: accuracy, acceptance, safety and position in organised population screening. Gut. 2015;64:342-50.
+
+-----
+
+19. Pelve feminina
+TOMOGRAFIA COMPUTADORIZADA DE PELVE
+
+Técnica: Obtidas imagens axiais por metodologia multislice, sem XX com a injeção intravenosa do meio de contraste.
+
+Análise:
+- Bexiga: boa repleção, paredes regulares e conteúdo homogêneo.
+- Útero: dimensões e contornos preservados.
+- Ovários: de dimensões e contornos preservados.
+- Peritôneo e retroperitôneo: ausência de linfonodomegalias ou líquido livre.
+- Demais estruturas pélvicas: sem particularidades.
+- Partes moles e estruturas ósseas: sem alterações significativas.
+
+Comparação: Não há exames anteriores disponíveis para comparação.
+
+Conclusão:
+Exame dentro dos padrões da normalidade.
+
+-----
+
+20. Pelve masculina
+TOMOGRAFIA COMPUTADORIZADA DE PELVE
+
+Técnica: Obtidas imagens axiais por metodologia multislice, sem XX com a injeção intravenosa do meio de contraste.
+
+Análise:
+- Bexiga: boa repleção, paredes regulares e conteúdo homogêneo.
+- Próstata: dimensões e contornos preservados.
+- Vesículas seminais: sem particularidades.
+- Peritôneo e retroperitôneo: ausência de linfonodomegalias ou líquido livre.
+- Demais estruturas pélvicas: sem particularidades.
+- Partes moles e estruturas ósseas: sem alterações significativas.
+
+Comparação: Não há exames anteriores disponíveis para comparação.
+
+Conclusão:
+Exame dentro dos padrões da normalidade.
+
+-----
+
+21. Tórax — com contraste
+TOMOGRAFIA COMPUTADORIZADA DO TÓRAX
+
+Técnica: Helicoidal multislice, com meio de contraste iodado endovenoso.
+
+Análise:
+- Vasos: aorta e tronco pulmonar com calibres externos preservados.
+- Mediastino: não se observam linfonodomegalias.
+- Traqueia e árvore brônquica: de calibres normais.
+- Pulmões: com atenuação preservada.
+- Espaços pleurais: ausência de derrame pleural. Não há pneumotórax.
+- Partes moles e estruturas ósseas: sem particularidades ao método.
+- Transição toracoabdominal: sem particularidades.
+- Transição cervicotorácica: sem particularidades.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+22. Tórax — sem contraste
+TOMOGRAFIA COMPUTADORIZADA DO TÓRAX
+
+Técnica: Helicoidal multislice, sem meio de contraste.
+
+Análise:
+- Vasos: aorta e tronco pulmonar com calibres externos preservados.
+- Mediastino: não se observam linfonodomegalias.
+- Traqueia e árvore brônquica: de calibres normais.
+- Pulmões: com atenuação preservada.
+- Espaços pleurais: ausência de derrame pleural. Não há pneumotórax.
+- Partes moles e estruturas ósseas: sem particularidades ao método.
+- Transição toracoabdominal: sem particularidades.
+- Transição cervicotorácica: sem particularidades.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+23. Tórax — TEP
+ANGIOTOMOGRAFIA COMPUTADORIZADA DO TÓRAX
+
+Técnica: Helicoidal multislice, durante a injeção endovenosa do meio de contraste iodado.
+
+Análise:
+- Vasos: tronco da artéria pulmonar e ramos pérvios, com calibre preservado, sem falhas de enchimento. Não há sinais de sobrecarga hemodinâmica das câmaras cardíacas direitas (relação VD / VE preservada). Aorta com calibre normal.
+- Mediastino: não se observam linfonodomegalias.
+- Traqueia e árvore brônquica: de calibres normais.
+- Pulmões: com atenuação preservada.
+- Espaços pleurais: ausência de derrame pleural. Não há pneumotórax.
+- Partes moles e estruturas ósseas: sem particularidades ao método.
+- Transição toracoabdominal: sem alterações evidentes.
+- Transição cervicotorácica: sem particularidades.
+
+Comparação: Estudos anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame negativo para tromboembolismo pulmonar.
+
+-----
+
+24. Tórax — COVID-19
+TOMOGRAFIA COMPUTADORIZADA DO TÓRAX
+
+Técnica: Helicoidal multislice, sem XX com meio de contraste iodado endovenoso.
+
+Análise:
+- Vasos: aorta e tronco pulmonar com calibres externos preservados.
+- Mediastino: não se observam linfonodomegalias.
+- Traqueia e árvore brônquica: de calibres normais.
+- Pulmões: com atenuação preservada. || opacidades em vidro fosco esparsas pelos pulmões, algumas com morfologia arredondada, predominantemente periféricas. Não há francas consolidações alveolares. || opacidades em vidro fosco com pequenos focos consolidativos de permeio, dispersas pelos pulmões.
+- Espaços pleurais: ausência de derrame pleural. Não há pneumotórax.
+- Partes moles e estruturas ósseas: sem particularidades ao método.
+- Transição toracoabdominal: sem alterações evidentes.
+- Transição cervicotorácica: sem particularidades.
+
+Comparação: Estudos anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem alterações significativas.
+XXX A tomografia de tórax pode não apresentar alterações, principalmente nas primeiras 48 horas após o início dos sintomas de infecção viral.
+XXX Alterações pulmonares bilaterais de aspecto inflamatório, acometendo menos de 25% do parênquima. Considerar pneumonia viral.
+XXX Alterações pulmonares bilaterais de aspecto inflamatório, acometendo entre 25% e 50% do parênquima. Considerar pneumonia viral.
+XXX Alterações pulmonares bilaterais de aspecto inflamatório, acometendo mais de 50% do parênquima. Considerar pneumonia viral.
+XXX Achados não sugestivos de pneumonia viral.
+
+-----
+
+25. Tórax, abdome e pelve
+TOMOGRAFIA COMPUTADORIZADA DE TÓRAX, ABDOME E PELVE
+
+Técnica: Helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado.
+
+Análise:
+- Vasos: aorta e tronco pulmonar com calibres externos preservados.
+- Mediastino: não se observam linfonodomegalias.
+- Traqueia e árvore brônquica: de calibres normais.
+- Pulmões: com atenuação preservada.
+- Espaços pleurais: ausência de derrame pleural. Não há pneumotórax.
+- Fígado: de morfologia e atenuação preservada.
+- Vias biliares: intra e extra-hepáticas sem dilatações.
+- Pâncreas: de dimensões normais e atenuação preservada. Não há dilatação do ducto principal.
+- Baço: normal.
+- Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Alças intestinais: alças do intestino delgado e grosso sem particularidades.
+- Peritônio e retroperitônio: não há linfonodomegalias ou líquido livre.
+- Vasos: aorta abdominal com calibre normal. Veias cava inferior, porta e hepáticas pérvias.
+- Estruturas pélvicas: bexiga com conteúdo homogêneo. Demais estruturas pélvicas sem particularidades ao método.
+- Partes moles e estruturas ósseas: sem alterações evidentes.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+26. Tórax, abdome e pelve — RECIST 1.1
+TOMOGRAFIA DE TÓRAX, ABDOME E PELVE
+(LAUDO ESTRUTURADO)
+
+Técnica: Foram obtidas imagens em aparelho multislice antes e após a administração intravenosa do meio de contraste iodado. As imagens foram analisadas segundo o protocolo RECIST 1.1 (Response Evaluation Criteria in Solid Tumors).
+Data do estudo baseline: XXX
+
+LESÕES-ALVO:
+- Lesão-alvo 1: XXX
+XXX Lesão-alvo 2: XXX
+XXX Lesão-alvo 3: XXX
+XXX Lesão-alvo 4: XXX
+XXX Lesão-alvo 5: XXX
+- Soma dos diâmetros das lesões-alvo: XXX cm.
+
+LESÕES NÃO-ALVO:
+- Lesão não-alvo 1: XXX
+XXX Lesão não-alvo 2: XXX
+XXX Lesão não-alvo 3: XXX
+XXX Lesão não-alvo 4: XXX
+XXX Lesão não-alvo 5: XXX
+
+- Novas lesões: estudo baseline. || não surgiram novas lesões. || surgiram novas lesões: XXX
+
+ACHADOS ADICIONAIS — TÓRAX:
+- Vasos: aorta e tronco pulmonar com calibres externos preservados.
+- Mediastino: não se observam linfonodomegalias.
+- Traqueia e árvore brônquica: de calibres normais.
+- Pulmões: com atenuação preservada.
+- Espaços pleurais: ausência de derrame pleural. Não há pneumotórax.
+- Partes moles e estruturas ósseas: sem particularidades ao método.
+- Transição cervicotorácica: sem particularidades.
+
+ACHADOS ADICIONAIS — ABDOME:
+- Fígado: não há lesões focais ou alterações difusas.
+- Vias biliares: não há dilatação das vias biliares intra ou extra-hepáticas.
+- Pâncreas: dimensões normais e atenuação preservada. Não há dilatação do ducto pancreático principal.
+- Baço: normal.
+- Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
+- Adrenais: sem nódulos.
+- Peritôneo e retroperitôneo: ausência de linfonodomegalias ou líquido livre.
+- Vasos: aorta, veia cava inferior e veia porta de calibre e morfologia habitual.
+- Bexiga: sem particularidades ao método.
+- Demais estruturas pélvicas: sem particularidades ao método.
+- Partes moles e estruturas ósseas: sem alterações significativas.
+
+Conclusão:
+Avaliação segundo os critérios RECIST 1.1: XXX
+XXX Estudo baseline.
+XXX Resposta completa.
+XXX Resposta parcial.
+XXX Doença estável.
+XXX Progressão de doença.
+
+-----
+
+27. Aorta torácica e abdominal — TAVI
+ANGIOTOMOGRAFIA DE AORTA TORÁCICA E ABDOMINAL
+(PROTOCOLO TAVI)
+
+Técnica: Aquisição helicoidal multislice com a injeção endovenosa do meio de contraste iodado. Realizadas reformatações multiplanares e tridimensionais (3D).
+
+Análise:
+- Coração: de dimensões normais. || aumentado à custa das câmaras esquerdas.
+XXX Hipertrofia ventricular esquerda.
+- Valva aórtica: trivalvular, com calcificação moderada XX importante.
+- Via de saída do ventrículo esquerdo: com calcificação discreta XX moderada.
+- Coronárias: ateromatose discreta XX exuberante.
+- Aorta torácica: com trajeto e calibre preservados. Paredes lisas e regulares, sem placas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas. || com trajeto e calibre preservados. Ateromatose discreta XX difusa, caracterizada por placas parietais parcialmente calcificadas esparsas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas.
+XXX Associam-se discretas irregularidades da superfície luminal, indicativas de ulcerações rasas.
+- Ramos supra-aórticos: com trajeto e calibre preservados.
+- Tronco celíaco e seus ramos: com trajeto e calibre preservados. || com discreta estenose na sua origem por placa ateromatosa. || com discreta estenose na sua origem por provável compressão promovida pelo ligamento arqueado do diafragma, com leve ectasia a jusante.
+- Artérias mesentéricas superior e inferior: com trajeto e calibre preservados.
+- Artérias renais: únicas, com trajeto e calibre preservados, sem estenoses significativas.
+- Artérias ilíacas: comuns, internas e externas com trajeto e calibre preservados, sem estenoses significativas ou dilatações aneurismáticas.
+
+MEDIDAS:
+- Anel valvar aórtico: diâmetros de XXX x XXX mm (média de XXX mm); perímetro de XXX mm; área de XXX mm².
+- Altura dos óstios coronários em relação ao anel valvar: direito XXX mm; esquerdo XXX mm.
+- Seio de Valsalva: XXX x XXX x XXX mm.
+- Junção sinotubular: XXX mm.
+- Segmento tubular ascendente: XXX cm.
+- Croça da aorta: XXX cm.
+- Aorta torácica descendente (terço superior): XXX cm.
+- Aorta torácica descendente (terços médio e inferior): XXX cm.
+- Transição toracoabdominal: XXX cm.
+- Aorta abdominal (segmento suprarrenal): XXX cm.
+- Aorta abdominal (segmento infrarrenal): XXX cm.
+- Artéria ilíaca comum direita: XXX cm.
+- Artéria ilíaca comum esquerda: XXX cm.
+- Demais achados: sem outras alterações significativas.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+28. Aorta abdominal
+ANGIOTOMOGRAFIA COMPUTADORIZADA DA AORTA ABDOMINAL
+
+Técnica: Aquisição helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado.
+
+Análise:
+- Aorta abdominal: com trajeto e calibre preservados, paredes lisas e regulares, sem placas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas. || com trajeto e calibre preservados. Ateromatose discreta XX moderada XX acentuada, caracterizada por placas parietais parcialmente calcificadas esparsas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas.
+XXX Associam-se discretas irregularidades da superfície luminal, indicativas de ulcerações rasas.
+XXX Aneurisma fusiforme do segmento infrarrenal da aorta abdominal, que se inicia num plano cerca de XXX cm abaixo da origem da artéria renal direita XX esquerda (mais inferior) e se estende por XXX cm até a bifurcação aórtica. O calibre máximo do aneurisma é de XXX cm. O calibre da aorta é de XXX cm superiormente à dilatação e de XXX cm inferiormente à mesma. O aneurisma apresenta angulação de XXX° em relação ao colo proximal. Há trombose mural ao longo da luz do segmento dilatado, sem XX com sinais de instabilidade.
+XXX No plano da origem das artérias renais, inicia-se sequência de endopróteses metálicas aortobi-ilíacas para tratamento de aneurisma da aorta abdominal infrarrenal. As endopróteses estão pérvias, preservam arquitetura usual, estendem-se até o terço distal das artérias ilíacas comuns e não mostram trombos intraluminais. O saco aneurismático tratado tem contornos regulares, está preenchido por trombos e atinge diâmetro transverso máximo de XXX cm. Não se identifica endoleak.
+- Tronco celíaco e seus ramos: com trajeto e calibre preservados. || com discreta estenose na sua origem por placa ateromatosa. || com discreta estenose na sua origem por provável compressão promovida pelo ligamento arqueado do diafragma, com leve ectasia a jusante.
+XXX Artéria hepática direita é ramo da artéria mesentérica superior (variação anatômica).
+XXX Artéria hepática esquerda acessória é ramo da artéria gástrica esquerda (variação anatômica).
+- Artérias mesentéricas superior e inferior: com trajeto e calibre preservados.
+- Artérias renais: únicas, com trajeto e calibre preservados, sem estenoses significativas.
+- Artérias ilíacas: comuns, internas e externas com trajeto e calibre preservados, sem estenoses significativas ou dilatações aneurismáticas.
+
+DIÂMETROS MÁXIMOS:
+- Transição toracoabdominal: XXX cm.
+- Aorta abdominal (segmento suprarrenal): XXX cm.
+- Aorta abdominal (segmento infrarrenal): XXX cm.
+- Artéria ilíaca comum direita: XXX cm.
+- Artéria ilíaca comum esquerda: XXX cm.
+- Demais achados: sem outras alterações significativas.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+29. Aorta torácica
+ANGIOTOMOGRAFIA COMPUTADORIZADA DA AORTA TORÁCICA
+
+Técnica: Exame realizado com aquisição multislice, sem XX com a injeção intravenosa do meio de contraste iodado.
+
+Análise:
+- Aorta torácica: contornos regulares, com trajeto e calibre preservados. Não há evidências de aneurismas ou dissecções.
+XXX Sinais de ateromatose difusa, caracterizados por espessamento e calcificações parietais.
+XXX Irregularidades da superfície luminal, indicativas de ulcerações.
+XXX Aneurisma fusiforme da aorta torácica, que se inicia cerca de XXX cm após a origem da artéria subclávia esquerda e se estende por cerca de XXX cm. O calibre máximo do aneurisma é de XXX cm. O calibre da aorta é de XXX cm superiormente à dilatação e de XXX cm distalmente. Nota-se trombose mural ao longo da luz do segmento dilatado.
+XXX Controle pós-operatório de correção endovascular de aneurisma da aorta torácica, com colocação de endoprótese metálica. Endoprótese com posicionamento habitual e sem sinais de extravasamento do meio de contraste. O diâmetro máximo do saco aneurismático é de XXX cm.
+XXX Controle pós-operatório de correção de aneurisma da aorta torácica com colocação de prótese, sem sinais de extravasamento. Não são identificadas coleções no leito cirúrgico.
+- Ramos supra-aórticos: com trajeto e calibre preservados.
+
+DIÂMETROS MÁXIMOS:
+- Seio de Valsalva: XXX cm.
+- Aorta ascendente: XXX cm.
+- Croça da aorta: XXX cm.
+- Aorta descendente: XXX cm.
+- Achados adicionais: sem outras alterações significativas.
+
+Comparação: Não há exames anteriores disponíveis para comparação.
+
+Conclusão:
+Exame dentro dos padrões da normalidade.
+
+-----
+
+30. Aorta torácica e abdominal
+ANGIOTOMOGRAFIA COMPUTADORIZADA DA AORTA TORACOABDOMINAL
+
+Técnica: Aquisição helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado.
+
+Análise:
+- Aorta torácica e abdominal: com trajeto e calibre preservados, paredes lisas e regulares, sem placas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas. || com trajeto e calibre preservados. Ateromatose discreta XX moderada XX acentuada, caracterizada por placas parietais parcialmente calcificadas esparsas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas.
+XXX Associam-se discretas irregularidades da superfície luminal, indicativas de ulcerações rasas.
+XXX Aneurisma fusiforme da aorta torácica, que se inicia cerca de XXX cm após a origem da artéria subclávia esquerda, progredindo por XXX cm, até XXX cm acima da emergência do tronco celíaco. O calibre máximo do aneurisma é de XXX cm. O calibre da aorta é de XXX cm superiormente à dilatação e de XXX cm inferiormente à mesma. Há trombose mural ao longo da luz do segmento dilatado, sem XX com sinais de instabilidade.
+XXX Aneurisma fusiforme do segmento infrarrenal da aorta abdominal, que se inicia num plano cerca de XXX cm abaixo da origem da artéria renal direita XX esquerda (mais inferior) e se estende por XXX cm até a bifurcação aórtica. O calibre máximo do aneurisma é de XXX cm. O calibre da aorta é de XXX cm superiormente à dilatação e de XXX cm inferiormente à mesma. O aneurisma apresenta angulação de XXX° em relação ao colo proximal. Há trombose mural ao longo da luz do segmento dilatado, sem XX com sinais de instabilidade.
+XXX Dissecção aórtica crônica, iniciada após a emergência da artéria subclávia esquerda, estendendo-se por XXX. A principal área de comunicação entre as luzes falsa e verdadeira situa-se cerca de XXX cm após a emergência da artéria subclávia esquerda, com diâmetro de XXX cm. Luz falsa pérvia, de maior calibre e com fluxo lento. Ramos viscerais originando-se da luz XXX, sem estenoses.
+XXX Controle pós-operatório de correção endovascular XX aberta de aneurisma da aorta torácica XX abdominal, com colocação de endoprótese XX prótese, íntegra, com posicionamento habitual e sem extravasamento do meio de contraste. O diâmetro máximo do saco aneurismático é de XXX cm. Ausência de coleções junto ao leito cirúrgico.
+- Ramos supra-aórticos: com trajeto e calibre preservados.
+- Tronco celíaco e seus ramos: com trajeto e calibre preservados. || com discreta estenose na sua origem por placa ateromatosa. || com discreta estenose na sua origem por provável compressão promovida pelo ligamento arqueado do diafragma, com leve ectasia a jusante.
+XXX Artéria hepática direita é ramo da artéria mesentérica superior (variação anatômica).
+XXX Artéria hepática esquerda acessória é ramo da artéria gástrica esquerda (variação anatômica).
+- Artérias mesentéricas superior e inferior: com trajeto e calibre preservados.
+- Artérias renais: únicas, com trajeto e calibre preservados, sem estenoses significativas.
+- Artérias ilíacas: comuns, internas e externas com trajeto e calibre preservados, sem estenoses significativas ou dilatações aneurismáticas.
+
+DIÂMETROS MÁXIMOS:
+- Plano valvar: XXX x XXX cm.
+- Seio de Valsalva: XXX x XXX x XXX cm.
+- Junção sinotubular: XXX cm.
+- Segmento tubular ascendente: XXX cm.
+- Croça da aorta: XXX cm.
+- Aorta torácica descendente (terço superior): XXX cm.
+- Aorta torácica descendente (terços médio e inferior): XXX cm.
+- Transição toracoabdominal: XXX cm.
+- Aorta abdominal (segmento suprarrenal): XXX cm.
+- Aorta abdominal (segmento infrarrenal): XXX cm.
+- Artéria ilíaca comum direita: XXX cm.
+- Artéria ilíaca comum esquerda: XXX cm.
+- Demais achados: sem outras alterações significativas.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+31. Aorta abdominal e ramos viscerais
+ANGIOTOMOGRAFIA COMPUTADORIZADA DA AORTA ABDOMINAL E RAMOS VISCERAIS
+
+Técnica: Helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado.
+
+Análise:
+- Aorta: trajeto e calibre preservados, sem estenoses significativas ou dilatações aneurismáticas. Diâmetro máximo de XXX cm.
+- Tronco celíaco: trajeto e calibre preservados, sem estenoses ou dissecções. Artérias hepáticas comum, própria, direita e esquerda, bem como artérias esplênica, pancreatoduodenal e gástrica esquerda com trajeto e calibre preservados. || leve ectasia difusa, sem estenoses ou dissecções. Artérias hepáticas comum, própria, direita e esquerda, bem como artérias esplênica, pancreatoduodenal e gástrica esquerda com trajeto e calibre preservados.
+- Artéria mesentérica superior: trajeto e calibre preservados, bem como seus primeiros ramos, sem dilatações aneurismáticas.
+- Artéria mesentérica inferior: trajeto e calibre preservados.
+- Artérias renais: únicas, com trajeto e calibre preservados, sem estenoses significativas.
+- Artérias ilíacas: ilíacas comuns, internas e externas de trajeto e calibre preservados, sem estenoses significativas ou dilatações aneurismáticas.
+- Achados adicionais: sem outras alterações significativas.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+32. Aorta abdominal e membros inferiores
+ANGIOTOMOGRAFIA COMPUTADORIZADA DA AORTA ABDOMINAL E DOS MEMBROS INFERIORES
+
+Técnica: Aquisição helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado.
+
+Análise:
+- Aorta abdominal: com trajeto e calibre preservados, paredes lisas e regulares, sem placas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas. || com trajeto e calibre preservados. Ateromatose discreta XX moderada XX acentuada, caracterizada por placas parietais parcialmente calcificadas esparsas. Não há estenoses, aneurismas, dissecções ou ulcerações profundas.
+XXX Associam-se discretas irregularidades da superfície luminal, indicativas de ulcerações rasas.
+XXX Aneurisma fusiforme do segmento infrarrenal da aorta abdominal, que se inicia num plano cerca de XXX cm abaixo da origem da artéria renal direita XX esquerda (mais inferior) e se estende por XXX cm até a bifurcação aórtica. O calibre máximo do aneurisma é de XXX cm. O calibre da aorta é de XXX cm superiormente à dilatação e de XXX cm inferiormente à mesma. O aneurisma apresenta angulação de XXX° em relação ao colo proximal. Há trombose mural ao longo da luz do segmento dilatado, sem XX com sinais de instabilidade.
+XXX No plano da origem das artérias renais, inicia-se sequência de endopróteses metálicas aortobi-ilíacas para tratamento de aneurisma da aorta abdominal infrarrenal. As endopróteses estão pérvias, preservam arquitetura usual, estendem-se até o terço distal das artérias ilíacas comuns e não mostram trombos intraluminais. O saco aneurismático tratado tem contornos regulares, está preenchido por trombos e atinge diâmetro transverso máximo de XXX cm. Não se identifica endoleak.
+- Tronco celíaco e seus ramos: com trajeto e calibre preservados. || com discreta estenose na sua origem por placa ateromatosa. || com discreta estenose na sua origem por provável compressão promovida pelo ligamento arqueado do diafragma, com leve ectasia a jusante.
+XXX Artéria hepática direita é ramo da artéria mesentérica superior (variação anatômica).
+XXX Artéria hepática esquerda acessória é ramo da artéria gástrica esquerda (variação anatômica).
+- Artérias mesentéricas superior e inferior: com trajeto e calibre preservados.
+- Artérias renais: únicas, com trajeto e calibre preservados, sem estenoses significativas.
+- Artérias ilíacas: comuns, internas e externas com trajeto e calibre preservados, sem estenoses significativas ou dilatações aneurismáticas.
+- Membro inferior direito: artérias femorais comum, superficial e profunda pérvias, com calibre preservado. Artéria poplítea, tronco tibiofibular, tibiais anterior e posterior, fibular e pediosa pérvias, sem alterações significativas de calibre.
+- Membro inferior esquerdo: artérias femorais comum, superficial e profunda pérvias, com calibre preservado. Artéria poplítea, tronco tibiofibular, tibiais anterior e posterior, fibular e pediosa pérvias, sem alterações significativas de calibre.
+
+DIÂMETROS MÁXIMOS:
+- Transição toracoabdominal: XXX cm.
+- Aorta abdominal (segmento suprarrenal): XXX cm.
+- Aorta abdominal (segmento infrarrenal): XXX cm.
+- Artéria ilíaca comum direita: XXX cm.
+- Artéria ilíaca comum esquerda: XXX cm.
+- Demais achados: sem outras alterações significativas.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
+
+-----
+
+33. Membro superior
+ANGIOTOMOGRAFIA COMPUTADORIZADA DO MEMBRO SUPERIOR XX
+
+Técnica: Aquisição helicoidal multislice, sem XX com a injeção endovenosa do meio de contraste iodado.
+
+Análise:
+- Paredes arteriais: lisas e regulares, sem placas. || ateromatose discreta XX difusa, caracterizada por placas parietais parcialmente calcificadas esparsas.
+XXX Associam-se discretas irregularidades da superfície luminal, indicativas de ulcerações rasas.
+- Ramos supra-aórticos (porções proximais inclusas): com trajeto e calibre preservados, sem estenoses significativas.
+- Artéria axilar: pérvia, com trajeto e calibre preservados, sem estenoses significativas.
+- Artéria braquial: pérvia, com trajeto e calibre preservados, sem estenoses significativas.
+- Artéria radial: pérvia, com trajeto e calibre preservados, sem estenoses significativas.
+- Artéria ulnar: pérvia, com trajeto e calibre preservados, sem estenoses significativas.
+- Veias axilar, braquiais, cefálica, basílica, radiais e ulnares: pérvias, com calibres normais, sem tromboses.
+- Demais achados: sem outras alterações significativas.
+
+Comparação: Exames anteriores não disponíveis para a análise.
+
+Conclusão:
+Exame sem achados significativos.
 
 -----

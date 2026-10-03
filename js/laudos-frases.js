@@ -79,6 +79,10 @@ const LAU_FRASE_ORGAOS = [
 ];
 
 const LAU_FRASES = [
+  /* ---------------- ACHADO GERAL: ateromatose sem estenose (Doppler arterial dos MMII; marcado no quadro do topo do laudo) ---------------- */
+  {o:'artgeral', n:'Ateromatose sem estenoses significativas', m:'add',
+   t:'Ateromatose leve XX moderada XX difusa no leito arterial estudado, com placas parietais parcialmente calcificadas esparsas, sem determinar estenoses hemodinamicamente significativas.',
+   c:'Ateromatose no leito arterial estudado sem determinar estenoses hemodinamicamente significativas.'},
   /* ---------------- FÍGADO ---------------- */
   {o:'figado', s:1, n:'Hepatomegalia', m:'sub',
    t:'com dimensões aumentadas (lobo direito medindo XXX cm), contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea.',
@@ -796,6 +800,7 @@ const LAU_FRASE_ORGAOS_MMG = [
 function lauFraseOrgao(label, metodo){
   const n = String(label||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
   if(metodo==='dmo') return [];
+  if(metodo==='tcg') return typeof LAU_FRASE_ORGAOS_TC!=='undefined' ? LAU_FRASE_ORGAOS_TC.filter(o=>o[1].test(n)).map(o=>o[0]) : [];   // TC (exceto OCT)
   if(metodo==='tc' && typeof LAU_FRASE_ORGAOS_OCT!=='undefined') return LAU_FRASE_ORGAOS_OCT.filter(o=>o[1].test(n)).map(o=>o[0]);
   return (metodo==='mmg' ? LAU_FRASE_ORGAOS_MMG : LAU_FRASE_ORGAOS).filter(o=>o[1].test(n)).map(o=>o[0]);
 }

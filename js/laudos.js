@@ -374,6 +374,7 @@ const LAU_ABD_ITEMS = [
      };
      const conc=[];
      const both=(fn)=>{ const d=fn('D'), e=fn('E'); return d||e ? lauSides(d,e) : null; };
+     ['D','E'].forEach(L=>{ if(s['est'+L]!=='cx' && s['est'+L]!=='nef' && s['dim'+L]!=='n'){ const c=lauHas(s['comp'+L])?` (${lauN(s['comp'+L])} cm)`:''; conc.push(`${L==='D'?'Rim direito':'Rim esquerdo'} de dimensões ${s['dim'+L]==='red'?'reduzidas':'aumentadas'}${c}.`); } });
      let x;
      if(s.estD==='cx') conc.push('Status pós-nefrectomia direita.');
      if(s.estE==='cx') conc.push('Status pós-nefrectomia esquerda.');
@@ -920,9 +921,9 @@ function lauHasPh(str){ return lauTpl(str).n>0; }
 function lauBuildModel(mk){
   const used={};
   const items = mk.items.map(mi=>{
-    const smap = mk.metodo==='mmg' ? LAU_STRUCT_LABELS_MMG : mk.metodo==='dmo' ? (typeof LAU_STRUCT_LABELS_DMO!=='undefined'?LAU_STRUCT_LABELS_DMO:{}) : LAU_STRUCT_LABELS;
+    const smap = mk.metodo==='mmg' ? LAU_STRUCT_LABELS_MMG : mk.metodo==='dmo' ? (typeof LAU_STRUCT_LABELS_DMO!=='undefined'?LAU_STRUCT_LABELS_DMO:{}) : mk.metodo==='tc' ? {} : LAU_STRUCT_LABELS;   // TC: itens de texto (os estruturados de US usam termos de US)
     const sk = smap[lauNorm(mi.label)] || null;
-    const base = { k:mi.k, label:mi.label, grp:mi.grp||'', dash:mi.dash, normal:mi.text, opts:mi.opts||[] };
+    const base = { k:mi.k, label:mi.label, grp:mi.grp||'', dash:mi.dash, normal:mi.text, opts:mi.opts||[], alts:mi.alts||null };
     if(sk && !used[sk]){
       used[sk]=1;
       const d=LAU_STRUCT[sk];
@@ -987,7 +988,11 @@ function lauConcNormalLines(m){
 }
 function lauItemLabel(m,it){ const u=(lauMcfgPeek(m.id).items||{})[it.k]||{}; const l=lauHas(u.label)?u.label:it.label;
   return lauMgUni(m) && /^regiões axilares$/i.test(l||'') ? 'Região axilar '+(state.lau.lado==='d'?'direita':'esquerda') : l; }
-function lauItemNormal(m,it){ const u=(lauMcfgPeek(m.id).items||{})[it.k]||{}; const t=lauHas(u.normal)?u.normal:it.normal; return lauMgUni(m) ? lauMgUniTxt(t) : t; }
+function lauItemNormal(m,it){
+  // variação da máscara escolhida no painel (alternativas "a || b")
+  const L=state.lau, sv = it.alts && L && L.model===m.id && L.v && L.v[it.k];
+  if(sv && sv.__alt>0 && it.alts[sv.__alt]) return it.alts[sv.__alt];
+  const u=(lauMcfgPeek(m.id).items||{})[it.k]||{}; const t=lauHas(u.normal)?u.normal:it.normal; return lauMgUni(m) ? lauMgUniTxt(t) : t; }
 /* usado dentro do build dos rins: texto normal já preenchido */
 function LAU_NORMAL(k){
   const L=lauCur(); const m=L&&lauModelo(L.model); if(!m) return '';
@@ -1022,7 +1027,7 @@ function lauCur(){ return state.lau && lauModelo(state.lau.model) ? state.lau : 
 function lauBuild(m, it){
   const s=state.lau.v[it.k];
   if(it.generic) return {txt: lauHas(s.alt)?s.alt.trim():null, conc: lauHas(s.conc)?[lauFrase(s.conc)]:[]};
-  return it.build(s);
+  return it.build(typeof lauAutoEstado==='function' ? lauAutoEstado(m, it, s) : s);   // regras automáticas pelas medidas
 }
 /* conclusão de uma frase da biblioteca: {n} = valor do campo n do texto */
 function lauFraseConcHTML(f, vals, lbl){
@@ -1417,11 +1422,13 @@ function lauExceto(txt, les){
 }
 function lauItemHTML(m, it){
   if(m.oct && typeof lauOctItemOculto==='function' && lauOctItemOculto(m,it)) return '';
-  const L=state.lau, s=L.v[it.k], r=lauBuild(m,it), g=lauGen();
+  const L=state.lau, s=(m.oct && typeof lauOctShadow==='function') ? lauOctShadow(m,it) : L.v[it.k], r=lauBuild(m,it), g=lauGen();
   if(lauItemOculto(m,it)) return '';
   const lblRaw = lauLblLado(m, lauItemLabel(m,it));
   const lbl = lblRaw ? lauFill(lblRaw, s.__v.l, true)+':' : '';
   let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : r.html ? r.txt : esc(r.txt).replace(/\n/g,'<br>');
+  if(r.txt==null && it.generic && typeof lauAutoTxt==='function') txt = lauAutoTxt(m, it, txt);
+  if(r.txt==null && it.generic) txt = lauAteroTxt(m, txt);
   const subs = lauFraseLines(s.__f, s.__v, 'sub');
   if(subs.length){
     const multi = (s.__f||[]).filter(id=>{ const f=lauFI(id); return f && lauKindTE(f); }).length;
@@ -1522,11 +1529,16 @@ function lauMgMergeConc(lines){
 }
 function lauConcHTML(m){
   const g=lauGen(); const f=lauConcs(m); const L=state.lau;
+  const au = (typeof lauAutoConcs==='function' && !m.semRot && m.metodo!=='mmg') ? lauAutoConcs(m) : {out:[], reps:[]};
+  au.out.forEach(t=>f.push({html:esc(t)}));
+  const cv = (x)=> typeof lauAutoConcVals==='function' ? lauAutoConcVals(m, x.c.text, L.conc.v['n'+x.i]) : L.conc.v['n'+x.i];
+  const crep = (h)=> au.reps.reduce((a,[re,b])=>a.replace(re,b), h);
   const norm = lauConcNormalLines(m).map((c,i)=>({c, i, ph:lauHasPh(c.text)}));
   let lines;
-  if(!f.length) lines = norm.map(x=>({html:lauFill(x.c.text, L.conc.v['n'+x.i], true), dash:x.c.dash}));
+  if(!f.length && !au.reps.length) lines = norm.map(x=>({html:lauFill(x.c.text, cv(x), true), dash:x.c.dash}));
+  else if(!f.length) lines = norm.map(x=>({html:crep(lauFill(x.c.text, cv(x), true)), dash:x.c.dash})).filter(x=>!/sem alterações|sem achados|dentro dos par/i.test(x.html) || !au.reps.length);
   else {
-    const keep = norm.filter(x=>x.ph).map(x=>({html:lauFill(x.c.text, L.conc.v['n'+x.i], true), dash:x.c.dash}));
+    const keep = norm.filter(x=>x.ph).map(x=>({html:crep(lauFill(x.c.text, cv(x), true)), dash:x.c.dash}));
     const tail = norm.filter(x=>!x.ph && /^Restante/i.test(x.c.text)).map(x=>({html:esc(x.c.text), dash:x.c.dash}));
     lines = keep.concat(f.map(x=>({html:x.html,dash:true})), tail);
   }
@@ -1616,7 +1628,9 @@ function lauPatch(k){
       const ref=ed.querySelector('[data-k="concT"]'); ref?ed.insertBefore(p,ref):ed.appendChild(p);
     }
     const h=lauItemHTML(m,it); p.innerHTML = h; p.hidden = !h; if(h) lauFlash(p);
-    if(m.oct) m.items.forEach(o=>{ if(o.k===k) return; const q=ed.querySelector(`[data-k="${o.k}"]`); if(!q) return; const hh=lauItemHTML(m,o); if(q.innerHTML!==hh){ q.innerHTML=hh; q.hidden=!hh; } });   // frases que ocultam itens do mesmo olho
+    if(typeof lauAutoStUpd==='function') lauAutoStUpd(m,it);
+    const outros = m.oct || (typeof lauAutoAfetaOutros==='function' && lauAutoAfetaOutros(m,it));
+    if(outros) m.items.forEach(o=>{ if(o.k===k) return; const q=ed.querySelector(`[data-k="${o.k}"]`); if(!q) return; const hh=lauItemHTML(m,o); if(q.innerHTML!==hh){ q.innerHTML=hh; q.hidden=!hh; } });   // frases que ocultam itens do mesmo olho
   }
   lauPatchConc(); lauSaveEd();
 }
@@ -1766,6 +1780,24 @@ function lauOpt(k, i){
   if(k==='__conc'){ L.conc.o[i]=!L.conc.o[i]; lauRenderLeft(); lauPatchConc(); lauSaveEd(); return; }
   const s=L.v[k]; s.__o[i]=!s.__o[i]; lauRenderLeft(); lauPatch(k);
 }
+/* rótulo curto do botão de cada alternativa: começo do texto (sem campos) */
+function lauAltRotulo(a, todas){
+  let t=String(a).replace(/\bX{2,3}\b/g,'…').replace(/\s+/g,' ').trim();
+  // começo igual em todas as opções (ex.: "Realizados cortes axiais …"): mostra só o que muda
+  if(todas && todas.length>1){
+    const ws=todas.map(x=>String(x).split(/\s+/)); let n=0;
+    while(ws.every(w=>w[n]!=null && w[n]===ws[0][n])) n++;
+    if(n>=2) t='… '+t.split(/\s+/).slice(n).join(' ');
+  }
+  t=t.split(/(?<=[.;])\s/)[0].replace(/[.;]$/,'');
+  return t.length>48 ? t.slice(0,46).replace(/\s+\S*$/,'')+'…' : t;
+}
+function lauAltSet(k, i){
+  const L=lauCur(); if(!L) return; const s=L.v[k]; if(!s) return;
+  if((s.__alt||0)===i) return;
+  s.__alt=i; s.__v.n=[];   // os campos mudam de posição entre as variações
+  lauRenderLeft(); lauPatch(k); lauUpdSum(k);
+}
 function lauItemReset(k){
   const L=lauCur(); if(!L) return;
   const it=lauModelo(L.model).items.find(x=>x.k===k);
@@ -1855,6 +1887,7 @@ function lauSum(m,it){
   const s=state.lau.v[it.k]; const r=lauBuild(m,it);
   if(r.sum) return {cls: /Preencher/.test(r.sum)?'ok':'alt', t:r.sum};
   const opt=(s.__o||[]).some(Boolean) || (s.__f||[]).length>0;
+  if(r.txt==null && !r.conc.length && !opt && it.alts && s.__alt>0) return {cls:'alt', t:lauAltRotulo(it.alts[s.__alt])};
   if(r.txt==null && !r.conc.length && !opt){
     const filled = Object.values(s.__v||{}).some(a=>(a||[]).some(lauHas));
     return filled ? {cls:'ok', t:'Medidas preenchidas'} : {cls:'ok', t:'Normal'};
@@ -1913,7 +1946,10 @@ function lauFrasesPanel(k, org, list, bag, estrut){
   const sel = list.map(id=>{ const f=lauFI(id); const d=bag['d'+id]||{}; const fi=parseInt(id,10);
     seq[fi]=(seq[fi]||0)+1; const num = nOf(fi)>1 ? ' '+seq[fi] : '';
     const qtd = f.q ? (d.qtd||'1') : null;
-    const qh = f.q ? `<div class="lau-row"><div class="lau-rl">Quantidade</div><div class="lau-chips">${[['1','Único'],['n','Vários semelhantes'],['d','Diferentes entre si']].map(o=>`<button type="button" class="ti-ftog ${qtd===o[0]?'on':''}" onclick="lauDescSet('${k}','${id}','qtd','${o[0]}')">${o[1]}</button>`).join('')}</div></div>` : '';
+    const octM = (()=>{ const L=state.lau, m=L&&lauModelo(L.model); return m&&m.oct; })();
+    const olhoAtual = octM ? lauOctOlhoDe(d) : null;
+    const oh = octM ? `<div class="lau-row"><div class="lau-rl">Olho afetado${olhoAtual?'':' <mark class="lau-ph">escolha</mark>'}</div><div class="lau-chips">${[['d','Olho direito'],['e','Olho esquerdo'],['a','Ambos']].map(o=>`<button type="button" class="ti-ftog ${olhoAtual===o[0]?'on':''}" onclick="lauDescSet('${k}','${id}','olho','${o[0]}')">${o[1]}</button>`).join('')}</div></div>` : '';
+    const qh = oh + (f.q ? `<div class="lau-row"><div class="lau-rl">Quantidade</div><div class="lau-chips">${[['1','Único'],['n','Vários semelhantes'],['d','Diferentes entre si']].map(o=>`<button type="button" class="ti-ftog ${qtd===o[0]?'on':''}" onclick="lauDescSet('${k}','${id}','qtd','${o[0]}')">${o[1]}</button>`).join('')}</div></div>` : '');
     const multi = qtd==='n' && lauMulti(f);
     const nome1 = f.kind ? 'Nódulo' : 'Formação';
     // 1º achado (descrição principal) logo após os descritores; depois os demais e o botão +
@@ -1936,12 +1972,18 @@ function lauItemPanel(m, it){
   const normal=lauItemNormal(m,it), lbl=lauItemLabel(m,it);
   let h='';
   if(lauHasPh(lbl)) h += `<div class="lau-rl">Rótulo</div>${lauInlineForm(k,'l',lbl,s.__v.l)}`;
-  if(lauHasPh(normal) && !it.noNF) h += `<div class="lau-rl">${it.generic?'Texto da máscara — preencha os campos':'Medidas do texto padrão'}</div>${lauInlineForm(k,'n',normal,s.__v.n)}`;
+  if(it.alts && it.alts.length>1) h += `<div class="lau-row"><div class="lau-rl">Opções da máscara</div><div class="lau-chips">${it.alts.map((a,i)=>`<button type="button" class="ti-ftog ${(s.__alt||0)===i?'on':''}" title="${esc(a)}" onclick="lauAltSet('${k}',${i})">${esc(lauAltRotulo(a, it.alts))}</button>`).join('')}</div></div>`;
+  if(m.oct && lauHasPh(normal)){
+    const tw=lauOctGemeo(m,it);
+    h += `<div class="lau-rl">Olho direito</div>${lauInlineForm(k,'n',normal,s.__v.n)}`;
+    if(tw) h += `<div class="lau-rl" style="margin-top:8px">Olho esquerdo</div>${lauInlineForm(tw.k,'n',lauItemNormal(m,tw),state.lau.v[tw.k].__v.n)}`;
+  } else if(lauHasPh(normal) && !it.noNF) h += `<div class="lau-rl">${it.generic?'Texto da máscara — preencha os campos':'Medidas do texto padrão'}</div>${lauInlineForm(k,'n',normal,s.__v.n)}`;
   else if(it.generic) h += `<div class="lau-rl">Texto da máscara</div><div class="lau-inl dim">${esc(normal).replace(/\n/g,'<br>')}</div>`;
   if(!it.generic) h += it.ctrls.map(c=>lauCtrlHTML(k,s,c)).join('');
+  if(typeof lauAutoBoxHTML==='function') h += lauAutoBoxHTML(m, it);
   h += lauOptsHTML(k, it.opts, s.__o, s.__v);
-  h += lauFrasesPanel(k, it.sk ? [it.sk] : lauFraseOrgao(lbl || String(normal).slice(0,60), m.metodo), s.__f, s.__v, !!it.sk);
-  if(it.generic){
+  h += lauFrasesPanel(k, it.sk ? [it.sk] : lauFraseOrgao(lbl || String(normal).slice(0,60), m.metodo==='tc' && !m.oct ? 'tcg' : m.metodo), s.__f, s.__v, !!it.sk);
+  if(it.generic && !m.oct){
     h += `<div class="lau-row"><div class="lau-rl">Substituir o texto por (alteração)</div><textarea class="lau-ta" rows="3" placeholder="Deixe em branco para manter o texto da máscara" oninput="lauSetQ('${k}','alt',this.value)">${esc(s.alt)}</textarea></div>`;
     h += `<div class="lau-row"><div class="lau-rl">Frase para a conclusão</div><input class="lau-txt" type="text" value="${esc(s.conc)}" placeholder="ex.: Tendinopatia do supraespinal." oninput="lauSetQ('${k}','conc',this.value)"></div>`;
   }
@@ -1963,20 +2005,20 @@ function lauLeftHTML(){
   const extraOn = L.ind||Object.values(L.tec).some(Boolean);
   const indChips = m.metodo==='mmg' ? `<div class="lau-chips" style="margin-top:6px">${LAU_IND_MMG.map(v=>`<button type="button" class="ti-ftog ${L.ind===v?'on':''}" onclick="lauSetIndChip(this.textContent)">${esc(v)}</button>`).join('')}</div>` : '';
   const dmoRefH = m.metodo==='dmo' ? `<div class="lau-lado"><span>Critério</span>${[['t','T-score (pós-menopausa / homem ≥ 50 anos)'],['z','Z-score (pré-menopausa / homem < 50 anos / criança)']].map(o=>`<button type="button" class="ti-ftog ${(L.dmoRef||'t')===o[0]?'on':''}" onclick="lauDmoRef('${o[0]}')">${o[1]}</button>`).join('')}</div>` : '';
-  let h = dmoRefH + lauLadoHTML(m) + lauCard('__extra', 'Título, indicação e limitações',
+  let h = dmoRefH + lauLadoHTML(m) + lauAteroHTML(m) + lauCard('__extra', 'Título, indicação e limitações',
     `<div class="lau-sum ${extraOn?'alt':'ok'}">${extraOn?'Preenchido':'Opcional'}</div>`,
     ()=>`${lauHasPh(tit)?`<div class="lau-rl">Título</div>${tit.split('\n').map((t,i)=>lauHasPh(t)?lauInlineForm('__tit','t'+i,t,L.tit['t'+i]):'').join('')}`:''}
         <div class="lau-row"><div class="lau-rl">Indicação clínica</div><input class="lau-txt" type="text" value="${esc(L.ind)}" placeholder="${m.metodo==='mmg'?'ex.: rastreamento':'ex.: dor abdominal'}" oninput="lauSetInd(this.value)">${indChips}</div>
         ${lauTecOpts().map(o=>`<label class="lau-chk"><input type="checkbox" ${L.tec[o[0]]?'checked':''} onchange="lauSetTec('${o[0]}')"><span>Limitação: ${esc(o[1])}</span></label>`).join('')}`);
-  h += m.items.filter(it=>!lauItemOutroLado(m,it)).map(it=>{
+  h += m.items.filter(it=> m.oct ? lauOctOlho(it)==='d' : !lauItemOutroLado(m,it)).map(it=>{
     const sum=lauSum(m,it);
     const nm = lauItemLabel(m,it) ? lauFill(lauItemLabel(m,it), L.v[it.k].__v.l) : lauFill(lauItemNormal(m,it), L.v[it.k].__v.n).slice(0,48)+'…';
-    const title = esc(nm.replace(/:$/,'')) + (it.grp?` <span class="lau-grp">${esc(it.grp)}</span>`:'');
+    const title = esc(nm.replace(/:$/,'')) + (it.grp&&!m.oct?` <span class="lau-grp">${esc(it.grp)}</span>`:'');
     return lauCard(it.k, title, `<div id="lau-sum-${it.k}" class="lau-sum ${sum.cls}">${esc(sum.t)}</div>`, ()=>lauItemPanel(m,it));
   }).join('');
   h += lauCard('__obs', 'Achados adicionais', `<div class="lau-sum ${(L.obs||L.xf.length)?'alt':'ok'}">${(L.obs||L.xf.length)?'Preenchido':'Opcional'}</div>`,
     ()=>`<textarea class="lau-ta" rows="3" placeholder="Texto livre que entra antes da conclusão" oninput="lauSetObs(this.value)">${esc(L.obs)}</textarea>`
-      + lauFrasesPanel('__obs', m.metodo==='mmg' ? 'mgextra' : '__extra', L.xf, L.xv));
+      + lauFrasesPanel('__obs', m.metodo==='mmg' ? 'mgextra' : (m.metodo==='tc' && !m.oct) ? 'tcextra' : '__extra', L.xf, L.xv));
   if(m.concTitulo){
     const norm=lauConcNormalLines(m);
     const anyPh = norm.some(c=>lauHasPh(c.text));
@@ -1990,6 +2032,33 @@ function lauLeftHTML(){
   }
   h += `<label class="lau-chk lau-auto"><input type="checkbox" ${L.autoConc?'checked':''} onchange="lauSetAuto(this.checked)"><span>Conclusão automática <small>(desligue para editar a conclusão à mão sem ser sobrescrita)</small></span></label>`;
   return h;
+}
+/* Doppler arterial dos MMII: ateromatose como achado geral (linha antes da conclusão + frase da conclusão) */
+const LAU_ATERO_MODELOS = /^us-arterial(-e-venoso)?-(dos-)?mmii/;
+function lauAteroIdx(){ return LAU_FRASES.findIndex(f=>f.o==='artgeral'); }
+function lauAteroHTML(m){
+  if(!LAU_ATERO_MODELOS.test(m.id)) return '';
+  const L=state.lau, i=lauAteroIdx(); const id=(L.xf||[]).find(x=>parseInt(x,10)===i);
+  const cur = id ? (((L.xv||{})['f'+id]||[])[0] || 'leve') : '';
+  return `<div class="lau-lado"><span>Ateromatose (achado geral, sem estenoses significativas)</span>${[['','Ausente'],['leve','Leve'],['moderada','Moderada'],['difusa','Difusa']].map(o=>`<button type="button" class="ti-ftog ${cur===o[0]?'on':''}" onclick="lauAteroSet('${o[0]}')">${o[1]}</button>`).join('')}</div>`;
+}
+/* com ateromatose marcada, as artérias deixam de ser descritas "sem placas" */
+const LAU_ATERO_TXT = [
+  [/com paredes regulares e calibre preservado, sem dilatações ou placas ateromatosas determinando estenoses significativas\./g,
+   'com calibre preservado e placas ateromatosas parietais, sem dilatações ou estenoses hemodinamicamente significativas.'],
+  [/de trajetos e calibres normais, sem espessamentos ou calcificações parietais\./g,
+   'de trajetos e calibres normais, com placas ateromatosas parietais, sem estenoses hemodinamicamente significativas.'],
+];
+function lauAteroAtivo(m){ const L=state.lau; if(!m || !LAU_ATERO_MODELOS.test(m.id) || !L || L.model!==m.id) return false; const i=lauAteroIdx(); return (L.xf||[]).some(x=>parseInt(x,10)===i); }
+function lauAteroTxt(m, txt){ return lauAteroAtivo(m) ? LAU_ATERO_TXT.reduce((t,[a,b])=>t.replace(a,b), txt) : txt; }
+function lauAteroSet(g){
+  const L=lauCur(); if(!L) return; const i=lauAteroIdx();
+  L.xf = L.xf.filter(x=>parseInt(x,10)!==i);
+  if(g){ const id=i+'_'+(++_lauFseq); L.xf.push(id); L.xv['f'+id]=[g]; }
+  // redesenha as artérias (texto muda com/sem ateromatose)
+  const m=lauModelo(L.model), ed=lauEd();
+  if(ed) m.items.forEach(o=>{ const q=ed.querySelector(`[data-k="${o.k}"]`); if(!q) return; const h=lauItemHTML(m,o); if(q.innerHTML!==h){ q.innerHTML=h; q.hidden=!h; lauFlash(q); } });
+  lauFraseAfter('__obs');
 }
 function lauRenderLeft(){
   const el=document.getElementById('lau-left'); if(!el) return;
@@ -2155,6 +2224,7 @@ function laudoCfgHTML(){
       <div class="lau-row"><div class="lau-rl">Lesão focal em órgão de ecotextura homogênea (fígado, baço)</div><div class="lau-chips">${[['het','“heterogênea pela presença de …”'],['exc','“homogênea, exceto por …”']].map(o=>`<button type="button" class="ti-ftog ${g.les===o[0]?'on':''}" onclick="lauCfgGen('les','${o[0]}')">${o[1]}</button>`).join('')}</div></div>
       <div class="lau-cf"><div class="lau-rl">Título da conclusão</div><input class="lau-txt" type="text" placeholder="Conclusão:" value="${esc(g.concTitulo)}" oninput="lauCfgGen('concTitulo',this.value,true)"></div>
     </div>
+    ${typeof lauAutoCfgHTML==='function' ? lauAutoCfgHTML() : ''}
     <div class="ti-card">
       <div class="tfg-sec-lbl">Personalizar um laudo</div>
       <div class="ti-legend-row" style="margin:2px 0 8px"><span class="lt">Escolha o laudo para mudar o título, a conclusão normal e o texto de cada item.</span></div>
