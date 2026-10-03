@@ -193,13 +193,14 @@ function lauAutoConcs(m){
     } else if(lauObsCampo(m, /\bccn =?$/)!=null && !bcf){
       reps.push([/com embrião vivo e de idade gestacional/, 'com embrião de idade gestacional']);
     }
-    reps.push([/ e 0 dias(?![a-zà-ú])/, ''], [/ e 1 dias(?![a-zà-ú])/, ' e 1 dia']);   // "30 semanas e 1 dia", "30 semanas"
+    reps.push([/ e 0 dias(?![a-zà-ú])/, ''], [/ e 1 dias(?![a-zà-ú])/, ' e 1 dia']);
+    out.push(...lauObsBcfConc(m));   // "30 semanas e 1 dia", "30 semanas"
   }
   const keep=[];
   // obstétricos 2º/3º tri: peso (AIG/PIG/GIG) e Doppler; só quando há o que dizer além do texto padrão
   if(lauObsDopAtivo(m) && lauAutoCfg().on){
     const d=lauObsDopConc(m), dopN=(lauConcNormalLines(m).find(c=>/^Estudo Doppler/.test(c.text))||{}).text;
-    if(d.out.some(t=>t!==dopN)) out.push(...d.out); else if(dopN) keep.push(/^Estudo Doppler/);
+    if(out.length || d.out.some(t=>t!==dopN)) out.push(...d.out); else if(dopN) keep.push(/^Estudo Doppler/);
   }
   m.items.forEach(it=>{ if(lauItemOutroLado(m,it)) return;
     lauAutoAtivas(m,it).forEach(({r,v,lbl})=>{
@@ -474,6 +475,73 @@ function lauObsDopCalc(m){
   });
   if(typeof lauPatchConc==='function') lauPatchConc();
 }
+/* ---- tabelas da aba Referências: [[x, p50, p5, p95]] (fetal-ila, fetal-fce) ---- */
+function lauObsRef(id){
+  const r=(window.SEED||[]).find(x=>x.id===id); const t=r && r.tables && r.tables[r.tables.length-1]; if(!t) return null;
+  const rows=t.rows.slice(1).map(x=>x.slice(0,4).map(y=>parseFloat(String(y).replace(',','.')))).filter(x=>x.every(y=>!isNaN(y)));
+  return rows.length ? rows.sort((a,b)=>a[0]-b[0]) : null;
+}
+function lauObsRefAt(tab, x){   // {p50, p5, p95} interpolado; null fora da tabela
+  if(!tab || x==null || x<tab[0][0] || x>tab[tab.length-1][0]) return null;
+  for(let i=0;i<tab.length-1;i++){ const a=tab[i], b=tab[i+1]; if(x>=a[0] && x<=b[0]){ const f=b[0]===a[0]?0:(x-a[0])/(b[0]-a[0]); const g=k=>a[k]+f*(b[k]-a[k]); return {p50:g(1), p5:g(2), p95:g(3)}; } }
+  return null;
+}
+/* ---- Líquido amniótico: MBV (< 2 cm reduzido, ≥ 8 cm aumentado) e ILA (P5/P95 de Moore & Cayle pela IG;
+   sem IG: ≤ 5 cm / ≥ 25 cm). Gemelar com dois MBV: um por feto. ---- */
+function lauObsLiq(m){
+  const C=lauObsDopCampos(m).filter(c=>c.on && c.tpl==='n' && /^liquido amniotico/.test(c.lbl)); if(!C.length) return [];
+  const it=C[0].it, nrm=lauItemNormal(m,it), vals=(state.lau.v[it.k].__v||{}).n||[], T=lauTpl(nrm);
+  const ila=/\(ILA\)/.test(nrm), ga=lauObsGA(m), dois=C.length>1;
+  const out=[];
+  C.forEach(c=>{
+    const r=lauVal(T, vals, c.i); if(!r.ok) return; let v=lauF(r.v); if(v==null) return;
+    let est='nl', pct=null;
+    if(ila){
+      if(!lauUnMM()) v*=10;                       // ILA da máscara em cm (preferência em mm: já em mm)
+      const ref = ga!=null ? lauObsRefAt(lauObsRef('fetal-ila'), Math.min(42, ga)) : null;
+      if(ref){ if(v<ref.p5) est='red'; else if(v>ref.p95) est='aum'; pct=true; }
+      else { if(v<=50) est='red'; else if(v>=250) est='aum'; }
+    } else { if(v<20) est='red'; else if(v>=80) est='aum'; }
+    out.push({fet: dois ? c.ord+1 : 0, tipo: ila?'ila':'mbv', v, est, pct});
+  });
+  return out;
+}
+function lauObsLiqFrase(x){
+  const P = x.fet ? (t=>`Feto ${x.fet}: ${t.charAt(0).toLowerCase()+t.slice(1)}`) : (t=>t);
+  const med = x.tipo==='ila' ? `ILA de ${lauUnMM() ? Math.round(x.v)+' mm' : lauObsNum(x.v/10,1)+' cm'}` : `maior bolsão vertical de ${Math.round(x.v)} mm`;
+  if(x.est==='red') return P(x.pct ? `Líquido amniótico reduzido para a idade gestacional (${med}, abaixo do percentil 5).` : `Líquido amniótico reduzido – oligoâmnio (${med}).`);
+  if(x.est==='aum') return P(x.pct ? `Líquido amniótico aumentado para a idade gestacional (${med}, acima do percentil 95).` : `Líquido amniótico aumentado – polidrâmnio (${med}).`);
+  return null;
+}
+/* texto do item "Líquido amniótico": "em quantidade normal" acompanha a medida */
+function lauObsLiqTxt(m, it, txt){
+  if(!/^liquido-amniotico/.test(it.k)) return txt;
+  const L=lauObsLiq(m); const alt=L.filter(x=>x.est!=='nl'); if(!alt.length) return txt;
+  if(L.length>1 || /nas duas cavidades/.test(txt)) return txt.replace(/em quantidade (aparentemente )?normal nas duas cavidades, com /, 'com ');
+  const q = alt[0].est==='red' ? 'reduzida' : 'aumentada';
+  return txt.replace(/em quantidade (aparentemente )?normal/, 'em quantidade '+q);
+}
+/* ---- BCF: 2º/3º tri 110–160 bpm; 1º tri pela tabela de FCE por CCN (P5–P95), CCN > 40 mm: 110–180 bpm ---- */
+function lauObsBcfConc(m){
+  const out=[]; const C=lauObsDopCampos(m).filter(c=>c.on && /\bbcf$/.test(c.antes));
+  const tri1=/1-trimestre/.test(m.id), ccn=tri1 ? lauObsCampo(m, /\bccn =?$/) : null;
+  C.forEach(c=>{
+    const r=lauVal(lauTpl(c.tpl==='n'?lauItemNormal(m,c.it):c.it.opts[+c.tpl.slice(1)]), (c.s.__v||{})[c.tpl]||[], c.i); if(!r.ok) return;
+    const b=lauF(r.v); if(b==null) return;
+    const pre = c.fet ? `Feto ${c.fet}: ` : '', P=t=>pre ? pre+t.charAt(0).toLowerCase()+t.slice(1) : t;
+    if(tri1){
+      const ref=ccn!=null ? lauObsRefAt(lauObsRef('fetal-fce'), ccn) : null;
+      if(ref){ if(b<ref.p5) out.push(`Frequência cardíaca embrionária abaixo do percentil 5 para o comprimento cabeça-nádega (BCF de ${b} bpm).`);
+               else if(b>ref.p95) out.push(`Frequência cardíaca embrionária acima do percentil 95 para o comprimento cabeça-nádega (BCF de ${b} bpm).`); }
+      else if(ccn!=null){ if(b<110) out.push(`Bradicardia embrionária (BCF de ${b} bpm).`); else if(b>180) out.push(`Taquicardia embrionária (BCF de ${b} bpm).`); }
+    } else {
+      if(b<110) out.push(P(`Bradicardia fetal (BCF de ${b} bpm).`));
+      else if(b>160) out.push(P(`Taquicardia fetal (BCF de ${b} bpm).`));
+    }
+  });
+  return out;
+}
+
 /* frases da conclusão: peso (AIG / PIG / GIG) e Doppler (normal ou alterado), por feto no gemelar.
    O pico de velocidade sistólica da ACM não entra na conclusão. */
 function lauObsDopConc(m){
@@ -481,6 +549,7 @@ function lauObsDopConc(m){
   if(!lauObsDopAtivo(m)) return {out};
   const fetos=lauObsFetos(m), pesos=[], dops=[];
   const dopNormal=(lauConcNormalLines(m).find(c=>/^Estudo Doppler/.test(c.text))||{}).text || null;   // só nos modelos com Doppler
+  lauObsLiq(m).forEach(x=>{ const t=lauObsLiqFrase(x); if(t) out.push(t); });
   const pctFrase=p=> p<1 ? 'abaixo do percentil 1' : p>99 ? 'acima do percentil 99' : 'no percentil '+Math.round(p);
   fetos.forEach(fet=>{
     const pre = fet ? `Feto ${fet}: ` : '', P=t=>pre ? pre+t.charAt(0).toLowerCase()+t.slice(1) : t;

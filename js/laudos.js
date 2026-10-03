@@ -1476,6 +1476,7 @@ function lauItemHTML(m, it){
   if(ex.length) txt += '<br>' + ex.join('<br>');
   // obstétrico (2º/3º tri, Doppler, gemelar): IR, percentil e MoM não preenchidos saem do laudo
   if(it.generic && typeof lauObsDopAtivo==='function' && lauObsDopAtivo(m)){
+    if(lauAutoCfg().on) txt = lauObsLiqTxt(m, it, txt);
     const PH='<mark class="lau-ph">XXX<\/mark>';
     txt = txt.replace(new RegExp('IR = '+PH+' e (?=IP)','g'), '')
              .replace(new RegExp(',? correspondendo ao percentil '+PH+' para a idade gestacional','g'), '')
