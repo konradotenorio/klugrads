@@ -1450,6 +1450,8 @@ function lauItemHTML(m, it){
   let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : r.html ? r.txt : esc(r.txt).replace(/\n/g,'<br>');
   if(r.txt==null && it.generic && typeof lauAutoTxt==='function') txt = lauAutoTxt(m, it, txt);
   if(r.txt==null && it.generic) txt = lauAteroTxt(m, txt);
+  // obstétrico Doppler: IR não preenchido sai do laudo (fica só o IP)
+  if(r.txt==null && it.generic && typeof lauObsDopAtivo==='function' && lauObsDopAtivo(m)) txt = txt.replace(/IR = <mark class="lau-ph">XXX<\/mark> e (?=IP)/g, '');
   if(m.lado && m.lado.ambos && state.lau.lado==='b') txt = lauBilPlural(txt);
   const subs = lauFraseLines(s.__f, s.__v, 'sub');
   if(subs.length){
