@@ -1560,7 +1560,7 @@ function lauConcHTML(m){
   if(!f.length && !au.reps.length) lines = norm.map(x=>({html:lauFill(x.c.text, cv(x), true), dash:x.c.dash}));
   else if(!f.length) lines = norm.map(x=>({html:crep(lauFill(x.c.text, cv(x), true)), dash:x.c.dash})).filter(x=>!/sem alterações|sem achados|dentro dos par/i.test(x.html) || !au.reps.length);
   else {
-    const keep = norm.filter(x=>x.ph).map(x=>({html:crep(lauFill(x.c.text, cv(x), true)), dash:x.c.dash}));
+    const keep = norm.filter(x=>x.ph || (au.keep||[]).some(re=>re.test(x.c.text))).map(x=>({html:crep(lauFill(x.c.text, cv(x), true)), dash:x.c.dash}));
     const tail = norm.filter(x=>!x.ph && /^Restante/i.test(x.c.text)).map(x=>({html:esc(x.c.text), dash:x.c.dash}));
     lines = keep.concat(f.map(x=>({html:x.html,dash:true})), tail);
   }
@@ -1800,16 +1800,19 @@ function lauPh(k, tpl, i, v, str){
   if(/^f\d/.test(tpl)){ const id=tpl.slice(1), f=lauFI(id), el=document.getElementById(`desc-${k}-${id}`);
     if(f && f.kind && el) el.innerHTML = translateHTML(lauDescHTML(k, id, f, bag['d'+id]||{})); }
   if(k==='__tit') lauPatchTit();
-  else if(k==='__conc'){ lauPatchConc(); lauSaveEd(); }
+  else if(k==='__conc'){ lauPatchConc(); lauSaveEd();
+    if(typeof lauObsDopAtivo==='function'){ const m=lauModelo(L.model); if(lauObsDopAtivo(m)) lauObsDopCalc(m); } }
   else if(k==='__obs'){ lauPatchOpt('obs', lauObsHTML()); lauPatchConc(); lauSaveEd(); }
   else { lauPatch(k); lauUpdSum(k);
     if(typeof lauEcoCalc==='function'){ const L=lauCur(), m=L&&lauModelo(L.model); const it=m&&m.items.find(x=>x.k===k);
-      if(it && m.id==='us-ecocardio'){ if(L.v[k].__ecoAuto) delete L.v[k].__ecoAuto[i]; lauEcoCalc(m); } } }
+      if(it && m.id==='us-ecocardio'){ if(L.v[k].__ecoAuto) delete L.v[k].__ecoAuto[i]; lauEcoCalc(m); }
+      if(it && typeof lauObsDopAtivo==='function' && lauObsDopAtivo(m)){ if(L.v[k].__obsAuto) delete L.v[k].__obsAuto[tpl+':'+i]; lauObsDopCalc(m); } } }
 }
 function lauOpt(k, i){
   const L=lauCur(); if(!L) return;
   if(k==='__conc'){ L.conc.o[i]=!L.conc.o[i]; lauRenderLeft(); lauPatchConc(); lauSaveEd(); return; }
   const s=L.v[k]; s.__o[i]=!s.__o[i]; lauRenderLeft(); lauPatch(k);
+  const m=lauModelo(L.model); if(typeof lauObsDopAtivo==='function' && lauObsDopAtivo(m)) lauObsDopCalc(m);
 }
 /* rótulo curto do botão de cada alternativa: começo do texto (sem campos) */
 function lauAltRotulo(a, todas){

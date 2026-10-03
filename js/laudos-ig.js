@@ -72,6 +72,7 @@ function lauIgAtualiza(){
   const el=document.getElementById('lau-ig-r'); if(el) el.innerHTML=lauIgResHTML();
   const L=lauCur(); if(!L) return; const m=lauModelo(L.model);
   lauPatchOpt('ig', lauIgDocHTML(m));
+  if(typeof lauObsDopCalc==='function') lauObsDopCalc(m);
 }
 function lauIgSet(k, v){ const g=lauIgSt(); g[k]=String(v).replace(/[^\d-]/g,'').slice(0,10); if(k==='exSem'||k==='exDias'||k==='sem'||k==='dias') g[k]=g[k].replace(/-/g,'').slice(0,2); lauIgAtualiza(); }
 function lauIgModo(k){ lauIgSt().modo=k; lauRenderLeft(); lauIgAtualiza(); }

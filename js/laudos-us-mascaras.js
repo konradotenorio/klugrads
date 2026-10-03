@@ -5219,10 +5219,14 @@ const LAU_US_MASKS = [
 {
 "k": "liquido-amniotico",
 "label": "Líquido amniótico",
-"text": "em quantidade normal. Maior bolsão vertical (MBV) estimado em XXX mm XXX ILA estimado em XXX cm.",
+"text": "em quantidade normal, com maior bolsão vertical (MBV) estimado em XXX mm.",
 "dash": true,
 "opts": [],
-"grp": ""
+"grp": "",
+"alts": [
+"em quantidade normal, com maior bolsão vertical (MBV) estimado em XXX mm.",
+"em quantidade normal, com índice de líquido amniótico (ILA) estimado em XXX cm."
+]
 },
 {
 "k": "cabeca",
@@ -5251,7 +5255,7 @@ const LAU_US_MASKS = [
 {
 "k": "peso-fetal-estimado-hadlock",
 "label": "Peso fetal estimado (Hadlock)",
-"text": "XXX g (variação de ± 15%).",
+"text": "XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
 "dash": false,
 "opts": [],
 "grp": ""
@@ -5392,10 +5396,14 @@ const LAU_US_MASKS = [
 {
 "k": "liquido-amniotico",
 "label": "Líquido amniótico",
-"text": "em quantidade aparentemente normal. Maior bolsão vertical (MBV) estimado em XXX mm XXX ILA estimado em XXX cm. Não é possível determinar amnionicidade por este estudo.",
+"text": "em quantidade aparentemente normal, com maior bolsão vertical (MBV) estimado em XXX mm. Não é possível determinar amnionicidade por este estudo.",
 "dash": true,
 "opts": [],
-"grp": ""
+"grp": "",
+"alts": [
+"em quantidade aparentemente normal, com maior bolsão vertical (MBV) estimado em XXX mm. Não é possível determinar amnionicidade por este estudo.",
+"em quantidade aparentemente normal, com índice de líquido amniótico (ILA) estimado em XXX cm. Não é possível determinar amnionicidade por este estudo."
+]
 },
 {
 "k": "feto-1",
@@ -5647,10 +5655,14 @@ const LAU_US_MASKS = [
 {
 "k": "liquido-amniotico",
 "label": "Líquido amniótico",
-"text": "em quantidade normal. Maior bolsão vertical (MBV) estimado em XXX mm XXX ILA estimado em XXX cm.",
+"text": "em quantidade normal, com maior bolsão vertical (MBV) estimado em XXX mm.",
 "dash": true,
 "opts": [],
-"grp": ""
+"grp": "",
+"alts": [
+"em quantidade normal, com maior bolsão vertical (MBV) estimado em XXX mm.",
+"em quantidade normal, com índice de líquido amniótico (ILA) estimado em XXX cm."
+]
 },
 {
 "k": "cabeca",
@@ -5677,35 +5689,21 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "peso-fetal-estimado",
-"label": "Peso fetal estimado",
-"text": "XXX g (variação de ± 10%).",
+"k": "peso-fetal-estimado-hadlock",
+"label": "Peso fetal estimado (Hadlock)",
+"text": "XXX g (variação de ± 10%), correspondendo ao percentil XXX para a idade gestacional.",
 "dash": false,
 "opts": [],
 "grp": ""
 },
 {
-"k": "arteria-umbilical",
-"label": "Artéria umbilical",
-"text": "XXX e XXX",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "arteria-cerebral-media",
-"label": "Artéria cerebral média",
-"text": "XXX e XXX",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "relacao-umbilico-cerebral",
-"label": "Relação umbilico-cerebral",
-"text": "XXX",
+"k": "dopplervelocimetria",
+"label": "Dopplervelocimetria",
+"text": "\nArtéria umbilical: IR = XXX e IP = XXX (percentil XXX).\nArtéria cerebral média: IR = XXX e IP = XXX (percentil XXX).\nRelação cérebro-placentária (IP ACM / IP AU): XXX (percentil XXX).",
 "dash": false,
 "opts": [
+"Pico de velocidade sistólica da artéria cerebral média: XXX cm/s (XXX MoM).",
+"Ducto venoso: IP = XXX (percentil XXX).",
 "Índices de resistividade das artérias uterinas: XXX à direita e XXX à esquerda."
 ],
 "grp": ""
@@ -5769,27 +5767,11 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "peso-fetal-estimado"
-},
-{
-"t": "line",
-"text": "Dopplervelocimetria:"
-},
-{
-"t": "line",
-"text": "Índices de resistividade e de pulsatilidade (IR e IP, respectivamente):"
+"k": "peso-fetal-estimado-hadlock"
 },
 {
 "t": "item",
-"k": "arteria-umbilical"
-},
-{
-"t": "item",
-"k": "arteria-cerebral-media"
-},
-{
-"t": "item",
-"k": "relacao-umbilico-cerebral"
+"k": "dopplervelocimetria"
 }
 ],
 "concTitulo": "Conclusão:",
