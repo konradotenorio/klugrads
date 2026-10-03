@@ -7331,6 +7331,362 @@ const LAU_US_MASKS = [
 ],
 "trailer": [],
 "flags": []
+},
+{
+"id": "us-ecocardio",
+"metodo": "us",
+"nome": "Ecocardio",
+"grupo": "Vascular",
+"titulo": [
+"ECOCARDIOGRAMA TRANSTORÁCICO BIDIMENSIONAL"
+],
+"items": [
+{
+"k": "o-situs-viscero-atrial-e-so",
+"label": "",
+"text": "O “situs” víscero-atrial é “solitus”, com levocardia e levoposição do ápex.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "as-conexoes-venosas-sistemica",
+"label": "",
+"text": "As conexões venosas sistêmica e pulmonar são normais.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "a-conexao-atrioventricular-e-d",
+"label": "",
+"text": "A conexão atrioventricular é do tipo biventricular concordante, modo duas valvas. Há concordância ventriculoarterial.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "integridade-morfologica-dos-se",
+"label": "",
+"text": "Integridade morfológica dos septos interatrial e interventricular. Ausência de fluxo tipo “shunt” intercavitário ao mapeamento de fluxo em cores.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Integridade morfológica dos septos interatrial e interventricular. Ausência de fluxo tipo “shunt” intercavitário ao mapeamento de fluxo em cores.",
+"Comunicação interatrial tipo XXX, medindo XXX mm, com fluxo da esquerda para a direita XX da direita para a esquerda ao mapeamento de fluxo em cores. Septo interventricular íntegro.",
+"Comunicação interventricular XXX, medindo XXX mm, com fluxo da esquerda para a direita XX da direita para a esquerda ao mapeamento de fluxo em cores. Septo interatrial íntegro.",
+"Forame oval patente, com pequeno fluxo da esquerda para a direita ao mapeamento de fluxo em cores."
+]
+},
+{
+"k": "as-cavidades-cardiacas-tem-dim",
+"label": "",
+"text": "As cavidades cardíacas têm dimensões normais.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"As cavidades cardíacas têm dimensões normais.",
+"Aumento das dimensões do XXX. Demais cavidades cardíacas com dimensões normais."
+]
+},
+{
+"k": "o-miocardio-de-ambos-os-ventri",
+"label": "",
+"text": "O miocárdio de ambos os ventrículos exibe espessura e contratilidade preservadas.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"O miocárdio de ambos os ventrículos exibe espessura e contratilidade preservadas.",
+"Hipertrofia XXX do ventrículo esquerdo, com contratilidade preservada.",
+"Disfunção sistólica do ventrículo esquerdo de grau discreto XX moderado XX importante.",
+"Alteração da contratilidade segmentar do ventrículo esquerdo: XXX."
+]
+},
+{
+"k": "as-valvas-cardiacas-tem-caract",
+"label": "",
+"text": "As valvas cardíacas têm características normais, assim como a análise do fluxo pelas mesmas ao mapeamento de fluxo em cores.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"As valvas cardíacas têm características normais, assim como a análise do fluxo pelas mesmas ao mapeamento de fluxo em cores.",
+"Valva XXX com XXX. Demais valvas cardíacas com características normais."
+]
+},
+{
+"k": "a-valva-tricuspide-exibe-reflu",
+"label": "",
+"text": "A valva tricúspide exibe refluxo fisiológico.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"A valva tricúspide exibe refluxo fisiológico.",
+"A valva tricúspide exibe refluxo discreto XX moderado XX importante.",
+"A valva tricúspide não exibe refluxo."
+]
+},
+{
+"k": "o-tronco-pulmonar-e-as-arteria",
+"label": "",
+"text": "O tronco pulmonar e as artérias pulmonares direita e esquerda apresentam dimensões normais.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "o-arco-aortico-e-voltado-para",
+"label": "",
+"text": "O arco aórtico é voltado para a esquerda, com calibre conservado, e não apresenta anormalidades ao longo de seu trajeto.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "nao-foi-visibilizado-fluxo-na",
+"label": "",
+"text": "Não foi visibilizado fluxo na topografia do canal arterial.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Não foi visibilizado fluxo na topografia do canal arterial.",
+"Canal arterial patente, medindo XXX mm, com fluxo da aorta para a artéria pulmonar."
+]
+},
+{
+"k": "as-arterias-coronarias-apresen",
+"label": "",
+"text": "As artérias coronárias apresentam origem e trajeto habituais.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "ausencia-de-derrame-pericardic",
+"label": "",
+"text": "Ausência de derrame pericárdico.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Ausência de derrame pericárdico.",
+"Derrame pericárdico de pequeno XX moderado XX grande volume, sem sinais de restrição ao enchimento ventricular."
+]
+},
+{
+"k": "ao",
+"label": "Ao",
+"text": "XXX mm",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "ae",
+"label": "AE",
+"text": "XXX mm",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "ddve",
+"label": "DDVE",
+"text": "XXX mm (escore Z: XXX)",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "dsve",
+"label": "DSVE",
+"text": "XXX mm",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "siv",
+"label": "SIV",
+"text": "XXX mm",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pp",
+"label": "PP",
+"text": "XXX mm",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "ddvd",
+"label": "DDVD",
+"text": "XXX mm",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "feve-teichholz",
+"label": "FEVE (Teichholz)",
+"text": "XXX%",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "delta-d",
+"label": "Delta D",
+"text": "XXX%",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "psvd",
+"label": "PSVD",
+"text": "XXX mmHg, considerando PAD = XXX mmHg, pelo refluxo tricúspide.",
+"dash": false,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "line",
+"text": "Descrição:"
+},
+{
+"t": "item",
+"k": "o-situs-viscero-atrial-e-so"
+},
+{
+"t": "item",
+"k": "as-conexoes-venosas-sistemica"
+},
+{
+"t": "item",
+"k": "a-conexao-atrioventricular-e-d"
+},
+{
+"t": "item",
+"k": "integridade-morfologica-dos-se"
+},
+{
+"t": "item",
+"k": "as-cavidades-cardiacas-tem-dim"
+},
+{
+"t": "item",
+"k": "o-miocardio-de-ambos-os-ventri"
+},
+{
+"t": "item",
+"k": "as-valvas-cardiacas-tem-caract"
+},
+{
+"t": "item",
+"k": "a-valva-tricuspide-exibe-reflu"
+},
+{
+"t": "item",
+"k": "o-tronco-pulmonar-e-as-arteria"
+},
+{
+"t": "item",
+"k": "o-arco-aortico-e-voltado-para"
+},
+{
+"t": "item",
+"k": "nao-foi-visibilizado-fluxo-na"
+},
+{
+"t": "item",
+"k": "as-arterias-coronarias-apresen"
+},
+{
+"t": "item",
+"k": "ausencia-de-derrame-pericardic"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "MEDIDAS:"
+},
+{
+"t": "item",
+"k": "ao"
+},
+{
+"t": "item",
+"k": "ae"
+},
+{
+"t": "item",
+"k": "ddve"
+},
+{
+"t": "item",
+"k": "dsve"
+},
+{
+"t": "item",
+"k": "siv"
+},
+{
+"t": "item",
+"k": "pp"
+},
+{
+"t": "item",
+"k": "ddvd"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "PARÂMETROS FUNCIONAIS:"
+},
+{
+"t": "item",
+"k": "feve-teichholz"
+},
+{
+"t": "item",
+"k": "delta-d"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "PARÂMETROS HEMODINÂMICOS:"
+},
+{
+"t": "item",
+"k": "psvd"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Ecocardiograma compatível com a normalidade.",
+"dash": false
+}
+],
+"trailer": [],
+"flags": []
 }
 ];
 const LAU_MMG_MASKS = [

@@ -1780,7 +1780,10 @@ function lauPh(k, tpl, i, v, str){
   if(k==='__tit') lauPatchTit();
   else if(k==='__conc'){ lauPatchConc(); lauSaveEd(); }
   else if(k==='__obs'){ lauPatchOpt('obs', lauObsHTML()); lauPatchConc(); lauSaveEd(); }
-  else { lauPatch(k); lauUpdSum(k); }
+  else { lauPatch(k); lauUpdSum(k);
+    if(typeof lauEcoCalc==='function'){ const L=lauCur(), m=L&&lauModelo(L.model); const it=m&&m.items.find(x=>x.k===k);
+      if(it && /^(DDVE|DSVE)$/.test(it.label)) lauEcoCalc(m);
+      else if(it && /^(FEVE|Delta D)/.test(it.label)) L.v[k].__ecoAuto=false; } }
 }
 function lauOpt(k, i){
   const L=lauCur(); if(!L) return;

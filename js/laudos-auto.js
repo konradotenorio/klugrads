@@ -295,3 +295,22 @@ function lauAutoLim(k, v){ const a=lauAutoLocal(); if(!String(v).trim()) a.lim[k
 function lauAutoLimReset(ks){ const a=lauAutoLocal(); ks.split(',').forEach(k=>delete a.lim[k]); lauAutoRefresh(); }
 function lauAutoOff(ids, on){ const a=lauAutoLocal(); ids.split(',').forEach(id=>{ if(on) a.off[id]=true; else delete a.off[id]; }); lauAutoRefresh(); }
 function lauAutoFase(f){ lauAutoLocal().fase=f; lauAutoRefresh(); }
+
+/* ---- Ecocardio: FEVE (Teichholz) e Delta D calculados a partir do DDVE e DSVE ----
+   Teichholz: V = 7·D³ / (2,4 + D), D em cm. FEVE = (VDF − VSF)/VDF; Delta D = (DDVE − DSVE)/DDVE.
+   Só preenche se o campo estiver vazio ou tiver sido preenchido por este cálculo. */
+function lauEcoCalc(m){
+  if(!m || m.id!=='us-ecocardio') return;
+  const L=state.lau, it=lbl=>m.items.find(i=>i.label===lbl);
+  const v=lbl=>{ const i=it(lbl); return i ? lauF(((L.v[i.k].__v||{}).n||[])[0]) : null; };
+  const dd=v('DDVE'), ds=v('DSVE');
+  const put=(lbl, val)=>{ const i=it(lbl); if(!i) return; const s=L.v[i.k]; const cur=((s.__v.n||[])[0]);
+    if(lauHas(cur) && !s.__ecoAuto) return;
+    const a=(s.__v.n||[]).slice(); a[0]= val==null ? '' : String(val); s.__v.n=a; s.__ecoAuto = val!=null;
+    lauPatch(i.k); lauUpdSum(i.k); };
+  if(dd && ds && dd>ds){
+    const V=D=>7*Math.pow(D/10,3)/(2.4+D/10);
+    put('FEVE (Teichholz)', Math.round((V(dd)-V(ds))/V(dd)*100));
+    put('Delta D', Math.round((dd-ds)/dd*100));
+  } else { put('FEVE (Teichholz)', null); put('Delta D', null); }
+}

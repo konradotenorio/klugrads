@@ -20,3 +20,44 @@ Conclusão:
 - Categoria BI-RADS®: 1 (negativo).
 
 -----
+
+G. VASCULAR:
+
+2. Ecocardio
+ECOCARDIOGRAMA TRANSTORÁCICO BIDIMENSIONAL
+
+Descrição:
+O “situs” víscero-atrial é “solitus”, com levocardia e levoposição do ápex.
+As conexões venosas sistêmica e pulmonar são normais.
+A conexão atrioventricular é do tipo biventricular concordante, modo duas valvas. Há concordância ventriculoarterial.
+Integridade morfológica dos septos interatrial e interventricular. Ausência de fluxo tipo “shunt” intercavitário ao mapeamento de fluxo em cores. || Comunicação interatrial tipo XXX, medindo XXX mm, com fluxo da esquerda para a direita XX da direita para a esquerda ao mapeamento de fluxo em cores. Septo interventricular íntegro. || Comunicação interventricular XXX, medindo XXX mm, com fluxo da esquerda para a direita XX da direita para a esquerda ao mapeamento de fluxo em cores. Septo interatrial íntegro. || Forame oval patente, com pequeno fluxo da esquerda para a direita ao mapeamento de fluxo em cores.
+As cavidades cardíacas têm dimensões normais. || Aumento das dimensões do XXX. Demais cavidades cardíacas com dimensões normais.
+O miocárdio de ambos os ventrículos exibe espessura e contratilidade preservadas. || Hipertrofia XXX do ventrículo esquerdo, com contratilidade preservada. || Disfunção sistólica do ventrículo esquerdo de grau discreto XX moderado XX importante. || Alteração da contratilidade segmentar do ventrículo esquerdo: XXX.
+As valvas cardíacas têm características normais, assim como a análise do fluxo pelas mesmas ao mapeamento de fluxo em cores. || Valva XXX com XXX. Demais valvas cardíacas com características normais.
+A valva tricúspide exibe refluxo fisiológico. || A valva tricúspide exibe refluxo discreto XX moderado XX importante. || A valva tricúspide não exibe refluxo.
+O tronco pulmonar e as artérias pulmonares direita e esquerda apresentam dimensões normais.
+O arco aórtico é voltado para a esquerda, com calibre conservado, e não apresenta anormalidades ao longo de seu trajeto.
+Não foi visibilizado fluxo na topografia do canal arterial. || Canal arterial patente, medindo XXX mm, com fluxo da aorta para a artéria pulmonar.
+As artérias coronárias apresentam origem e trajeto habituais.
+Ausência de derrame pericárdico. || Derrame pericárdico de pequeno XX moderado XX grande volume, sem sinais de restrição ao enchimento ventricular.
+
+MEDIDAS:
+Ao: XXX mm
+AE: XXX mm
+DDVE: XXX mm (escore Z: XXX)
+DSVE: XXX mm
+SIV: XXX mm
+PP: XXX mm
+DDVD: XXX mm
+
+PARÂMETROS FUNCIONAIS:
+FEVE (Teichholz): XXX%
+Delta D: XXX%
+
+PARÂMETROS HEMODINÂMICOS:
+PSVD: XXX mmHg, considerando PAD = XXX mmHg, pelo refluxo tricúspide.
+
+Conclusão:
+Ecocardiograma compatível com a normalidade.
+
+-----
