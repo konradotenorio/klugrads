@@ -852,7 +852,12 @@ function lauTokLine(line, start){
 const _lauTplCache = {};
 function lauTpl(str){
   str = String(str==null?'':str);
-  if(_lauTplCache[str]) return _lauTplCache[str];
+  const mm = lauUnMM(); const key = (mm?'mm|':'')+str;
+  if(_lauTplCache[key]) return _lauTplCache[key];
+  if(mm){ const s2=lauCm2Mm(str); const t=lauTplRaw(s2); return (_lauTplCache[key]=Object.assign({}, t, {mm: s2!==str})); }
+  return (_lauTplCache[key]=lauTplRaw(str));
+}
+function lauTplRaw(str){
   let n=0; const lines=str.split('\n').map(l=>{ const r=lauTokLine(l,n); n=r.next; return r.toks; });
   // volume/massa automáticos a partir de "A x B x C"
   const auto={};
@@ -878,7 +883,7 @@ function lauTpl(str){
       if(/total/i.test(ctx) && /^(cm³|cm3|ml|mL)/.test(nxt) && prev.length>1) auto[t[b].i]={sum:prev};
     }
   });
-  return (_lauTplCache[str]={lines, n, auto});
+  return {lines, n, auto};
 }
 function lauAutoVal(tpl, vals, i){
   const d=tpl.auto[i]; if(!d) return null;
@@ -890,6 +895,7 @@ function lauAutoVal(tpl, vals, i){
   } else {
     const v=d.map(j=>lauF(vals[j])); if(v.some(x=>!x)) return null;
     r=v[0]*v[1]*v[2]*0.523;
+    if(tpl.mm) r=r/1000;   // medidas digitadas em mm → volume em cm³
   }
   return r<100 ? String(Math.round(r*10)/10).replace('.',',') : String(Math.round(r));
 }
@@ -971,7 +977,13 @@ function lauCfgAll(){
   return state.lauCfg;
 }
 function lauCfgSave(){ try{ localStorage.setItem(LAU_CFG_KEY, JSON.stringify(lauCfgAll())); }catch(_){} }
-function lauGen(){ const c=lauCfgAll(); return {font:c.font||'Arial', size:c.size||12, bold:c.bold!==false, hifen:c.hifen!==false, concTitulo:c.concTitulo||'', les:c.les||'het'}; }
+function lauGen(){ const c=lauCfgAll(); return {font:c.font||'Arial', size:c.size||12, bold:c.bold!==false, hifen:c.hifen!==false, concTitulo:c.concTitulo||'', les:c.les||'het', un:c.un||'cm'}; }
+/* unidade das medidas lineares dos campos (cm padrão das máscaras; mm opcional) */
+function lauUnMM(){ try{ return lauCfgAll().un==='mm'; }catch(_){ return false; } }
+/* "8,1 cm" → "81 mm" (texto já montado; não mexe em cm³, cm², cm/s) */
+function lauCmNumMm(t){ return String(t).replace(/(\d+(?:,\d+)?)\s*cm(?![³²\/\w])/g, (_,n)=>{ const v=Math.round(parseFloat(n.replace(',','.'))*100)/10; return String(v).replace('.',',')+' mm'; }); }
+/* "XXX cm" → "XXX mm" (só comprimento: não mexe em cm³, cm², cm/s) */
+function lauCm2Mm(str){ return String(str).replace(/(X{2,3}[^\sX]*|\{\d+\})(\s+)cm(?=[\s.,;:)]|$)/g, '$1$2mm'); }
 function lauMcfg(id){ const c=lauCfgAll(); if(!c.models[id]) c.models[id]={items:{}}; if(!c.models[id].items) c.models[id].items={}; return c.models[id]; }
 function lauMcfgPeek(id){ const c=lauCfgAll(); return c.models[id]||{items:{}}; }
 function lauTitulo(m){ const u=lauMcfgPeek(m.id); return lauHas(u.titulo)?u.titulo:m.titulo; }
@@ -1027,14 +1039,18 @@ function lauCur(){ return state.lau && lauModelo(state.lau.model) ? state.lau : 
 function lauBuild(m, it){
   const s=state.lau.v[it.k];
   if(it.generic) return {txt: lauHas(s.alt)?s.alt.trim():null, conc: lauHas(s.conc)?[lauFrase(s.conc)]:[]};
-  return it.build(typeof lauAutoEstado==='function' ? lauAutoEstado(m, it, s) : s);   // regras automáticas pelas medidas
+  const r = it.build(typeof lauAutoEstado==='function' ? lauAutoEstado(m, it, s) : s);   // regras automáticas pelas medidas
+  if(!lauUnMM() || !r) return r;
+  // preferência em mm: os itens estruturados (controles em cm) escrevem o comprimento em mm
+  const cv = t => typeof t==='string' ? lauCmNumMm(t) : t;
+  return Object.assign({}, r, {txt: r.html ? r.txt : cv(r.txt), conc: (r.conc||[]).map(cv)});
 }
 /* conclusão de uma frase da biblioteca: {n} = valor do campo n do texto */
 function lauFraseConcHTML(f, vals, lbl){
   if(!lauHas(f.c)) return '';
   const tpl=lauTpl(f.t);
   const L = String(lbl||'').toLowerCase().replace(/^(bursa|bursite|veia|tendão|tendões)\s+/,'').replace(/:$/,'');
-  let c = f.c;
+  let c = lauUnMM() ? lauCm2Mm(f.c) : f.c;
   if(LAU_MSK.indexOf(f.o)>=0) c = c.replace(/\{(\d+)\}/g, (m0,n)=> lauVal(tpl, vals||[], +n).ok ? m0 : '\u0000')
                                   .replace(/\s*\(\u0000\)|\s+(?:do|da|dos|das|no|na)\s+\u0000|\s*\u0000/g, '');
   return esc(c).replace(/\{L\}/g, esc(L)).replace(/\{(\d+)\}/g,(_,n)=>{
@@ -2232,6 +2248,7 @@ function laudoCfgHTML(){
       <div class="lau-row"><div class="lau-rl">Tamanho</div><div class="lau-chips">${LAU_SIZES.map(z=>`<button type="button" class="ti-ftog ${g.size===z?'on':''}" onclick="lauCfgGen('size',${z})">${z}</button>`).join('')}</div></div>
       <label class="lau-chk"><input type="checkbox" ${g.bold?'checked':''} onchange="lauCfgGen('bold',this.checked)"><span>Nomes dos órgãos em negrito</span></label>
       <label class="lau-chk"><input type="checkbox" ${g.hifen?'checked':''} onchange="lauCfgGen('hifen',this.checked)"><span>Hífen no início das linhas</span></label>
+      <div class="lau-row"><div class="lau-rl">Unidade das medidas nos campos</div><div class="lau-chips">${[['cm','Centímetros (cm)'],['mm','Milímetros (mm)']].map(o=>`<button type="button" class="ti-ftog ${g.un===o[0]?'on':''}" onclick="lauCfgGen('un','${o[0]}')">${o[1]}</button>`).join('')}</div><div class="ti-legend-row" style="margin-top:4px"><span class="lt">Vale para os campos das máscaras e das frases de alteração; os volumes continuam em cm³ e são calculados corretamente. Nos itens com controles próprios (ex.: rins, baço) o valor continua sendo digitado em cm, mas o laudo sai em mm. Troque a unidade antes de começar o laudo.</span></div></div>
       <div class="lau-row"><div class="lau-rl">Lesão focal em órgão de ecotextura homogênea (fígado, baço)</div><div class="lau-chips">${[['het','“heterogênea pela presença de …”'],['exc','“homogênea, exceto por …”']].map(o=>`<button type="button" class="ti-ftog ${g.les===o[0]?'on':''}" onclick="lauCfgGen('les','${o[0]}')">${o[1]}</button>`).join('')}</div></div>
       <div class="lau-cf"><div class="lau-rl">Título da conclusão</div><input class="lau-txt" type="text" placeholder="Conclusão:" value="${esc(g.concTitulo)}" oninput="lauCfgGen('concTitulo',this.value,true)"></div>
     </div>

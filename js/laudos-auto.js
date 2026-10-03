@@ -30,16 +30,18 @@ function lauAutoSet(k, v){ const c=lauCfgAll(); c.auto=Object.assign({}, c.auto|
    pre = palavras a acrescentar no início (ex.: rótulo do item) */
 function lauAutoCampos(str, pre){
   const tpl=lauTpl(str), out=[];
+  const raw = tpl.mm ? lauTplRaw(String(str)) : null;   // preferência em mm: campo que era "cm" na máscara
   tpl.lines.forEach((toks,li)=>{
     toks.forEach((t,j)=>{
       if(t.t!=='p') return;
+      const cm2mm = !!(raw && raw.lines[li] && raw.lines[li][j+1] && /^cm[.,;:)]*$/.test(raw.lines[li][j+1].s||''));
       const ws=[]; for(let x=j-1; x>=0 && ws.length<4; x--){ if(toks[x].t==='w') ws.unshift(toks[x].s); else break; }
       let txt=ws.join(' ');
       if(pre && li===0 && ws.length===j) txt = pre+' '+txt;   // campo no começo do texto: usa o rótulo
       // contexto longo: volta pelas palavras (pulando campos) até o fim da frase anterior
       const cw=[]; for(let x=j-1; x>=0 && cw.length<14; x--){ const k=toks[x]; if(k.t!=='w') continue; if(x<j-1 && /[.;]$/.test(k.s)) break; cw.unshift(k.s); }
       const lim=v=>lauNorm(v).replace(/[():;,.]/g,'').replace(/\s+/g,' ').trim();
-      out.push({i:t.i, antes:lim(txt), ctx:lim(cw.join(' '))});
+      out.push({i:t.i, antes:lim(txt), ctx:lim(cw.join(' ')), cm2mm});
     });
   });
   return {tpl, campos:out};
@@ -48,7 +50,8 @@ function lauAutoCampos(str, pre){
 function lauAutoValor(str, vals, re, ctx){
   const {tpl, campos}=lauAutoCampos(str);
   const c=campos.find(x=>ctx ? ctx.test(x.ctx) : re.test(x.antes)); if(!c) return null;
-  const r=lauVal(tpl, vals||[], c.i); return r.ok ? lauF(r.v) : null;
+  const r=lauVal(tpl, vals||[], c.i); if(!r.ok) return null;
+  const v=lauF(r.v); return v!=null && c.cm2mm ? v/10 : v;   // regras trabalham em cm
 }
 
 /* ---- itens estruturados: estado "efetivo" com as dimensões ajustadas ---- */
@@ -93,6 +96,8 @@ function lauAutoEstado(m, it, s){
    (para itens com mais de um campo igual, ex.: volume do testículo direito/esquerdo);
    conc(v, rótulo): linha da conclusão; concRep: troca uma linha da conclusão normal */
 const LAU_N = v=>lauN(String(v));
+/* comprimento (em cm) escrito na unidade escolhida em Padrões dos laudos */
+const LAU_LEN = v=> lauUnMM() ? LAU_N(Math.round(v*100)/10)+' mm' : LAU_N(v)+' cm';
 function lauResidGrau(v){ return v>300?'muito acentuado':v>150?'acentuado':v>80?'moderado':'pequeno'; }
 const LAU_AUTO_TXT = [
   {id:'prostata', item:/^prostata/, campo:/massa estimada em$/,
@@ -123,7 +128,7 @@ const LAU_AUTO_TXT = [
    conc:v=>`Útero com dimensões aumentadas (volume estimado em ${LAU_N(v)} cm³).`},
   {id:'endometrio', item:/^endometrio/, campo:/espessura bilaminar de$/,
    cond:(v,A)=>{ const l=A.fase==='meno'?A.endoMeno:A.endoMenac; return l && v > l; },
-   conc:v=>`Endométrio espessado (${LAU_N(v)} cm).`},
+   conc:v=>`Endométrio espessado (${LAU_LEN(v)}).`},
   {id:'endoHet', item:/^endometrio/, escolha:'heterogêneo',
    conc:()=>'Endométrio heterogêneo.'},
   {id:'residuo', item:/^residuo/, campo:/estimado em$/,
@@ -133,7 +138,7 @@ const LAU_AUTO_TXT = [
   {id:'porta', item:/^veia porta$/, campo:/calibre de$/,
    cond:(v,A)=> A.portaMax && v > A.portaMax,
    txt:[[/com calibre de/, 'com calibre aumentado, de']],
-   conc:v=>`Veia porta com calibre aumentado (${LAU_N(v)} cm).`},
+   conc:v=>`Veia porta com calibre aumentado (${LAU_LEN(v)}).`},
 ];
 /* regras de texto que valem para o item agora: [{regra, v}] */
 function lauAutoAtivas(m, it){
