@@ -2004,7 +2004,7 @@ function lauLeftHTML(){
   const extraOn = L.ind||Object.values(L.tec).some(Boolean);
   const indChips = m.metodo==='mmg' ? `<div class="lau-chips" style="margin-top:6px">${LAU_IND_MMG.map(v=>`<button type="button" class="ti-ftog ${L.ind===v?'on':''}" onclick="lauSetIndChip(this.textContent)">${esc(v)}</button>`).join('')}</div>` : '';
   const dmoRefH = m.metodo==='dmo' ? `<div class="lau-lado"><span>Critério</span>${[['t','T-score (pós-menopausa / homem ≥ 50 anos)'],['z','Z-score (pré-menopausa / homem < 50 anos / criança)']].map(o=>`<button type="button" class="ti-ftog ${(L.dmoRef||'t')===o[0]?'on':''}" onclick="lauDmoRef('${o[0]}')">${o[1]}</button>`).join('')}</div>` : '';
-  let h = dmoRefH + lauLadoHTML(m) + lauCard('__extra', 'Título, indicação e limitações',
+  let h = dmoRefH + lauLadoHTML(m) + lauAteroHTML(m) + lauCard('__extra', 'Título, indicação e limitações',
     `<div class="lau-sum ${extraOn?'alt':'ok'}">${extraOn?'Preenchido':'Opcional'}</div>`,
     ()=>`${lauHasPh(tit)?`<div class="lau-rl">Título</div>${tit.split('\n').map((t,i)=>lauHasPh(t)?lauInlineForm('__tit','t'+i,t,L.tit['t'+i]):'').join('')}`:''}
         <div class="lau-row"><div class="lau-rl">Indicação clínica</div><input class="lau-txt" type="text" value="${esc(L.ind)}" placeholder="${m.metodo==='mmg'?'ex.: rastreamento':'ex.: dor abdominal'}" oninput="lauSetInd(this.value)">${indChips}</div>
@@ -2031,6 +2031,21 @@ function lauLeftHTML(){
   }
   h += `<label class="lau-chk lau-auto"><input type="checkbox" ${L.autoConc?'checked':''} onchange="lauSetAuto(this.checked)"><span>Conclusão automática <small>(desligue para editar a conclusão à mão sem ser sobrescrita)</small></span></label>`;
   return h;
+}
+/* Doppler arterial dos MMII: ateromatose como achado geral (linha antes da conclusão + frase da conclusão) */
+const LAU_ATERO_MODELOS = /^us-arterial(-e-venoso)?-(dos-)?mmii/;
+function lauAteroIdx(){ return LAU_FRASES.findIndex(f=>f.o==='artgeral'); }
+function lauAteroHTML(m){
+  if(!LAU_ATERO_MODELOS.test(m.id)) return '';
+  const L=state.lau, i=lauAteroIdx(); const id=(L.xf||[]).find(x=>parseInt(x,10)===i);
+  const cur = id ? (((L.xv||{})['f'+id]||[])[0] || 'leve') : '';
+  return `<div class="lau-lado"><span>Ateromatose (achado geral, sem estenoses significativas)</span>${[['','Ausente'],['leve','Leve'],['moderada','Moderada'],['difusa','Difusa']].map(o=>`<button type="button" class="ti-ftog ${cur===o[0]?'on':''}" onclick="lauAteroSet('${o[0]}')">${o[1]}</button>`).join('')}</div>`;
+}
+function lauAteroSet(g){
+  const L=lauCur(); if(!L) return; const i=lauAteroIdx();
+  L.xf = L.xf.filter(x=>parseInt(x,10)!==i);
+  if(g){ const id=i+'_'+(++_lauFseq); L.xf.push(id); L.xv['f'+id]=[g]; }
+  lauFraseAfter('__obs');
 }
 function lauRenderLeft(){
   const el=document.getElementById('lau-left'); if(!el) return;

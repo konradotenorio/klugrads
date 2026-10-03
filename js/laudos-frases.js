@@ -79,6 +79,10 @@ const LAU_FRASE_ORGAOS = [
 ];
 
 const LAU_FRASES = [
+  /* ---------------- ACHADO GERAL: ateromatose sem estenose (Doppler arterial dos MMII; marcado no quadro do topo do laudo) ---------------- */
+  {o:'artgeral', n:'Ateromatose sem estenoses significativas', m:'add',
+   t:'Ateromatose leve XX moderada XX difusa no leito arterial estudado, com placas parietais parcialmente calcificadas esparsas, sem determinar estenoses hemodinamicamente significativas.',
+   c:'Ateromatose no leito arterial estudado sem determinar estenoses hemodinamicamente significativas.'},
   /* ---------------- FÍGADO ---------------- */
   {o:'figado', s:1, n:'Hepatomegalia', m:'sub',
    t:'com dimensões aumentadas (lobo direito medindo XXX cm), contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea.',
