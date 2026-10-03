@@ -2,8 +2,8 @@
    KlugRads — Mapa Setorial Lesional
    ---------------------------------------------------------------------------
    Pintura livre de lesões sobre o mapa setorial de um órgão (hoje: PRÓSTATA).
-   O médico escolhe uma de 4 cores (cada uma é uma lesão, com legenda na própria
-   imagem), pinta com o pincel, apaga, desfaz, dá zoom e exporta a imagem
+   O médico escolhe uma de 4 cores (cada uma é uma lesão); a legenda, na própria
+   imagem, lista só as lesões que estiverem pintadas, pinta com o pincel, apaga, desfaz, dá zoom e exporta a imagem
    (copiar / baixar) para colar no laudo.
 
    Como funciona
@@ -56,6 +56,7 @@ const MSL_IC = {
   zout:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M8 11h6"/>',
   full:'<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
   exit:'<path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/>',
+  list:'<path d="M4 7h3M4 12h3M4 17h3M10 7h10M10 12h10M10 17h10"/>',
   img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/>',
 };
 const mslIc = (k,sz)=>svgIcon(MSL_IC[k], sz||18, {sw:2});
@@ -64,14 +65,15 @@ const mslIc = (k,sz)=>svgIcon(MSL_IC[k], sz||18, {sw:2});
 function mslState(){
   if(!state.msl) state.msl = {
     org:'prostata', cor:1, tool:'brush', w:30,
-    labels:['Lesão 1','Lesão 2','Lesão 3','Lesão 4'],
+    labels:['Lesão 1','Lesão 2','Lesão 3','Lesão 4'], legend:true,
     strokes:[], redo:[], full:false,
   };
   return state.msl;
 }
 /* runtime (não vai para o state): canvases, imagem, gesto em curso */
 const MSL = {img:null, imgSrc:'', ready:false, N:1890, k:1, tx:0, ty:0, side:0, W:0, H:0,
-             ptrs:new Map(), stroke:null, pan:null, pinch:null, wired:false};
+             ptrs:new Map(), stroke:null, pan:null, pinch:null, wired:false,
+             used:[false,false,false,false], usedKey:'', rgb:null, scan:null};
 
 /* ======================= tela ======================= */
 function mapaLesionalHTML(){
@@ -82,7 +84,7 @@ function mapaLesionalHTML(){
   const orgs = Object.keys(MSL_ORGAOS).length>1
     ? `<div class="ti-foci" style="margin-bottom:10px">${Object.keys(MSL_ORGAOS).map(k=>`<div class="ti-ftog ${s.org===k?'on':''}" onclick="mslSetOrg('${k}')">${esc(MSL_ORGAOS[k].nome)}</div>`).join('')}</div>`
     : '';
-  const legInputs = MSL_CORES.map(c=>`<div class="msl-leg-row"><span class="msl-dot" style="--c:${c.cor}"></span><input type="text" class="msl-in" maxlength="46" value="${esc(s.labels[c.id-1])}" oninput="mslSetLabel(${c.id},this.value)" aria-label="Legenda da cor ${esc(c.nome)}"></div>`).join('');
+  const legInputs = MSL_CORES.map(c=>`<div class="msl-leg-row"><span class="msl-dot" style="--c:${c.cor}"></span><input type="text" class="msl-in" maxlength="30" placeholder="Lesão ${c.id}" value="${esc(s.labels[c.id-1])}" oninput="mslSetLabel(${c.id},this.value)" aria-label="Legenda da cor ${esc(c.nome)}"></div>`).join('');
   return `<div class="msl-wrap">
     ${orgs}
     <div class="ti-legend-row" style="margin:0 0 10px"><span class="lt">Escolha a cor (cada cor é uma lesão), pinte sobre o mapa e copie a imagem para o laudo. Com dois dedos (ou a roda do mouse) você dá zoom e move a imagem.</span></div>
@@ -95,6 +97,7 @@ function mapaLesionalHTML(){
         </div>
         <div class="msl-row">
           ${abtn('msl-undo','mslUndo()','undo','Desfazer',!s.strokes.length)}${abtn('msl-redo','mslRedo()','redo','Refazer',!s.redo.length)}${abtn('msl-clear','mslClear()','eraser','Limpar tudo',!s.strokes.length)}
+          <button type="button" class="msl-btn${s.legend?' on':''}" id="msl-legbtn" onclick="mslToggleLegend()" title="Mostrar a legenda na imagem (só as lesões pintadas)" aria-pressed="${s.legend}">${mslIc('list')}<span>Legenda</span></button>
           <span class="msl-sp"></span>
           ${abtn('msl-zout','mslZoomBy(1/1.4)','zout','Zoom −')}${abtn('msl-zin','mslZoomBy(1.4)','zin','Zoom +')}
           <button type="button" class="msl-btn" onclick="mslFit()" title="Ajustar à tela"><span id="msl-zoom">100%</span></button>
@@ -106,8 +109,8 @@ function mapaLesionalHTML(){
         <div class="msl-cur" id="msl-cur"></div>
         <div class="msl-msg" id="msl-msg">Carregando o mapa…</div>
       </div>
-      <details class="msl-leg"><summary>Editar a legenda das cores</summary>
-        <div class="msl-leg-in">${legInputs}<div class="lt" style="font-size:11.5px;color:var(--dim);margin-top:6px">O texto aparece na legenda da imagem (ex.: “Lesão 1 — PI-RADS 4, 12 mm”).</div></div>
+      <details class="msl-leg"><summary>Renomear as lesões (opcional)</summary>
+        <div class="msl-leg-in">${legInputs}<div class="lt" style="font-size:11.5px;color:var(--dim);margin-top:6px">A legenda da imagem mostra só as lesões que estiverem pintadas, no formato “cor - nome”.</div></div>
       </details>
     </div>
     <div class="ti-card" style="margin-top:12px">
@@ -136,7 +139,7 @@ function mslInit(){
   paint.style.opacity=MSL_ALPHA;
   mslWire(stage);
   mslFit();
-  const done=()=>{ MSL.ready=true; const m=$('msl-msg'); if(m) m.style.display='none'; mslDrawBase(); mslRedrawAll(); mslSyncUI(); };
+  const done=()=>{ MSL.ready=true; const m=$('msl-msg'); if(m) m.style.display='none'; mslRedrawAll(); MSL.usedKey=''; mslRefreshLegend(); mslSyncUI(); };
   if(MSL.img && MSL.imgSrc===o.img && MSL.img.complete && MSL.img.naturalWidth){ done(); return; }
   const im=new Image();
   im.onload=()=>{ MSL.img=im; MSL.imgSrc=o.img; if($('msl-base')===base) done(); };
@@ -289,7 +292,7 @@ function mslStrokeEnd(){
   const q=S.pts, m=q.length;
   if(m>=4){ const ctx=MSL.pctx; mslStyle(ctx,S); ctx.beginPath(); ctx.moveTo((q[m-4]+q[m-2])/2,(q[m-3]+q[m-1])/2); ctx.lineTo(q[m-2],q[m-1]); ctx.stroke(); ctx.restore(); }
   const s=mslState(); s.strokes.push(S); s.redo=[];
-  mslSyncUI();
+  mslRefreshLegend(); mslSyncUI();
 }
 function mslCancelStroke(){ if(!MSL.stroke) return; MSL.stroke=null; mslRedrawAll(); }
 function mslStyle(ctx,S){
@@ -319,46 +322,56 @@ function mslRedrawAll(){
 function mslRoundRect(ctx,x,y,w,h,r){
   ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
 }
-/* texto da legenda: 1 linha (até 33px) ou, se não couber, 2 linhas menores (com reticências) */
-function mslTrunc(ctx,t,maxW){
-  if(ctx.measureText(t).width<=maxW) return t;
-  while(t.length>1 && ctx.measureText(t+'…').width>maxW) t=t.slice(0,-1);
-  return t.trimEnd()+'…';
+/* Quais cores têm pintura visível (lê a camada de pintura reduzida; assim a borracha e o
+   desfazer também contam). Só pixels de cor "pura" entram, para não confundir as bordas
+   onde duas cores se encontram. */
+function mslScanUsed(){
+  const M=384, c=MSL.scan||(MSL.scan=document.createElement('canvas')); c.width=c.height=M;
+  const x=c.getContext('2d',{willReadFrequently:true}); x.imageSmoothingQuality='high'; x.drawImage(MSL.paint,0,0,M,M);
+  const d=x.getImageData(0,0,M,M).data, n=[0,0,0,0];
+  if(!MSL.rgb) MSL.rgb=MSL_CORES.map(k=>[1,3,5].map(i=>parseInt(k.cor.substr(i,2),16)));
+  for(let i=0;i<d.length;i+=4){
+    if(d[i+3]<48) continue;
+    for(let k=0;k<4;k++){ const q=MSL.rgb[k], e=(d[i]-q[0])**2+(d[i+1]-q[1])**2+(d[i+2]-q[2])**2; if(e<1500){ n[k]++; break; } }
+  }
+  return n.map(v=>v>=2);
 }
-function mslFitText(ctx,txt,maxW){
-  const F=fs=>`600 ${fs}px "Segoe UI",Arial,Helvetica,sans-serif`;
-  for(let fs=33;fs>=27;fs--){ ctx.font=F(fs); if(ctx.measureText(txt).width<=maxW) return {fs,lines:[txt]}; }
-  ctx.font=F(26);
-  const w=txt.split(/\s+/); let l1='', i=0;
-  while(i<w.length && ctx.measureText((l1?l1+' ':'')+w[i]).width<=maxW){ l1+=(l1?' ':'')+w[i]; i++; }
-  if(!l1){ l1=w[0]; i=1; }
-  const l2=w.slice(i).join(' ');
-  return {fs:26, lines:[mslTrunc(ctx,l1,maxW), l2?mslTrunc(ctx,l2,maxW):''].filter(Boolean)};
+function mslRefreshLegend(){
+  if(!MSL.ready) return;
+  MSL.used=mslScanUsed();
+  const key=MSL.used.join()+'|'+(mslState().legend?1:0);
+  if(key===MSL.usedKey) return;
+  MSL.usedKey=key; mslDrawBase();
+}
+function mslToggleLegend(){
+  const s=mslState(); s.legend=!s.legend; mslSyncUI(); mslRefreshLegend();
+  klugToast(s.legend?'Legenda ligada (só as lesões pintadas)':'Legenda desligada');
 }
 function mslDrawBase(){
   const ctx=MSL.bctx; if(!ctx||!MSL.img) return;
   const s=mslState(), o=MSL_ORGAOS[s.org], N=MSL.N;
   ctx.clearRect(0,0,N,N); ctx.drawImage(MSL.img,0,0,N,N);
-  // legenda das cores, dentro da imagem (a caixa cresce se algum texto precisar de 2 linhas)
-  const L=o.legenda, padX=22, titH=52, maxW=L.w-padX*2-46;
+  // legenda na imagem: "Legenda:" e uma linha "(cor) - Lesão N" para cada lesão pintada
+  const rows=MSL_CORES.filter(c=>MSL.used[c.id-1]);
+  if(!s.legend || !rows.length) return;
+  const L=o.legenda, padX=22, titH=52, rowH=50, F=(w,px)=>`${w} ${px}px "Segoe UI",Arial,Helvetica,sans-serif`;
   ctx.save(); ctx.textBaseline='middle'; ctx.textAlign='left';
-  const rows=MSL_CORES.map(c=>{
-    const txt=(s.labels[c.id-1]||'').trim()||('Lesão '+c.id), f=mslFitText(ctx,txt,maxW);
-    return {c, f, h: f.lines.length>1 ? 80 : 54};
+  const maxW=L.w-padX*2-50;
+  const texts=rows.map(c=>{
+    let t='- '+((s.labels[c.id-1]||'').trim()||('Lesão '+c.id));
+    ctx.font=F(600,31); while(t.length>4 && ctx.measureText(t).width>maxW) t=t.slice(0,-2).trimEnd()+'…';
+    return t;
   });
-  const h=titH+rows.reduce((a,r)=>a+r.h,0)+14;
-  ctx.fillStyle='rgba(255,255,255,.92)'; ctx.strokeStyle='rgba(60,60,70,.35)'; ctx.lineWidth=2;
-  mslRoundRect(ctx,L.x,L.y,L.w,h,18); ctx.fill(); ctx.stroke();
-  ctx.fillStyle='#555'; ctx.font='700 25px "Segoe UI",Arial,Helvetica,sans-serif';
-  ctx.fillText('LESÕES', L.x+padX, L.y+titH/2+2);
-  let y=L.y+titH;
-  rows.forEach(r=>{
-    const cy=y+r.h/2-2;
-    ctx.fillStyle=r.c.cor; ctx.beginPath(); ctx.arc(L.x+padX+15,cy,15,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle='#1f2630'; ctx.font=`600 ${r.f.fs}px "Segoe UI",Arial,Helvetica,sans-serif`;
-    const lh=r.f.fs*1.12, y0=cy-(r.f.lines.length-1)*lh/2;
-    r.f.lines.forEach((t,i)=>ctx.fillText(t, L.x+padX+46, y0+i*lh+1));
-    y+=r.h;
+  ctx.font=F(600,31); const tw=Math.max(...texts.map(t=>ctx.measureText(t).width));
+  ctx.font=F(700,27); const lw=ctx.measureText('Legenda:').width;
+  const w=Math.min(L.w, Math.max(170, padX*2+50+tw, padX*2+lw)), h=titH+rows.length*rowH+14;
+  ctx.fillStyle='rgba(255,255,255,.93)'; ctx.strokeStyle='rgba(60,60,70,.35)'; ctx.lineWidth=2;
+  mslRoundRect(ctx,L.x,L.y,w,h,18); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='#444'; ctx.font=F(700,27); ctx.fillText('Legenda:', L.x+padX, L.y+titH/2+2);
+  rows.forEach((c,i)=>{
+    const cy=L.y+titH+i*rowH+rowH/2-2;
+    ctx.fillStyle=c.cor; ctx.beginPath(); ctx.arc(L.x+padX+15,cy,15,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#1f2630'; ctx.font=F(600,31); ctx.fillText(texts[i], L.x+padX+40, cy+1);
   });
   ctx.restore();
 }
@@ -368,6 +381,7 @@ function mslSyncUI(){
   const s=mslState();
   document.querySelectorAll('.msl-cor').forEach(b=>b.classList.toggle('on', +b.dataset.c===s.cor && s.tool!=='erase'));
   document.querySelectorAll('.msl-btn[data-t]').forEach(b=>b.classList.toggle('on', b.dataset.t===s.tool));
+  const lb=$('msl-legbtn'); if(lb){ lb.classList.toggle('on',!!s.legend); lb.setAttribute('aria-pressed',String(!!s.legend)); }
   const st=$('msl-stage'); if(st) st.dataset.tool=s.tool;
   const set=(id,dis)=>{ const b=$(id); if(b) b.disabled=dis; };
   set('msl-undo',!s.strokes.length); set('msl-redo',!s.redo.length); set('msl-clear',!s.strokes.length);
@@ -379,20 +393,20 @@ function mslSetOrg(k){ const s=mslState(); if(!MSL_ORGAOS[k]||s.org===k) return;
 function mslSetLabel(i,v){
   mslState().labels[i-1]=v;
   const el=$('msl-cl-'+i); if(el) el.textContent=v.trim()||('Lesão '+i);
-  if(MSL._raf) return; MSL._raf=requestAnimationFrame(()=>{ MSL._raf=0; mslDrawBase(); });
+  if(!MSL.used[i-1] || MSL._raf) return; MSL._raf=requestAnimationFrame(()=>{ MSL._raf=0; mslDrawBase(); });
 }
 function mslUndo(){
   const s=mslState(); if(!s.strokes.length) return;
-  s.redo.push(s.strokes.pop()); mslRedrawAll(); mslSyncUI();
+  s.redo.push(s.strokes.pop()); mslRedrawAll(); mslRefreshLegend(); mslSyncUI();
 }
 function mslRedo(){
   const s=mslState(); if(!s.redo.length) return;
-  s.strokes.push(s.redo.pop()); mslRedrawAll(); mslSyncUI();
+  s.strokes.push(s.redo.pop()); mslRedrawAll(); mslRefreshLegend(); mslSyncUI();
 }
 function mslClear(){
   const s=mslState(); if(!s.strokes.length) return;
   s.strokes.push({clear:true}); s.redo=[];       // "limpar" também pode ser desfeito
-  mslRedrawAll(); mslSyncUI();
+  mslRedrawAll(); mslRefreshLegend(); mslSyncUI();
   klugToast('Pintura apagada — use Desfazer para voltar');
 }
 
