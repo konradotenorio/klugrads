@@ -1450,8 +1450,6 @@ function lauItemHTML(m, it){
   let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : r.html ? r.txt : esc(r.txt).replace(/\n/g,'<br>');
   if(r.txt==null && it.generic && typeof lauAutoTxt==='function') txt = lauAutoTxt(m, it, txt);
   if(r.txt==null && it.generic) txt = lauAteroTxt(m, txt);
-  // obstétrico Doppler: IR não preenchido sai do laudo (fica só o IP)
-  if(r.txt==null && it.generic && typeof lauObsDopAtivo==='function' && lauObsDopAtivo(m)) txt = txt.replace(/IR = <mark class="lau-ph">XXX<\/mark> e (?=IP)/g, '');
   if(m.lado && m.lado.ambos && state.lau.lado==='b') txt = lauBilPlural(txt);
   const subs = lauFraseLines(s.__f, s.__v, 'sub');
   if(subs.length){
@@ -1476,6 +1474,14 @@ function lauItemHTML(m, it){
   const ex = lauOptLines(it, s, true).concat(adds);
   if(!txt && ex.length){ txt = ex.shift(); }
   if(ex.length) txt += '<br>' + ex.join('<br>');
+  // obstétrico (2º/3º tri, Doppler, gemelar): IR, percentil e MoM não preenchidos saem do laudo
+  if(it.generic && typeof lauObsDopAtivo==='function' && lauObsDopAtivo(m)){
+    const PH='<mark class="lau-ph">XXX<\/mark>';
+    txt = txt.replace(new RegExp('IR = '+PH+' e (?=IP)','g'), '')
+             .replace(new RegExp(',? correspondendo ao percentil '+PH+' para a idade gestacional','g'), '')
+             .replace(new RegExp(' \\(percentil '+PH+'\\)','g'), '')
+             .replace(new RegExp(' \\('+PH+' MoM\\)','g'), '');
+  }
   if(m.semRot) return txt;   // densitometria / OCT: frases corridas, sem rótulo nem hífen
   const pre = (g.hifen && it.dash) ? '- ' : '';
   return lbl ? `${pre}${g.bold?`<b>${lbl}</b>`:lbl} ${txt}` : `${pre}${txt}`;
