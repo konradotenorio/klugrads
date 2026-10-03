@@ -131,14 +131,14 @@ function pmapSliceInner(lv, ex){
   const body = `${tx(-W+4,-H+10,'D','pmap-side','start')}${tx(W-12,-H+10,'E','pmap-side','start')}${tx(0,-H+8,'anterior','pmap-ori')}
       ${paths}${labels}
       <path d="${pmapOutline(0.14,sc)}" fill="${PMAP_ZCOR.US}" stroke="${ln}" stroke-width="1" pointer-events="none"><title>Uretra</title></path>
-      ${tx(0,Hb+6,'posterior','pmap-ori')}`;
+      ${tx(0,Hb+6,'posterior','pmap-ori')}${pmapDrawSVG(lv.id)}`;
   return {vb:[-W,-H,2*W,H+Hb+12], body};
 }
 function pmapSliceSVG(lv){
   const r=pmapSliceInner(lv,false);
   return `<div class="pmap-slice">
     <div class="pmap-slice-t">${lv.nome}</div>
-    <svg viewBox="${r.vb.join(' ')}" class="pmap-svg" role="img" aria-label="Corte axial — ${lv.nome}">${r.body}</svg>
+    <svg viewBox="${r.vb.join(' ')}" class="pmap-svg" data-pid="${lv.id}" role="img" aria-label="Corte axial — ${lv.nome}">${r.body}</svg>
   </div>`;
 }
 function pmapExtraInner(ex){
@@ -155,14 +155,14 @@ function pmapExtraInner(ex){
       ${piece('SV-E','ellipse','cx="52" cy="-18" rx="44" ry="20" transform="rotate(18 52 -18)"','Vesícula seminal esquerda')}
       ${lbl('SV-D',-52,-15,'VS')}${lbl('SV-E',52,-15,'VS')}
       ${piece('EUE','rect','x="-24" y="34" width="48" height="36" rx="16"','Esfíncter uretral externo')}
-      ${lbl('EUE',0,56,'EUE')}`;
+      ${lbl('EUE',0,56,'EUE')}${pmapDrawSVG('extra')}`;
   return {vb:[-120,-60,240,150], body};
 }
 function pmapExtraSVG(){
   const r=pmapExtraInner(false);
   return `<div class="pmap-slice">
     <div class="pmap-slice-t">Vesículas seminais e esfíncter</div>
-    <svg viewBox="${r.vb.join(' ')}" class="pmap-svg" role="img" aria-label="Vesículas seminais e esfíncter uretral externo">${r.body}</svg>
+    <svg viewBox="${r.vb.join(' ')}" class="pmap-svg" data-pid="extra" role="img" aria-label="Vesículas seminais e esfíncter uretral externo">${r.body}</svg>
   </div>`;
 }
 
@@ -280,7 +280,12 @@ function pmapActiveHTML(){
     <div class="pmap-tags">${lista}</div>`;
 }
 function pmapFraseHTML(){
-  const f=pmapFrase(); if(!f) return '';
+  const f=pmapFrase();
+  const temDesenho = Object.values((pmapState().draw)||{}).some(t=>t.length);
+  if(!f && temDesenho) return `<div class="lau-frase"><div class="pmap-acts">
+      <button type="button" class="lau-btn2" onclick="pmapCopyImg()">Copiar imagem do esquema</button>
+      <button type="button" class="lau-btn2" onclick="pmapBaixarJpg()">Baixar JPEG</button></div></div>`;
+  if(!f) return '';
   return `<div class="lau-frase">
     <div class="lau-frase-lbl">Frase para o laudo</div>
     <div class="lau-frase-tx">${esc(f).replace(/\n/g,'<br>')}</div>
@@ -302,8 +307,9 @@ function calcProstataSetoresHTML(){
     </div>
     <div class="ti-card">
       <div class="tfg-sec-lbl">Mapa de setores — cortes axiais</div>
+      ${pmapDrawBarHTML()}
       <div class="ti-legend-row" style="margin:6px 0 4px"><span class="lt">Convenção radiológica: a direita do paciente (D) fica à esquerda da tela. Toque de novo para desmarcar.</span></div>
-      <div class="pmap-grid">${typeof pzeSagitalSVG==='function' ? `<div class="pmap-slice"><div class="pmap-slice-t">Sagital — níveis dos cortes</div>${pzeSagitalSVG()}</div>` : ''}${PMAP_LEVELS.map(pmapSliceSVG).join('')}${pmapExtraSVG()}</div>
+      <div class="pmap-grid${pmapState().modo==='draw'?' pmap-drawing':''}" id="pmap-grid">${typeof pzeSagitalSVG==='function' ? `<div class="pmap-slice"><div class="pmap-slice-t">Sagital — níveis dos cortes</div>${pzeSagitalSVG()}</div>` : ''}${PMAP_LEVELS.map(pmapSliceSVG).join('')}${pmapExtraSVG()}</div>
       <div id="pmap-frase">${pmapFraseHTML()}</div>
     </div>
     <div class="ti-card">
@@ -337,3 +343,90 @@ function pmapCopy(){ const f=pmapFrase(); if(f) klugCopy(f,'Frase copiada ✓');
 CALCS.push({id:'prostata-setores', modality:'rm', subspec:'medint', badge:'MS',
   title:'Mapa de Setores da Próstata',
   desc:'PI-RADS v2.1 — marque a lesão no esquema de 41 setores'});
+
+
+/* =========================================================================
+   Desenho livre (lápis) sobre os cortes do esquema
+   ---------------------------------------------------------------------------
+   Modo "Desenhar": o dedo/mouse/caneta risca por cima dos cortes axiais e das
+   vesículas/esfíncter. Os traços ficam guardados em coordenadas do próprio
+   esquema (viewBox), por isso acompanham o zoom da tela e entram na imagem
+   copiada/baixada para o laudo. Borracha apaga o traço tocado.
+   ========================================================================= */
+const PMAP_PEN_CORES = ['#111111','#cf2020','#e07a1f','#7b4bd6','#1f8fb0','#16a34a'];
+const PMAP_PEN_W = {fina:1.4, media:2.6, grossa:4.5};
+function pmapDraw(){ const s=pmapState(); if(!s.draw) s.draw={}; if(!s.modo) s.modo='marcar'; if(!s.pen) s.pen={c:'#111111', w:'media', tool:'lapis'}; return s; }
+function pmapPathD(pts){ if(!pts.length) return ''; let d=`M${pts[0]} ${pts[1]}`; for(let i=2;i<pts.length;i+=2) d+=` L${pts[i]} ${pts[i+1]}`; if(pts.length===2) d+=` L${pts[0]+0.01} ${pts[1]}`; return d; }
+function pmapDrawSVG(pid){
+  const s=pmapDraw(); const ts=s.draw[pid]||[];
+  return `<g class="pmap-ink" pointer-events="none">${ts.map(t=>`<path d="${pmapPathD(t.pts)}" fill="none" stroke="${t.c}" stroke-width="${t.w}" stroke-linecap="round" stroke-linejoin="round"/>`).join('')}</g>`;
+}
+function pmapDrawBarHTML(){
+  const s=pmapDraw(), P=s.pen, on=s.modo==='draw';
+  const nTr=Object.values(s.draw).reduce((a,t)=>a+t.length,0);
+  const modo=`<div class="ti-foci" style="margin:8px 0 6px">
+      <div class="ti-ftog ${!on?'on':''}" onclick="pmapSetModo('marcar')">Marcar setores</div>
+      <div class="ti-ftog ${on?'on':''}" onclick="pmapSetModo('draw')">✎ Desenhar</div></div>`;
+  if(!on) return modo + (nTr?`<div class="ti-legend-row" style="margin:0 0 4px"><span class="lt">${nTr} traço${nTr>1?'s':''} desenhado${nTr>1?'s':''} — entram na imagem copiada.</span></div>`:'');
+  return modo + `<div class="pmap-pen">
+      <div class="ti-foci">
+        <div class="ti-ftog ${P.tool==='lapis'?'on':''}" onclick="pmapPen('tool','lapis')">✎ Lápis</div>
+        <div class="ti-ftog ${P.tool==='borracha'?'on':''}" onclick="pmapPen('tool','borracha')">⌫ Borracha</div>
+      </div>
+      <div class="pmap-pen-cores">${PMAP_PEN_CORES.map(c=>`<button type="button" class="pmap-pen-cor ${P.c===c&&P.tool==='lapis'?'on':''}" style="background:${c}" onclick="pmapPen('c','${c}')" aria-label="Cor"></button>`).join('')}</div>
+      <div class="ti-foci">${[['fina','Fina'],['media','Média'],['grossa','Grossa']].map(o=>`<div class="ti-ftog ${P.w===o[0]?'on':''}" onclick="pmapPen('w','${o[0]}')">${o[1]}</div>`).join('')}</div>
+      <div class="ti-foci">
+        <div class="ti-ftog" onclick="pmapDesfazer()">↶ Desfazer</div>
+        <div class="ti-ftog" onclick="pmapLimparDesenho()">Limpar desenho</div>
+      </div>
+    </div>
+    <div class="ti-legend-row" style="margin:2px 0 4px"><span class="lt">Desenhe por cima dos cortes com o dedo, a caneta ou o mouse. O desenho entra na imagem copiada para o laudo. Para voltar a marcar setores, toque em "Marcar setores".</span></div>`;
+}
+function pmapSetModo(m){ pmapDraw().modo=m; render(true); }
+function pmapPen(k,v){ const P=pmapDraw().pen; P[k]=v; if(k==='c') P.tool='lapis'; render(true); }
+function pmapDesfazer(){ const s=pmapDraw(); const h=s.hist||[]; const pid=h.pop(); if(pid && s.draw[pid] && s.draw[pid].length) s.draw[pid].pop(); render(true); }
+function pmapLimparDesenho(){ const s=pmapDraw(); s.draw={}; s.hist=[]; render(true); }
+
+/* coordenadas do toque → coordenadas do esquema (viewBox) */
+function pmapSvgPt(svg, e){ const pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY; const m=svg.getScreenCTM(); if(!m) return null; const r=pt.matrixTransform(m.inverse()); return [+r.x.toFixed(1), +r.y.toFixed(1)]; }
+let PMAP_TR=null;
+document.addEventListener('pointerdown', e=>{
+  const svg=e.target.closest && e.target.closest('.pmap-drawing svg.pmap-svg[data-pid]'); if(!svg) return;
+  const s=pmapDraw(); if(s.modo!=='draw') return;
+  e.preventDefault(); const p=pmapSvgPt(svg,e); if(!p) return;
+  const pid=svg.dataset.pid;
+  if(s.pen.tool==='borracha'){ PMAP_TR={svg, pid, erase:true}; pmapApagarEm(pid,p); return; }
+  try{ svg.setPointerCapture(e.pointerId); }catch(_){}
+  const live=document.createElementNS('http://www.w3.org/2000/svg','path');
+  live.setAttribute('fill','none'); live.setAttribute('stroke',s.pen.c); live.setAttribute('stroke-width',PMAP_PEN_W[s.pen.w]);
+  live.setAttribute('stroke-linecap','round'); live.setAttribute('stroke-linejoin','round'); live.setAttribute('pointer-events','none');
+  svg.appendChild(live);
+  PMAP_TR={svg, pid, live, t:{c:s.pen.c, w:PMAP_PEN_W[s.pen.w], pts:p.slice()}};
+  live.setAttribute('d', pmapPathD(PMAP_TR.t.pts));
+}, {passive:false});
+document.addEventListener('pointermove', e=>{
+  if(!PMAP_TR) return; e.preventDefault();
+  const p=pmapSvgPt(PMAP_TR.svg,e); if(!p) return;
+  if(PMAP_TR.erase){ pmapApagarEm(PMAP_TR.pid,p); return; }
+  const a=PMAP_TR.t.pts, n=a.length; if(Math.hypot(p[0]-a[n-2], p[1]-a[n-1])<0.8) return;
+  a.push(p[0],p[1]); PMAP_TR.live.setAttribute('d', pmapPathD(a));
+}, {passive:false});
+const pmapFimTraco = ()=>{
+  if(!PMAP_TR) return; const T=PMAP_TR; PMAP_TR=null;
+  if(T.erase) return;
+  const s=pmapDraw(); (s.draw[T.pid]=s.draw[T.pid]||[]).push(T.t); (s.hist=s.hist||[]).push(T.pid);
+  const fr=document.getElementById('pmap-frase'); if(fr) fr.innerHTML=translateHTML(pmapFraseHTML());   // mostra "copiar imagem" já no 1º traço
+};
+document.addEventListener('pointerup', pmapFimTraco);
+document.addEventListener('pointercancel', pmapFimTraco);
+/* borracha: apaga o traço mais próximo do toque (até ~6 unidades do esquema) */
+function pmapApagarEm(pid, p){
+  const s=pmapDraw(), ts=s.draw[pid]||[]; let best=-1, bd=6;
+  ts.forEach((t,i)=>{ for(let j=0;j<t.pts.length;j+=2){ const d=Math.hypot(t.pts[j]-p[0], t.pts[j+1]-p[1]); if(d<bd){ bd=d; best=i; } } });
+  if(best<0) return;
+  ts.splice(best,1);
+  const svg=document.querySelector(`svg.pmap-svg[data-pid="${pid}"]`); const g=svg&&svg.querySelector('.pmap-ink');
+  if(g){ const tmp=document.createElementNS('http://www.w3.org/2000/svg','svg'); tmp.innerHTML=pmapDrawSVG(pid); g.replaceWith(tmp.firstChild); }
+  // traços ainda "vivos" já salvos: o histórico de desfazer só guarda o órgão; remove uma entrada correspondente
+  const h=s.hist||[]; const k=h.lastIndexOf(pid); if(k>=0) h.splice(k,1);
+}
