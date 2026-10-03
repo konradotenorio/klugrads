@@ -1945,7 +1945,9 @@ function lauOptsHTML(k, opts, flags, bag){
 function lauFrasesPanel(k, org, list, bag, estrut){
   const lblK = (()=>{ const L=state.lau, m=L&&lauModelo(L.model), it=m&&m.items.find(x=>x.k===k); return it?lauNorm(lauItemLabel(m,it)):''; })();
   const mid = state.lau && state.lau.model;
-  const fs = lauFrasesDe(org).filter(f=>!(estrut && f.s) && !(f.n==='Tenossinovite' && /pata de ganso/.test(lblK)) && !(f.so && f.so.indexOf(mid)<0));
+  const mItens = (()=>{ const m=mid&&lauModelo(mid); return m ? m.items.map(i=>lauNorm(lauItemLabel(m,i)||'')) : []; })();
+  const fs = lauFrasesDe(org).filter(f=>!(estrut && f.s) && !(f.n==='Tenossinovite' && /pata de ganso/.test(lblK)) && !(f.so && f.so.indexOf(mid)<0)
+    && !(f.nm && mItens.some(l=>f.nm.test(l))));   // nm: some quando o laudo tem item próprio (ex.: miomas vão no "Miométrio")
   if(!fs.length) return '';
   const nOf = i=>list.filter(id=>parseInt(id,10)===i).length;
   const chips = fs.map(f=>{ const n=nOf(f.i); return `<button type="button" class="ti-ftog ${n?'on':''}${f.kind?' lau-fk':''}" onclick="lauFraseToggle('${k}',${f.i})">${f.m==='sub'?'':'+ '}${esc(f.n)}${n>1?` <span class="n">${n}</span>`:''}</button>`; }).join('');
