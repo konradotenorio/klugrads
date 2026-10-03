@@ -5161,41 +5161,9 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "bexiga",
-"label": "Bexiga",
-"text": "com repleção parcial.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "utero",
-"label": "Útero",
-"text": "gravídico, globoso.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "colo-uterino",
-"label": "Colo uterino",
-"text": "de aspecto aparentemente preservado.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
 "k": "feto",
 "label": "Feto",
-"text": "único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "batimentos-cardiacos-bcf",
-"label": "Batimentos cardíacos (BCF)",
-"text": "XXX bpm.",
+"text": "único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -5203,7 +5171,7 @@ const LAU_US_MASKS = [
 {
 "k": "placenta",
 "label": "Placenta",
-"text": "com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): XXX.",
+"text": "com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -5229,34 +5197,34 @@ const LAU_US_MASKS = [
 ]
 },
 {
-"k": "cabeca",
-"label": "Cabeça",
-"text": "DBP = XXX mm; PC = XXX mm.",
+"k": "biometria",
+"label": "Biometria",
+"text": "\nCabeça: DBP = XXX mm; PC = XXX mm.\nAbdome: CA = XXX mm.\nFêmur: CF = XXX mm.\nPeso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
 "dash": false,
 "opts": [],
 "grp": ""
 },
 {
-"k": "abdome",
-"label": "Abdome",
-"text": "CA = XXX mm.",
-"dash": false,
+"k": "bexiga",
+"label": "Bexiga",
+"text": "com repleção parcial.",
+"dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "femur",
-"label": "Fêmur",
-"text": "CF = XXX mm.",
-"dash": false,
+"k": "utero",
+"label": "Útero",
+"text": "gravídico, globoso.",
+"dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "peso-fetal-estimado-hadlock",
-"label": "Peso fetal estimado (Hadlock)",
-"text": "XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
-"dash": false,
+"k": "colo-uterino",
+"label": "Colo uterino",
+"text": "de aspecto aparentemente preservado.",
+"dash": true,
 "opts": [],
 "grp": ""
 }
@@ -5271,23 +5239,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "bexiga"
-},
-{
-"t": "item",
-"k": "utero"
-},
-{
-"t": "item",
-"k": "colo-uterino"
-},
-{
-"t": "item",
 "k": "feto"
-},
-{
-"t": "item",
-"k": "batimentos-cardiacos-bcf"
 },
 {
 "t": "item",
@@ -5302,24 +5254,20 @@ const LAU_US_MASKS = [
 "k": "liquido-amniotico"
 },
 {
-"t": "line",
-"text": "Medidas:"
+"t": "item",
+"k": "biometria"
 },
 {
 "t": "item",
-"k": "cabeca"
+"k": "bexiga"
 },
 {
 "t": "item",
-"k": "abdome"
+"k": "utero"
 },
 {
 "t": "item",
-"k": "femur"
-},
-{
-"t": "item",
-"k": "peso-fetal-estimado-hadlock"
+"k": "colo-uterino"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -5352,33 +5300,9 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "bexiga",
-"label": "Bexiga",
-"text": "com repleção parcial.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "utero",
-"label": "Útero",
-"text": "gravídico, globoso.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "colo-uterino",
-"label": "Colo uterino",
-"text": "de aspecto aparentemente preservado.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
 "k": "placenta",
 "label": "Placenta XX placentas",
-"text": "com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): XXX.",
+"text": "com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.",
 "dash": true,
 "opts": [
 "Não é possível determinar corionicidade por este estudo."
@@ -5408,39 +5332,15 @@ const LAU_US_MASKS = [
 {
 "k": "feto-1",
 "label": "Feto 1",
-"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.",
+"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.",
 "dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "cabeca",
-"label": "Cabeça",
-"text": "DBP = XXX mm; PC = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": "Feto 1"
-},
-{
-"k": "abdome",
-"label": "Abdome",
-"text": "CA = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": "Feto 1"
-},
-{
-"k": "femur",
-"label": "Fêmur",
-"text": "CF = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": "Feto 1"
-},
-{
-"k": "peso-fetal-estimado-hadlock",
-"label": "Peso fetal estimado (Hadlock)",
-"text": "XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
+"k": "biometria",
+"label": "Biometria",
+"text": "\nCabeça: DBP = XXX mm; PC = XXX mm.\nAbdome: CA = XXX mm.\nFêmur: CF = XXX mm.\nPeso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
 "dash": false,
 "opts": [],
 "grp": "Feto 1"
@@ -5448,39 +5348,15 @@ const LAU_US_MASKS = [
 {
 "k": "feto-2",
 "label": "Feto 2",
-"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.",
+"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.",
 "dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "cabeca-2",
-"label": "Cabeça",
-"text": "DBP = XXX mm; PC = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": "Feto 2"
-},
-{
-"k": "abdome-2",
-"label": "Abdome",
-"text": "CA = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": "Feto 2"
-},
-{
-"k": "femur-2",
-"label": "Fêmur",
-"text": "CF = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": "Feto 2"
-},
-{
-"k": "peso-fetal-estimado-hadlock-2",
-"label": "Peso fetal estimado (Hadlock)",
-"text": "XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
+"k": "biometria-2",
+"label": "Biometria",
+"text": "\nCabeça: DBP = XXX mm; PC = XXX mm.\nAbdome: CA = XXX mm.\nFêmur: CF = XXX mm.\nPeso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
 "dash": false,
 "opts": [],
 "grp": "Feto 2"
@@ -5492,6 +5368,30 @@ const LAU_US_MASKS = [
 "dash": false,
 "opts": [],
 "grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "com repleção parcial.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "utero",
+"label": "Útero",
+"text": "gravídico, globoso.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "colo-uterino",
+"label": "Colo uterino",
+"text": "de aspecto aparentemente preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -5501,18 +5401,6 @@ const LAU_US_MASKS = [
 },
 {
 "t": "blank"
-},
-{
-"t": "item",
-"k": "bexiga"
-},
-{
-"t": "item",
-"k": "utero"
-},
-{
-"t": "item",
-"k": "colo-uterino"
 },
 {
 "t": "item",
@@ -5531,52 +5419,32 @@ const LAU_US_MASKS = [
 "k": "feto-1"
 },
 {
-"t": "line",
-"text": "Medidas:"
-},
-{
 "t": "item",
-"k": "cabeca"
-},
-{
-"t": "item",
-"k": "abdome"
-},
-{
-"t": "item",
-"k": "femur"
-},
-{
-"t": "item",
-"k": "peso-fetal-estimado-hadlock"
+"k": "biometria"
 },
 {
 "t": "item",
 "k": "feto-2"
 },
 {
-"t": "line",
-"text": "Medidas:"
-},
-{
 "t": "item",
-"k": "cabeca-2"
-},
-{
-"t": "item",
-"k": "abdome-2"
-},
-{
-"t": "item",
-"k": "femur-2"
-},
-{
-"t": "item",
-"k": "peso-fetal-estimado-hadlock-2"
+"k": "biometria-2"
 },
 {
 "t": "item",
 "k": "discordancia-de-peso-estimado-entre-os-f"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "utero"
+},
+{
+"t": "item",
+"k": "colo-uterino"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -5609,41 +5477,9 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "bexiga",
-"label": "Bexiga",
-"text": "com repleção parcial.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "utero",
-"label": "Útero",
-"text": "gravídico, globoso.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "colo-uterino",
-"label": "Colo uterino",
-"text": "de aspecto aparentemente preservado.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
 "k": "feto",
 "label": "Feto",
-"text": "único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "batimentos-cardiacos-bcf",
-"label": "Batimentos cardíacos (BCF)",
-"text": "XXX bpm.",
+"text": "único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -5651,7 +5487,7 @@ const LAU_US_MASKS = [
 {
 "k": "placenta",
 "label": "Placenta",
-"text": "com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): XXX.",
+"text": "com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -5677,33 +5513,9 @@ const LAU_US_MASKS = [
 ]
 },
 {
-"k": "cabeca",
-"label": "Cabeça",
-"text": "DBP = XXX mm; PC = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
-"k": "abdome",
-"label": "Abdome",
-"text": "CA = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
-"k": "femur",
-"label": "Fêmur",
-"text": "CF = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
-"k": "peso-fetal-estimado-hadlock",
-"label": "Peso fetal estimado (Hadlock)",
-"text": "XXX g (variação de ± 10%), correspondendo ao percentil XXX para a idade gestacional.",
+"k": "biometria",
+"label": "Biometria",
+"text": "\nCabeça: DBP = XXX mm; PC = XXX mm.\nAbdome: CA = XXX mm.\nFêmur: CF = XXX mm.\nPeso fetal estimado (Hadlock): XXX g (variação de ± 10%), correspondendo ao percentil XXX para a idade gestacional.",
 "dash": false,
 "opts": [],
 "grp": ""
@@ -5719,6 +5531,30 @@ const LAU_US_MASKS = [
 "Índices de resistividade das artérias uterinas: XXX à direita e XXX à esquerda."
 ],
 "grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "com repleção parcial.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "utero",
+"label": "Útero",
+"text": "gravídico, globoso.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "colo-uterino",
+"label": "Colo uterino",
+"text": "de aspecto aparentemente preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -5731,23 +5567,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "bexiga"
-},
-{
-"t": "item",
-"k": "utero"
-},
-{
-"t": "item",
-"k": "colo-uterino"
-},
-{
-"t": "item",
 "k": "feto"
-},
-{
-"t": "item",
-"k": "batimentos-cardiacos-bcf"
 },
 {
 "t": "item",
@@ -5762,28 +5582,24 @@ const LAU_US_MASKS = [
 "k": "liquido-amniotico"
 },
 {
-"t": "line",
-"text": "Medidas:"
-},
-{
 "t": "item",
-"k": "cabeca"
-},
-{
-"t": "item",
-"k": "abdome"
-},
-{
-"t": "item",
-"k": "femur"
-},
-{
-"t": "item",
-"k": "peso-fetal-estimado-hadlock"
+"k": "biometria"
 },
 {
 "t": "item",
 "k": "dopplervelocimetria"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "utero"
+},
+{
+"t": "item",
+"k": "colo-uterino"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -7602,25 +7418,9 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "utero",
-"label": "Útero",
-"text": "gravídico, globoso.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "colo-uterino",
-"label": "Colo uterino",
-"text": "de aspecto aparentemente preservado.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
 "k": "placenta",
 "label": "Placenta XX placentas",
-"text": "com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): XXX.",
+"text": "com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.",
 "dash": true,
 "opts": [
 "Não é possível determinar a corionicidade por este estudo."
@@ -7650,39 +7450,15 @@ const LAU_US_MASKS = [
 {
 "k": "feto-1",
 "label": "Feto 1",
-"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.",
+"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.",
 "dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "cabeca",
-"label": "Cabeça",
-"text": "DBP = XXX mm; PC = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": "Feto 1"
-},
-{
-"k": "abdome",
-"label": "Abdome",
-"text": "CA = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": "Feto 1"
-},
-{
-"k": "femur",
-"label": "Fêmur",
-"text": "CF = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": "Feto 1"
-},
-{
-"k": "peso-fetal-estimado-hadlock",
-"label": "Peso fetal estimado (Hadlock)",
-"text": "XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
+"k": "biometria",
+"label": "Biometria",
+"text": "\nCabeça: DBP = XXX mm; PC = XXX mm.\nAbdome: CA = XXX mm.\nFêmur: CF = XXX mm.\nPeso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
 "dash": false,
 "opts": [],
 "grp": "Feto 1"
@@ -7701,39 +7477,15 @@ const LAU_US_MASKS = [
 {
 "k": "feto-2",
 "label": "Feto 2",
-"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.",
+"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.",
 "dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "cabeca-2",
-"label": "Cabeça",
-"text": "DBP = XXX mm; PC = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": "Feto 2"
-},
-{
-"k": "abdome-2",
-"label": "Abdome",
-"text": "CA = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": "Feto 2"
-},
-{
-"k": "femur-2",
-"label": "Fêmur",
-"text": "CF = XXX mm.",
-"dash": false,
-"opts": [],
-"grp": "Feto 2"
-},
-{
-"k": "peso-fetal-estimado-hadlock-2",
-"label": "Peso fetal estimado (Hadlock)",
-"text": "XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
+"k": "biometria-2",
+"label": "Biometria",
+"text": "\nCabeça: DBP = XXX mm; PC = XXX mm.\nAbdome: CA = XXX mm.\nFêmur: CF = XXX mm.\nPeso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
 "dash": false,
 "opts": [],
 "grp": "Feto 2"
@@ -7757,6 +7509,30 @@ const LAU_US_MASKS = [
 "dash": false,
 "opts": [],
 "grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "com repleção parcial.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "utero",
+"label": "Útero",
+"text": "gravídico, globoso.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "colo-uterino",
+"label": "Colo uterino",
+"text": "de aspecto aparentemente preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -7766,14 +7542,6 @@ const LAU_US_MASKS = [
 },
 {
 "t": "blank"
-},
-{
-"t": "item",
-"k": "utero"
-},
-{
-"t": "item",
-"k": "colo-uterino"
 },
 {
 "t": "item",
@@ -7792,24 +7560,8 @@ const LAU_US_MASKS = [
 "k": "feto-1"
 },
 {
-"t": "line",
-"text": "Medidas:"
-},
-{
 "t": "item",
-"k": "cabeca"
-},
-{
-"t": "item",
-"k": "abdome"
-},
-{
-"t": "item",
-"k": "femur"
-},
-{
-"t": "item",
-"k": "peso-fetal-estimado-hadlock"
+"k": "biometria"
 },
 {
 "t": "item",
@@ -7820,24 +7572,8 @@ const LAU_US_MASKS = [
 "k": "feto-2"
 },
 {
-"t": "line",
-"text": "Medidas:"
-},
-{
 "t": "item",
-"k": "cabeca-2"
-},
-{
-"t": "item",
-"k": "abdome-2"
-},
-{
-"t": "item",
-"k": "femur-2"
-},
-{
-"t": "item",
-"k": "peso-fetal-estimado-hadlock-2"
+"k": "biometria-2"
 },
 {
 "t": "item",
@@ -7846,6 +7582,18 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "discordancia-de-peso-estimado-entre-os-f"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "utero"
+},
+{
+"t": "item",
+"k": "colo-uterino"
 }
 ],
 "concTitulo": "Conclusão:",

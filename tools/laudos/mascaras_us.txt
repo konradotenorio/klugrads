@@ -1173,19 +1173,18 @@ Data de Nascimento:
 Data do Exame: 
 Exame realizado em caráter de urgência no pronto-socorro, por via suprapúbica (abdominal).
  
-- Bexiga: com repleção parcial. 
-- Útero: gravídico, globoso.
-- Colo uterino: de aspecto aparentemente preservado.
-- Feto: único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda.
-- Batimentos cardíacos (BCF): XXX bpm.
-- Placenta: com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): XXX.
+- Feto: único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.
+- Placenta: com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.
 - Cordão umbilical: de aspecto habitual.
 - Líquido amniótico: em quantidade normal, com maior bolsão vertical (MBV) estimado em XXX mm. || em quantidade normal, com índice de líquido amniótico (ILA) estimado em XXX cm.
-Medidas:
-Cabeça: DBP = XXX mm; PC = XXX mm.
-Abdome: CA = XXX mm.
-Fêmur: CF = XXX mm.
-Peso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.
+Biometria:
+  Cabeça: DBP = XXX mm; PC = XXX mm.
+  Abdome: CA = XXX mm.
+  Fêmur: CF = XXX mm.
+  Peso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.
+- Bexiga: com repleção parcial.
+- Útero: gravídico, globoso.
+- Colo uterino: de aspecto aparentemente preservado.
 Conclusão:
 - Gestação tópica e única, com feto vivo e de idade gestacional estimada em XXX semanas e XXX dias pela biometria atual.
 Obs: O exame obstétrico de pronto-atendimento tem como objetivo primordial o de avaliar a vitalidade imediata da gestação, não se destinando à pesquisa de malformações fetais nem substituindo os exames de rotina do pré-natal.
@@ -1202,26 +1201,26 @@ Data de Nascimento:
 Data do Exame: 
 Exame realizado em caráter de urgência no pronto-socorro, por via suprapúbica (abdominal).
  
-- Bexiga: com repleção parcial. 
-- Útero: gravídico, globoso.
-- Colo uterino: de aspecto aparentemente preservado.
-- Placenta XX placentas: com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): XXX. 
+- Placenta XX placentas: com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.
 XXX Não é possível determinar corionicidade por este estudo.
 - Cordão umbilical: de aspecto habitual.
 - Líquido amniótico: em quantidade aparentemente normal, com maior bolsão vertical (MBV) estimado em XXX mm. Não é possível determinar amnionicidade por este estudo. || em quantidade aparentemente normal, com índice de líquido amniótico (ILA) estimado em XXX cm. Não é possível determinar amnionicidade por este estudo.
-- Feto 1: em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.
-Medidas:
-Cabeça: DBP = XXX mm; PC = XXX mm.
-Abdome: CA = XXX mm.
-Fêmur: CF = XXX mm.
-Peso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.
-- Feto 2: em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos (BCF): XXX bpm.
-Medidas:
-Cabeça: DBP = XXX mm; PC = XXX mm.
-Abdome: CA = XXX mm.
-Fêmur: CF = XXX mm.
-Peso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.
+- Feto 1: em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.
+Biometria:
+  Cabeça: DBP = XXX mm; PC = XXX mm.
+  Abdome: CA = XXX mm.
+  Fêmur: CF = XXX mm.
+  Peso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.
+- Feto 2: em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.
+Biometria:
+  Cabeça: DBP = XXX mm; PC = XXX mm.
+  Abdome: CA = XXX mm.
+  Fêmur: CF = XXX mm.
+  Peso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.
 Discordância de peso estimado entre os fetos: XXX%.
+- Bexiga: com repleção parcial.
+- Útero: gravídico, globoso.
+- Colo uterino: de aspecto aparentemente preservado.
 Conclusão:
 - Gestação gemelar, com fetos vivos e com pesos estimados acima. Idade gestacional (IG) estimada em XXX semanas e XXX dias
 Obs: O exame obstétrico de pronto-atendimento tem como objetivo primordial o de avaliar a vitalidade imediata da gestação, não se destinando à pesquisa de malformações fetais nem substituindo os exames de rotina do pré-natal.
@@ -1238,19 +1237,15 @@ Data de Nascimento:
 Data do Exame: 
 Exame realizado em caráter de urgência no pronto-socorro, por via suprapúbica (abdominal).
  
-- Bexiga: com repleção parcial. 
-- Útero: gravídico, globoso.
-- Colo uterino: de aspecto aparentemente preservado.
-- Feto: único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda.
-- Batimentos cardíacos (BCF): XXX bpm.
-- Placenta: com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): XXX.
+- Feto: único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.
+- Placenta: com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.
 - Cordão umbilical: de aspecto habitual.
 - Líquido amniótico: em quantidade normal, com maior bolsão vertical (MBV) estimado em XXX mm. || em quantidade normal, com índice de líquido amniótico (ILA) estimado em XXX cm.
-Medidas:
-Cabeça: DBP = XXX mm; PC = XXX mm.
-Abdome: CA = XXX mm.
-Fêmur: CF = XXX mm.
-Peso fetal estimado (Hadlock): XXX g (variação de ± 10%), correspondendo ao percentil XXX para a idade gestacional.
+Biometria:
+  Cabeça: DBP = XXX mm; PC = XXX mm.
+  Abdome: CA = XXX mm.
+  Fêmur: CF = XXX mm.
+  Peso fetal estimado (Hadlock): XXX g (variação de ± 10%), correspondendo ao percentil XXX para a idade gestacional.
 Dopplervelocimetria:
   Artéria umbilical: IR = XXX e IP = XXX (percentil XXX).
   Artéria cerebral média: IR = XXX e IP = XXX (percentil XXX).
@@ -1258,6 +1253,9 @@ Dopplervelocimetria:
 XXX Pico de velocidade sistólica da artéria cerebral média: XXX cm/s (XXX MoM).
 XXX Ducto venoso: IP = XXX (percentil XXX).
 XXX Índices de resistividade das artérias uterinas: XXX à direita e XXX à esquerda.
+- Bexiga: com repleção parcial.
+- Útero: gravídico, globoso.
+- Colo uterino: de aspecto aparentemente preservado.
 Conclusão:
 - Gestação tópica e única, com feto vivo e de idade gestacional estimada em XXX semanas e XXX dias pela biometria atual.
 - Estudo Doppler da circulação fetoplacentária dentro dos limites da normalidade.

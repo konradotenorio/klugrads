@@ -818,7 +818,7 @@ const LAU_IND_MMG = ['Rastreamento','Controle de achado prévio','Complementaç�
 const LAU_PREP = ['à','ao','a','de','do','da','em','no','na','e'];
 const LAU_PH_RE = /^([(\[]*)(X{1,3})([^\sX]*)$/;
 const LAU_UNIT = /^(cm|mm|m|ml|mL|g|kg|bpm|kPa|%|cm³|mm³|semanas?|dias?|anos?|meses)[.,;:)]*$/;
-function lauIsWord(w){ return /^[A-Za-zÀ-ÿ-]+\*?[.,;:)]*$/.test(w||'') && !/^x$/i.test(w) && !/^X{1,3}$/.test(w); }
+function lauIsWord(w){ return (/^[A-Za-zÀ-ÿ-]+\*?[.,;:)]*$/.test(w||'') || /^0\*?[.,;:)]*$/.test(w||'')) && !/^x$/i.test(w) && !/^X{1,3}$/.test(w); }   // "0": grau 0 de Grannum
 function lauTokLine(line, start){
   const W = line.split(' '); const out=[]; let i=0, n=start;
   while(i<W.length){
@@ -1480,7 +1480,9 @@ function lauItemHTML(m, it){
     txt = txt.replace(new RegExp('IR = '+PH+' e (?=IP)','g'), '')
              .replace(new RegExp(',? correspondendo ao percentil '+PH+' para a idade gestacional','g'), '')
              .replace(new RegExp(' \\(percentil '+PH+'\\)','g'), '')
-             .replace(new RegExp(' \\('+PH+' MoM\\)','g'), '');
+             .replace(new RegExp(' \\('+PH+' MoM\\)','g'), '')
+             .replace(new RegExp(' e de espessura de até '+PH+' mm','g'), '')
+             .replace(/ Grau de maturação \(Grannum\): <mark class="lau-ph">[^<]*<\/mark>\./g, '');
   }
   if(m.semRot) return txt;   // densitometria / OCT: frases corridas, sem rótulo nem hífen
   const pre = (g.hifen && it.dash) ? '- ' : '';

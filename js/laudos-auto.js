@@ -410,8 +410,8 @@ function lauObsDopDados(m, fet){
   const val=c=>{ if(!c) return null; const r=lauVal(lauTpl(c.tpl==='n'?lauItemNormal(m,c.it):c.it.opts[+c.tpl.slice(1)]), (c.s.__v||{})[c.tpl]||[], c.i); return r.ok ? lauF(r.v) : null; };
   const alvo={
     pc:ach(null,/\bpc =$/), ca:ach(null,/\bca =$/), cf:ach(null,/\bcf =$/),
-    pfe:C.find(c=>c.on && /^peso fetal estimado/.test(c.lbl) && c.ord===0 && c.tpl==='n'),
-    pfeP:C.find(c=>c.on && /^peso fetal estimado/.test(c.lbl) && /percentil$/.test(c.antes)),
+    pfe:C.find(c=>c.on && (/^peso fetal estimado/.test(c.lbl) || /^peso fetal estimado/.test(c.linha)) && c.ord===0 && c.tpl==='n'),
+    pfeP:C.find(c=>c.on && (/^peso fetal estimado/.test(c.lbl) || /^peso fetal estimado/.test(c.linha)) && /percentil$/.test(c.antes)),
     au:ach(/^arteria umbilical/,/\bip =$/), auP:ach(/^arteria umbilical/,/percentil$/),
     acm:ach(/^arteria cerebral media/,/\bip =$/), acmP:ach(/^arteria cerebral media/,/percentil$/),
     rcp:ach(/^relacao cerebro-?placentaria/,null,0), rcpP:ach(/^relacao cerebro-?placentaria/,/percentil$/),
