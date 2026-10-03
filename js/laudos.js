@@ -1627,6 +1627,7 @@ function lauDocHTML(m){
   return `<p data-k="titulo" style="text-align:center">${lauTitHTML(m)}</p>`
     + (lauHas(L.ind)?`<p data-k="ind"><b>Indicação:</b> ${esc(L.ind)}</p>`:'')
     + (tec?`<p data-k="tec">${esc(tec)}</p>`:'')
+    + ((typeof lauIgDocHTML==='function' && lauIgDocHTML(m)) ? `<p data-k="ig">${lauIgDocHTML(m)}</p>` : '')
     + `<p><br></p>` + body
     + (lauObsHTML()?`<p data-k="obs">${lauObsHTML()}</p>`:'')
     + (m.concTitulo ? `<p><br></p><p data-k="concT"><b>${esc(lauConcTitulo(m))}</b></p><div data-k="conc">${lauConcHTML(m)}</div>` : '')
@@ -1686,7 +1687,7 @@ function lauPatchOpt(k, html){
       if(ref){ const prev=ref.previousElementSibling; ed.insertBefore(p, (prev && prev.innerHTML==='<br>') ? prev : ref); }
       else ed.appendChild(p);
     } else {
-      const anchor = (k==='tec' && ed.querySelector('[data-k="ind"]')) || ed.querySelector('[data-k="titulo"]');
+      const anchor = (k==='tec' && ed.querySelector('[data-k="ind"]')) || (k==='ig' && (ed.querySelector('[data-k="tec"]') || ed.querySelector('[data-k="ind"]'))) || ed.querySelector('[data-k="titulo"]');
       if(anchor) anchor.after(p); else ed.insertBefore(p, ed.firstChild);
     }
   }
@@ -2037,7 +2038,7 @@ function lauLeftHTML(){
   const extraOn = L.ind||Object.values(L.tec).some(Boolean);
   const indChips = m.metodo==='mmg' ? `<div class="lau-chips" style="margin-top:6px">${LAU_IND_MMG.map(v=>`<button type="button" class="ti-ftog ${L.ind===v?'on':''}" onclick="lauSetIndChip(this.textContent)">${esc(v)}</button>`).join('')}</div>` : '';
   const dmoRefH = m.metodo==='dmo' ? `<div class="lau-lado"><span>Critério</span>${[['t','T-score (pós-menopausa / homem ≥ 50 anos)'],['z','Z-score (pré-menopausa / homem < 50 anos / criança)']].map(o=>`<button type="button" class="ti-ftog ${(L.dmoRef||'t')===o[0]?'on':''}" onclick="lauDmoRef('${o[0]}')">${o[1]}</button>`).join('')}</div>` : '';
-  let h = dmoRefH + lauLadoHTML(m) + lauAteroHTML(m) + lauCard('__extra', 'Título, indicação e limitações',
+  let h = dmoRefH + lauLadoHTML(m) + lauAteroHTML(m) + (typeof lauIgHTML==='function' ? lauIgHTML(m) : '') + lauCard('__extra', 'Título, indicação e limitações',
     `<div class="lau-sum ${extraOn?'alt':'ok'}">${extraOn?'Preenchido':'Opcional'}</div>`,
     ()=>`${lauHasPh(tit)?`<div class="lau-rl">Título</div>${tit.split('\n').map((t,i)=>lauHasPh(t)?lauInlineForm('__tit','t'+i,t,L.tit['t'+i]):'').join('')}`:''}
         <div class="lau-row"><div class="lau-rl">Indicação clínica</div><input class="lau-txt" type="text" value="${esc(L.ind)}" placeholder="${m.metodo==='mmg'?'ex.: rastreamento':'ex.: dor abdominal'}" oninput="lauSetInd(this.value)">${indChips}</div>
