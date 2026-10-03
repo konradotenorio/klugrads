@@ -185,7 +185,10 @@ function pmapExportSVG(){
     y += 48;
   }
   if(y===420) g += `<text x="372" y="${y}" ${F} font-size="14" fill="#888">Nenhuma lesão marcada.</text>`;
-  g += `<text x="${W-24}" y="606" ${F} font-size="11" text-anchor="end" fill="#999">D = direita do paciente · esquema ilustrativo KlugRads</text>`;
+  g += `<text x="${W-24}" y="606" ${F} font-size="11" text-anchor="end" fill="#999">D = direita do paciente · esquema ilustrativo</text>`;
+  // marca d'água: assinatura no canto + texto grande e suave na área livre (sem cobrir o esquema)
+  g += `<g opacity="0.10" pointer-events="none"><text x="${W-36}" y="560" ${F} font-size="46" font-weight="800" text-anchor="end" fill="#0e7490" letter-spacing="3">klugrads.com</text></g>`
+    + `<text x="24" y="606" ${F} font-size="14" font-weight="800" letter-spacing="1.5"><tspan fill="#0e7490">KLUG</tspan><tspan fill="#64748b">RADS</tspan><tspan font-size="11.5" font-weight="600" fill="#888" letter-spacing="0">  ·  klugrads.com</tspan></text>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="620" viewBox="0 0 ${W} 620">${g}</svg>`;
 }
 function pmapImgBlob(type){
