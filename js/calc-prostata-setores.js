@@ -167,29 +167,42 @@ function pmapExtraSVG(){
 }
 
 /* ---- imagem do esquema com as lesões (para colar no laudo) ---- */
+/* sagital padrão (prostata-esquema.js) com cores fixas, para a imagem exportada */
+function pmapSagitalExport(){
+  if(typeof pzeSagitalSVG!=='function') return null;
+  const F='font-family="Arial,Helvetica,sans-serif"';
+  let x=pzeSagitalSVG().replace(/^[\s\S]*?<svg[^>]*>/,'').replace(/<\/svg>\s*$/,'').replace(/<!--[\s\S]*?-->/g,'')
+    .replace(/var\(--dim\)/g,'#6b6b6b').replace(/var\(--sf2\)/g,'#e6ebf0').replace(/id="pze-clip"/,'id="pmapx-clip"').replace(/url\(#pze-clip\)/,'url(#pmapx-clip)')
+    .replace(/class="pze-t pze-lv"/g,`${F} font-size="10" font-weight="800" fill="#777" text-anchor="middle"`)
+    .replace(/class="pze-t pze-o"/g,`${F} font-size="9" font-weight="600" fill="#777" text-anchor="middle"`)
+    .replace(/class="pze-t"/g,`${F} font-size="11" font-weight="700" fill="#2b2b2b" text-anchor="middle"`);
+  return {vb:[0,0,320,320], body:x};
+}
 function pmapExportSVG(){
-  const W=1200, F='font-family="Arial,Helvetica,sans-serif"';
+  const W=1200, H=860, F='font-family="Arial,Helvetica,sans-serif"';
   const cell=(r,x,y,w,h,t)=>`<text x="${x+w/2}" y="${y-8}" ${F} font-size="15" font-weight="700" text-anchor="middle" fill="#444">${t}</text>`
     + `<svg x="${x}" y="${y}" width="${w}" height="${h}" viewBox="${r.vb.join(' ')}" preserveAspectRatio="xMidYMid meet">${r.body}</svg>`;
-  let g = `<rect width="${W}" height="620" fill="#ffffff"/>`
+  let g = `<rect width="${W}" height="${H}" fill="#ffffff"/>`
     + `<text x="24" y="34" ${F} font-size="20" font-weight="700" fill="#222">Mapa de setores da próstata — PI-RADS v2.1</text>`;
   PMAP_LEVELS.forEach((lv,i)=>{ g += cell(pmapSliceInner(lv,true), 24+i*392, 70, 370, 300, lv.nome); });
-  g += cell(pmapExtraInner(true), 24, 410, 300, 190, 'Vesículas seminais e esfíncter');
+  g += cell(pmapExtraInner(true), 24, 420, 290, 190, 'Vesículas seminais e esfíncter');
+  const sag=pmapSagitalExport(); if(sag) g += cell(sag, 340, 420, 320, 320, 'Sagital — níveis dos cortes');
   // legenda das lesões
-  const s=pmapState(); let y=420;
+  const s=pmapState(); const LX=690; let y=430;
+  g += `<text x="${LX}" y="${y-18}" ${F} font-size="15" font-weight="700" fill="#444">Lesões</text>`;
   for(let i=1;i<=4;i++){ const L=s.lesions[i]; if(!L.sectors.length) continue;
     const ex=[]; if(L.cat) ex.push('PI-RADS '+L.cat); const sz=parseFloat(String(L.size||'').replace(',','.')); if(sz>0) ex.push(String(sz).replace('.',',')+' mm');
-    g += `<circle cx="372" cy="${y-5}" r="10" fill="${PMAP_COLORS[i]}"/><text x="372" y="${y-1}" ${F} font-size="12" font-weight="700" text-anchor="middle" fill="#fff">${i}</text>`
-      + `<text x="392" y="${y}" ${F} font-size="15" font-weight="700" fill="#222">Lesão ${i}${ex.length?' — '+ex.join(', '):''}</text>`
-      + `<text x="392" y="${y+20}" ${F} font-size="12.5" fill="#555">${esc(L.sectors.slice().sort(pmapOrder).map(pmapCode).join(' · '))}</text>`;
-    y += 48;
+    g += `<circle cx="${LX}" cy="${y+5}" r="10" fill="${PMAP_COLORS[i]}"/><text x="${LX}" y="${y+9}" ${F} font-size="12" font-weight="700" text-anchor="middle" fill="#fff">${i}</text>`
+      + `<text x="${LX+20}" y="${y+10}" ${F} font-size="15" font-weight="700" fill="#222">Lesão ${i}${ex.length?' — '+ex.join(', '):''}</text>`
+      + `<text x="${LX+20}" y="${y+30}" ${F} font-size="12.5" fill="#555">${esc(L.sectors.slice().sort(pmapOrder).map(pmapCode).join(' · '))}</text>`;
+    y += 52;
   }
-  if(y===420) g += `<text x="372" y="${y}" ${F} font-size="14" fill="#888">Nenhuma lesão marcada.</text>`;
-  g += `<text x="${W-24}" y="606" ${F} font-size="11" text-anchor="end" fill="#999">D = direita do paciente · esquema ilustrativo</text>`;
+  if(y===430) g += `<text x="${LX}" y="${y+10}" ${F} font-size="14" fill="#888">Nenhuma lesão marcada.</text>`;
+  g += `<text x="${W-24}" y="${H-14}" ${F} font-size="11" text-anchor="end" fill="#999">D = direita do paciente · esquema ilustrativo</text>`;
   // marca d'água: assinatura no canto + texto grande e suave na área livre (sem cobrir o esquema)
-  g += `<g opacity="0.10" pointer-events="none"><text x="${W-36}" y="560" ${F} font-size="46" font-weight="800" text-anchor="end" fill="#0e7490" letter-spacing="3">klugrads.com</text></g>`
-    + `<text x="24" y="606" ${F} font-size="14" font-weight="800" letter-spacing="1.5"><tspan fill="#0e7490">KLUG</tspan><tspan fill="#64748b">RADS</tspan><tspan font-size="11.5" font-weight="600" fill="#888" letter-spacing="0">  ·  klugrads.com</tspan></text>`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="620" viewBox="0 0 ${W} 620">${g}</svg>`;
+  g += `<g opacity="0.10" pointer-events="none"><text x="${W-36}" y="${H-60}" ${F} font-size="46" font-weight="800" text-anchor="end" fill="#0e7490" letter-spacing="3">klugrads.com</text></g>`
+    + `<text x="24" y="${H-14}" ${F} font-size="14" font-weight="800" letter-spacing="1.5"><tspan fill="#0e7490">KLUG</tspan><tspan fill="#64748b">RADS</tspan><tspan font-size="11.5" font-weight="600" fill="#888" letter-spacing="0">  ·  klugrads.com</tspan></text>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${g}</svg>`;
 }
 function pmapImgBlob(type){
   return new Promise((ok, fail)=>{
