@@ -172,6 +172,16 @@ function lauAutoTxt(m, it, html){
 /* conclusões das regras: as que alteram uma linha da conclusão normal entram como substituição */
 function lauAutoConcs(m){
   const out=[], reps=[];
+  // obstetrícia: "embrião vivo" só com CCN e BCF; sem embrião medido, a IG é pelo DMSG
+  if(m && /obstetric/.test(m.id) && lauAutoCfg().on){
+    const ig=lauObsIG(m), bcf=lauObsCampo(m, /\bbcf$/);
+    if(ig && ig.fonte==='dmsg'){
+      reps.push([/,? com embrião vivo e de idade gestacional/, ', de idade gestacional']);
+      reps.push([/pela biometria atual/, 'pelo diâmetro médio do saco gestacional']);
+    } else if(lauObsCampo(m, /\bccn =?$/)!=null && !bcf){
+      reps.push([/com embrião vivo e de idade gestacional/, 'com embrião de idade gestacional']);
+    }
+  }
   m.items.forEach(it=>{ if(lauItemOutroLado(m,it)) return;
     lauAutoAtivas(m,it).forEach(({r,v,lbl})=>{
       const temLinha = r.concRep && lauConcNormalLines(m).some(c=>r.concRep[0].test(c.text));
