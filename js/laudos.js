@@ -869,7 +869,8 @@ function lauTplRaw(str){
           if(t[b].t!=='p') continue;
           const ctx=t.slice(Math.max(a+5,b-4),b).map(x=>x.s||'').join(' ');
           const nxt=(t[b+1]&&t[b+1].s)||'';
-          if(/volume|massa/i.test(ctx) || /^(cm³|cm3|ml|mL)/.test(nxt)) auto[t[b].i]=dims;
+          if(/dmsg|di[aâ]metro m[eé]dio/i.test(ctx)) auto[t[b].i]={mean:dims};   // DMSG = média das 3 medidas
+          else if(/volume|massa/i.test(ctx) || /^(cm³|cm3|ml|mL)/.test(nxt)) auto[t[b].i]=dims;
           break;
         }
       }
@@ -888,6 +889,10 @@ function lauTplRaw(str){
 function lauAutoVal(tpl, vals, i){
   const d=tpl.auto[i]; if(!d) return null;
   let r;
+  if(d.mean){
+    const v=d.mean.map(j=>lauF(vals[j])); if(v.some(x=>!x)) return null;
+    return String(Math.round(v.reduce((a,b)=>a+b,0)/v.length*10)/10).replace('.',',');
+  }
   if(d.sum){
     const parts=d.sum.map(j=>{ const u=lauF(vals[j]); if(u!=null) return u; const a=lauAutoVal(tpl, vals, j); return a==null?null:lauF(a); });
     if(parts.some(x=>x==null)) return null;

@@ -185,6 +185,15 @@ function lauAutoConcs(m){
 function lauAutoConcVals(m, text, user){
   const A=lauAutoCfg(); if(!A.on || !A.concLink) return user;
   const vals=(user||[]).slice(); const {campos}=lauAutoCampos(text);
+  // obstetrícia: idade gestacional pela biometria (CCN; sem embrião, DMSG) nas tabelas de referência
+  if(/idade gestacional estimada em/i.test(text)){
+    const ig=lauObsIG(m);
+    if(ig) campos.forEach(c=>{
+      if(lauHas(vals[c.i])) return;
+      if(/idade gestacional estimada em$/.test(c.antes)) vals[c.i]=String(ig.sem);
+      else if(/semanas e$/.test(c.antes)) vals[c.i]=String(ig.dias);
+    });
+  }
   campos.forEach(c=>{
     if(lauHas(vals[c.i]) || !c.antes) return;
     // escolhe o campo do laudo com mais palavras em comum (a palavra imediatamente anterior tem de coincidir)
@@ -322,4 +331,34 @@ function lauEcoCalc(m){
     put(fe, Math.round((V(dd)-V(ds))/V(dd)*100));
     put(dl, Math.round((dd-ds)/dd*100));
   } else { put(fe, null); put(dl, null); }
+}
+
+/* ---- Obstetrícia: IG pelo CCN (Hadlock) ou pelo DMSG (Hellman), tabelas da aba Referências ---- */
+function lauObsTab(id){
+  const r=(window.SEED||[]).find(x=>x.id===id); if(!r || !r.tables || !r.tables[0]) return null;
+  return r.tables[0].rows.slice(1).map(x=>[parseFloat(String(x[0]).replace(',','.')), (+x[1])*7+(+x[2])]).filter(x=>!isNaN(x[0])).sort((a,b)=>a[0]-b[0]);
+}
+function lauObsLookup(tab, v){
+  if(!tab || v==null || v<tab[0][0] || v>tab[tab.length-1][0]) return null;
+  for(let i=0;i<tab.length-1;i++){ const [x0,d0]=tab[i], [x1,d1]=tab[i+1];
+    if(v>=x0 && v<=x1){ const d = x1===x0 ? d0 : d0+(d1-d0)*(v-x0)/(x1-x0); return Math.round(d); } }
+  return tab[tab.length-1][0]===v ? tab[tab.length-1][1] : null;
+}
+/* procura o campo do laudo pelo texto que vem antes dele ("CCN =", "DMSG =") */
+function lauObsCampo(m, re){
+  for(const it of m.items){
+    if(!it.generic) continue; const s=state.lau.v[it.k]; const nrm=lauItemNormal(m,it);
+    const x=lauAutoCampos(nrm).campos.find(c=>re.test(c.antes)); if(!x) continue;
+    const r=lauVal(lauTpl(nrm), (s.__v||{}).n||[], x.i); if(r.ok) return lauF(r.v);
+  }
+  return null;
+}
+function lauObsIG(m){
+  if(!m || !/obstetric/.test(m.id)) return null;
+  const mmF = v=> v;   // CCN e DMSG das máscaras já são em mm
+  const ccn=lauObsCampo(m, /\bccn =?$/);
+  let d = ccn!=null ? lauObsLookup(lauObsTab('fetal-ccn'), mmF(ccn)) : null, fonte='ccn';
+  // DMSG só quando não há CCN (CCN > 84 mm: datar pelo DBP)
+  if(d==null && ccn==null){ const sg=lauObsCampo(m, /\bdmsg =?$/); if(sg!=null){ d=lauObsLookup(lauObsTab('fetal-sg'), mmF(sg)); fonte='dmsg'; } }
+  return d==null ? null : {sem:Math.floor(d/7), dias:d%7, fonte};
 }
