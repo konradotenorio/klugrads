@@ -295,7 +295,7 @@ function vozIniciar(){
       for(let i=e.resultIndex;i<e.results.length;i++){ const res=e.results[i];
         if(res.isFinal) vozProcessa(res[0].transcript); else interim+=res[0].transcript; }
       VOZ.interim=interim; vozRenderInterim(); };
-    r.onerror=e=>{ VOZ.erro = e.error==='not-allowed' ? 'Permissão do microfone negada. Libere o microfone para este site nas configurações do navegador.' : (e.error==='no-speech' ? '' : 'Erro no reconhecimento: '+e.error); vozRender(); };
+    r.onerror=e=>{ VOZ.erro = e.error==='not-allowed' ? 'Microfone bloqueado. Toque no ícone ao lado do endereço do site (cadeado/ajustes) → Microfone → Permitir, e recarregue a página.' : (e.error==='no-speech' ? '' : 'Erro no reconhecimento: '+e.error); vozRender(); };
     r.onend=()=>{ if(VOZ.on){ try{ r.start(); }catch(_){ } } else { VOZ.interim=''; vozRender(); } };   // o navegador encerra após silêncio: religa
     VOZ.rec=r;
   }
