@@ -46,6 +46,7 @@ const P = {
   copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
   laudo:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 12h6M10 15.5h6M10 19h4"/>',
   dicom:'<rect x="3" y="4" width="18" height="13" rx="2"/><circle cx="12" cy="10.5" r="3.6"/><path d="M12 6.9v7.2M8.4 10.5h7.2"/><path d="M8 21h8M12 17v4"/>',
+  mapa:'<ellipse cx="10.5" cy="13" rx="7.2" ry="6"/><path d="M10.5 7v12M3.5 12.5h14" stroke-dasharray="2.2 2"/><path d="M19.2 3.2l1.9 1.9-6.2 6.2-2.5.6.6-2.5z"/>',
   gear:'<circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
 };
 // Visualizador DICOM (projeto separado, OHIF local — as imagens não saem do navegador).
@@ -478,6 +479,7 @@ function renderStage(keep){
   s.scrollTop = top;
   if(v==='calc' && state.calcId==='tfg') setTimeout(initDrums, 0);
   if(v==='busca') setTimeout(function(){ var el=document.getElementById('busca-q'); if(el) el.focus(); }, 0);
+  if(v==='mapaLesional') setTimeout(mslInit, 0);
   const sub = $('subtabs');
   sub.className='subtabs hide';
   sub.innerHTML='';
@@ -549,6 +551,7 @@ function sidebarHTML(){
       <div class="side-sec">Ferramentas</div>
       <div class="side-item" onclick="openViewer()"><span class="si">${svgIcon(P.dicom,19)}</span>VISUALIZADOR DICOM</div>
       <div class="side-item ${['laudos','laudoMod','laudoEdit','laudoCfg'].indexOf(state.view)>=0?'on':''}" onclick="openLaudos()"><span class="si">${svgIcon(P.laudo,19)}</span>LAUDOS ESTRUTURADOS</div>
+      <div class="side-item ${state.view==='mapaLesional'?'on':''}" onclick="setView('mapaLesional')"><span class="si">${svgIcon(P.mapa,19)}</span>MAPA SETORIAL LESIONAL</div>
       <div class="side-item ${isCalc&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>Calculadoras (US)</div>
       ${tool('ferramentas','Outras Ferramentas', svgIcon(P.tools,19))}
       ${tool('favoritos','Favoritos', svgIcon(P.star,19,{fill:'none'}))}
@@ -659,6 +662,7 @@ function dashboardHTML(){
     <div class="dash-tools">
       <div class="dash-tool" onclick="openViewer()">${svgIcon(P.dicom,24)}<div><div class="tt">VISUALIZADOR DICOM</div><div class="td">Abra exames do CD/pendrive no navegador</div></div></div>
       <div class="dash-tool" onclick="openLaudos()">${svgIcon(P.laudo,24)}<div><div class="tt">LAUDOS ESTRUTURADOS</div><div class="td">Monte o laudo por método e modelo</div></div></div>
+      <div class="dash-tool" onclick="setView('mapaLesional')">${svgIcon(P.mapa,24)}<div><div class="tt">MAPA SETORIAL LESIONAL</div><div class="td">Pinte as lesões no mapa e copie para o laudo</div></div></div>
       <div class="dash-tool" onclick="openCalcs()">${svgIcon(P.calc,24)}<div><div class="tt">Calculadoras</div><div class="td">TI-RADS, O-RADS, risco fetal…</div></div></div>
       <div class="dash-tool" onclick="setView('favoritos')">${svgIcon(P.star,24,{fill:'none'})}<div><div class="tt">Favoritos</div><div class="td">O que você marcou</div></div></div>
       <div class="dash-tool" onclick="setView('ferramentas')">${svgIcon(P.tools,24)}<div><div class="tt">Outras Ferramentas</div><div class="td">TFG e mais</div></div></div>
@@ -694,6 +698,7 @@ function headerHTML(){
   else if(v==='laudoEdit'){ const m=lauModelo(state.laudoId); title=m?((m.oct?'':({mmg:'MG — ',dmo:'DO — ',tc:'TC — '}[m.metodo]||'US — '))+m.nome):'Laudo'; sub='Laudos Estruturados'; }
   else if(v==='laudoCfg'){ title='Padrões dos laudos'; sub='Laudos Estruturados'; }
   else if(v==='contrasteItem'){ const t=contrasteTopic(state.contrasteId); title=t?t.title:'Meios de Contraste'; sub='Meios de Contraste'; }
+  else if(v==='mapaLesional'){ title='Mapa Setorial Lesional'; sub=(MSL_ORGAOS[mslState().org]||{}).nome||''; }
   else if(v==='config'){ title='Configurações'; }
   else if(v==='termsRead'){ title=TT().title; }
   else if(v==='favoritos'){ title='Favoritos'; }
@@ -735,6 +740,7 @@ function viewHTML(){
     case 'laudoMod': return laudoModHTML();
     case 'laudoEdit': return laudoEditHTML();
     case 'laudoCfg': return laudoCfgHTML();
+    case 'mapaLesional': return mapaLesionalHTML();
     case 'contrasteItem': return contrasteItemHTML();
     case 'config': return configHTML();
     case 'terms': return termsGateHTML();
@@ -790,6 +796,10 @@ function modalityHTML(){
       short(svgIcon(P.dicom,23),'acc','VISUALIZADOR DICOM','Abra exames do CD/pendrive direto no navegador','openViewer()')
     + short(svgIcon(P.laudo,23),'acc','LAUDOS ESTRUTURADOS','Monte o laudo por método e modelo','openLaudos()')
     + short(svgIcon(P.gear,23),'acc','Configurações','Tema, tamanho da fonte e sugestões',"setView('config')")
+    }</div>
+
+    <div class="modal-shortcuts cols3">${
+      short(svgIcon(P.mapa,23),'acc','MAPA SETORIAL LESIONAL','Pinte as lesões no mapa da próstata e copie para o laudo',"setView('mapaLesional')")
     }</div>
   </div>`;
 }
