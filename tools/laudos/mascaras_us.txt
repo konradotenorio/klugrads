@@ -1155,7 +1155,7 @@ XXX Provável corpo lúteo de XX cm no ovário direito XX esquerdo.
 - Saco gestacional: tópico, único e de contornos regulares, medindo cerca de XX x XX x XX mm (DMSG = XXX mm). 
 Não se observam coleções / hematomas perigestacionais ou áreas de descolamento ovular.
 - Vesícula vitelínica: esférica, regular, medindo XXX mm. 
-- Embrião / feto: único, com batimentos cardíacos evidentes à frequência de (BCF): XXX bpm. CCN = XXX mm.
+- Embrião / feto: único, com batimentos cardíacos evidentes à frequência de (BCF): XXX bpm. CCN = XXX mm. || único, sem batimentos cardíacos caracterizados ao estudo atual (BCF não caracterizado). CCN = XXX mm.
  
 Conclusão:
 - Gestação tópica e única, com embrião vivo e de idade gestacional estimada em XXX semanas e XXX dias pela biometria atual.

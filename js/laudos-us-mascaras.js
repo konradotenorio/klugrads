@@ -5087,7 +5087,11 @@ const LAU_US_MASKS = [
 "text": "único, com batimentos cardíacos evidentes à frequência de (BCF): XXX bpm. CCN = XXX mm.",
 "dash": true,
 "opts": [],
-"grp": ""
+"grp": "",
+"alts": [
+"único, com batimentos cardíacos evidentes à frequência de (BCF): XXX bpm. CCN = XXX mm.",
+"único, sem batimentos cardíacos caracterizados ao estudo atual (BCF não caracterizado). CCN = XXX mm."
+]
 }
 ],
 "seq": [
