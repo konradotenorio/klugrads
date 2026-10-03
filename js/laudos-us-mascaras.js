@@ -91,7 +91,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-abdome-superior-com-boyden",
@@ -184,7 +185,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-abdome-total",
@@ -337,7 +339,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-abdome-total-fast",
@@ -494,7 +497,8 @@ const LAU_US_MASKS = [
 ],
 "concTitulo": null,
 "conc": [],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-rins-e-vias-urinarias",
@@ -539,7 +543,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-prostata",
@@ -636,7 +641,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-prostata-transretal",
@@ -769,7 +775,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-rins-e-vias-urinarias-e-prostata",
@@ -896,7 +903,8 @@ const LAU_US_MASKS = [
 "dash": false
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-abdome-total-e-prostata",
@@ -1117,7 +1125,8 @@ const LAU_US_MASKS = [
 "dash": false
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-parede-abdominal",
@@ -1210,7 +1219,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-regiao-inguinal",
@@ -1303,7 +1313,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-partes-moles",
@@ -1384,7 +1395,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-pelve-suprapubico",
@@ -1509,7 +1521,8 @@ const LAU_US_MASKS = [
 "dash": false
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-transvaginal",
@@ -1614,7 +1627,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-transvaginal-diu",
@@ -1731,7 +1745,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-transvaginal-controle-de-ovulacao",
@@ -1840,7 +1855,8 @@ const LAU_US_MASKS = [
 "dash": false
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-bolsa-testicular",
@@ -1909,7 +1925,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-penis",
@@ -1984,7 +2001,8 @@ const LAU_US_MASKS = [
 "text": "Sinais de Doença de Peyronie."
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-transvaginal-endometriose",
@@ -2125,7 +2143,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-elastografia",
@@ -2236,7 +2255,8 @@ const LAU_US_MASKS = [
 "Referências Bibliográficas:",
 "Barr RG et Al – Elastography Assessment of Liver Fibrosis: Society of Radiologists in Ultrasound Consensus Conference Statement – Radiology 2015; 276 (3): 845-861",
 "G. Ferraioli et al - WFUMB Guidelines for Ultrasound Elastography - Liver - Ultrasound in Med. & Biol., Vol. 41, No. 5, pp. 1161–1179, 2015 DOI: https://doi.org/10.1016/j.ultrasmedbio.2015.03.007"
-]
+],
+"flags": []
 },
 {
 "id": "us-torax",
@@ -2305,7 +2325,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-torax-cupulas",
@@ -2429,7 +2450,8 @@ const LAU_US_MASKS = [
 "text": "Redução significativa na excursão diafragmática à direita XX esquerda, comparada à contralateral."
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-transfontanela",
@@ -2517,7 +2539,8 @@ const LAU_US_MASKS = [
 "text": "Sinais compatíveis com lesão da substância branca (leucomalácia multicística periventricular)."
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-cervical",
@@ -2610,7 +2633,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-tireoide",
@@ -2671,7 +2695,8 @@ const LAU_US_MASKS = [
 "dash": false
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-glandulas-salivares",
@@ -2740,7 +2765,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-globo-ocular",
@@ -2988,7 +3014,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-antebraco",
@@ -3045,7 +3072,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-braco",
@@ -3102,7 +3130,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-cotovelo",
@@ -3195,7 +3224,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-coxa",
@@ -3252,7 +3282,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-joelho",
@@ -3357,7 +3388,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-mao",
@@ -3450,7 +3482,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-ombro",
@@ -3543,7 +3576,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-pe",
@@ -3600,7 +3634,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-perna",
@@ -3657,7 +3692,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-punho",
@@ -3726,7 +3762,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-quadril",
@@ -3807,7 +3844,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-dedo-da-mao",
@@ -3876,7 +3914,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-sinfise-pubica",
@@ -3957,7 +3996,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-tornozelo",
@@ -4069,7 +4109,8 @@ const LAU_US_MASKS = [
 ],
 "concTitulo": null,
 "conc": [],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-doppler-abdome-superior",
@@ -4214,7 +4255,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-doppler-figado-transplantado",
@@ -4369,7 +4411,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-doppler-rim-transplantado",
@@ -4454,7 +4497,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-doppler-bolsa-testicular",
@@ -4535,7 +4579,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-doppler-penis",
@@ -4676,7 +4721,8 @@ const LAU_US_MASKS = [
 "text": "Sinais de Doença de Peyronie."
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-doppler-transfontanela",
@@ -4769,7 +4815,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-doppler-tireoide",
@@ -4842,7 +4889,8 @@ const LAU_US_MASKS = [
 "dash": false
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-doppler-transvaginal",
@@ -4959,7 +5007,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-obstetrico-1-trimestre",
@@ -5083,7 +5132,8 @@ const LAU_US_MASKS = [
 ],
 "trailer": [
 "Obs: O exame obstétrico de pronto-atendimento tem como objetivo primordial o de avaliar a vitalidade imediata da gestação, não se destinando à pesquisa de malformações fetais nem substituindo os exames de rotina do pré-natal."
-]
+],
+"flags": []
 },
 {
 "id": "us-obstetrico-2-e-3-trimestre",
@@ -5269,7 +5319,8 @@ const LAU_US_MASKS = [
 ],
 "trailer": [
 "Obs: O exame obstétrico de pronto-atendimento tem como objetivo primordial o de avaliar a vitalidade imediata da gestação, não se destinando à pesquisa de malformações fetais nem substituindo os exames de rotina do pré-natal."
-]
+],
+"flags": []
 },
 {
 "id": "us-obstetrico-gemelar",
@@ -5509,7 +5560,8 @@ const LAU_US_MASKS = [
 ],
 "trailer": [
 "Obs: O exame obstétrico de pronto-atendimento tem como objetivo primordial o de avaliar a vitalidade imediata da gestação, não se destinando à pesquisa de malformações fetais nem substituindo os exames de rotina do pré-natal."
-]
+],
+"flags": []
 },
 {
 "id": "us-obstetrico-doppler",
@@ -5745,7 +5797,8 @@ const LAU_US_MASKS = [
 ],
 "trailer": [
 "Obs: O exame obstétrico de pronto-atendimento tem como objetivo primordial o de avaliar a vitalidade imediata da gestação, não se destinando à pesquisa de malformações fetais nem substituindo os exames de rotina do pré-natal."
-]
+],
+"flags": []
 },
 {
 "id": "us-veia-cava-e-iliacas",
@@ -5778,7 +5831,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-aorta-e-iliacas",
@@ -5825,7 +5879,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-arterias-renais",
@@ -5894,7 +5949,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-arterias-temporais",
@@ -5927,7 +5983,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-arterias-carotidas",
@@ -5986,7 +6043,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-arterial-dos-mmii",
@@ -6135,7 +6193,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-arterial-dos-mmii-resumido",
@@ -6182,7 +6241,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-arterial-dos-mmss",
@@ -6229,7 +6289,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-venoso-dos-mmii",
@@ -6286,7 +6347,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-venoso-dos-mmss",
@@ -6331,7 +6393,8 @@ const LAU_US_MASKS = [
 "dash": false
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-arterial-e-venoso-dos-mmii",
@@ -6425,7 +6488,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-varizes",
@@ -6604,7 +6668,8 @@ const LAU_US_MASKS = [
 "text": "Veia safena magna XXX não caracterizada no seu trajeto habitual da interlinha do joelho até o terço médio da perna, continuando-se neste segmento por veia colateral superficial que se encontra insuficiente."
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-arterial-e-venoso-dos-mmss",
@@ -6683,7 +6748,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-fistula-arteriovenosa",
@@ -6962,7 +7028,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-arterial-e-venoso-mmii-com-varizes",
@@ -7136,7 +7203,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "us-mamas",
@@ -7257,7 +7325,8 @@ const LAU_US_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 }
 ];
 const LAU_MMG_MASKS = [
@@ -7380,7 +7449,8 @@ const LAU_MMG_MASKS = [
 "dash": true
 }
 ],
-"trailer": []
+"trailer": [],
+"flags": []
 }
 ];
 const LAU_DMO_MASKS = [
@@ -7429,7 +7499,8 @@ const LAU_DMO_MASKS = [
 ],
 "concTitulo": "Hipótese Diagnóstica:",
 "conc": [],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "dmo-coluna-e-femur-2-segmentos",
@@ -7488,7 +7559,8 @@ const LAU_DMO_MASKS = [
 ],
 "concTitulo": "Hipótese Diagnóstica:",
 "conc": [],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "dmo-coluna-femur-e-radio-3-segmentos",
@@ -7559,7 +7631,8 @@ const LAU_DMO_MASKS = [
 ],
 "concTitulo": "Hipótese Diagnóstica:",
 "conc": [],
-"trailer": []
+"trailer": [],
+"flags": []
 },
 {
 "id": "dmo-corpo-inteiro",
@@ -7606,6 +7679,265 @@ const LAU_DMO_MASKS = [
 ],
 "concTitulo": "Hipótese Diagnóstica:",
 "conc": [],
-"trailer": []
+"trailer": [],
+"flags": []
+}
+];
+const LAU_TC_MASKS = [
+{
+"id": "tc-oct-oftalmologia-macula",
+"metodo": "tc",
+"nome": "OCT Oftalmologia — mácula",
+"grupo": "Cabeça e pescoço",
+"titulo": [
+"TOMOGRAFIA DE COERÊNCIA ÓPTICA (OCT) DE MÁCULA",
+"ESTUDO TOMOGRÁFICO DA RETINA"
+],
+"items": [
+{
+"k": "qualidade",
+"label": "Qualidade",
+"text": "",
+"dash": true,
+"opts": [],
+"grp": "Olho direito"
+},
+{
+"k": "interface-vitreorretiniana",
+"label": "Interface vitreorretiniana",
+"text": "Interface vitreorretiniana sem alterações.",
+"dash": true,
+"opts": [],
+"grp": "Olho direito"
+},
+{
+"k": "hialoide-posterior",
+"label": "Hialoide posterior",
+"text": "Hialoide posterior não detectável.",
+"dash": true,
+"opts": [],
+"grp": "Olho direito"
+},
+{
+"k": "contorno-foveal",
+"label": "Contorno foveal",
+"text": "Anatomia do contorno foveal preservada.",
+"dash": true,
+"opts": [],
+"grp": "Olho direito"
+},
+{
+"k": "espessura-macular-central",
+"label": "Espessura macular central",
+"text": "Espessura macular central medindo XXX µm.",
+"dash": true,
+"opts": [],
+"grp": "Olho direito"
+},
+{
+"k": "perfil-retiniano",
+"label": "Perfil retiniano",
+"text": "Perfil retiniano com padrão de refletividade preservado.",
+"dash": true,
+"opts": [],
+"grp": "Olho direito"
+},
+{
+"k": "depressao-foveal",
+"label": "Depressão foveal",
+"text": "Sem alterações na depressão foveal.",
+"dash": true,
+"opts": [],
+"grp": "Olho direito"
+},
+{
+"k": "edema-macular",
+"label": "Edema macular",
+"text": "Não observo edema macular.",
+"dash": true,
+"opts": [],
+"grp": "Olho direito"
+},
+{
+"k": "complexo-coriocapilar",
+"label": "Complexo coriocapilar",
+"text": "Complexo coriocapilar sem alterações.",
+"dash": true,
+"opts": [],
+"grp": "Olho direito"
+},
+{
+"k": "qualidade-2",
+"label": "Qualidade",
+"text": "",
+"dash": true,
+"opts": [],
+"grp": "Olho esquerdo"
+},
+{
+"k": "interface-vitreorretiniana-2",
+"label": "Interface vitreorretiniana",
+"text": "Interface vitreorretiniana sem alterações.",
+"dash": true,
+"opts": [],
+"grp": "Olho esquerdo"
+},
+{
+"k": "hialoide-posterior-2",
+"label": "Hialoide posterior",
+"text": "Hialoide posterior não detectável.",
+"dash": true,
+"opts": [],
+"grp": "Olho esquerdo"
+},
+{
+"k": "contorno-foveal-2",
+"label": "Contorno foveal",
+"text": "Anatomia do contorno foveal preservada.",
+"dash": true,
+"opts": [],
+"grp": "Olho esquerdo"
+},
+{
+"k": "espessura-macular-central-2",
+"label": "Espessura macular central",
+"text": "Espessura macular central medindo XXX µm.",
+"dash": true,
+"opts": [],
+"grp": "Olho esquerdo"
+},
+{
+"k": "perfil-retiniano-2",
+"label": "Perfil retiniano",
+"text": "Perfil retiniano com padrão de refletividade preservado.",
+"dash": true,
+"opts": [],
+"grp": "Olho esquerdo"
+},
+{
+"k": "depressao-foveal-2",
+"label": "Depressão foveal",
+"text": "Sem alterações na depressão foveal.",
+"dash": true,
+"opts": [],
+"grp": "Olho esquerdo"
+},
+{
+"k": "edema-macular-2",
+"label": "Edema macular",
+"text": "Não observo edema macular.",
+"dash": true,
+"opts": [],
+"grp": "Olho esquerdo"
+},
+{
+"k": "complexo-coriocapilar-2",
+"label": "Complexo coriocapilar",
+"text": "Complexo coriocapilar sem alterações.",
+"dash": true,
+"opts": [],
+"grp": "Olho esquerdo"
+}
+],
+"seq": [
+{
+"t": "line",
+"text": "OLHO DIREITO"
+},
+{
+"t": "item",
+"k": "qualidade"
+},
+{
+"t": "item",
+"k": "interface-vitreorretiniana"
+},
+{
+"t": "item",
+"k": "hialoide-posterior"
+},
+{
+"t": "item",
+"k": "contorno-foveal"
+},
+{
+"t": "item",
+"k": "espessura-macular-central"
+},
+{
+"t": "item",
+"k": "perfil-retiniano"
+},
+{
+"t": "item",
+"k": "depressao-foveal"
+},
+{
+"t": "item",
+"k": "edema-macular"
+},
+{
+"t": "item",
+"k": "complexo-coriocapilar"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "OLHO ESQUERDO"
+},
+{
+"t": "item",
+"k": "qualidade-2"
+},
+{
+"t": "item",
+"k": "interface-vitreorretiniana-2"
+},
+{
+"t": "item",
+"k": "hialoide-posterior-2"
+},
+{
+"t": "item",
+"k": "contorno-foveal-2"
+},
+{
+"t": "item",
+"k": "espessura-macular-central-2"
+},
+{
+"t": "item",
+"k": "perfil-retiniano-2"
+},
+{
+"t": "item",
+"k": "depressao-foveal-2"
+},
+{
+"t": "item",
+"k": "edema-macular-2"
+},
+{
+"t": "item",
+"k": "complexo-coriocapilar-2"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame dentro dos parâmetros de normalidade em ambos os olhos.",
+"dash": true
+},
+{
+"text": "Correlacionar com dados clínicos para definição diagnóstica.",
+"dash": true
+}
+],
+"trailer": [],
+"flags": [
+"oct"
+]
 }
 ];

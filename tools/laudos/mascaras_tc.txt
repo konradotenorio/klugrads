@@ -1,0 +1,38 @@
+Máscaras de tomografia escritas pelo KlugRads (mesmo formato de mascaras_us.txt).
+[oct] = OCT de mácula: frases corridas (sem rótulos), um bloco por olho, conclusão por olho.
+=====
+
+C. CABEÇA E PESCOÇO:
+
+1. OCT DE MÁCULA (OFTALMOLOGIA)
+TOMOGRAFIA DE COERÊNCIA ÓPTICA (OCT) DE MÁCULA
+ESTUDO TOMOGRÁFICO DA RETINA
+
+[oct]
+OLHO DIREITO
+- Qualidade: 
+- Interface vitreorretiniana: Interface vitreorretiniana sem alterações.
+- Hialoide posterior: Hialoide posterior não detectável.
+- Contorno foveal: Anatomia do contorno foveal preservada.
+- Espessura macular central: Espessura macular central medindo XXX µm.
+- Perfil retiniano: Perfil retiniano com padrão de refletividade preservado.
+- Depressão foveal: Sem alterações na depressão foveal.
+- Edema macular: Não observo edema macular.
+- Complexo coriocapilar: Complexo coriocapilar sem alterações.
+
+OLHO ESQUERDO
+- Qualidade: 
+- Interface vitreorretiniana: Interface vitreorretiniana sem alterações.
+- Hialoide posterior: Hialoide posterior não detectável.
+- Contorno foveal: Anatomia do contorno foveal preservada.
+- Espessura macular central: Espessura macular central medindo XXX µm.
+- Perfil retiniano: Perfil retiniano com padrão de refletividade preservado.
+- Depressão foveal: Sem alterações na depressão foveal.
+- Edema macular: Não observo edema macular.
+- Complexo coriocapilar: Complexo coriocapilar sem alterações.
+
+Conclusão:
+- Exame dentro dos parâmetros de normalidade em ambos os olhos.
+- Correlacionar com dados clínicos para definição diagnóstica.
+
+-----

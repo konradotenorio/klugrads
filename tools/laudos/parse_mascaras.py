@@ -15,9 +15,10 @@ OUT = os.path.join(HERE, '..', '..', 'js', 'laudos-us-mascaras.js')
 DROP = re.compile(r'^(Nome do Paciente|Data de Nascimento|Data do Exame|Liberado por|CRM)\s*:', re.I)
 GROUPS = {'B':'Medicina interna','C':'Cabeça e pescoço','D':'Musculoesquelético','E':'Vascular','F':'Obstétrico','G':'Vascular','H':'Mama','M':'Mamografia','O':'Densitometria'}
 EXTRA = os.path.join(HERE, 'mascaras_klugrads.txt')   # máscaras escritas pelo KlugRads
-EXTRA_NOMES = {'MAMAS':'Mamas'}
+EXTRA_NOMES = {'MAMAS':'Mamas', 'OCT DE MÁCULA (OFTALMOLOGIA)':'OCT Oftalmologia — mácula'}
 MMG = os.path.join(HERE, 'mascaras_mmg.txt')          # mamografia (KlugRads)
 DMO = os.path.join(HERE, 'mascaras_dmo.txt')          # densitometria (KlugRads)
+TC = os.path.join(HERE, 'mascaras_tc.txt')            # tomografia / OCT (KlugRads)
 LABEL_DASH = re.compile(r'^-\s+([^:]{1,120}?):\s*(.*)$')
 LABEL_NODASH = re.compile(r'^([A-ZÀ-Ú][^:]{1,45}?):\s+(\S.*)$')
 TRAILER = re.compile(r'^(Obs\b|Obs\.|Valores de refer|Refer[eê]ncias|•|\*|Nota\b)', re.I)
@@ -59,9 +60,14 @@ if os.path.exists(MMG):
     read_models(open(MMG, encoding='utf-8').read().split('\n'), extra=True, metodo='mmg')
 if os.path.exists(DMO):
     read_models(open(DMO, encoding='utf-8').read().split('\n'), extra=True, metodo='dmo')
+if os.path.exists(TC):
+    read_models(open(TC, encoding='utf-8').read().split('\n'), extra=True, metodo='tc')
 
 out = []
 for md in models:
+    # marcadores de modelo: linhas "[oct]" etc. (saem do texto)
+    flags = [l.strip()[1:-1] for l in md['raw'] if re.match(r'^\[[a-z-]+\]$', l.strip())]
+    md['raw'] = [l for l in md['raw'] if not re.match(r'^\[[a-z-]+\]$', l.strip())]
     raw = md['raw']
     # título: linhas até a 1ª linha em branco / campo de identificação
     title = []
@@ -127,14 +133,15 @@ for md in models:
         if not it['label'] or labs[it['label']]<2: it['grp'] = ''
     nome = md.get('nome') or (idx_names[md['n']-1] if md['n']-1 < len(idx_names) else md['raw'][0])
     out.append({'id':md['metodo']+'-'+slug(nome), 'metodo':md['metodo'], 'nome':nome, 'grupo':md['grupo'], 'titulo':title,
-                'items':items, 'seq':seq, 'concTitulo':conc_title, 'conc':conc, 'trailer':trailer})
+                'items':items, 'seq':seq, 'concTitulo':conc_title, 'conc':conc, 'trailer':trailer, 'flags':flags})
 
 ids = [o['id'] for o in out]
 assert len(ids)==len(set(ids)), 'ids repetidos'
 js = ('/* Gerado por tools/laudos/parse_mascaras.py — não editar à mão. */\n'
       'const LAU_US_MASKS = ' + json.dumps([o for o in out if o['metodo']=='us'], ensure_ascii=False, indent=0) + ';\n'
       'const LAU_MMG_MASKS = ' + json.dumps([o for o in out if o['metodo']=='mmg'], ensure_ascii=False, indent=0) + ';\n'
-      'const LAU_DMO_MASKS = ' + json.dumps([o for o in out if o['metodo']=='dmo'], ensure_ascii=False, indent=0) + ';\n')
+      'const LAU_DMO_MASKS = ' + json.dumps([o for o in out if o['metodo']=='dmo'], ensure_ascii=False, indent=0) + ';\n'
+      'const LAU_TC_MASKS = ' + json.dumps([o for o in out if o['metodo']=='tc'], ensure_ascii=False, indent=0) + ';\n')
 open(OUT,'w',encoding='utf-8').write(js)
 print(len(out),'máscaras')
 for o in out: print(o['id'], '|', len(o['items']),'itens |', len(o['conc']),'conc |', o['concTitulo'])

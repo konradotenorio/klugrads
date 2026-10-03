@@ -28,7 +28,7 @@ const LAUDO_MODS = [
   {id:'mmg',  nome:'Mamografia',                ativo:true},
   {id:'dmo',  nome:'Densitometria óssea',       ativo:true},
   {id:'us',   nome:'Ultrassonografia',          ativo:true},
-  {id:'tc',   nome:'Tomografia computadorizada',ativo:false},
+  {id:'tc',   nome:'Tomografia computadorizada',ativo:true},
   {id:'rm',   nome:'Ressonância magnética',     ativo:false},
 ];
 
@@ -800,6 +800,7 @@ function lauLblLado(m, lbl){
 /* limitações técnicas e indicações por método */
 const LAU_TEC = {
   us:[['met','meteorismo intestinal'],['bio','biotipo do paciente']],
+  tc:[],
   dmo:[['mov','movimentação do paciente'],['art','artefatos metálicos'],['deg','alterações degenerativas']],
   mmg:[['pos','dificuldade de posicionamento'],['mov','artefato de movimento'],['comp','compressão limitada por desconforto']],
 };
@@ -936,13 +937,16 @@ function lauBuildModel(mk){
   if(mm){ lado={gen: mm[2]==='DA'?'f':'m', bil:false}; titulo = mk.titulo.slice(0,-1).concat(mm[1]).join('\n'); }
   else if(/DOS MEMBROS (INFERIORES|SUPERIORES)/.test(titulo)) lado={gen:'m', bil:true};
   else if(mk.metodo==='mmg' && /BILATERAL/.test(titulo)) lado={gen:'f', bil:true, mg:true};
-  return { id:mk.id, nome:mk.nome, grupo:mk.grupo, metodo:mk.metodo||'us', pronto:true, lado,
+  const oct = (mk.flags||[]).indexOf('oct')>=0;
+  if(oct) lado={gen:'m', bil:true, eye:true};
+  return { id:mk.id, nome:mk.nome, grupo:mk.grupo, metodo:mk.metodo||'us', pronto:true, lado, oct, semRot: oct || mk.metodo==='dmo',
     titulo, concTitulo: mk.concTitulo, concNormal: mk.conc.filter(c=>!c.opt),
     concOpts: mk.conc.filter(c=>c.opt), trailer: mk.trailer, seq: mk.seq, items,
     estruturado: items.filter(x=>x.sk).length>=2 };
 }
 const LAUDO_MODELOS = { us: (typeof LAU_US_MASKS!=='undefined' ? LAU_US_MASKS : []).map(lauBuildModel),
-  mmg: (typeof LAU_MMG_MASKS!=='undefined' ? LAU_MMG_MASKS : []).map(lauBuildModel) };
+  mmg: (typeof LAU_MMG_MASKS!=='undefined' ? LAU_MMG_MASKS : []).map(lauBuildModel),
+  tc:  (typeof LAU_TC_MASKS!=='undefined' ? LAU_TC_MASKS : []).map(lauBuildModel) };
 /* densitometria: os itens estruturados ficam em laudos-dmo.js (carregado depois) — monta na 1ª consulta */
 function lauModelosDmo(){ if(!LAUDO_MODELOS.dmo && typeof LAU_DMO_MASKS!=='undefined' && typeof LAU_STRUCT_LABELS_DMO!=='undefined') LAUDO_MODELOS.dmo = LAU_DMO_MASKS.map(lauBuildModel); return LAUDO_MODELOS.dmo||[]; }
 const LAU_GRUPOS = ['Medicina interna','Mama','Cabeça e pescoço','Musculoesquelético','Obstétrico','Vascular','Mamografia','Densitometria'];
@@ -1412,6 +1416,7 @@ function lauExceto(txt, les){
   return txt + ' ' + l.map(x=>x.charAt(0).toUpperCase()+x.slice(1)+'.').join(' ');
 }
 function lauItemHTML(m, it){
+  if(m.oct && typeof lauOctItemOculto==='function' && lauOctItemOculto(m,it)) return '';
   const L=state.lau, s=L.v[it.k], r=lauBuild(m,it), g=lauGen();
   if(lauItemOculto(m,it)) return '';
   const lblRaw = lauLblLado(m, lauItemLabel(m,it));
@@ -1440,7 +1445,7 @@ function lauItemHTML(m, it){
   const ex = lauOptLines(it, s, true).concat(adds);
   if(!txt && ex.length){ txt = ex.shift(); }
   if(ex.length) txt += '<br>' + ex.join('<br>');
-  if(m.metodo==='dmo') return txt;   // densitometria: frases corridas, sem rótulo nem hífen
+  if(m.semRot) return txt;   // densitometria / OCT: frases corridas, sem rótulo nem hífen
   const pre = (g.hifen && it.dash) ? '- ' : '';
   return lbl ? `${pre}${g.bold?`<b>${lbl}</b>`:lbl} ${txt}` : `${pre}${txt}`;
 }
@@ -1473,6 +1478,7 @@ function lauConcs(m){
   const seeBr=(list,bag)=>(list||[]).forEach(id=>{ const c=lauBrOf(id,bag); if(c){ cats.add(c); if(br==null || LAU_BR_ORDEM.indexOf(c)>LAU_BR_ORDEM.indexOf(br)) br=c; } });
   vis.forEach(it=>seeBr(state.lau.v[it.k].__f, state.lau.v[it.k].__v)); seeBr(state.lau.xf, state.lau.xv);
   if(m.metodo==='dmo' && typeof dmoConcs==='function') return dmoConcs(m);
+  if(m.oct && typeof lauOctConcs==='function') return lauOctConcs(m);
   if(m.metodo==='mmg'){
     // mamografia: achados sem categoria em cada linha, iguais nas duas mamas viram uma frase só,
     // e uma única categoria BI-RADS® no fim (a mais alta)
@@ -1524,7 +1530,8 @@ function lauConcHTML(m){
     const tail = norm.filter(x=>!x.ph && /^Restante/i.test(x.c.text)).map(x=>({html:esc(x.c.text), dash:x.c.dash}));
     lines = keep.concat(f.map(x=>({html:x.html,dash:true})), tail);
   }
-  return lines.map(x=>`<div>${g.hifen&&x.dash&&m.metodo!=='dmo'?'- ':''}${x.html}</div>`).join('');
+  if(m.oct && !f.length && (L.lado==='d'||L.lado==='e')) lines = lines.map(x=>({html: x.html.replace('Exame dentro dos parâmetros de normalidade em ambos os olhos.', `Olho ${L.lado==='d'?'direito':'esquerdo'} dentro dos parâmetros de normalidade.`), dash:x.dash}));
+  return lines.map(x=>`<div>${g.hifen&&x.dash&&!m.semRot?'- ':''}${x.html}</div>`).join('');
 }
 function lauTecOpts(){ const m=lauModelo(state.lau.model); return LAU_TEC[(m&&m.metodo)||'us'] || LAU_TEC.us; }
 function lauTecTxt(){
@@ -1562,15 +1569,18 @@ function lauSetLado(v){
 function lauLadoHTML(m){
   if(!m.lado) return '';
   const L=state.lau; const f=m.lado.gen==='f';
-  const ops = m.lado.bil ? [['bi','Bilateral'],['d',f?'Direita':'Direito'],['e',f?'Esquerda':'Esquerdo']] : [['d',f?'Direita':'Direito'],['e',f?'Esquerda':'Esquerdo']];
+  const ops = m.lado.eye ? [['bi','Ambos os olhos'],['d','Só olho direito'],['e','Só olho esquerdo']] : m.lado.bil ? [['bi','Bilateral'],['d',f?'Direita':'Direito'],['e',f?'Esquerda':'Esquerdo']] : [['d',f?'Direita':'Direito'],['e',f?'Esquerda':'Esquerdo']];
   const cur = m.lado.bil ? (L.lado||'bi') : L.lado;
-  return `<div class="lau-lado"><span>Lado</span>${ops.map(o=>`<button type="button" class="ti-ftog ${cur===o[0]?'on':''}" onclick="lauSetLado('${o[0]}')">${o[1]}</button>`).join('')}</div>`;
+  return `<div class="lau-lado"><span>${m.lado.eye?'Olhos':'Lado'}</span>${ops.map(o=>`<button type="button" class="ti-ftog ${cur===o[0]?'on':''}" onclick="lauSetLado('${o[0]}')">${o[1]}</button>`).join('')}</div>`;
 }
 function lauDocHTML(m){
   const L=state.lau; const tec=lauTecTxt();
   const body = m.seq.map(e=>{
     if(e.t==='blank') return '<p><br></p>';
-    if(e.t==='line') return lauOutroLado(m, e.text) ? '' : `<p>${esc(e.text)}</p>`;
+    if(e.t==='line'){
+      if(!lauOutroLado(m, e.text)) return `<p>${m.oct?'<b>'+esc(e.text)+'</b>':esc(e.text)}</p>`;
+      return m.lado && m.lado.eye ? `<p><b>${esc(e.text)}</b></p><p>Não consta exame do ${/esquerd/i.test(e.text)?'olho esquerdo':'olho direito'} para análise.</p>` : '';
+    }
     const it=m.items.find(x=>x.k===e.k); if(!it || lauItemOutroLado(m,it)) return '';
     const h=lauItemHTML(m,it); return `<p data-k="${it.k}"${h?'':' hidden'}>${h}</p>`;
   }).join('');
@@ -1606,6 +1616,7 @@ function lauPatch(k){
       const ref=ed.querySelector('[data-k="concT"]'); ref?ed.insertBefore(p,ref):ed.appendChild(p);
     }
     const h=lauItemHTML(m,it); p.innerHTML = h; p.hidden = !h; if(h) lauFlash(p);
+    if(m.oct) m.items.forEach(o=>{ if(o.k===k) return; const q=ed.querySelector(`[data-k="${o.k}"]`); if(!q) return; const hh=lauItemHTML(m,o); if(q.innerHTML!==hh){ q.innerHTML=hh; q.hidden=!hh; } });   // frases que ocultam itens do mesmo olho
   }
   lauPatchConc(); lauSaveEd();
 }
@@ -2126,7 +2137,7 @@ function laudoModHTML(){
    ========================================================================= */
 function lauCfgListHTML(){
   lauModelosDmo();
-  return lauListHTML(['us','mmg','dmo'],'openLaudoCfgModel',(x)=>{
+  return lauListHTML(['us','mmg','dmo','tc'],'openLaudoCfgModel',(x)=>{
     const u=lauMcfgPeek(x.id); const n=Object.values(u.items||{}).filter(o=>lauHas(o.label)||lauHas(o.normal)).length + (lauHas(u.titulo)?1:0)+(lauHas(u.concNormal)?1:0)+(lauHas(u.concTitulo)?1:0);
     return n ? `<span class="lau-tag">${n} personalizado${n>1?'s':''}</span>` : 'Texto padrão da máscara';
   });

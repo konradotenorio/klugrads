@@ -796,6 +796,7 @@ const LAU_FRASE_ORGAOS_MMG = [
 function lauFraseOrgao(label, metodo){
   const n = String(label||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
   if(metodo==='dmo') return [];
+  if(metodo==='tc' && typeof LAU_FRASE_ORGAOS_OCT!=='undefined') return LAU_FRASE_ORGAOS_OCT.filter(o=>o[1].test(n)).map(o=>o[0]);
   return (metodo==='mmg' ? LAU_FRASE_ORGAOS_MMG : LAU_FRASE_ORGAOS).filter(o=>o[1].test(n)).map(o=>o[0]);
 }
 function lauFrasesDe(orgs){
