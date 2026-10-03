@@ -266,7 +266,7 @@ const LAU_ABD_ITEMS = [
      let t = s.eco==='aum' ? 'com dimensões e contornos normais e ecogenicidade difusamente aumentada.' : 'com dimensões, contornos e ecogenicidade normais.';
      if(s.vis==='p') t = 'parcialmente caracterizado devido à interposição gasosa intestinal; nas porções avaliadas, ' + t;
      if(s.wir) t += ' ' + lauFrase(lauJoin(['ducto pancreático principal dilatado', lauMed(s.wirD,'mm')]));
-     if(s.cis) t += ' ' + lauFrase(lauJoin([`imagem cística na ${s.cisL}`, lauMed(s.cisD,'cm')]));
+     if(s.cis) t += ' ' + lauFrase(lauJoin([`imagem cística ${/^(cabeça|cauda)$/.test(s.cisL)?'na':'no'} ${s.cisL}`, lauMed(s.cisD,'cm')]));
      if(s.eco==='aum') conc.push('Aumento difuso da ecogenicidade pancreática, que pode corresponder a lipossubstituição.');
      if(s.wir) conc.push('Dilatação do ducto pancreático principal.');
      if(s.cis) conc.push('Lesão cística pancreática. Sugere-se complementação com RM.');

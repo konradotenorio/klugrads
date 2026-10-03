@@ -53,6 +53,14 @@ function vozConv(v, de, para){
   return String(Math.round(r*100)/100).replace('.',',');
 }
 const VOZ_ROM = ['','I','II','III','IV','V','VI','VII','VIII'];
+/* região do pâncreas dita ("porção cefálica", "cabeça", "cauda"…) */
+function vozPancReg(t){ const n=vozNorm(t);
+  if(/\b(porcao cefalica|cabeca|cefalic[oa])\b/.test(n)) return 'cabeça';
+  if(/\bprocesso uncinado|uncinado\b/.test(n)) return 'processo uncinado';
+  if(/\b(colo|istmo)\b/.test(n)) return 'colo';
+  if(/\b(cauda|porcao caudal|caudal)\b/.test(n)) return 'cauda';
+  if(/\b(corpo|porcao corporal)\b/.test(n)) return 'corpo';
+  return null; }
 function vozMaior(vals){ return vals.slice().sort((a,b)=>parseFloat(b.replace(',','.'))-parseFloat(a.replace(',','.')))[0]; }
 
 /* ---------- órgão citado → item do laudo ---------- */
@@ -78,7 +86,7 @@ const VOZ_ORG = [
   [/\b(ovario|ovarian[oa]|anexial)\b/, /^ovario/],
   [/\b(tireoide|tireoidian[oa])\b/, /^tireoide|^lobo|^glandula tireoide/],
   [/\b(testiculo|testicular)\b/, /^testicul/],
-  [/\b(pulmao|pulmoes|pulmonar|vidro fosco|enfisema)\b/, /^pulmoes/],
+  [/\b(pulmao|pulmoes|pulmonar|vidro fosco|enfisema)\b/, [/^pulmoes/, /^transicao toracoabdominal/]],
   [/\b(pleura|pleural)\b/, /^espacos pleurais|pleura/],
   [/\b(mediastin\w*)\b/, /^mediastino/],
   [/\b(aorta|aortic[oa])\b/, /^aorta|^vasos$/],
@@ -110,7 +118,8 @@ function vozAchaItem(m, tn){
 const VOZ_STOP = new Set(['de','do','da','dos','das','com','sem','para','por','em','no','na','nos','nas','um','uma','e','o','a','os','as','ao','padrao','varios','unico','multiplos','medida','maior','opcional','quantidade','localizacao','medindo','cerca','tipo','sugestivo','aspecto']);
 /* palavras anatômicas: indicam o item, mas não o achado */
 const VOZ_ANAT = /^(figado|hepatic[oa]s?|rim|rins|renal|renais|baco|esplenic[oa]|pancreas|pancreatic[oa]|vesicula|biliar|biliares|bexiga|vesical|utero|uterin[oa]|ovario|ovarian[oa]|tireoide|tireoidian[oa]|pulmao|pulmoes|pulmonar|pleura|pleural|mama|direit[oa]|esquerd[oa]|bilateral|lobo|segmento|terco|parede|polo|anterior|posterior|superior|inferior|medio|media)$/;
-const VOZ_SIN = {calculo:['litiase','calculo'], calculos:['litiase','calculo'], pedra:['litiase','calculo'], cistos:['cisto'], nodulos:['nodulo'],
+const VOZ_SIN = {calculo:['litiase','calculo'], calculos:['litiase','calculo'], pedra:['litiase','calculo'], cisto:['cisto','cistic'], cistos:['cisto','cistic'], cistico:['cisto','cistic'], cistica:['cisto','cistic'], nodulo:['nodulo','lesao','solid'], nodulos:['nodulo','lesao','solid'], massa:['massa','lesao','solid'],
+  cefalica:['cabeca'], cefalico:['cabeca'], caudal:['cauda'], uncinado:['uncinado'], calcificado:['calcifica'], calcificacao:['calcifica'],
   gordura:['esteatose'], gorduroso:['esteatose'], esplenomegalia:['esplenomegalia','aumentad'], hepatomegalia:['hepatomegalia','aumentad'],
   aumentado:['aumentad','megalia'], aumentada:['aumentad','megalia'], dilatacao:['dilata','ectasia'], derrame:['derrame']};
 function vozPalavras(t){ return vozNorm(t).replace(/[^a-z0-9 ]+/g,' ').split(/\s+/).filter(w=>w.length>=3 && !VOZ_STOP.has(w)); }
@@ -126,7 +135,7 @@ function vozIgual(a,b){
 function vozScore(nome, fala, falaSin){
   const ws=vozPalavras(String(nome).replace(/\(.*?\)/g,'')); if(!ws.length) return 0;
   let sc=0, miss=0;
-  ws.forEach(w=>{ if(fala.some(x=>vozIgual(w,x)) || falaSin.some(x=>x.length>=5 && w.indexOf(x)>=0)) sc+=3; else miss++; });
+  ws.forEach(w=>{ if(fala.some(x=>vozIgual(w,x)) || falaSin.some(x=>x.length>=5 && (w.startsWith(x) || (x.length>=6 && w.endsWith(x))))){ sc+=3; if(fala.indexOf(w)>=0) sc+=0.5; } else miss++; });   // palavra idêntica desempata (nódulo × nódulos)
   return sc ? sc-miss*0.8 : 0;
 }
 function vozFala(tn){
@@ -190,7 +199,8 @@ function vozPreenche(f, tn, t){
   const tpl=lauTpl(f.t); const vals=[]; const med=vozMedida(t); let medUsada=false;
   tpl.lines.forEach(toks=>toks.forEach((tk,j)=>{
     if(tk.t==='c'){   // escolha: a opção que foi dita
-      const fw=vozNorm(tn).split(/[^a-z0-9]+/); const op=tk.o.find(o=>{ const ow=vozNorm(o).split(/\s+/).filter(Boolean); return ow.length && ow.every(w=>fw.some(x=>vozIgual(w,x))); });
+      const fw=vozNorm(tn).split(/[^a-z0-9]+/); fw.slice().forEach(w=>(VOZ_SIN[w]||[]).forEach(x=>fw.push(x)));
+      const op=tk.o.find(o=>{ const ow=vozNorm(o).split(/\s+/).filter(w=>w.length>=3); return ow.length && ow.every(w=>fw.some(x=>vozIgual(w,x))); });
       if(op) vals[tk.i]=op; return;
     }
     if(tk.t!=='p') return;
@@ -207,6 +217,7 @@ function vozPreenche(f, tn, t){
     if(['no','na','em'].indexOf(prev)>=0){
       const lm=t.match(/\b((?:lobo|segmento|ter[çc]o|polo|c[oó]lon|parede|regi[aã]o|cadeia|bulbo|grupamento|seio)\s+[\wÀ-ÿ]+(?:\s+(?:direit[oa]|esquerd[oa]|superior|inferior|m[eé]dio|m[eé]dia|anterior|posterior))?)/i);
       if(lm){ vals[tk.i]=lm[1].toLowerCase(); return; }
+      const pm=vozPancReg(t); if(pm && /pancrea/i.test(f.t)){ vals[tk.i]=pm; return; }
     }
     if(['parede','terco','lobo','grupamento','cadeia','nivel','polo','artéria','arteria','veia','espaco','regiao'].indexOf(prev)>=0){
       const re=new RegExp('\\b'+prev+'\\s+([a-z]+(?:\\s+(?:direit[oa]|esquerd[oa]|anterior|posterior|superior|inferior|medi[oa]|lateral|medial))?)');
@@ -249,8 +260,10 @@ function vozProcessa(txtOrig){
   const melhor = it0=>{ if(!it0) return null; const f=vozAchaFrase(m,it0,tn), c=vozAchaCtrl(m,it0,tn);
     const a = f && (!c || f.sc>=c.sc) ? {it:it0, f:f.f, sc:f.sc} : c ? {it:it0, c, sc:c.sc} : null; return a; };
   let ach = itOrg ? melhor(itOrg) : null;
-  if(!ach || ach.sc<2){
-    // sem órgão citado (ou nada no órgão citado): procura em todos os itens; o item aberto leva pequena vantagem
+  const citouOrgao = VOZ_ORG.some(([pal])=>pal.test(' '+tn+' '));   // falou um órgão que não existe neste laudo → texto livre
+  if(!itOrg && !citouOrgao && (!ach || ach.sc<2)){
+    // sem órgão citado: procura em todos os itens; o item aberto leva pequena vantagem
+    // (com órgão citado, nunca pula para outro órgão — o que não for reconhecido vai como texto livre)
     let g=null; vozItensNav(m).forEach(x=>{ const a=melhor(x); if(!a) return; if(x.k===L.open) a.sc+=0.5; if(a.sc>=2.5 && (!g || a.sc>g.sc)) g=a; });
     if(g && (!ach || g.sc>ach.sc)) ach=g;
   }
