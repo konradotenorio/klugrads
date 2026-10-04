@@ -556,14 +556,6 @@ const LAU_US_MASKS = [
 ],
 "items": [
 {
-"k": "exame-realizado-pela-via-supra",
-"label": "",
-"text": "Exame realizado pela via suprapúbica.",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
 "k": "bexiga",
 "label": "Bexiga",
 "text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.",
@@ -605,10 +597,6 @@ const LAU_US_MASKS = [
 }
 ],
 "seq": [
-{
-"t": "item",
-"k": "exame-realizado-pela-via-supra"
-},
 {
 "t": "item",
 "k": "bexiga"
@@ -788,14 +776,6 @@ const LAU_US_MASKS = [
 ],
 "items": [
 {
-"k": "exame-realizado-pela-via-supra",
-"label": "",
-"text": "Exame realizado pela via suprapúbica.",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
 "k": "rins",
 "label": "Rins",
 "text": "tópicos, de dimensões normais (RD = XX cm; RE = XX cm).\nEspessura e ecogenicidade parenquimatosas preservadas.\nAusência de hidronefrose ou cálculos detectáveis ao método.",
@@ -845,10 +825,6 @@ const LAU_US_MASKS = [
 }
 ],
 "seq": [
-{
-"t": "item",
-"k": "exame-realizado-pela-via-supra"
-},
 {
 "t": "item",
 "k": "rins"
@@ -901,14 +877,6 @@ const LAU_US_MASKS = [
 "ULTRASSONOGRAFIA DE ABDOME TOTAL E DA PRÓSTATA"
 ],
 "items": [
-{
-"k": "exame-realizado-pela-via-supra",
-"label": "",
-"text": "Exame realizado pela via suprapúbica.",
-"dash": false,
-"opts": [],
-"grp": ""
-},
 {
 "k": "figado",
 "label": "Fígado",
@@ -1031,10 +999,6 @@ const LAU_US_MASKS = [
 }
 ],
 "seq": [
-{
-"t": "item",
-"k": "exame-realizado-pela-via-supra"
-},
 {
 "t": "item",
 "k": "figado"
