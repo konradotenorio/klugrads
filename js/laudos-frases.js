@@ -56,6 +56,7 @@ const LAU_FRASE_ORGAOS = [
   ['axila', /axila/],
   ['comparacao', /^comparac/],
   ['__extra', /^__extra$/],
+  ['__extracerv', /^__extracerv$/],
   /* musculoesquelético */
   ['tendao', /^tend(ao|oes)|tendine|^trato iliotibial|^compartimentos sinoviais/],
   ['bursa', /^bursa|^bursite/],
@@ -329,6 +330,29 @@ const LAU_FRASES = [
   {o:'peritoneo', s:1, n:'Linfonodomegalia retroperitoneal', m:'add',
    t:'Linfonodos retroperitoneais aumentados, o maior medindo XXX cm no menor eixo.',
    c:'Linfonodomegalia retroperitoneal.'},
+
+  /* ---------------- ACHADOS ADICIONAIS (pescoço: carótidas, vertebrais, temporais) ---------------- */
+  {o:'__extracerv', n:'Nódulo tireoidiano', m:'add', medOpc:1,
+   t:'Nódulo sólido XX cístico XX misto no lobo direito XX esquerdo da tireoide, medindo XXX x XXX x XXX cm, incidentalmente caracterizado.',
+   c:'Nódulo tireoidiano incidental. Sugere-se ultrassonografia dedicada da tireoide para caracterização.'},
+  {o:'__extracerv', n:'Nódulos tireoidianos', m:'add', medOpc:1,
+   t:'Nódulos tireoidianos bilaterais, o maior no lobo direito XX esquerdo, medindo XXX x XXX x XXX cm, incidentalmente caracterizados.',
+   c:'Nódulos tireoidianos incidentais. Sugere-se ultrassonografia dedicada da tireoide para caracterização.'},
+  {o:'__extracerv', n:'Cisto tireoidiano', m:'add', medOpc:1,
+   t:'Cisto simples no lobo direito XX esquerdo da tireoide, medindo XXX x XXX x XXX cm.',
+   c:'Cisto tireoidiano.'},
+  {o:'__extracerv', n:'Tireoide heterogênea / aumentada', m:'add',
+   t:'Tireoide de dimensões aumentadas XX normais e ecotextura heterogênea, incidentalmente caracterizada.',
+   c:'Tireoide heterogênea. Sugere-se ultrassonografia dedicada da tireoide.'},
+  {o:'__extracerv', n:'Linfonodo atípico', m:'add', medOpc:1,
+   t:'Linfonodo cervical no nível XXX à direita XX à esquerda, com perda do hilo ecogênico, medindo XXX x XXX cm.',
+   c:'Linfonodo cervical de aspecto atípico. Sugere-se avaliação ultrassonográfica cervical dedicada.'},
+  {o:'__extracerv', n:'Linfonodos reacionais', m:'add',
+   t:'Linfonodos cervicais de aspecto reacional, com hilo ecogênico preservado.',
+   c:''},
+  {o:'__extracerv', n:'Glândula submandibular / parótida', m:'add', medOpc:1,
+   t:'Nódulo na glândula XXX, medindo XXX x XXX x XXX cm, incidentalmente caracterizado.',
+   c:'Nódulo em glândula salivar ({0}). Sugere-se avaliação dedicada.'},
 
   /* ---------------- ACHADOS ADICIONAIS (abdome) ---------------- */
   {o:'__extra', n:'Apendicite (padrão)', m:'add',

@@ -2072,7 +2072,7 @@ function lauLeftHTML(){
   }).join('');
   h += lauCard('__obs', 'Achados adicionais', `<div class="lau-sum ${(L.obs||L.xf.length)?'alt':'ok'}">${(L.obs||L.xf.length)?'Preenchido':'Opcional'}</div>`,
     ()=>`<textarea class="lau-ta" rows="3" placeholder="Texto livre que entra antes da conclusão" oninput="lauSetObs(this.value)">${esc(L.obs)}</textarea>`
-      + lauFrasesPanel('__obs', m.metodo==='mmg' ? 'mgextra' : (m.metodo==='tc' && !m.oct) ? 'tcextra' : '__extra', L.xf, L.xv));
+      + lauFrasesPanel('__obs', m.metodo==='mmg' ? 'mgextra' : (m.metodo==='tc' && !m.oct) ? 'tcextra' : /^us-.*(carotida|vertebra|temporai)/.test(m.id) ? '__extracerv' : '__extra', L.xf, L.xv));
   if(m.concTitulo){
     const norm=lauConcNormalLines(m);
     const anyPh = norm.some(c=>lauHasPh(c.text));
