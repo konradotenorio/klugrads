@@ -1074,6 +1074,9 @@ function homeHTML(){
   const calcOnclick  = isUS ? "setView('calc')" : "openModCalcs('calc')";
   const refOnclick   = isUS ? "setView('refs')" : "openModCalcs('ref')";
   const protoOnclick = "openModCalcs('proto')";
+  // método com laudos estruturados ativos: cartão "Laudos" abre a lista de modelos daquele método
+  const LAU_DE_MOD = {us:'us', tc:'tc', dxa:'dmo', mamo:'mmg', rx:'rx', rm:'rm'};
+  const lauMod = (typeof LAUDO_MODS!=='undefined') ? LAUDO_MODS.find(x=>x.id===LAU_DE_MOD[mid] && x.ativo) : null;
   return `<div class="lc">
     <button class="iconbtn lc-back" onclick="goBack()" aria-label="Voltar">${svgIcon(P.back,22,{sw:2.2})}</button>
     <div class="lc-head">
@@ -1094,6 +1097,10 @@ function homeHTML(){
           <div class="lc-chip">${svgIcon(P.calc,26)}</div>
           <div><div class="t">Calculadoras</div><div class="d">${esc(t.calcD)}</div></div>
         </div>
+        ${lauMod ? `<div class="lc-card wide" onclick="openLaudoMod('${lauMod.id}')">
+          <div class="lc-chip">${svgIcon(P.laudo,26)}</div>
+          <div><div class="t">Laudos</div><div class="d">Laudos estruturados de ${esc(lauMod.nome.toLowerCase())}</div></div>
+        </div>` : ''}
       </div>
     </div>
   </div>`;
