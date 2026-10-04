@@ -193,9 +193,10 @@ function lauAutoConcs(m){
     } else if(lauObsCampo(m, /\bccn =?$/)!=null && !bcf){
       reps.push([/com embrião vivo e de idade gestacional/, 'com embrião de idade gestacional']);
     }
-    reps.push([/ e 0 dias(?![a-zà-ú])/, ''], [/ e 1 dias(?![a-zà-ú])/, ' e 1 dia']);
-    out.push(...lauObsBcfConc(m));   // "30 semanas e 1 dia", "30 semanas"
+    reps.push([/ e 0 dias(?![a-zà-ú])/, ''], [/ e 1 dias(?![a-zà-ú])/, ' e 1 dia']);   // "30 semanas e 1 dia", "30 semanas"
+    out.push(...lauObsBcfConc(m));
   }
+  if(lauCarAtivo(m)) out.push(...lauCarConc(m));
   const keep=[];
   // obstétricos 2º/3º tri: peso (AIG/PIG/GIG) e Doppler; só quando há o que dizer além do texto padrão
   if(lauObsDopAtivo(m) && lauAutoCfg().on){
@@ -495,6 +496,55 @@ function lauCarCalc(m){
     const el=document.getElementById(`ph-${it.k}-n-${alvo.i}`); if(el && el!==document.activeElement) el.value=nv;
   });
   if(mud){ lauPatch(it.k); lauUpdSum(it.k); }
+  // estenose pelas velocidades: atualiza o texto das carótidas e a conclusão
+  m.items.filter(x=>/^arterias-carotidas-comuns/.test(x.k)).forEach(x=>lauPatch(x.k));
+  if(typeof lauPatchConc==='function'){ lauPatchConc(); lauSaveEd(); }
+}
+/* grau de estenose da ACI pelas velocidades — mesma regra da calculadora da aba Referências
+   (Doppler de Carótidas e Vertebrais, DIC/CBR/SABCV 2023). Sem VD ou com critérios discordantes: faixa pelo VPS. */
+function lauCarGrau(psv, edv, ratio){
+  if(psv==null) return null;
+  if(edv!=null){
+    if(psv>400 && (ratio==null || ratio>5)) return '> 90%';
+    if(psv>230 && edv>140) return '80–89%';
+    if(psv>230 && edv>100) return '70–79%';
+    if(psv>=140 && psv<=230 && edv>=70 && edv<=100) return '60–69%';
+    if(psv>=140 && psv<=230 && edv>=40 && edv<70) return '50–59%';
+    if(psv<140 && edv<40) return null;
+  }
+  if(psv>400 && ratio!=null && ratio>5) return '> 90%';
+  if(psv>230) return '≥ 70%';
+  if(psv>=140) return '50–69%';
+  return null;
+}
+function lauCarDe(g){ return /^[<>≥]/.test(g) ? g : 'de '+g; }   // "estenose de 50–59%", "estenose ≥ 70%"
+function lauCarDados(m){
+  if(!lauCarAtivo(m) || !state.lau || !state.lau.v.velocidades) return [];
+  const C=lauObsDopCampos(m).filter(c=>c.tpl==='n' && c.it.k==='velocidades'); if(!C.length) return [];
+  const it=C[0].it, s=state.lau.v[it.k], T=lauTpl(lauItemNormal(m,it));
+  const val=c=>{ if(!c) return null; const r=lauVal(T, (s.__v||{}).n||[], c.i); return r.ok ? lauF(r.v) : null; };
+  const out=[];
+  [['d','direita','ACID'],['e','esquerda','ACIE']].forEach(([L,lado,ab])=>{
+    const psv=val(C.find(c=>new RegExp('^aci'+L+' ').test(c.linha) && /\bvps =$/.test(c.antes)));
+    const edv=val(C.find(c=>new RegExp('^aci'+L+' ').test(c.linha) && /\bvd =$/.test(c.antes)));
+    const acc=val(C.find(c=>new RegExp('^acc'+L+' ').test(c.linha) && /\bvps =$/.test(c.antes)));
+    const ratio = psv && acc ? psv/acc : null;
+    const g=lauCarGrau(psv, edv, ratio);
+    if(g) out.push({lado, ab, psv, g});
+  });
+  return out;
+}
+function lauCarConc(m){
+  if(!lauAutoCfg().on) return [];
+  return lauCarDados(m).map(x=>`Estenose ${lauCarDe(x.g)} da artéria carótida interna ${x.lado}, pelos critérios de velocidade (DIC/CBR/SABCV 2023).`);
+}
+/* item das carótidas: com estenose, o texto padrão deixa de dizer "velocidades preservadas" e "sem espessamentos" */
+function lauCarItemTxt(m, it, txt){
+  if(!lauAutoCfg().on || !/^arterias-carotidas-comuns/.test(it.k)) return txt;
+  const D=lauCarDados(m); if(!D.length) return txt;
+  const lst=lauJuntaE(D.map(x=>`na ${x.ab} (VPS de ${lauN(x.psv)} cm/s), compatível com estenose ${lauCarDe(x.g)}`));
+  return txt.replace(/,? sem dilatações, espessamentos ou calcificações parietais/, ', sem dilatações')
+            .replace(/os padrões espectrais e as velocidades encontram-se preservados/, `observa-se aumento das velocidades ${lst}; demais padrões espectrais preservados`);
 }
 /* texto do bloco "Velocidades": tira campos e linhas vazias; nada preenchido → bloco some */
 function lauCarTxt(m, it, txt){

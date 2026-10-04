@@ -1480,7 +1480,7 @@ function lauItemHTML(m, it){
   if(!txt && ex.length){ txt = ex.shift(); }
   if(ex.length) txt += '<br>' + ex.join('<br>');
   // obstétrico (2º/3º tri, Doppler, gemelar): IR, percentil e MoM não preenchidos saem do laudo
-  if(it.generic && typeof lauCarAtivo==='function' && lauCarAtivo(m)){ txt = lauCarTxt(m, it, txt); if(!txt) return ''; }
+  if(it.generic && typeof lauCarAtivo==='function' && lauCarAtivo(m)){ txt = lauCarItemTxt(m, it, lauCarTxt(m, it, txt)); if(!txt) return ''; }
   if(it.generic && typeof lauObsDopAtivo==='function' && lauObsDopAtivo(m)){
     if(lauAutoCfg().on) txt = lauObsLiqTxt(m, it, txt);
     const PH='<mark class="lau-ph">XXX<\/mark>';
