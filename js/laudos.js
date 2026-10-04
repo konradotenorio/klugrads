@@ -447,16 +447,19 @@ const LAU_ABD_ITEMS = [
    ],
    build(s){
      if(s.rep==='sonda') return {txt:'vazia, com sonda vesical de demora em seu interior.', conc:[]};
-     if(s.rep==='n' && !s.par && !s.cal && !s.vol && !s.res) return {txt:null, conc:[]};
+     // laudos de próstata: "Volume pré-miccional" já vem marcado (volAuto) e só entra no texto quando calculado
+     const volOn = s.vol && !(s.volAuto && lauVol(...(s.volV||[]))==null);
+     if(s.rep==='n' && !s.par && !s.cal && !volOn && !s.res) return {txt:null, conc:[]};
      const conc=[];
      let t = s.rep==='pouca' ? 'com pouca repleção, limitando a avaliação de suas paredes. Conteúdo anecogênico.'
            : s.par ? 'com paredes difusamente espessadas e trabeculadas' + (lauHas(s.parD)?` (${lauN(s.parD)} mm)`:'') + ' e conteúdo anecogênico.'
+           : s.volAuto ? 'com repleção satisfatória, paredes regulares e conteúdo anecogênico.'
            : 'com paredes regulares e conteúdo anecogênico.';
      if(s.rep==='pouca' && s.par) t += ' ' + lauFrase('paredes aparentemente espessadas' + (lauHas(s.parD)?` (${lauN(s.parD)} mm)`:''));
      if(s.cal) t += ' ' + lauFrase(lauJoin(['imagem ecogênica móvel com sombra acústica posterior em seu interior, compatível com cálculo', lauMed(s.calD,'cm')]));
      const v = s.vol ? lauVol(...(s.volV||[])) : null;
      const r = s.res ? lauVol(...(s.resV||[])) : null;
-     if(s.vol) t += v!=null ? ` Volume pré-miccional estimado em ${v} mL.` : ' Volume pré-miccional estimado em ___ mL.';
+     if(volOn) t += v!=null ? ` Volume pré-miccional estimado em ${v} mL.` : ' Volume pré-miccional estimado em ___ mL.';
      if(s.res) t += r!=null ? ` Resíduo pós-miccional estimado em ${r} mL.` : ' Resíduo pós-miccional estimado em ___ mL.';
      if(s.par) conc.push('Espessamento parietal vesical difuso.');
      if(s.cal) conc.push('Litíase vesical.');
@@ -1079,6 +1082,8 @@ function lauDefaults(it){
 function lauNew(modelId){
   const m=lauModelo(modelId); const v={};
   m.items.forEach(it=>v[it.k]=lauDefaults(it));
+  // próstata: medidas do volume vesical pré-miccional já abertas no item Bexiga
+  if(/prostata/.test(modelId)) m.items.forEach(it=>{ if(it.sk==='bexiga'){ v[it.k].vol=true; v[it.k].volAuto=true; } });
   const g=lauGen();
   state.lau = {model:modelId, v, open:null, html:null, autoConc:true, tab:'opc',
     tec:{}, ind:'', obs:'', font:g.font, size:g.size, tit:{}, conc:{v:{}, o:[]}, xf:[], xv:{}};
@@ -1591,6 +1596,8 @@ function lauItemHTML(m, it){
   if(!txt && ex.length){ txt = ex.shift(); }
   if(ex.length) txt += '<br>' + ex.join('<br>');
   // obstétrico (2º/3º tri, Doppler, gemelar): IR, percentil e MoM não preenchidos saem do laudo
+  // "medindo XXX x XXX x XXX cm, com volume estimado em 30 mL": sem as medidas, fica só o volume digitado
+  if(it.generic) txt = txt.replace(/medindo <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> (?:cm|mm), com (volume estimado em )(?!<mark)/, '$1');
   // próstata: protrusão intravesical (IPP) sem medida → "não caracterizada"
   if(it.generic && /^protrusao prostatica intravesical/.test(lauNorm(lauItemLabel(m,it)||'')) && /^de cerca de <mark class="lau-ph">XXX<\/mark> (cm|mm)\.?$/.test(txt.trim())) txt = 'não caracterizada.';
   if(it.generic && !lauItemLabel(m,it)) txt = txt.replace(/^(Protrusão prostática intravesical(?: \(IPP\))?) (?:de cerca de|estimada em) <mark class="lau-ph">XXX<\/mark> (?:cm|mm)\./, '$1 não caracterizada.');

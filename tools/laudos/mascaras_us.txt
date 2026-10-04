@@ -189,11 +189,11 @@ ULTRASSONOGRAFIA DA PRÓSTATA
 Nome do Paciente: 
 Data de Nascimento: 
 Data do Exame: 
-- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.
+- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico.
 - Próstata: com forma habitual, medindo cerca de XX x XX x XX cm; massa estimada em XXX gramas.
 - Protrusão prostática intravesical (IPP): de cerca de XXX cm.
 - Vesículas seminais: simétricas e com ecotextura preservada.
-- Resíduo vesical pós-miccional: estimado em XXX mL.
+- Resíduo vesical pós-miccional: medindo XXX x XXX x XXX cm, com volume estimado em XXX mL.
  
 Conclusão:
 - Próstata com massa estimada em XXX gramas.
@@ -210,14 +210,14 @@ Nome do Paciente:
 Data de Nascimento: 
 Data do Exame: 
 Exame da próstata realizado pelas vias suprapúbica e transrretal.
-- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.
+- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico.
 - Próstata: com forma habitual, medindo cerca de XX x XX x XX cm; massa estimada em XXX gramas.
 - Protrusão prostática intravesical (IPP): de cerca de XXX cm.
 - Zona de transição: heterogênea, com padrão nodular característico.
 - Zona periférica: simétrica, regular e relativamente homogênea.
 - Contornos (cápsula) prostáticos: sem abaulamentos ou irregularidades.
 - Vesículas seminais: simétricas e com ecotextura preservada.
-- Resíduo vesical pós-miccional: estimado em XXX mL.
+- Resíduo vesical pós-miccional: medindo XXX x XXX x XXX cm, com volume estimado em XXX mL.
  
 Conclusão:
 - Próstata com massa estimada em XXX gramas.
@@ -236,11 +236,11 @@ Data do Exame:
 - Rins: tópicos, de dimensões normais (RD = XX cm; RE = XX cm).
 Espessura e ecogenicidade parenquimatosas preservadas.
 Ausência de hidronefrose ou cálculos detectáveis ao método.
-- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.
+- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico.
 - Próstata: com forma habitual, medindo cerca de XX x XX x XX cm; massa estimada em XXX gramas.
 - Protrusão prostática intravesical (IPP): de cerca de XXX cm.
 - Vesículas seminais: simétricas e com ecotextura preservada.
-- Resíduo vesical pós-miccional: estimado em XXX mL.
+- Resíduo vesical pós-miccional: medindo XXX x XXX x XXX cm, com volume estimado em XXX mL.
  
 Conclusão:
 - Próstata com massa estimada em XXX gramas.
@@ -266,12 +266,12 @@ Data do Exame:
 - Rins: tópicos, de dimensões normais, com espessura e ecogenicidade parenquimatosas preservadas, sem hidronefrose ou cálculos detectáveis ao método.
 - Aorta abdominal: com calibre normal.
 - Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis.
-- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.
+- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico.
 - Alças intestinais: sem distensão ou espessamento parietal detectáveis ao método.
 - Próstata: com forma habitual, medindo cerca de XX x XX x XX cm; massa estimada em XXX gramas.
 - Protrusão prostática intravesical (IPP): de cerca de XXX cm.
 - Vesículas seminais: simétricas e com ecotextura preservada.
-- Resíduo vesical pós-miccional: estimado em XXX mL.
+- Resíduo vesical pós-miccional: medindo XXX x XXX x XXX cm, com volume estimado em XXX mL.
   
 Conclusão:
 - Próstata com massa estimada em XXX gramas.

@@ -558,7 +558,7 @@ const LAU_US_MASKS = [
 {
 "k": "bexiga",
 "label": "Bexiga",
-"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.",
+"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -590,7 +590,7 @@ const LAU_US_MASKS = [
 {
 "k": "residuo-vesical-pos-miccional",
 "label": "Resíduo vesical pós-miccional",
-"text": "estimado em XXX mL.",
+"text": "medindo XXX x XXX x XXX cm, com volume estimado em XXX mL.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -652,7 +652,7 @@ const LAU_US_MASKS = [
 {
 "k": "bexiga",
 "label": "Bexiga",
-"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.",
+"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -708,7 +708,7 @@ const LAU_US_MASKS = [
 {
 "k": "residuo-vesical-pos-miccional",
 "label": "Resíduo vesical pós-miccional",
-"text": "estimado em XXX mL.",
+"text": "medindo XXX x XXX x XXX cm, com volume estimado em XXX mL.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -786,7 +786,7 @@ const LAU_US_MASKS = [
 {
 "k": "bexiga",
 "label": "Bexiga",
-"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.",
+"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -818,7 +818,7 @@ const LAU_US_MASKS = [
 {
 "k": "residuo-vesical-pos-miccional",
 "label": "Resíduo vesical pós-miccional",
-"text": "estimado em XXX mL.",
+"text": "medindo XXX x XXX x XXX cm, com volume estimado em XXX mL.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -952,7 +952,7 @@ const LAU_US_MASKS = [
 {
 "k": "bexiga",
 "label": "Bexiga",
-"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.",
+"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -992,7 +992,7 @@ const LAU_US_MASKS = [
 {
 "k": "residuo-vesical-pos-miccional",
 "label": "Resíduo vesical pós-miccional",
-"text": "estimado em XXX mL.",
+"text": "medindo XXX x XXX x XXX cm, com volume estimado em XXX mL.",
 "dash": true,
 "opts": [],
 "grp": ""
