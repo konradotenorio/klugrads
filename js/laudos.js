@@ -1480,6 +1480,8 @@ function lauItemHTML(m, it){
   if(!txt && ex.length){ txt = ex.shift(); }
   if(ex.length) txt += '<br>' + ex.join('<br>');
   // obstétrico (2º/3º tri, Doppler, gemelar): IR, percentil e MoM não preenchidos saem do laudo
+  // próstata: protrusão intravesical (IPP) sem medida → "não caracterizada"
+  if(it.generic && /^protrusao prostatica intravesical/.test(lauNorm(lauItemLabel(m,it)||'')) && /^de cerca de <mark class="lau-ph">XXX<\/mark> (cm|mm)\.?$/.test(txt.trim())) txt = 'não caracterizada.';
   if(it.generic && typeof lauCarAtivo==='function' && lauCarAtivo(m)){ txt = lauCarItemTxt(m, it, lauCarTxt(m, it, txt)); if(!txt) return ''; }
   if(it.generic && typeof lauObsDopAtivo==='function' && lauObsDopAtivo(m)){
     if(lauAutoCfg().on) txt = lauObsLiqTxt(m, it, txt);
