@@ -234,20 +234,20 @@ ULTRASSONOGRAFIA DOS RINS, VIAS URINÁRIAS E PRÓSTATA
 Nome do Paciente: 
 Data de Nascimento: 
 Data do Exame: 
-Rins tópicos, com dimensões normais (RD = [< >] cm e RE = [< >] cm). 
-Parênquima renal com contornos regulares, espessura e ecotextura preservadas. 
-Não há dilatação do sistema coletor.
-Não se evidenciam cálculos.
-Bexiga com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em [<>] ml.
-Próstata com forma habitual, medindo [<>] x [<>] x [<>]cm e massa estimada em [<>] gramas.
-Protrusão prostática intravesical (IPP) estimada em [<>] cm.
-Vesículas seminais simétricas e com ecotextura conservada.
-Resíduo vesical pós-miccional estimado em [<>] ml.
+Exame realizado pela via suprapúbica.
+- Rins: tópicos, de dimensões normais (RD = XX cm; RE = XX cm).
+Espessura e ecogenicidade parenquimatosas preservadas.
+Ausência de hidronefrose ou cálculos detectáveis ao método.
+- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.
+- Próstata: com forma habitual, medindo cerca de XX x XX x XX cm; massa estimada em XXX gramas.
+- Protrusão prostática intravesical (IPP): de cerca de XXX cm.
+- Vesículas seminais: simétricas e com ecotextura preservada.
+- Resíduo vesical pós-miccional: estimado em XXX mL.
  
 Conclusão:
-Próstata com massa estimada em [< >] gramas.
-Resíduo pós-miccional estimado em [<>]ml representando esvaziamento de [<>]% do volume vesical.
-Restante do estudo sem alterações significativas.
+- Próstata com massa estimada em XXX gramas.
+- Resíduo pós-miccional estimado em XXX mL.
+Restante do exame sem particularidades.
 Liberado por: 
 CRM: 
 

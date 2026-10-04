@@ -788,74 +788,58 @@ const LAU_US_MASKS = [
 ],
 "items": [
 {
-"k": "rins-topicos-com-dimensoes-no",
+"k": "exame-realizado-pela-via-supra",
 "label": "",
-"text": "Rins tópicos, com dimensões normais (RD = XXX cm e RE = XXX cm).",
+"text": "Exame realizado pela via suprapúbica.",
 "dash": false,
 "opts": [],
 "grp": ""
 },
 {
-"k": "parenquima-renal-com-contornos",
-"label": "",
-"text": "Parênquima renal com contornos regulares, espessura e ecotextura preservadas.",
-"dash": false,
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais (RD = XX cm; RE = XX cm).\nEspessura e ecogenicidade parenquimatosas preservadas.\nAusência de hidronefrose ou cálculos detectáveis ao método.",
+"dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "nao-ha-dilatacao-do-sistema-co",
-"label": "",
-"text": "Não há dilatação do sistema coletor.",
-"dash": false,
+"k": "bexiga",
+"label": "Bexiga",
+"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX mL.",
+"dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "nao-se-evidenciam-calculos",
-"label": "",
-"text": "Não se evidenciam cálculos.",
-"dash": false,
+"k": "prostata",
+"label": "Próstata",
+"text": "com forma habitual, medindo cerca de XX x XX x XX cm; massa estimada em XXX gramas.",
+"dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "bexiga-com-replecao-satisfator",
-"label": "",
-"text": "Bexiga com repleção satisfatória, paredes regulares e conteúdo anecogênico. Volume estimado em XXX ml.",
-"dash": false,
+"k": "protrusao-prostatica-intravesical-ipp",
+"label": "Protrusão prostática intravesical (IPP)",
+"text": "de cerca de XXX cm.",
+"dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "prostata-com-forma-habitual-m",
-"label": "",
-"text": "Próstata com forma habitual, medindo XXX x XXX x XXX cm e massa estimada em XXX gramas.",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
-"k": "protrusao-prostatica-intravesi",
-"label": "",
-"text": "Protrusão prostática intravesical (IPP) estimada em XXX cm.",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
-"k": "vesiculas-seminais-simetricas",
-"label": "",
-"text": "Vesículas seminais simétricas e com ecotextura conservada.",
-"dash": false,
+"k": "vesiculas-seminais",
+"label": "Vesículas seminais",
+"text": "simétricas e com ecotextura preservada.",
+"dash": true,
 "opts": [],
 "grp": ""
 },
 {
 "k": "residuo-vesical-pos-miccional",
-"label": "",
-"text": "Resíduo vesical pós-miccional estimado em XXX ml.",
-"dash": false,
+"label": "Resíduo vesical pós-miccional",
+"text": "estimado em XXX mL.",
+"dash": true,
 "opts": [],
 "grp": ""
 }
@@ -863,35 +847,27 @@ const LAU_US_MASKS = [
 "seq": [
 {
 "t": "item",
-"k": "rins-topicos-com-dimensoes-no"
+"k": "exame-realizado-pela-via-supra"
 },
 {
 "t": "item",
-"k": "parenquima-renal-com-contornos"
+"k": "rins"
 },
 {
 "t": "item",
-"k": "nao-ha-dilatacao-do-sistema-co"
+"k": "bexiga"
 },
 {
 "t": "item",
-"k": "nao-se-evidenciam-calculos"
+"k": "prostata"
 },
 {
 "t": "item",
-"k": "bexiga-com-replecao-satisfator"
+"k": "protrusao-prostatica-intravesical-ipp"
 },
 {
 "t": "item",
-"k": "prostata-com-forma-habitual-m"
-},
-{
-"t": "item",
-"k": "protrusao-prostatica-intravesi"
-},
-{
-"t": "item",
-"k": "vesiculas-seminais-simetricas"
+"k": "vesiculas-seminais"
 },
 {
 "t": "item",
@@ -902,14 +878,14 @@ const LAU_US_MASKS = [
 "conc": [
 {
 "text": "Próstata com massa estimada em XXX gramas.",
-"dash": false
+"dash": true
 },
 {
-"text": "Resíduo pós-miccional estimado em XXX ml representando esvaziamento de XXX% do volume vesical.",
-"dash": false
+"text": "Resíduo pós-miccional estimado em XXX mL.",
+"dash": true
 },
 {
-"text": "Restante do estudo sem alterações significativas.",
+"text": "Restante do exame sem particularidades.",
 "dash": false
 }
 ],
