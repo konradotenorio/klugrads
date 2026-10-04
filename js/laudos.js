@@ -1399,8 +1399,7 @@ function lauOradsConc(f, vals, d, lbl){
   const onde = /ov[aá]rio/i.test(lbl||'') ? ' no '+String(lbl).replace(/:$/,'').toLowerCase() : '';
   const tipo = (d.tipo ? {uni:'Cisto unilocular', bi:'Cisto bilocular', multi:'Cisto multilocular', solido:'Lesão sólida'}[d.tipo] : 'Lesão anexial') + onde;
   if(ev.cat==null) return `${tipo} — O-RADS US ${lauMk('?',true)} (complete os descritores).`;
-  const C=ORADS_C[ev.cat], mg=oradsMgmt(L, ev, lauOrMeno(d));
-  return `${tipo} — O-RADS US ${ev.cat} (${esc(C.name.toLowerCase())}).${mg && mg.a && mg.a!=='—' ? ' '+esc(mg.a)+'.' : ''}`;
+  return `${tipo} — O-RADS US ${ev.cat}.`;   // só a classificação (risco e conduta ficam no painel)
 }
 function lauOradsDescHTML(k, id, f, d, chip){
   const sol=d.tipo==='solido';
