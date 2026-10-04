@@ -501,11 +501,10 @@ const LAU_FRASES = [
   {o:'ovario', n:'Padrão micropolicístico', m:'add',
    t:'Múltiplos folículos periféricos (XXX folículos), com estroma ecogênico.',
    c:'Ovário de aspecto micropolicístico.'},
-  {o:'ovario', n:'Lesão complexa', m:'add',
-   t:'Lesão cística complexa com componente sólido, medindo XXX x XXX x XXX cm. O-RADS US: XXX.', medOpc:1,
-   c:'Lesão anexial complexa (O-RADS US {1}).'},
+  {o:'ovario', n:'Cisto complexo (O-RADS)', m:'add', kind:'orads',
+   t:'medindo XXX x XXX x XXX cm', c:''},
   {o:'ovario', n:'Não caracterizado', m:'sub',
-   t:'não caracterizado (motivo: XXX).', c:''},
+   t:'não caracterizado.', c:''},
 
   /* ---------------- PARTES MOLES ---------------- */
   {o:'partes', q:1, cp:'Nódulos com aspecto sugestivo de lipomas.', n:'Lipoma', m:'add',

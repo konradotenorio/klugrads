@@ -1179,6 +1179,7 @@ function lauFraseText(id, bag, html){
   if(lauKindTE(f)) t = lauTendText(f, id, bag, html);
   else if(lauMgK(f)) t = lauMgText(f, id, bag, html);
   else if(f.kind==='tirads') t = lauTiradsText(f, bag['f'+id], bag['d'+id]||{}, html);
+  else if(f.kind==='orads') t = lauOradsText(f, bag['f'+id], bag['d'+id]||{}, html);
   else if(f.kind==='birads') t = lauBiradsText(f, bag['f'+id], bag['d'+id]||{}, html);
   else t = lauFill(f.t, bag['f'+id], html);
   if(f.mt){ const n=lauMtN(bag['d'+id]); for(let j=2;j<=n+1;j++) t += `${html?'<br>':'\n'}${f.mtn||'Nódulo'} ${j}: ${lauFill(f.mt, bag['f'+id+'_'+j], html)}.`; }
@@ -1199,6 +1200,7 @@ function lauFraseConc(id, bag, lbl){
   const n = lauQtd(f,bag,id)==='n';
   if(lauKindTE(f)) return lauTendConc(f, id, bag);
   if(lauMgK(f)) return lauMgConc(f, id, bag, lbl, n);
+  if(f.kind==='orads') return lauOradsConc(f, bag['f'+id], bag['d'+id]||{}, lbl);
   if(f.kind==='tirads') return lauTiradsConc(f, bag['f'+id], bag['d'+id]||{}, n, n ? [bag['f'+id]].concat(Array.from({length:lauQn(bag['d'+id])-1},(_,j)=>bag['f'+id+'_'+(j+2)])) : null);
   if(f.kind==='birads') return lauBiradsConc(f, bag['f'+id], bag['d'+id]||{}, lbl, n, n ? [bag['f'+id]].concat(Array.from({length:lauQn(bag['d'+id])-1},(_,j)=>bag['f'+id+'_'+(j+2)])) : null);
   return lauFraseConcHTML(n && f.cp ? Object.assign({}, f, {c:f.cp}) : f, bag['f'+id], lbl);
@@ -1349,6 +1351,71 @@ function lauTiradsConc(f, vals, d, plural, all){
   return `${nome} ${ladoTxt} — ACR TI-RADS TR${ev.tr} (${esc(TIRADS_TRC[ev.tr].name.toLowerCase())})${plural?'; conduta pelo maior':''}. ${esc(r.a)}${r.a==='Informe o tamanho'?'':'.'}`;
 }
 
+/* ---------- O-RADS US (mesma classificação da calculadora: oradsEval / oradsMgmt, js/calc-orads.js) ---------- */
+const LAU_OR = {
+  tipo:{l:'Tipo', o:[['uni','Unilocular'],['bi','Bilocular'],['multi','Multilocular'],['solido','Sólida (≥ 80% sólida)']]},
+  cont:{l:'Conteúdo', o:['Anecogênico','Ecos de baixo nível','Ecos reticulares (hemorrágico)'], cist:1},
+  contorno:{l:'Parede / contorno', o:[['smooth','Liso'],['irregular','Irregular']]},
+  solido:{l:'Componente sólido', o:[['none','Ausente'],['pp_lt4','Projeções papilares (< 4)'],['pp_ge4','Projeções papilares (≥ 4)'],['outro','Componente sólido (não papilar)']], cist:1},
+  cs:{l:'Escore de cor (Doppler)', o:[[1,'1 — ausente'],[2,'2 — mínimo'],[3,'3 — moderado'],[4,'4 — intenso']]},
+  shadow:{l:'Sombra acústica', o:[[1,'Presente'],[0,'Ausente']], sol:1},
+  ascite:{l:'Ascite / nódulos peritoneais', o:[[1,'Presentes']]},
+  meno:{l:'Status menopausal (conduta)', o:[['pre','Pré-menopausa'],['post_early','Pós-menopausa < 5 anos'],['post_late','Pós-menopausa ≥ 5 anos']]},
+};
+const LAU_OR_TXT = {
+  tipo:{uni:'Imagem cística unilocular', bi:'Imagem cística bilocular', multi:'Imagem cística multilocular', solido:'Lesão sólida'},
+  cont:['de conteúdo anecogênico','com ecos de baixo nível','com ecos reticulares de permeio'],
+  contorno:{smooth:'de paredes lisas', irregular:'de paredes irregulares'},
+  contornoSol:{smooth:'de contornos lisos', irregular:'de contornos irregulares'},
+  solido:{none:'sem componente sólido', pp_lt4:'com projeções papilares (menos de quatro)', pp_ge4:'com quatro ou mais projeções papilares', outro:'com componente sólido'},
+  cs:{1:'sem fluxo ao Doppler (escore de cor 1)', 2:'com fluxo mínimo ao Doppler (escore de cor 2)', 3:'com fluxo moderado ao Doppler (escore de cor 3)', 4:'com fluxo intenso ao Doppler (escore de cor 4)'},
+};
+function lauOrMeno(d){ if(d.meno) return d.meno; const A=typeof lauAutoCfg==='function'?lauAutoCfg():{}; return A.fase==='meno' ? 'post_early' : 'pre'; }
+function lauOrLesao(f, vals, d){
+  let s=lauMaxDim(f, vals); if(s!=null && lauUnMM()) s=s/10;   // calculadora em cm
+  return {tipo:d.tipo||null, simples: d.tipo==='uni' && d.cont!=null ? d.cont===0 : null, contorno:d.contorno||null,
+          cs:d.cs||null, solido:d.solido||'none', shadow: d.shadow==null ? null : !!d.shadow, size: s==null?'':String(s),
+          classica:null, ascite: !!d.ascite};
+}
+function lauOradsText(f, vals, d, html){
+  const L=lauOrLesao(f, vals, d), ev=oradsEval(L);
+  const sol = d.tipo==='solido';
+  const partes=[ d.tipo ? LAU_OR_TXT.tipo[d.tipo] : lauMk('Lesão anexial ___',html) ];
+  if(!sol && d.cont!=null) partes.push(LAU_OR_TXT.cont[d.cont]);
+  if(d.contorno) partes.push((sol?LAU_OR_TXT.contornoSol:LAU_OR_TXT.contorno)[d.contorno]);
+  if(!sol && d.tipo) partes.push(LAU_OR_TXT.solido[d.solido||'none']);
+  if(sol && d.shadow!=null) partes.push(d.shadow ? 'com sombra acústica posterior' : 'sem sombra acústica posterior');
+  if(d.cs) partes.push(LAU_OR_TXT.cs[d.cs]);
+  let t = (html ? partes.map((x,i)=> i===0 && !d.tipo ? x : esc(x)).join(', ') : partes.join(', '));
+  const med = lauTiraMedVazia(lauFill(f.t, vals, html)).trim();
+  if(med) t += ', ' + med;
+  t += '.';
+  if(d.ascite) t += ' Ascite e/ou nódulos peritoneais associados.';
+  t += ` O-RADS US: ${ev.cat!=null ? ev.cat : lauMk('?',html)}.`;
+  return t;
+}
+function lauOradsConc(f, vals, d, lbl){
+  const L=lauOrLesao(f, vals, d), ev=oradsEval(L);
+  const onde = /ov[aá]rio/i.test(lbl||'') ? ' no '+String(lbl).replace(/:$/,'').toLowerCase() : '';
+  const tipo = (d.tipo ? {uni:'Cisto unilocular', bi:'Cisto bilocular', multi:'Cisto multilocular', solido:'Lesão sólida'}[d.tipo] : 'Lesão anexial') + onde;
+  if(ev.cat==null) return `${tipo} — O-RADS US ${lauMk('?',true)} (complete os descritores).`;
+  const C=ORADS_C[ev.cat], mg=oradsMgmt(L, ev, lauOrMeno(d));
+  return `${tipo} — O-RADS US ${ev.cat} (${esc(C.name.toLowerCase())}).${mg && mg.a && mg.a!=='—' ? ' '+esc(mg.a)+'.' : ''}`;
+}
+function lauOradsDescHTML(k, id, f, d, chip){
+  const sol=d.tipo==='solido';
+  let h = Object.keys(LAU_OR).filter(key=>!(LAU_OR[key].cist && sol) && !(LAU_OR[key].sol && !sol)).map(key=>{
+    const D=LAU_OR[key];
+    const ops = D.o.map((o,oi)=> Array.isArray(o) ? chip(key,o[0],o[1],d[key]===o[0] || (key==='meno' && !d.meno && lauOrMeno(d)===o[0]) || (key==='solido' && !d.solido && o[0]==='none' && d.tipo && !sol)) : chip(key,oi,o,d[key]===oi)).join('');
+    return `<div class="lau-row"><div class="lau-rl">${esc(D.l)}</div><div class="lau-chips">${ops}</div></div>`;
+  }).join('');
+  const L=lauOrLesao(f, lauPhBag(k)['f'+id], d), ev=oradsEval(L);
+  if(ev.cat!=null){ const C=ORADS_C[ev.cat], mg=oradsMgmt(L, ev, lauOrMeno(d));
+    h += `<div class="lau-clres" style="background:${C.bg};border-color:${C.c}"><b style="color:${C.c}">O-RADS US ${ev.cat}</b> — ${esc(C.name)} (risco ${esc(C.risk)}) · ${esc(ev.why||'')}${mg&&mg.a?` · ${esc(mg.a)}`:''}</div>`; }
+  else h += `<div class="lau-clres">Marque tipo, contorno${sol?', escore de cor e sombra acústica':', conteúdo (unilocular) e componente sólido'} e preencha as medidas (mesma classificação da calculadora O-RADS).</div>`;
+  return h;
+}
+
 /* ---------- BI-RADS (léxico ACR BI-RADS US, 5ª ed.) ----------
    A categoria é escolhida pelo médico; a sugestão segue os descritores:
    cisto simples → 2; sólido oval, paralelo e circunscrito → 3;
@@ -1456,6 +1523,7 @@ function lauDescHTML(k, id, f, d){
     }).join('');
     return h;
   }
+  if(f.kind==='orads') return lauOradsDescHTML(k, id, f, d, chip);
   if(f.kind==='tirads'){
     const n=lauTrNod(d), ev=tiradsEval(n);
     let h = ['comp','echo','shape','margin'].map(key=>`<div class="lau-row"><div class="lau-rl">${esc(TIRADS_CATS[key].label)}</div><div class="lau-chips">${TIRADS_CATS[key].opts.map((o,oi)=>chip(key,oi,`${o[0]} (${o[1]})`,n[key]===oi)).join('')}</div></div>`).join('');
