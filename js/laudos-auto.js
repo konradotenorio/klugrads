@@ -550,7 +550,10 @@ function lauCarEmi(m){
 }
 function lauCarConc(m){
   if(!lauAutoCfg().on) return [];
-  const out=lauCarDados(m).map(x=>`Estenose ${lauCarDe(x.g)} da artéria carótida interna ${x.lado}.`);
+  const D=lauCarDados(m), out=[];
+  if(D.length===2) out.push(D[0].g===D[1].g ? `Estenose ${lauCarDe(D[0].g)} das artérias carótidas internas.`
+                                            : `Estenose ${lauCarDe(D[0].g)} da artéria carótida interna direita e ${lauCarDe(D[1].g)} da esquerda.`);
+  else if(D.length) out.push(`Estenose ${lauCarDe(D[0].g)} da artéria carótida interna ${D[0].lado}.`);
   const esp=lauCarEmi(m).filter(x=>x.esp);
   if(esp.length===2) out.push('Espessamento do complexo médio-intimal das artérias carótidas comuns.');
   else if(esp.length) out.push(`Espessamento do complexo médio-intimal da artéria carótida comum ${esp[0].lado}.`);
@@ -566,7 +569,10 @@ function lauCarItemTxt(m, it, txt){
   }
   if(!lauAutoCfg().on || !/^arterias-carotidas-comuns/.test(it.k)) return txt;
   const D=lauCarDados(m); if(!D.length) return txt;
-  const lst=lauJuntaE(D.map(x=>`na ${x.ab} (VPS de ${lauN(x.psv)} cm/s), compatível com estenose ${lauCarDe(x.g)}`));
+  const lst = D.length===1
+    ? `na ${D[0].ab} (VPS de ${lauN(D[0].psv)} cm/s), compatível com estenose ${lauCarDe(D[0].g)}`
+    : `na ${D[0].ab} e na ${D[1].ab} (VPS de ${lauN(D[0].psv)} cm/s e ${lauN(D[1].psv)} cm/s, respectivamente), compatível com estenoses `
+      + (D[0].g===D[1].g ? lauCarDe(D[0].g) : `${lauCarDe(D[0].g)} e ${lauCarDe(D[1].g)}, respectivamente`);
   return txt.replace(/,? sem dilatações, espessamentos ou calcificações parietais/, ', sem dilatações')
             .replace(/os padrões espectrais e as velocidades encontram-se preservados/, `observa-se aumento das velocidades ${lst}; demais padrões espectrais preservados`);
 }
