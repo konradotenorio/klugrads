@@ -519,7 +519,7 @@ const LAU_FRASES = [
    t:'Coleção com conteúdo espesso e debris em XXX, medindo XXX x XXX x XXX cm (volume estimado em XXX cm³).',
    c:'Coleção em {0}.'},
   {o:'partes', n:'Edema do subcutâneo', m:'add', nm:/^pele e tecido subcutaneo/,
-   t:'Espessamento e aumento da ecogenicidade do subcutâneo com faixas líquidas de permeio (padrão em paralelepípedo).',
+   t:'Espessamento e aumento da ecogenicidade do subcutâneo com faixas líquidas de permeio.',
    c:'Edema do tecido subcutâneo.'},
   {o:'partes', n:'Hematoma', m:'add',
    t:'Coleção heterogênea, sem fluxo ao Doppler, em XXX, medindo XXX x XXX x XXX cm.',
@@ -546,7 +546,7 @@ const LAU_FRASES = [
    c:'Luxação medial do tendão da cabeça longa do bíceps.'},
   /* pele e tecido subcutâneo (US musculoesquelético) */
   {o:'pelesub', n:'Edema', m:'sub',
-   t:'com espessamento e aumento da ecogenicidade do tecido subcutâneo, com faixas líquidas de permeio (padrão em "paralelepípedo"), sem coleções.',
+   t:'com espessamento e aumento da ecogenicidade do tecido subcutâneo, com faixas líquidas de permeio, sem coleções.',
    c:'Edema do tecido subcutâneo.'},
   {o:'pelesub', n:'Celulite', m:'sub',
    t:'com espessamento da pele e do tecido subcutâneo, aumento da ecogenicidade e faixas líquidas de permeio, com aumento da vascularização ao Doppler, sem coleções organizadas.',
