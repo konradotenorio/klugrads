@@ -7139,7 +7139,7 @@ const LAU_US_MASKS = [
 "dash": true
 },
 {
-"text": "Categoria BI-RADS®: 1 (negativo).",
+"text": "Categoria BI-RADS®: 1.",
 "dash": true
 }
 ],

@@ -2143,6 +2143,7 @@ function laudoEditHTML(){
   setTimeout(lauMountEditor, 0);
   return `<div class="lau-wrap tab-${L.tab}">
     <div class="lau-beta"><b>Em desenvolvimento · fase de testes.</b> Confira sempre o texto antes de usar. Campos em <mark class="lau-ph">amarelo</mark> ainda não foram preenchidos. Sugestões e erros: Configurações → Críticas e Sugestões.</div>
+    ${lauFavsEdHTML(L.model)}
     <div class="lau-tabs">
       <button type="button" class="${L.tab==='opc'?'on':''}" onclick="lauTab('opc')">Achados</button>
       <button type="button" class="${L.tab==='txt'?'on':''}" onclick="lauTab('txt')">Laudo</button>
@@ -2206,6 +2207,17 @@ function lauFavsHTML(all, onclickFn){
   return `<div class="lau-favs"><div class="lau-favs-h">${star} Favoritos</div>${fs.length
     ? `<div class="lau-chips">${fs.map(m=>`<button type="button" class="ti-ftog" onclick="${onclickFn}('${m.id}')"><span class="x">${star}</span>${esc(m.nome)}</button>`).join('')}</div>`
     : `<div class="lau-favs-e">Toque na bolinha ao lado de um laudo para fixá-lo aqui.</div>`}</div>`;
+}
+/* favoritos dentro do laudo aberto: um toque abre um laudo novo daquele modelo (some se não houver favoritos) */
+const LAU_MET_TAG = {us:'US', tc:'TC', mmg:'MMG', dmo:'DMO'};
+function lauFavsEdHTML(atual){
+  lauModelosDmo();
+  const fs = lauFavs().map(id=>lauModelo(id)).filter(Boolean).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base',numeric:true}));
+  if(!fs.length) return '';
+  const star = svgIcon(LAU_FAV_ICO,14,{fill:'currentColor',noStroke:true});
+  const tag = m=> m.metodo && m.metodo!=='us' ? `<small style="opacity:.7">${LAU_MET_TAG[m.metodo]||m.metodo.toUpperCase()}</small> ` : '';
+  return `<div class="lau-favs lau-favs-ed"><div class="lau-favs-h">${star} Favoritos · abrir laudo novo</div><div class="lau-chips">${fs.map(m=>
+    `<button type="button" class="ti-ftog ${m.id===atual?'on':''}" onclick="openLaudo('${m.id}')" title="Abrir um laudo novo: ${esc(m.nome)}"><span class="x">${star}</span>${tag(m)}${esc(m.nome)}</button>`).join('')}</div></div>`;
 }
 function lauListHTML(metodo, onclickFn, sub){
   lauModelosDmo();
