@@ -1120,6 +1120,11 @@ function lauTiraVazio(t, pats){
 const LAU_MSK = ['tendao','bursa','derrame','acromio','poplitea','ligamento','fascia','nervo','musculo','interdigital','hernia'];
 const _MK = '(?:<mark class="lau-ph">XXX</mark>|XXX)';
 function lauTiraMedVazia(t){
+  // medidas em parte preenchidas: "2,0 x XXX x XXX cm" → "2,0 cm"
+  const N='\\d+(?:[.,]\\d+)?';
+  t = t.replace(new RegExp(`(${N})((?:\\s*x\\s*(?:${N}|${_MK}))+)(?=\\s*(?:cm|mm))`,'g'), (m0,a,rest)=>
+        a + rest.replace(new RegExp(`\\s*x\\s*${_MK}`,'g'),''))
+       .replace(new RegExp(`(?:${_MK}\\s*x\\s*)+(${N})`,'g'), '$1');
   return t
     .replace(new RegExp(`,?\\s*(?:medindo|com|de)\\s+(?:até\\s+)?${_MK}(?:\\s*x\\s*${_MK})*\\s*(?:cm³|cm²|cm|mm)(?:\\s+de\\s+(?:espessura|extensão|diâmetro))?(?:\\s*\\(volume estimado em ${_MK} cm³\\))?`,'g'), '')
     .replace(new RegExp(`\\s*\\([^()]*${_MK}[^()]*\\)`,'g'), '');
