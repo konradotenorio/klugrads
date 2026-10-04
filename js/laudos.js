@@ -1550,6 +1550,13 @@ function lauOptLines(it, s, html){
 
 /* ---------- geração do HTML do laudo ---------- */
 function lauItemOculto(m, it){
+  // obstétricos com Doppler: bexiga, útero e colo só entram no laudo quando alterados
+  if(/^us-obstetrico-(doppler|gemelar-com-doppler)$/.test(m.id) && /^(bexiga|utero|colo-uterino)$/.test(it.k)){
+    const s=state.lau.v[it.k];
+    const marc = (s.__f||[]).length || (s.__o||[]).some(Boolean) || s.__alt>0;
+    if(it.generic) return !(marc || lauHas(s.alt) || Object.values(s.__v||{}).some(a=>Array.isArray(a) && a.some(lauHas)));
+    return !marc && lauBuild(m,it).txt==null;
+  }
   if(!it.hideNormal) return false;
   const s=state.lau.v[it.k], r=lauBuild(m,it);
   return r.txt==null && !(s.__f||[]).length && !(s.__o||[]).some(Boolean);

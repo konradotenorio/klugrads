@@ -5603,18 +5603,22 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "placenta",
-"label": "Placenta",
-"text": "com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.",
-"dash": true,
-"opts": [],
+"k": "dopplervelocimetria",
+"label": "Dopplervelocimetria",
+"text": "\nArtéria umbilical: IR = XXX e IP = XXX (percentil XXX).\nArtéria cerebral média: IR = XXX e IP = XXX (percentil XXX).\nRelação cérebro-placentária (IP ACM / IP AU): XXX (percentil XXX).",
+"dash": false,
+"opts": [
+"Pico de velocidade sistólica da artéria cerebral média: XXX cm/s (XXX MoM).",
+"Ducto venoso: IP = XXX (percentil XXX).",
+"Índices de resistividade das artérias uterinas: XXX à direita e XXX à esquerda."
+],
 "grp": ""
 },
 {
-"k": "cordao-umbilical",
-"label": "Cordão umbilical",
-"text": "de aspecto habitual.",
-"dash": true,
+"k": "biometria",
+"label": "Biometria",
+"text": "\nCabeça: DBP = XXX mm; PC = XXX mm.\nAbdome: CA = XXX mm.\nFêmur: CF = XXX mm.\nPeso fetal estimado (Hadlock): XXX g (variação de ± 10%), correspondendo ao percentil XXX para a idade gestacional.",
+"dash": false,
 "opts": [],
 "grp": ""
 },
@@ -5631,23 +5635,19 @@ const LAU_US_MASKS = [
 ]
 },
 {
-"k": "biometria",
-"label": "Biometria",
-"text": "\nCabeça: DBP = XXX mm; PC = XXX mm.\nAbdome: CA = XXX mm.\nFêmur: CF = XXX mm.\nPeso fetal estimado (Hadlock): XXX g (variação de ± 10%), correspondendo ao percentil XXX para a idade gestacional.",
-"dash": false,
+"k": "placenta",
+"label": "Placenta",
+"text": "com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.",
+"dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "dopplervelocimetria",
-"label": "Dopplervelocimetria",
-"text": "\nArtéria umbilical: IR = XXX e IP = XXX (percentil XXX).\nArtéria cerebral média: IR = XXX e IP = XXX (percentil XXX).\nRelação cérebro-placentária (IP ACM / IP AU): XXX (percentil XXX).",
-"dash": false,
-"opts": [
-"Pico de velocidade sistólica da artéria cerebral média: XXX cm/s (XXX MoM).",
-"Ducto venoso: IP = XXX (percentil XXX).",
-"Índices de resistividade das artérias uterinas: XXX à direita e XXX à esquerda."
-],
+"k": "cordao-umbilical",
+"label": "Cordão umbilical",
+"text": "de aspecto habitual.",
+"dash": true,
+"opts": [],
 "grp": ""
 },
 {
@@ -5689,15 +5689,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "placenta"
-},
-{
-"t": "item",
-"k": "cordao-umbilical"
-},
-{
-"t": "item",
-"k": "liquido-amniotico"
+"k": "dopplervelocimetria"
 },
 {
 "t": "item",
@@ -5705,7 +5697,15 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "dopplervelocimetria"
+"k": "liquido-amniotico"
+},
+{
+"t": "item",
+"k": "placenta"
+},
+{
+"t": "item",
+"k": "cordao-umbilical"
 },
 {
 "t": "item",
@@ -7548,20 +7548,65 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "placenta",
-"label": "Placenta XX placentas",
-"text": "com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.",
+"k": "feto-1",
+"label": "Feto 1",
+"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.",
 "dash": true,
-"opts": [
-"Não é possível determinar a corionicidade por este estudo."
-],
+"opts": [],
 "grp": ""
 },
 {
-"k": "cordoes-umbilicais",
-"label": "Cordões umbilicais",
-"text": "de aspecto habitual.",
+"k": "dopplervelocimetria",
+"label": "Dopplervelocimetria",
+"text": "\nArtéria umbilical: IR = XXX e IP = XXX (percentil XXX).\nArtéria cerebral média: IR = XXX e IP = XXX (percentil XXX).\nRelação cérebro-placentária (IP ACM / IP AU): XXX (percentil XXX).",
+"dash": false,
+"opts": [
+"Pico de velocidade sistólica da artéria cerebral média: XXX cm/s (XXX MoM).",
+"Ducto venoso: IP = XXX (percentil XXX)."
+],
+"grp": "Feto 1"
+},
+{
+"k": "biometria",
+"label": "Biometria",
+"text": "\nCabeça: DBP = XXX mm; PC = XXX mm.\nAbdome: CA = XXX mm.\nFêmur: CF = XXX mm.\nPeso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
+"dash": false,
+"opts": [],
+"grp": "Feto 1"
+},
+{
+"k": "feto-2",
+"label": "Feto 2",
+"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.",
 "dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "dopplervelocimetria-2",
+"label": "Dopplervelocimetria",
+"text": "\nArtéria umbilical: IR = XXX e IP = XXX (percentil XXX).\nArtéria cerebral média: IR = XXX e IP = XXX (percentil XXX).\nRelação cérebro-placentária (IP ACM / IP AU): XXX (percentil XXX).",
+"dash": false,
+"opts": [
+"Pico de velocidade sistólica da artéria cerebral média: XXX cm/s (XXX MoM).",
+"Ducto venoso: IP = XXX (percentil XXX).",
+"Índices de resistividade das artérias uterinas: XXX à direita e XXX à esquerda."
+],
+"grp": "Feto 2"
+},
+{
+"k": "biometria-2",
+"label": "Biometria",
+"text": "\nCabeça: DBP = XXX mm; PC = XXX mm.\nAbdome: CA = XXX mm.\nFêmur: CF = XXX mm.\nPeso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
+"dash": false,
+"opts": [],
+"grp": "Feto 2"
+},
+{
+"k": "discordancia-de-peso-estimado-entre-os-f",
+"label": "Discordância de peso estimado entre os fetos",
+"text": "XXX%.",
+"dash": false,
 "opts": [],
 "grp": ""
 },
@@ -7578,65 +7623,20 @@ const LAU_US_MASKS = [
 ]
 },
 {
-"k": "feto-1",
-"label": "Feto 1",
-"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.",
+"k": "placenta",
+"label": "Placenta XX placentas",
+"text": "com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.",
 "dash": true,
-"opts": [],
+"opts": [
+"Não é possível determinar a corionicidade por este estudo."
+],
 "grp": ""
 },
 {
-"k": "biometria",
-"label": "Biometria",
-"text": "\nCabeça: DBP = XXX mm; PC = XXX mm.\nAbdome: CA = XXX mm.\nFêmur: CF = XXX mm.\nPeso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
-"dash": false,
-"opts": [],
-"grp": "Feto 1"
-},
-{
-"k": "dopplervelocimetria",
-"label": "Dopplervelocimetria",
-"text": "\nArtéria umbilical: IR = XXX e IP = XXX (percentil XXX).\nArtéria cerebral média: IR = XXX e IP = XXX (percentil XXX).\nRelação cérebro-placentária (IP ACM / IP AU): XXX (percentil XXX).",
-"dash": false,
-"opts": [
-"Pico de velocidade sistólica da artéria cerebral média: XXX cm/s (XXX MoM).",
-"Ducto venoso: IP = XXX (percentil XXX)."
-],
-"grp": "Feto 1"
-},
-{
-"k": "feto-2",
-"label": "Feto 2",
-"text": "em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.",
+"k": "cordoes-umbilicais",
+"label": "Cordões umbilicais",
+"text": "de aspecto habitual.",
 "dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "biometria-2",
-"label": "Biometria",
-"text": "\nCabeça: DBP = XXX mm; PC = XXX mm.\nAbdome: CA = XXX mm.\nFêmur: CF = XXX mm.\nPeso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.",
-"dash": false,
-"opts": [],
-"grp": "Feto 2"
-},
-{
-"k": "dopplervelocimetria-2",
-"label": "Dopplervelocimetria",
-"text": "\nArtéria umbilical: IR = XXX e IP = XXX (percentil XXX).\nArtéria cerebral média: IR = XXX e IP = XXX (percentil XXX).\nRelação cérebro-placentária (IP ACM / IP AU): XXX (percentil XXX).",
-"dash": false,
-"opts": [
-"Pico de velocidade sistólica da artéria cerebral média: XXX cm/s (XXX MoM).",
-"Ducto venoso: IP = XXX (percentil XXX).",
-"Índices de resistividade das artérias uterinas: XXX à direita e XXX à esquerda."
-],
-"grp": "Feto 2"
-},
-{
-"k": "discordancia-de-peso-estimado-entre-os-f",
-"label": "Discordância de peso estimado entre os fetos",
-"text": "XXX%.",
-"dash": false,
 "opts": [],
 "grp": ""
 },
@@ -7675,23 +7675,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "placenta"
-},
-{
-"t": "item",
-"k": "cordoes-umbilicais"
-},
-{
-"t": "item",
-"k": "liquido-amniotico"
-},
-{
-"t": "item",
 "k": "feto-1"
-},
-{
-"t": "item",
-"k": "biometria"
 },
 {
 "t": "item",
@@ -7699,11 +7683,11 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "feto-2"
+"k": "biometria"
 },
 {
 "t": "item",
-"k": "biometria-2"
+"k": "feto-2"
 },
 {
 "t": "item",
@@ -7711,7 +7695,23 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
+"k": "biometria-2"
+},
+{
+"t": "item",
 "k": "discordancia-de-peso-estimado-entre-os-f"
+},
+{
+"t": "item",
+"k": "liquido-amniotico"
+},
+{
+"t": "item",
+"k": "placenta"
+},
+{
+"t": "item",
+"k": "cordoes-umbilicais"
 },
 {
 "t": "item",

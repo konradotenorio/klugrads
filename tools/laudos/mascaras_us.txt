@@ -1235,14 +1235,6 @@ Data do Exame:
 Exame realizado em caráter de urgência no pronto-socorro, por via suprapúbica (abdominal).
  
 - Feto: único, em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.
-- Placenta: com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.
-- Cordão umbilical: de aspecto habitual.
-- Líquido amniótico: em quantidade normal, com maior bolsão vertical (MBV) estimado em XXX mm. || em quantidade normal, com índice de líquido amniótico (ILA) estimado em XXX cm.
-Biometria:
-  Cabeça: DBP = XXX mm; PC = XXX mm.
-  Abdome: CA = XXX mm.
-  Fêmur: CF = XXX mm.
-  Peso fetal estimado (Hadlock): XXX g (variação de ± 10%), correspondendo ao percentil XXX para a idade gestacional.
 Dopplervelocimetria:
   Artéria umbilical: IR = XXX e IP = XXX (percentil XXX).
   Artéria cerebral média: IR = XXX e IP = XXX (percentil XXX).
@@ -1250,6 +1242,14 @@ Dopplervelocimetria:
 XXX Pico de velocidade sistólica da artéria cerebral média: XXX cm/s (XXX MoM).
 XXX Ducto venoso: IP = XXX (percentil XXX).
 XXX Índices de resistividade das artérias uterinas: XXX à direita e XXX à esquerda.
+Biometria:
+  Cabeça: DBP = XXX mm; PC = XXX mm.
+  Abdome: CA = XXX mm.
+  Fêmur: CF = XXX mm.
+  Peso fetal estimado (Hadlock): XXX g (variação de ± 10%), correspondendo ao percentil XXX para a idade gestacional.
+- Líquido amniótico: em quantidade normal, com maior bolsão vertical (MBV) estimado em XXX mm. || em quantidade normal, com índice de líquido amniótico (ILA) estimado em XXX cm.
+- Placenta: com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.
+- Cordão umbilical: de aspecto habitual.
 - Bexiga: com repleção parcial.
 - Útero: gravídico, globoso.
 - Colo uterino: de aspecto aparentemente preservado.

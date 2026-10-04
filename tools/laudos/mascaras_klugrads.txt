@@ -67,28 +67,19 @@ ULTRASSONOGRAFIA OBSTÉTRICA GEMELAR COM DOPPLER
 
 Exame realizado por via suprapúbica (abdominal).
 
-- Placenta XX placentas: com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.
-XXX Não é possível determinar a corionicidade por este estudo.
-- Cordões umbilicais: de aspecto habitual.
-- Líquido amniótico: em quantidade normal nas duas cavidades, com maior bolsão vertical (MBV) estimado em XXX mm (feto 1) e XXX mm (feto 2). || em quantidade normal, com índice de líquido amniótico (ILA) estimado em XXX cm.
 - Feto 1: em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.
-Biometria:
-  Cabeça: DBP = XXX mm; PC = XXX mm.
-  Abdome: CA = XXX mm.
-  Fêmur: CF = XXX mm.
-  Peso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.
 Dopplervelocimetria:
   Artéria umbilical: IR = XXX e IP = XXX (percentil XXX).
   Artéria cerebral média: IR = XXX e IP = XXX (percentil XXX).
   Relação cérebro-placentária (IP ACM / IP AU): XXX (percentil XXX).
 XXX Pico de velocidade sistólica da artéria cerebral média: XXX cm/s (XXX MoM).
 XXX Ducto venoso: IP = XXX (percentil XXX).
-- Feto 2: em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.
 Biometria:
   Cabeça: DBP = XXX mm; PC = XXX mm.
   Abdome: CA = XXX mm.
   Fêmur: CF = XXX mm.
   Peso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.
+- Feto 2: em situação longitudinal XX transversa, com apresentação cefálica XX pélvica e dorso à direita XX esquerda. Batimentos cardíacos fetais (BCF): XXX bpm.
 Dopplervelocimetria:
   Artéria umbilical: IR = XXX e IP = XXX (percentil XXX).
   Artéria cerebral média: IR = XXX e IP = XXX (percentil XXX).
@@ -96,7 +87,16 @@ Dopplervelocimetria:
 XXX Pico de velocidade sistólica da artéria cerebral média: XXX cm/s (XXX MoM).
 XXX Ducto venoso: IP = XXX (percentil XXX).
 XXX Índices de resistividade das artérias uterinas: XXX à direita e XXX à esquerda.
+Biometria:
+  Cabeça: DBP = XXX mm; PC = XXX mm.
+  Abdome: CA = XXX mm.
+  Fêmur: CF = XXX mm.
+  Peso fetal estimado (Hadlock): XXX g (variação de ± 15%), correspondendo ao percentil XXX para a idade gestacional.
 Discordância de peso estimado entre os fetos: XXX%.
+- Líquido amniótico: em quantidade normal nas duas cavidades, com maior bolsão vertical (MBV) estimado em XXX mm (feto 1) e XXX mm (feto 2). || em quantidade normal, com índice de líquido amniótico (ILA) estimado em XXX cm.
+- Placenta XX placentas: com implantação corporal anterior XX posterior XX fúndica e de espessura de até XXX mm. Grau de maturação (Grannum): 0 XX I XX II XX III.
+XXX Não é possível determinar a corionicidade por este estudo.
+- Cordões umbilicais: de aspecto habitual.
 - Bexiga: com repleção parcial.
 - Útero: gravídico, globoso.
 - Colo uterino: de aspecto aparentemente preservado.
