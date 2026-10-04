@@ -475,6 +475,39 @@ function lauObsDopCalc(m){
   });
   if(typeof lauPatchConc==='function') lauPatchConc();
 }
+/* ---- Carótidas: relação VPS ACI/ACC calculada; linhas de velocidade vazias não aparecem ---- */
+function lauCarAtivo(m){ return !!(m && m.id==='us-arterias-carotidas'); }
+function lauCarCalc(m){
+  if(!lauCarAtivo(m)) return;
+  const C=lauObsDopCampos(m).filter(c=>c.tpl==='n' && c.it.k==='velocidades'); if(!C.length) return;
+  const it=C[0].it, s=state.lau.v[it.k], nrm=lauItemNormal(m,it), T=lauTpl(nrm);
+  const val=c=>{ if(!c) return null; const r=lauVal(T, (s.__v||{}).n||[], c.i); return r.ok ? lauF(r.v) : null; };
+  let mud=false;
+  ['direita','esquerda'].forEach(L=>{
+    const acc=val(C.find(c=>new RegExp('^arteria carotida comum '+L).test(c.linha) && /\bvps =$/.test(c.antes)));
+    const aci=val(C.find(c=>new RegExp('^arteria carotida interna '+L).test(c.linha) && /\bvps =$/.test(c.antes)));
+    const alvo=C.find(c=>new RegExp('^relacao vps aci/acc a '+L).test(c.linha)); if(!alvo) return;
+    s.__carAuto=s.__carAuto||{}; const arr=(s.__v.n||[]), cur=arr[alvo.i];
+    if(lauHas(cur) && !s.__carAuto[alvo.i]) return;          // valor digitado pelo médico
+    const nv = acc && aci ? lauObsNum(aci/acc, 1) : '';
+    if((cur||'')===nv) return;
+    const a=arr.slice(); a[alvo.i]=nv; s.__v.n=a; if(nv) s.__carAuto[alvo.i]=1; else delete s.__carAuto[alvo.i]; mud=true;
+    const el=document.getElementById(`ph-${it.k}-n-${alvo.i}`); if(el && el!==document.activeElement) el.value=nv;
+  });
+  if(mud){ lauPatch(it.k); lauUpdSum(it.k); }
+}
+/* texto do bloco "Velocidades": tira campos e linhas vazias; nada preenchido → bloco some */
+function lauCarTxt(m, it, txt){
+  if(!lauCarAtivo(m) || it.k!=='velocidades') return txt;
+  const PH='<mark class="lau-ph">XXX</mark>';
+  const linhas = txt.split('<br>').map(l=>l
+      .replace(new RegExp(';? ?VD = '+PH+' cm/s','g'), '')
+      .replace(new RegExp('VPS = '+PH+' cm/s;? ?','g'), '')
+      .replace(/: ;/,':'))
+    .filter(l=>l.trim() && l.indexOf(PH)<0 && !/:\s*\.?\s*$/.test(l.replace(/<[^>]+>/g,'')));
+  return linhas.length ? '<br>'+linhas.join('<br>') : '';
+}
+
 /* ---- tabelas da aba Referências: [[x, p50, p5, p95]] (fetal-ila, fetal-fce) ---- */
 function lauObsRef(id){
   const r=(window.SEED||[]).find(x=>x.id===id); const t=r && r.tables && r.tables[r.tables.length-1]; if(!t) return null;

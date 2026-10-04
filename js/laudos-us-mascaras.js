@@ -5838,6 +5838,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "velocidades",
+"label": "Velocidades",
+"text": "\nArtéria carótida comum direita: VPS = XXX cm/s; VD = XXX cm/s.\nArtéria carótida interna direita: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACI/ACC à direita: XXX.\nEspessura do complexo médio-intimal à direita: XXX mm.\nArtéria carótida comum esquerda: VPS = XXX cm/s; VD = XXX cm/s.\nArtéria carótida interna esquerda: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACI/ACC à esquerda: XXX.\nEspessura do complexo médio-intimal à esquerda: XXX mm.",
+"dash": false,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -5852,6 +5860,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "arterias-vertebrais"
+},
+{
+"t": "item",
+"k": "velocidades"
 }
 ],
 "concTitulo": "Conclusão:",
