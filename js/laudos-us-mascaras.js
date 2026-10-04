@@ -3003,6 +3003,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -3017,6 +3025,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "colecoes"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -3061,6 +3073,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -3075,6 +3095,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "colecoes"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -3143,6 +3167,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -3169,6 +3201,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -3213,6 +3249,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -3227,6 +3271,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "colecoes"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -3303,6 +3351,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -3333,6 +3389,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -3401,6 +3461,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -3427,6 +3495,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "placas-volares"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -3495,6 +3567,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -3521,6 +3601,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "articulacao-acromioclavicular"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -3565,6 +3649,14 @@ const LAU_US_MASKS = [
 "dash": false,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": false,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -3579,6 +3671,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "fascia-plantar"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -3623,6 +3719,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -3637,6 +3741,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "colecoes"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -3689,6 +3797,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -3707,6 +3823,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "lesoes-solidas-ou-cisticas"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -3767,6 +3887,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -3789,6 +3917,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "ventres-musculares"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -3841,6 +3973,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -3859,6 +3999,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "lesoes-expansivas"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -3919,6 +4063,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -3941,6 +4093,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "massas-ou-colecoes"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -4025,6 +4181,14 @@ const LAU_US_MASKS = [
 "dash": true,
 "opts": [],
 "grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -4059,6 +4223,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "derrame-articular"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
 }
 ],
 "concTitulo": null,
