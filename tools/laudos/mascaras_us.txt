@@ -1352,11 +1352,11 @@ Velocidades:
   ACCD: VPS = XXX cm/s; VD = XXX cm/s.
   ACID: VPS = XXX cm/s; VD = XXX cm/s.
   Relação VPS ACID/ACCD: XXX.
-  Espessura do complexo médio-intimal à direita: XXX mm.
+  EMI à direita: XXX mm.
   ACCE: VPS = XXX cm/s; VD = XXX cm/s.
   ACIE: VPS = XXX cm/s; VD = XXX cm/s.
   Relação VPS ACIE/ACCE: XXX.
-  Espessura do complexo médio-intimal à esquerda: XXX mm.
+  EMI à esquerda: XXX mm.
 Conclusão:
 - Ultrassonografia com Doppler sem alterações significativas.
 Liberado por: 
