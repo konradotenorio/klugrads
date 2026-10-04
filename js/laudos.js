@@ -1526,6 +1526,7 @@ function lauItemHTML(m, it){
   // obstétrico (2º/3º tri, Doppler, gemelar): IR, percentil e MoM não preenchidos saem do laudo
   // próstata: protrusão intravesical (IPP) sem medida → "não caracterizada"
   if(it.generic && /^protrusao prostatica intravesical/.test(lauNorm(lauItemLabel(m,it)||'')) && /^de cerca de <mark class="lau-ph">XXX<\/mark> (cm|mm)\.?$/.test(txt.trim())) txt = 'não caracterizada.';
+  if(it.generic && !lauItemLabel(m,it)) txt = txt.replace(/^(Protrusão prostática intravesical(?: \(IPP\))?) (?:de cerca de|estimada em) <mark class="lau-ph">XXX<\/mark> (?:cm|mm)\./, '$1 não caracterizada.');
   if(it.generic && typeof lauCarAtivo==='function' && lauCarAtivo(m)){ txt = lauCarItemTxt(m, it, lauCarTxt(m, it, txt)); if(!txt) return ''; }
   if(it.generic && typeof lauObsDopAtivo==='function' && lauObsDopAtivo(m)){
     if(lauAutoCfg().on) txt = lauObsLiqTxt(m, it, txt);

@@ -832,9 +832,15 @@ const LAU_US_MASKS = [
 "label": "",
 "text": "Próstata com forma habitual, medindo XXX x XXX x XXX cm e massa estimada em XXX gramas.",
 "dash": false,
-"opts": [
-"Protrusão prostática intravesical estimada em XXX cm."
-],
+"opts": [],
+"grp": ""
+},
+{
+"k": "protrusao-prostatica-intravesi",
+"label": "",
+"text": "Protrusão prostática intravesical (IPP) estimada em XXX cm.",
+"dash": false,
+"opts": [],
 "grp": ""
 },
 {
@@ -878,6 +884,10 @@ const LAU_US_MASKS = [
 {
 "t": "item",
 "k": "prostata-com-forma-habitual-m"
+},
+{
+"t": "item",
+"k": "protrusao-prostatica-intravesi"
 },
 {
 "t": "item",
