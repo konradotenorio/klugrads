@@ -573,6 +573,11 @@ function lauCarItemTxt(m, it, txt){
     ? `na ${D[0].ab} (VPS de ${lauN(D[0].psv)} cm/s), compatível com estenose ${lauCarDe(D[0].g)}`
     : `na ${D[0].ab} e na ${D[1].ab} (VPS de ${lauN(D[0].psv)} cm/s e ${lauN(D[1].psv)} cm/s, respectivamente), compatível com estenoses `
       + (D[0].g===D[1].g ? lauCarDe(D[0].g) : `${lauCarDe(D[0].g)} e ${lauCarDe(D[1].g)}, respectivamente`);
+  // linha opcional de ateromatose: com estenose, deixa de dizer "sem determinar estenoses significativas"
+  const det = D.length===1 ? `determinando estenose ${lauCarDe(D[0].g)} na ${D[0].ab}`
+    : (D[0].g===D[1].g ? `determinando estenoses ${lauCarDe(D[0].g)} na ${D[0].ab} e na ${D[1].ab}`
+                       : `determinando estenoses ${lauCarDe(D[0].g)} na ${D[0].ab} e ${lauCarDe(D[1].g)} na ${D[1].ab}`);
+  txt = txt.replace(/sem determinar estenoses hemodinamicamente significativas/, det);
   return txt.replace(/,? sem dilatações, espessamentos ou calcificações parietais/, ', sem dilatações')
             .replace(/os padrões espectrais e as velocidades encontram-se preservados/, `observa-se aumento das velocidades ${lst}; demais padrões espectrais preservados`);
 }
