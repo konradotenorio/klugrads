@@ -372,6 +372,49 @@ const LAU_ABD_ITEMS = [
        else if(sem[0]==='cálculos') t += ' Sem cálculos detectáveis ao método.';
        return t;
      };
+     /* descrição conjunta ("Rins tópicos, …") quando a base dos dois lados é igual
+        (mesma situação e mesmas dimensões); frases separadas por lado só quando
+        diferem (ex.: nefropatia unilateral, rim reduzido de um lado, nefrectomia) */
+     const juntos = s.estD!=='cx' && s.estE!=='cx' && s.estD===s.estE && s.dimD===s.dimE;
+     const descJunto = ()=>{
+       const dim = {n:'normais',red:'reduzidas',aum:'aumentadas'}[s.dimD];
+       const m=[];
+       if(D.med) m.push(`rim direito com ${medTxt('D')}`);
+       if(E.med) m.push(`rim esquerdo com ${medTxt('E')}`);
+       const par = s.estD==='nef'
+         ? 'com ecogenicidade parenquimatosa aumentada e diferenciação corticomedular reduzida'
+         : 'com espessura e ecogenicidade parenquimatosas preservadas';
+       let t = `tópicos, de dimensões ${dim}${m.length?` (${m.join('; ')})`:''}, ${par}.`;
+       const doRim = L => L==='D'?'do rim direito':'do rim esquerdo';
+       const noRim = L => L==='D'?'no rim direito':'no rim esquerdo';
+       // hidronefrose
+       if(s.hidD && s.hidE && s.hidGD===s.hidGE) t += ` Dilatação ${s.hidGD} do sistema pielocalicinal bilateralmente (hidronefrose ${s.hidGD} bilateral).`;
+       else ['D','E'].forEach(L=>{ if(s['hid'+L]) t += ` Dilatação ${s['hidG'+L]} do sistema pielocalicinal ${doRim(L)} (hidronefrose ${s['hidG'+L]}).`; });
+       // cálculos
+       ['D','E'].forEach(L=>{
+         if(!s['calc'+L]) return;
+         const l = s['calcL'+L];
+         const loc = !lauHas(l) ? noRim(L)
+           : l==='pelve renal' ? `na pelve renal ${L==='D'?'direita':'esquerda'}`
+           : `no ${l} ${doRim(L)}`;
+         t += ' ' + lauFrase(s['calcQ'+L]==='n'
+           ? lauJoin([lauHas(l) ? `cálculos esparsos ${noRim(L)}, o maior ${l==='pelve renal'?'na pelve renal':'no '+l}` : `cálculos esparsos ${noRim(L)}, o maior`, lauMed(s['calcD'+L],'cm')])
+           : lauJoin([`cálculo ${loc}`, lauMed(s['calcD'+L],'cm')]));
+       });
+       // cistos
+       ['D','E'].forEach(L=>{
+         if(!s['cis'+L]) return;
+         const l = s['cisL'+L];
+         t += ' ' + lauFrase(s['cisQ'+L]==='n'
+           ? lauJoin([lauHas(l) ? `cistos simples ${noRim(L)}, o maior no ${l}` : `cistos simples ${noRim(L)}, o maior`, lauMed(s['cisD'+L],'cm')])
+           : lauJoin([lauHas(l) ? `cisto simples no ${l} ${doRim(L)}` : `cisto simples ${noRim(L)}`, lauMed(s['cisD'+L],'cm')]));
+       });
+       const semH = !s.hidD && !s.hidE, semC = !s.calcD && !s.calcE;
+       if(semH && semC) t += ' Sem hidronefrose ou cálculos detectáveis ao método.';
+       else if(semH) t += ' Sem hidronefrose.';
+       else if(semC) t += ' Sem cálculos detectáveis ao método.';
+       return t;
+     };
      const conc=[];
      const both=(fn)=>{ const d=fn('D'), e=fn('E'); return d||e ? lauSides(d,e) : null; };
      ['D','E'].forEach(L=>{ if(s['est'+L]!=='cx' && s['est'+L]!=='nef' && s['dim'+L]!=='n'){ const c=lauHas(s['comp'+L])?` (${lauN(s['comp'+L])} cm)`:''; conc.push(`${L==='D'?'Rim direito':'Rim esquerdo'} de dimensões ${s['dim'+L]==='red'?'reduzidas':'aumentadas'}${c}.`); } });
@@ -380,11 +423,12 @@ const LAU_ABD_ITEMS = [
      if(s.estE==='cx') conc.push('Status pós-nefrectomia esquerda.');
      if((x=both(L=>s['est'+L]==='nef'))) conc.push(`Sinais de nefropatia parenquimatosa ${x}.`);
      if((x=both(L=>s['est'+L]!=='cx'&&s['calc'+L]))) conc.push(`Nefrolitíase ${x}.`);
-     ['D','E'].forEach(L=>{ if(s['est'+L]!=='cx' && s['hid'+L]) conc.push(`Hidronefrose ${s['hidG'+L]} ${L==='D'?'à direita':'à esquerda'}.`); });
+     if(s.estD!=='cx' && s.estE!=='cx' && s.hidD && s.hidE && s.hidGD===s.hidGE) conc.push(`Hidronefrose ${s.hidGD} bilateral.`);
+     else ['D','E'].forEach(L=>{ if(s['est'+L]!=='cx' && s['hid'+L]) conc.push(`Hidronefrose ${s['hidG'+L]} ${L==='D'?'à direita':'à esquerda'}.`); });
      const cD=s.estD!=='cx'&&s.cisD, cE=s.estE!=='cx'&&s.cisE;
      if(cD&&cE) conc.push('Cistos renais simples bilaterais.');
      else if(cD||cE){ const L=cD?'D':'E'; conc.push(`${s['cisQ'+L]==='n'?'Cistos renais simples':'Cisto renal simples'} ${cD?'à direita':'à esquerda'}.`); }
-     return {txt:`${desc('D')} ${desc('E')}`, conc};
+     return {txt: juntos ? descJunto() : `${desc('D')} ${desc('E')}`, conc};
    }},
 
   /* ---------------- BEXIGA ---------------- */
