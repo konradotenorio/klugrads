@@ -5842,7 +5842,7 @@ const LAU_US_MASKS = [
 {
 "k": "velocidades",
 "label": "Velocidades",
-"text": "\nACCD: VPS = XXX cm/s; VD = XXX cm/s.\nACID: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACID/ACCD: XXX.\nEMI à direita: XXX mm.\nACCE: VPS = XXX cm/s; VD = XXX cm/s.\nACIE: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACIE/ACCE: XXX.\nEMI à esquerda: XXX mm.",
+"text": "\nACCD: VPS = XXX cm/s; VD = XXX cm/s.\nACID: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACID/ACCD: XXX.\nEMI à direita: XXX cm.\nACCE: VPS = XXX cm/s; VD = XXX cm/s.\nACIE: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACIE/ACCE: XXX.\nEMI à esquerda: XXX cm.",
 "dash": false,
 "opts": [],
 "grp": ""

@@ -497,7 +497,7 @@ function lauCarCalc(m){
   });
   if(mud){ lauPatch(it.k); lauUpdSum(it.k); }
   // estenose pelas velocidades: atualiza o texto das carótidas e a conclusão
-  m.items.filter(x=>/^arterias-carotidas-comuns/.test(x.k)).forEach(x=>lauPatch(x.k));
+  m.items.filter(x=>/^(arterias-carotidas-comuns|complexos-medio-intimais)/.test(x.k)).forEach(x=>lauPatch(x.k));
   if(typeof lauPatchConc==='function'){ lauPatchConc(); lauSaveEd(); }
 }
 /* grau de estenose da ACI pelas velocidades — mesma regra da calculadora da aba Referências
@@ -534,12 +534,36 @@ function lauCarDados(m){
   });
   return out;
 }
+/* EMI (cm; preferência em mm: mm). Espessado acima de 0,1 cm. */
+function lauCarEmi(m){
+  if(!lauCarAtivo(m) || !state.lau || !state.lau.v.velocidades) return [];
+  const C=lauObsDopCampos(m).filter(c=>c.tpl==='n' && c.it.k==='velocidades'); if(!C.length) return [];
+  const it=C[0].it, s=state.lau.v[it.k], T=lauTpl(lauItemNormal(m,it)), mm=lauUnMM();
+  const out=[];
+  [['direita','d'],['esquerda','e']].forEach(([lado,L])=>{
+    const c=C.find(c=>new RegExp('^emi a '+lado).test(c.linha)); if(!c) return;
+    const r=lauVal(T, (s.__v||{}).n||[], c.i); if(!r.ok) return; const v=lauF(r.v); if(v==null) return;
+    const cm = mm ? v/10 : v;
+    out.push({lado, txt:lauN(r.v)+(mm?' mm':' cm'), esp: cm>0.1});
+  });
+  return out;
+}
 function lauCarConc(m){
   if(!lauAutoCfg().on) return [];
-  return lauCarDados(m).map(x=>`Estenose ${lauCarDe(x.g)} da artéria carótida interna ${x.lado}, pelos critérios de velocidade (DIC/CBR/SABCV 2023).`);
+  const out=lauCarDados(m).map(x=>`Estenose ${lauCarDe(x.g)} da artéria carótida interna ${x.lado}.`);
+  const esp=lauCarEmi(m).filter(x=>x.esp);
+  if(esp.length===2) out.push('Espessamento do complexo médio-intimal das artérias carótidas comuns.');
+  else if(esp.length) out.push(`Espessamento do complexo médio-intimal da artéria carótida comum ${esp[0].lado}.`);
+  return out;
 }
 /* item das carótidas: com estenose, o texto padrão deixa de dizer "velocidades preservadas" e "sem espessamentos" */
 function lauCarItemTxt(m, it, txt){
+  if(/^complexos-medio-intimais/.test(it.k)){
+    // EMI medido: o item descreve a medida de cada lado (espessado acima de 0,1 cm)
+    const E=lauCarEmi(m); if(!E.length) return txt;
+    const p=E.map(x=>`${x.esp?'espessado':'de espessura normal'} à ${x.lado}, medindo ${x.txt}`).join('; ');
+    return txt.replace(/menores do que 0,1 cm\.?/, p+'.');
+  }
   if(!lauAutoCfg().on || !/^arterias-carotidas-comuns/.test(it.k)) return txt;
   const D=lauCarDados(m); if(!D.length) return txt;
   const lst=lauJuntaE(D.map(x=>`na ${x.ab} (VPS de ${lauN(x.psv)} cm/s), compatível com estenose ${lauCarDe(x.g)}`));
@@ -554,6 +578,7 @@ function lauCarTxt(m, it, txt){
       .replace(new RegExp(';? ?VD = '+PH+' cm/s','g'), '')
       .replace(new RegExp('VPS = '+PH+' cm/s;? ?','g'), '')
       .replace(/: ;/,':'))
+    .filter(l=>!/^EMI à /.test(l.replace(/<[^>]+>/g,'').trim()))
     .filter(l=>l.trim() && l.indexOf(PH)<0 && !/:\s*\.?\s*$/.test(l.replace(/<[^>]+>/g,'')));
   return linhas.length ? '<br>'+linhas.join('<br>') : '';
 }
