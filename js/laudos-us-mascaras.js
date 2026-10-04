@@ -5842,7 +5842,7 @@ const LAU_US_MASKS = [
 {
 "k": "velocidades",
 "label": "Velocidades",
-"text": "\nArtéria carótida comum direita: VPS = XXX cm/s; VD = XXX cm/s.\nArtéria carótida interna direita: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACI/ACC à direita: XXX.\nEspessura do complexo médio-intimal à direita: XXX mm.\nArtéria carótida comum esquerda: VPS = XXX cm/s; VD = XXX cm/s.\nArtéria carótida interna esquerda: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACI/ACC à esquerda: XXX.\nEspessura do complexo médio-intimal à esquerda: XXX mm.",
+"text": "\nACCD: VPS = XXX cm/s; VD = XXX cm/s.\nACID: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACID/ACCD: XXX.\nEspessura do complexo médio-intimal à direita: XXX mm.\nACCE: VPS = XXX cm/s; VD = XXX cm/s.\nACIE: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACIE/ACCE: XXX.\nEspessura do complexo médio-intimal à esquerda: XXX mm.",
 "dash": false,
 "opts": [],
 "grp": ""

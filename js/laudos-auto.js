@@ -483,10 +483,10 @@ function lauCarCalc(m){
   const it=C[0].it, s=state.lau.v[it.k], nrm=lauItemNormal(m,it), T=lauTpl(nrm);
   const val=c=>{ if(!c) return null; const r=lauVal(T, (s.__v||{}).n||[], c.i); return r.ok ? lauF(r.v) : null; };
   let mud=false;
-  ['direita','esquerda'].forEach(L=>{
-    const acc=val(C.find(c=>new RegExp('^arteria carotida comum '+L).test(c.linha) && /\bvps =$/.test(c.antes)));
-    const aci=val(C.find(c=>new RegExp('^arteria carotida interna '+L).test(c.linha) && /\bvps =$/.test(c.antes)));
-    const alvo=C.find(c=>new RegExp('^relacao vps aci/acc a '+L).test(c.linha)); if(!alvo) return;
+  ['d','e'].forEach(L=>{   // ACCD/ACID e ACCE/ACIE
+    const acc=val(C.find(c=>new RegExp('^acc'+L+' ').test(c.linha) && /\bvps =$/.test(c.antes)));
+    const aci=val(C.find(c=>new RegExp('^aci'+L+' ').test(c.linha) && /\bvps =$/.test(c.antes)));
+    const alvo=C.find(c=>new RegExp('^relacao vps aci'+L+'/acc'+L).test(c.linha)); if(!alvo) return;
     s.__carAuto=s.__carAuto||{}; const arr=(s.__v.n||[]), cur=arr[alvo.i];
     if(lauHas(cur) && !s.__carAuto[alvo.i]) return;          // valor digitado pelo médico
     const nv = acc && aci ? lauObsNum(aci/acc, 1) : '';

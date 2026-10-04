@@ -1349,13 +1349,13 @@ Ao estudo Doppler, os padrões espectrais e as velocidades encontram-se preserva
 - Complexos médio-intimais (avaliados na parede posterior do terço distal das artérias carótidas comuns): menores do que 0,1 cm.
 - Artérias vertebrais: com fluxo anterógrado.
 Velocidades:
-  Artéria carótida comum direita: VPS = XXX cm/s; VD = XXX cm/s.
-  Artéria carótida interna direita: VPS = XXX cm/s; VD = XXX cm/s.
-  Relação VPS ACI/ACC à direita: XXX.
+  ACCD: VPS = XXX cm/s; VD = XXX cm/s.
+  ACID: VPS = XXX cm/s; VD = XXX cm/s.
+  Relação VPS ACID/ACCD: XXX.
   Espessura do complexo médio-intimal à direita: XXX mm.
-  Artéria carótida comum esquerda: VPS = XXX cm/s; VD = XXX cm/s.
-  Artéria carótida interna esquerda: VPS = XXX cm/s; VD = XXX cm/s.
-  Relação VPS ACI/ACC à esquerda: XXX.
+  ACCE: VPS = XXX cm/s; VD = XXX cm/s.
+  ACIE: VPS = XXX cm/s; VD = XXX cm/s.
+  Relação VPS ACIE/ACCE: XXX.
   Espessura do complexo médio-intimal à esquerda: XXX mm.
 Conclusão:
 - Ultrassonografia com Doppler sem alterações significativas.
