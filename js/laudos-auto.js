@@ -551,9 +551,16 @@ function lauCarEmi(m){
 function lauCarConc(m){
   if(!lauAutoCfg().on) return [];
   const D=lauCarDados(m), out=[];
-  if(D.length===2) out.push(D[0].g===D[1].g ? `Estenose ${lauCarDe(D[0].g)} das artérias carótidas internas.`
-                                            : `Estenose ${lauCarDe(D[0].g)} da artéria carótida interna direita e ${lauCarDe(D[1].g)} da esquerda.`);
-  else if(D.length) out.push(`Estenose ${lauCarDe(D[0].g)} da artéria carótida interna ${D[0].lado}.`);
+  // ateromatose marcada (linha opcional): o exame deixa de ser normal
+  let ate=null;
+  m.items.filter(x=>/^arterias-carotidas-comuns/.test(x.k)).forEach(x=>{ const sv=state.lau.v[x.k];
+    (x.opts||[]).forEach((o,j)=>{ if(/^Ateromatose/.test(o) && (sv.__o||[])[j]){ const r=lauVal(lauTpl(o), sv.__v['o'+j]||[], 0); ate = r.ok ? ' '+r.v : ''; } }); });
+  let est='';
+  if(D.length===2) est = D[0].g===D[1].g ? `estenose ${lauCarDe(D[0].g)} das artérias carótidas internas`
+                                         : `estenose ${lauCarDe(D[0].g)} da artéria carótida interna direita e ${lauCarDe(D[1].g)} da esquerda`;
+  else if(D.length) est = `estenose ${lauCarDe(D[0].g)} da artéria carótida interna ${D[0].lado}`;
+  if(ate!=null) out.push(`Ateromatose carotídea${ate}, ${est ? 'determinando '+est : 'sem estenoses hemodinamicamente significativas'}.`);
+  else if(est) out.push(est.charAt(0).toUpperCase()+est.slice(1)+'.');
   const esp=lauCarEmi(m).filter(x=>x.esp);
   if(esp.length===2) out.push('Espessamento do complexo médio-intimal das artérias carótidas comuns.');
   else if(esp.length) out.push(`Espessamento do complexo médio-intimal da artéria carótida comum ${esp[0].lado}.`);
