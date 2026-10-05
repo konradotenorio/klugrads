@@ -774,7 +774,7 @@ function modalityHTML(){
     </div>
 
     <div class="home-note">
-      <div class="hn-t">Este site está em fase desenvolvimento e construção, recebendo atualizações constantes.</div>
+      <div class="hn-t">Este site está em fase de desenvolvimento e construção, recebendo atualizações constantes.</div>
       <ul>
         <li><span role="img" aria-label="construção">🚧</span> Em revisão: ferramentas ainda em fase de revisão e ajustes.</li>
         <li><span role="img" aria-label="certo">✅</span> Revisadas: ferramentas já validadas e prontas para uso.</li>
