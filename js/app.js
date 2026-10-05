@@ -87,7 +87,7 @@ const SPECIALTIES = [
   {id:'neurocab',   name:'Neuro, Cabeça e Pescoço', regions:['Cabeça e Pescoço','Pequenas Partes'],                                                                           hasSub:true,  groups:['Pediatria','Adultos'], excludeNames:['Derrame Pleural']},
   {id:'torax',      name:'Tórax',               regions:[],                                                                                                                    hasSub:true,  groups:['Pediatria','Adultos'], includeNames:['Derrame Pleural']},
   {id:'abdome',     name:'Abdome',               regions:['Abdome superior','Retroperitônio','Trato Gastrintestinal','Trato Genital - Feminino','Trato Genital - Masculino','Trato Urinário'], hasSub:true,  groups:['Pediatria','Adultos']},
-  {id:'musculo',    name:'Musculoesquelético',   regions:['Ossos Longos'],                                                                                                      hasSub:true,  groups:['Pediatria','Adultos']},
+  {id:'musculo',    name:'Musculoesquelético',   regions:['Ossos Longos','Nervos Periféricos'],                                                                                                      hasSub:true,  groups:['Pediatria','Adultos']},
   {id:'obstetrico', name:'Obstétrico e Fetal',   regions:['1º Trimestre','2º e 3º Trimestres','Ossos Longos','Cabeça e Pescoço'],                                            hasSub:false, groups:['Fetal']},
   {id:'doppler',    name:'Doppler',              regions:['Cervical'],                                                                                                           hasSub:false, groups:['Doppler']},
 ];

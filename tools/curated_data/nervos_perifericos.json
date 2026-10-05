@@ -1,0 +1,140 @@
+[
+ {
+  "id": "adultos-nervos-perifericos",
+  "group": "Adultos",
+  "region": "Nervos Periféricos",
+  "name": "Nervos Periféricos (área seccional)",
+  "abbr": "AST",
+  "iconKey": "organ",
+  "tables": [
+   {
+    "title": "Área seccional normal em adultos (mm²)",
+    "rows": [
+     [
+      "Nervo",
+      "Local",
+      "Média ± DP",
+      "Limite superior (média + 2 DP)*"
+     ],
+     [
+      "Mediano",
+      "Punho (entrada do túnel do carpo)",
+      "6,8 ± 2,4",
+      "11,6"
+     ],
+     [
+      "Mediano",
+      "Terço médio do antebraço",
+      "4,5 ± 1,2",
+      "6,9"
+     ],
+     [
+      "Mediano",
+      "Fossa antecubital",
+      "7,2 ± 1,6",
+      "10,4"
+     ],
+     [
+      "Mediano",
+      "Terço médio do braço",
+      "7,0 ± 1,5",
+      "10,0"
+     ],
+     [
+      "Ulnar",
+      "Terço médio do antebraço",
+      "3,9 ± 1,1",
+      "6,1"
+     ],
+     [
+      "Ulnar",
+      "Túnel cubital (cotovelo)",
+      "6,2 ± 1,4",
+      "9,0"
+     ],
+     [
+      "Ulnar",
+      "Terço médio do braço",
+      "5,1 ± 1,5",
+      "8,1"
+     ],
+     [
+      "Radial",
+      "Fossa antecubital",
+      "4,0 ± 1,4",
+      "6,8"
+     ],
+     [
+      "Radial",
+      "Sulco espiral do úmero",
+      "5,1 ± 1,6",
+      "8,3"
+     ],
+     [
+      "Tibial",
+      "Fossa poplítea",
+      "20,8 ± 4,8",
+      "30,4"
+     ],
+     [
+      "Tibial",
+      "Túnel do tarso",
+      "8,5 ± 2,2",
+      "12,9"
+     ],
+     [
+      "Fibular comum",
+      "Fossa poplítea",
+      "12,1 ± 2,2",
+      "16,5"
+     ],
+     [
+      "Sural",
+      "Perna (10 cm acima do maléolo lateral)",
+      "2,3 ± 0,7",
+      "3,7"
+     ]
+    ]
+   },
+   {
+    "title": "Pontos de corte usados nos laudos (neuropatia compressiva)",
+    "rows": [
+     [
+      "Situação",
+      "Critério",
+      "Desempenho"
+     ],
+     [
+      "Síndrome do túnel do carpo",
+      "Mediano na entrada do túnel do carpo ≥ 10 mm²",
+      "Sensibilidade 80%, especificidade 88%"
+     ],
+     [
+      "Neuropatia ulnar no cotovelo",
+      "Ulnar no ponto de maior espessamento ≥ 9 mm² (corte de 8,95 mm²)",
+      "Sensibilidade 93,8%, especificidade 88,3%"
+     ],
+     [
+      "Neuropatia ulnar no cotovelo",
+      "Razão ponto de maior espessamento / terço médio do antebraço ≥ 1,48",
+      "Sensibilidade 93,8%, especificidade 95,0%"
+     ]
+    ]
+   }
+  ],
+  "footnotes": [
+   "* Limite superior calculado pelo KlugRads como média + 2 desvios-padrão dos valores do estudo de referência (adultos saudáveis); serve de orientação, não é ponto de corte diagnóstico validado.",
+   "Os valores variam com a população, o peso, a altura e o equipamento. Nos laudos do KlugRads, os limites do nervo mediano (10 mm²) e do ulnar (9 mm²) podem ser ajustados em Padrões dos laudos."
+  ],
+  "exam": {
+   "prep": "Desnecessário",
+   "position": "Membro superior com o cotovelo estendido e o antebraço em supinação para o mediano; cotovelo em flexão leve para o ulnar. Membro inferior com o paciente em decúbito ventral para os nervos da fossa poplítea.",
+   "technique": "Transdutor linear de alta frequência, em corte transversal (eixo curto) e perpendicular ao nervo, sem compressão. Medir a área seccional por traçado contínuo na borda interna do epineuro hiperecogênico, no ponto de maior calibre e nos pontos de referência da tabela. Comparar com o lado contralateral e com o segmento proximal do mesmo nervo quando houver dúvida."
+  },
+  "refs": [
+   "Hsieh P-C, Chang K-H, Wu Y-R, Ro L-S, Chu C-C, Lyu R-K, Liao M-F, Kuo H-C. Cross-Sectional Area Reference Values for Sonography of Peripheral Nerves in Taiwanese Adults. Front Neurol. 2021;12:722403. doi:10.3389/fneur.2021.722403.",
+   "Pan TJ, White RJ, Zhang C, Hagberg WC, Imbriglia JE, Fowler JR. Baseline Characteristics of the Median Nerve on Ultrasound Examination. Hand (N Y). 2016;11(3):353–356.",
+   "Diagnostic Cutoff Value for Ultrasonography in the Ulnar Neuropathy at the Elbow. Ann Rehabil Med. 2015:170–175."
+  ]
+ }
+]
