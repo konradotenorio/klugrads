@@ -291,9 +291,9 @@ Data do Exame:
 Estudo realizado com o paciente em posição ortostática e em decúbito dorsal, com manobras de Valsalva para a pesquisa de hérnias, direcionado para a região XXX (local da queixa do paciente).
 - Pele e tecido celular subcutâneo: de espessura e ecogenicidade preservadas.
 - Planos musculares: com arquitetura preservada.
+- Herniações: não caracterizadas, mesmo após as manobras de esforço.
 - Coleções: ausentes.
 - Linfonodomegalias ou massas: não há.
-- Herniações: não caracterizadas, mesmo após as manobras de esforço.
  
 Conclusão:
 - Exame sem achados significativos.

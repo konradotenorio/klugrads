@@ -1207,7 +1207,8 @@ function lauTiraMedVazia(t){
        .replace(new RegExp(`(?:${_MK}\\s*x\\s*)+(${N})`,'g'), '$1');
   return t
     .replace(new RegExp(`,?\\s*(?:medindo|com|de)\\s+(?:até\\s+)?${_MK}(?:\\s*x\\s*${_MK})*\\s*(?:cm³|cm²|cm|mm)(?:\\s+de\\s+(?:espessura|extensão|diâmetro))?(?:\\s*\\(volume estimado em ${_MK} cm³\\))?`,'g'), '')
-    .replace(new RegExp(`\\s*\\([^()]*${_MK}[^()]*\\)`,'g'), '');
+    .replace(new RegExp(`\\s*\\([^()]*${_MK}[^()]*\\)`,'g'), '')
+    .replace(new RegExp(`,?\\s*distando\\s+${_MK}\\s*(?:cm|mm)\\s+da pele`,'g'), '');
 }
 function lauFraseText(id, bag, html){
   const f=lauFI(id); if(!f) return '';
@@ -1216,6 +1217,7 @@ function lauFraseText(id, bag, html){
   else if(lauMgK(f)) t = lauMgText(f, id, bag, html);
   else if(f.kind==='tirads') t = lauTiradsText(f, bag['f'+id], bag['d'+id]||{}, html);
   else if(f.kind==='orads') t = lauOradsText(f, bag['f'+id], bag['d'+id]||{}, html);
+  else if(f.kind==='hernia') t = lauHerniaText(f, bag['f'+id], bag['d'+id]||{}, html);
   else if(f.kind==='birads') t = lauBiradsText(f, bag['f'+id], bag['d'+id]||{}, html);
   else t = lauFill(f.t, bag['f'+id], html);
   if(f.mt){ const n=lauMtN(bag['d'+id]); for(let j=2;j<=n+1;j++) t += `${html?'<br>':'\n'}${f.mtn||'Nódulo'} ${j}: ${lauFill(f.mt, bag['f'+id+'_'+j], html)}.`; }
@@ -1237,6 +1239,7 @@ function lauFraseConc(id, bag, lbl){
   if(lauKindTE(f)) return lauTendConc(f, id, bag);
   if(lauMgK(f)) return lauMgConc(f, id, bag, lbl, n);
   if(f.kind==='orads') return lauOradsConc(f, bag['f'+id], bag['d'+id]||{}, lbl);
+  if(f.kind==='hernia') return lauHerniaConc(f, bag['d'+id]||{});
   if(f.kind==='tirads') return lauTiradsConc(f, bag['f'+id], bag['d'+id]||{}, n, n ? [bag['f'+id]].concat(Array.from({length:lauQn(bag['d'+id])-1},(_,j)=>bag['f'+id+'_'+(j+2)])) : null);
   if(f.kind==='birads') return lauBiradsConc(f, bag['f'+id], bag['d'+id]||{}, lbl, n, n ? [bag['f'+id]].concat(Array.from({length:lauQn(bag['d'+id])-1},(_,j)=>bag['f'+id+'_'+(j+2)])) : null);
   return lauFraseConcHTML(n && f.cp ? Object.assign({}, f, {c:f.cp}) : f, bag['f'+id], lbl);
@@ -1451,6 +1454,29 @@ function lauOradsDescHTML(k, id, f, d, chip){
   return h;
 }
 
+/* ---------- Hérnias da parede abdominal: colo (2 medidas), saco herniário (3), conteúdo e redutibilidade ---------- */
+const LAU_HR = {
+  cont:{l:'Conteúdo do saco herniário', o:[['adiposo','Tecido adiposo'],['alcas','Alças intestinais'],['ambos','Tecido adiposo e alças intestinais']]},
+  red:{l:'Às manobras', o:[['red','Redutível'],['parc','Parcialmente redutível'],['irr','Irredutível']]},
+};
+const LAU_HR_TXT = {cont:{adiposo:'tecido adiposo', alcas:'alças intestinais', ambos:'tecido adiposo e alças intestinais'},
+  red:{red:'redutível às manobras', parc:'parcialmente redutível às manobras', irr:'irredutível às manobras'}};
+function lauHerniaText(f, vals, d, html){
+  const v=vals||[];
+  const colo=lauDimsTxt([v[0],v[1]]), saco=lauDimsTxt([v[2],v[3],v[4]]);
+  const p=[`Hérnia ${f.ht||''}`.trim()];
+  if(colo) p.push('com colo ' + colo);
+  if(saco) p.push('saco herniário ' + saco);
+  if(d.cont) p.push('contendo ' + LAU_HR_TXT.cont[d.cont]);
+  if(d.red) p.push(LAU_HR_TXT.red[d.red]);
+  const t=p.join(', ') + '.';
+  return html ? esc(t) : t;
+}
+function lauHerniaConc(f, d){ return esc(`Hérnia ${f.ht||''}${d.cont?' contendo '+LAU_HR_TXT.cont[d.cont]:''}.`.replace(/\s+\./,'.')); }
+function lauHerniaDescHTML(d, chip){
+  return Object.keys(LAU_HR).map(key=>`<div class="lau-row"><div class="lau-rl">${esc(LAU_HR[key].l)}</div><div class="lau-chips">${LAU_HR[key].o.map(o=>chip(key,o[0],o[1],d[key]===o[0])).join('')}</div></div>`).join('');
+}
+
 /* ---------- BI-RADS (léxico ACR BI-RADS US, 5ª ed.) ----------
    A categoria é escolhida pelo médico; a sugestão segue os descritores:
    cisto simples → 2; sólido oval, paralelo e circunscrito → 3;
@@ -1559,6 +1585,7 @@ function lauDescHTML(k, id, f, d){
     return h;
   }
   if(f.kind==='orads') return lauOradsDescHTML(k, id, f, d, chip);
+  if(f.kind==='hernia') return lauHerniaDescHTML(d, chip);
   if(f.kind==='tirads'){
     const n=lauTrNod(d), ev=tiradsEval(n);
     let h = ['comp','echo','shape','margin'].map(key=>`<div class="lau-row"><div class="lau-rl">${esc(TIRADS_CATS[key].label)}</div><div class="lau-chips">${TIRADS_CATS[key].opts.map((o,oi)=>chip(key,oi,`${o[0]} (${o[1]})`,n[key]===oi)).join('')}</div></div>`).join('');
@@ -1639,6 +1666,7 @@ function lauItemHTML(m, it){
   // próstata: protrusão intravesical (IPP) sem medida → "não caracterizada"
   if(it.generic && /^protrusao prostatica intravesical/.test(lauNorm(lauItemLabel(m,it)||'')) && /^de cerca de <mark class="lau-ph">XXX<\/mark> (cm|mm)\.?$/.test(txt.trim())) txt = 'não caracterizada.';
   if(it.generic && !lauItemLabel(m,it)) txt = txt.replace(/^(Protrusão prostática intravesical(?: \(IPP\))?) (?:de cerca de|estimada em) <mark class="lau-ph">XXX<\/mark> (?:cm|mm)\./, '$1 não caracterizada.');
+  if(it.generic && typeof lauRetosTxt==='function') txt = lauRetosTxt(m, it, txt);
   if(it.generic && typeof lauCarAtivo==='function' && lauCarAtivo(m)){ txt = lauCarItemTxt(m, it, lauCarTxt(m, it, txt)); if(!txt) return ''; }
   if(it.generic && typeof lauObsDopAtivo==='function' && lauObsDopAtivo(m)){
     if(lauAutoCfg().on) txt = lauObsLiqTxt(m, it, txt);
@@ -2168,7 +2196,7 @@ function lauFrasesPanel(k, org, list, bag, estrut){
     // 1º achado (descrição principal) logo após os descritores; depois os demais e o botão +
     const tplK = lauKindTE(f) ? '' : null;
     const principal = tplK!=null ? (tplK ? `<div class="lau-rl">Medidas</div>${lauInlineForm(k,'f'+id,tplK,bag['f'+id])}` : '') : lauHasPh(f.t)
-      ? (f.kind||multi ? `<div class="lau-rl">${multi?nome1+' 1 — localização e medidas':lauMgK(f)?(f.medOpc?'Medidas (opcional)':'Medidas'):'Localização e medidas'}</div>` : '') + lauInlineForm(k,'f'+id,f.t,bag['f'+id])
+      ? (f.kind||multi ? `<div class="lau-rl">${multi?nome1+' 1 — localização e medidas':f.kind==='hernia'||f.kind==='orads'?'Medidas':lauMgK(f)?(f.medOpc?'Medidas (opcional)':'Medidas'):'Localização e medidas'}</div>` : '') + lauInlineForm(k,'f'+id,f.t,bag['f'+id])
       : `<div class="lau-inl dim">${esc(f.t)}</div>`;
     const extras = multi
       ? Array.from({length:lauQn(d)-1},(_,j)=>`<div class="lau-rl lau-rlx">${nome1} ${j+2} — localização e medidas <button type="button" class="lau-xs" onclick="lauQnDel('${k}','${id}',${j+2})" aria-label="Remover">×</button></div>${lauInlineForm(k,'f'+id+'_'+(j+2),lauLocTpl(f),bag['f'+id+'_'+(j+2)])}`).join('')

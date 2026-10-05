@@ -1112,6 +1112,14 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
+"k": "herniacoes",
+"label": "Herniações",
+"text": "não caracterizadas, mesmo após as manobras de esforço.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
 "k": "colecoes",
 "label": "Coleções",
 "text": "ausentes.",
@@ -1123,14 +1131,6 @@ const LAU_US_MASKS = [
 "k": "linfonodomegalias-ou-massas",
 "label": "Linfonodomegalias ou massas",
 "text": "não há.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "herniacoes",
-"label": "Herniações",
-"text": "não caracterizadas, mesmo após as manobras de esforço.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -1151,15 +1151,15 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
+"k": "herniacoes"
+},
+{
+"t": "item",
 "k": "colecoes"
 },
 {
 "t": "item",
 "k": "linfonodomegalias-ou-massas"
-},
-{
-"t": "item",
-"k": "herniacoes"
 }
 ],
 "concTitulo": "Conclusão:",

@@ -197,6 +197,7 @@ function lauAutoConcs(m){
     out.push(...lauObsBcfConc(m));
   }
   if(lauCarAtivo(m)) out.push(...lauCarConc(m));
+  { const R=lauRetos(m); if(R && R.dia) out.push(`Diástase da musculatura reto-abdominal (${R.txt}).`); }
   const keep=[];
   // obstétricos 2º/3º tri: peso (AIG/PIG/GIG) e Doppler; só quando há o que dizer além do texto padrão
   if(lauObsDopAtivo(m) && lauAutoCfg().on){
@@ -599,6 +600,21 @@ function lauCarTxt(m, it, txt){
     .filter(l=>!/^EMI à /.test(l.replace(/<[^>]+>/g,'').trim()))
     .filter(l=>l.trim() && l.indexOf(PH)<0 && !/:\s*\.?\s*$/.test(l.replace(/<[^>]+>/g,'')));
   return linhas.length ? '<br>'+linhas.join('<br>') : '';
+}
+
+/* ---- Parede abdominal: distância inter-retos; acima de 2,0 cm = diástase ---- */
+function lauRetos(m){
+  if(!m || m.id!=='us-parede-abdominal' || !state.lau) return null;
+  const it=m.items.find(i=>/^planos musculares/i.test(lauItemLabel(m,i)||'')); if(!it) return null;
+  const s=state.lau.v[it.k]; const id=(s.__f||[]).find(x=>{ const f=lauFI(x); return f && f.retos; }); if(id==null) return null;
+  const f=lauFI(id); const r=lauVal(lauTpl(f.t), (s.__v||{})['f'+id]||[], 0); if(!r.ok) return null;
+  const v=lauF(r.v); if(v==null) return null;
+  const cm = lauUnMM() ? v/10 : v;
+  return {it, cm, txt: lauN(r.v)+(lauUnMM()?' mm':' cm'), dia: cm>2.0};
+}
+function lauRetosTxt(m, it, txt){
+  const R=lauRetos(m); if(!R || R.it.k!==it.k || !R.dia) return txt;
+  return txt.replace(/com arquitetura preservada; distância entre os músculos retos abdominais de [^.]+\./, `com diástase da musculatura reto-abdominal, com distância entre os músculos retos abdominais de ${R.txt}.`);
 }
 
 /* ---- tabelas da aba Referências: [[x, p50, p5, p95]] (fetal-ila, fetal-fce) ---- */
