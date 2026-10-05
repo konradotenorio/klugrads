@@ -82,8 +82,8 @@ function esteatoseFrase(){
   const r = esteatoseCalc(esteatoseState()); if(!r) return '';
   const y = String(r.ff).replace('.', ',');
   return r.ff >= 5
-    ? `Fígado apresentando sinais de deposição adiposa parenquimatosa, sendo calculada porcentagem lipídica em ${y} % (VR: Normal < 5%).`
-    : `Fígado sem sinais de esteatose hepática, com fração lipídica estimada em ${y} % (VR: Normal < 5%).`;
+    ? `Fígado apresentando sinais de deposição adiposa parenquimatosa, sendo calculada porcentagem lipídica em ${y}% (VR: Normal < 5%).`
+    : `Fígado sem sinais de esteatose hepática, com fração lipídica estimada em ${y}% (VR: Normal < 5%).`;
 }
 function esteatoseFraseHTML(){
   const f = esteatoseFrase(); if(!f) return '';

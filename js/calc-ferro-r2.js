@@ -73,6 +73,29 @@ function ferroLicResHTML(titulo, lic){
   </div>`;
 }
 
+/* ---- Frase pronta para o laudo (mesmo padrão do Ferro T2*; LIC pela calibração de Garbowski) ---- */
+function ferroFrase(r2, lic){
+  const g = ferroGrade(lic);
+  if(g===0) return 'Ausência de sinais de sobrecarga férrica.';
+  return `Sinais de sobrecarga férrica ${FERRO_C[g].name.toLowerCase()} (calculado R2* em ${ferroFmt(ferroR(r2))} Hertz; Concentração de Ferro - LIC de ${ferroFmt(lic)} mg/g).`;
+}
+function ferroFraseHTML(f){
+  return `<div class="lau-frase">
+    <div class="lau-frase-lbl">Frase para o laudo (LIC Garbowski)</div>
+    <div class="lau-frase-tx">${esc(f)}</div>
+    <button type="button" class="lau-frase-btn" onclick="ferroCopyFrase()">${svgIcon(P.copy,16,{sw:2})} Copiar frase</button>
+  </div>`;
+}
+function ferroCopyFrase(){
+  const v = ferroNum(ferroR2State().r2); if(v==null || v<=0) return;
+  const f = ferroFrase(v, ferroLicGarbowski(ferroR2State().campo, v)); if(f) klugCopy(f, 'Frase copiada ✓');
+}
+/* LIC (Garbowski) a partir do R2* medido; em 3,0 T converte antes para o equivalente a 1,5 T */
+function ferroLicGarbowski(campo, v){
+  const r = campo==='30' ? (v+11)/2 : v;
+  return ferroR(31.94*Math.pow(ferroR(1000/r), -1.014));
+}
+
 function ferroResHTML(){
   const s = ferroR2State();
   const v = ferroNum(s.r2);
@@ -82,16 +105,16 @@ function ferroResHTML(){
     const tRaw  = ferroR(1000/v);
     const rCorr = (v+11)/2;
     const tCorr = ferroR(1000/rCorr);
-    licG = ferroR(31.94*Math.pow(tCorr, -1.014));
+    licG = ferroLicGarbowski(s.campo, v);
     licR = ferroR(0.0141*v);
     info = `<div class="ti-legend-row" style="margin-top:12px"><span class="lt">T2* (3,0 T): <b>${ferroFmt(tRaw)} ms</b> · R2* equivalente a 1,5 T: <b>${ferroFmt(ferroR(rCorr))} s⁻¹</b> · T2* (1,5 T): <b>${ferroFmt(tCorr)} ms</b></span></div>`;
   } else {
     const t = ferroR(1000/v);
-    licG = ferroR(31.94*Math.pow(t, -1.014));
+    licG = ferroLicGarbowski(s.campo, v);
     licR = ferroR(0.04 + 0.0262*v);
     info = `<div class="ti-legend-row" style="margin-top:12px"><span class="lt">T2* (1,5 T): <b>${ferroFmt(t)} ms</b></span></div>`;
   }
-  return `${info}${ferroLicResHTML('LIC (Garbowski)', licG)}${ferroLicResHTML('LIC (Reeder)', licR)}`;
+  return `${info}${ferroLicResHTML('LIC (Garbowski)', licG)}${ferroLicResHTML('LIC (Reeder)', licR)}${ferroFraseHTML(ferroFrase(v, licG))}`;
 }
 
 function calcFerroR2HTML(){
