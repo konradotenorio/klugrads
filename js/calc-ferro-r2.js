@@ -166,4 +166,4 @@ function ferroRefresh(){ const el=document.getElementById('ferro-res'); if(el) e
 /* registra no catálogo (CALCS de app.js) — método RM, subespecialidade Medicina Interna */
 CALCS.push({id:'ferro-r2', modality:'rm', subspec:'figado', badge:'Fe',
   title:'Ferro Hepático (R2*)',
-  desc:'Quantificação de ferro (LIC) por R2* — 1,5 T e 3,0 T'});
+  desc:'Quantificação de ferro (LIC) por R2* - 1,5T e 3,0T'});

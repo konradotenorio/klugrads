@@ -246,4 +246,4 @@ function ferroT2Refresh(){ const el=document.getElementById('ferrot2-res'); if(e
 /* registra no catálogo (CALCS de app.js) — método RM, subespecialidade Medicina Interna */
 CALCS.push({id:'ferro-t2', modality:'rm', subspec:'figado', badge:'T2*',
   title:'Ferro Hepático (T2*)',
-  desc:'LIC por ajuste multi-eco T2* (regressão + curva) — 3 calibrações'});
+  desc:'Quantificação de ferro por ajuste multi-eco de T2* (regressão + curva de decaimento) - 1,5T e 3,0T'});

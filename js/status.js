@@ -26,6 +26,7 @@ const ST_OK = [
   'calc:esteatose-tc',     // Esteatose Hepática (TC)
   'calc:esteatose-rm',     // Esteatose Hepática (RM)
   'calc:ferro-t2',         // Ferro Hepático (T2*)
+  'calc:ferro-r2',         // Ferro Hepático (R2*)
 ];
 
 function stOk(key){ return ST_OK.indexOf(key) >= 0; }
