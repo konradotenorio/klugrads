@@ -201,12 +201,13 @@ const LAU_ABD_ITEMS = [
      const dist = s.ccA ? 'distendida' : 'normodistendida';
      const paredes = s.ccA ? 'com paredes espessadas e edemaciadas' + (lauHas(s.parD)?` (${lauN(s.parD)} mm)`:'')
                    : s.par ? 'com paredes difusamente espessadas' + (lauHas(s.parD)?` (${lauN(s.parD)} mm)`:'')
+                   : s.pol ? ''   // pólipo: a parede não é "fina e regular"
                    : 'com paredes finas e regulares';
      const semCalc = !s.calc ? ', sem cálculos' : '';
      // cálculo ou lama: o conteúdo deixa de ser anecogênico
      let t = (s.calc || s.lama)
-       ? `tópica, ${dist}, ${paredes.replace(/^com /,'de ')}, com conteúdo hiperecogênico de permeio.`
-       : `tópica, ${dist}, ${paredes} e conteúdo anecogênico${semCalc}.`;
+       ? `tópica, ${dist}, ${paredes ? paredes.replace(/^com /,'de ')+', ' : ''}com conteúdo hiperecogênico de permeio.`
+       : `tópica, ${dist}, ${paredes ? paredes+' e ' : 'com '}conteúdo anecogênico${semCalc}.`;
      // pouco distendida: a parede não é avaliável — só a limitação
      if(s.est==='hipo' && !s.ccA) t = 'tópica, pouco distendida, limitando a sua avaliação.' + (s.par ? ' ' + lauFrase('paredes aparentemente espessadas' + (lauHas(s.parD)?` (${lauN(s.parD)} mm)`:'')) : '');
      if(s.calc){
@@ -1668,6 +1669,8 @@ function lauItemHTML(m, it){
     const ws=[]; (s.__f||[]).forEach(id=>{ const f=lauFI(id); if(!f || f.m!=='add') return; const K=lauMgK(f); const xs = K ? K.x(s.__v['d'+id]||{}) : (f.x || (/^mg/.test(f.o) ? ['\u0000'] : null)); if(xs) ws.push(...xs); });
     txt = lauNegStrip(txt, ws, true);
   }
+  // vesícula com pólipo (frase): a parede não é "fina e regular"
+  if((s.__f||[]).some(id=>{ const f=lauFI(id); return f && f.o==='vesicula' && /^Pólipo/.test(f.n); })) txt = txt.replace(/com paredes finas e regulares e /,'com ').replace(/,? com paredes finas e regulares(?=[,.])/,'');
   const ex = lauOptLines(it, s, true).concat(adds);
   if(!txt && ex.length){ txt = ex.shift(); }
   if(ex.length) txt += '<br>' + ex.join('<br>');
