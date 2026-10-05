@@ -1730,12 +1730,18 @@ function openFavCalc(id){
   else { state.modalityId=null; }
   state.calcId=id; state.view='calc'; pushRecent(id); render();
 }
-/* Subespecialidades por método (fora do US). O US usa SPECIALTIES. */
+/* Subespecialidades por método (fora do US). O US usa SPECIALTIES.
+   Dois níveis: `area` = especialidade (ex.: Medicina Interna) e `name` = subgrupo/órgão dentro dela
+   (ex.: Fígado). Outras especialidades entram como novas `area` (cada uma com seus órgãos).
+   Sem `area` = grupo solto (protocolos por região); `name===area` = especialidade sem subgrupos. */
+const AREA_MI = 'Medicina Interna';
 const MOD_SPECS = {
-  rm: [ {id:'figado', name:'Fígado'}, {id:'adrenal', name:'Adrenal'}, {id:'rim', name:'Rim'},
-        {id:'prostata', name:'Próstata'}, {id:'ovario', name:'Ovário'}, {id:'utero', name:'Útero'} ],
+  rm: [ {id:'figado', name:'Fígado', area:AREA_MI}, {id:'adrenal', name:'Adrenal', area:AREA_MI}, {id:'rim', name:'Rim', area:AREA_MI},
+        {id:'prostata', name:'Próstata', area:AREA_MI}, {id:'ovario', name:'Ovário', area:AREA_MI}, {id:'utero', name:'Útero', area:AREA_MI} ],
   dxa: [ {id:'dxa', name:'Densitometria óssea'} ],
-  tc: [ {id:'medint', name:'Medicina Interna'}, {id:'torax', name:'Tórax'},
+  tc: [ {id:'figado', name:'Fígado', area:AREA_MI}, {id:'adrenal', name:'Adrenal', area:AREA_MI}, {id:'rim', name:'Rim', area:AREA_MI},
+        {id:'pancreas', name:'Pâncreas', area:AREA_MI}, {id:'colon', name:'Cólon', area:AREA_MI},
+        {id:'torax', name:'Tórax', area:'Tórax'},
         {id:'gu', name:'Genitourinário'}, {id:'gi', name:'Gastrointestinal'}, {id:'card', name:'Cardíaco e Tórax'},
         {id:'vasc', name:'Vascular'}, {id:'msk', name:'Musculoesquelético'} ],
 };
@@ -1748,11 +1754,13 @@ function calcListModalityHTML(mid){
     const label = kind==='ref' ? 'Referências' : kind==='proto' ? 'Protocolos' : 'Calculadoras';
     return `<div class="calc-list-wrap"><div class="empty"><div class="msg">${esc(label)} deste método <b>em breve</b>.</div></div></div>`;
   }
-  let h = '';
+  let h = '', lastArea = null;
   specs.forEach(function(sp){
     const items = mine.filter(c=>c.subspec===sp.id);
     if(!items.length) return;   // omite subespecialidade sem itens deste tipo (calc/ref)
-    h += `<div class="calc-intro-lbl">${esc(sp.name)}</div>`;
+    if(sp.area && sp.area!==lastArea) h += `<div class="calc-area-lbl">${esc(sp.area)}</div>`;   // título da especialidade
+    lastArea = sp.area || null;
+    if(sp.name!==sp.area) h += `<div class="calc-intro-lbl">${esc(sp.name)}</div>`;            // subgrupo (órgão)
     h += items.map(c=>calcCardHTML(c)).join('');
   });
   const orphans = mine.filter(c=>!c.subspec || !specs.find(s=>s.id===c.subspec));

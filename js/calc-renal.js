@@ -88,6 +88,6 @@ function renalSet(field, val){
 }
 
 /* registra no catálogo (CALCS de app.js) — método TC, subespecialidade Medicina Interna */
-CALCS.push({id:'renal', modality:'tc', subspec:'medint', badge:'RN',
+CALCS.push({id:'renal', modality:'tc', subspec:'rim', badge:'RN',
   title:'RENAL Score',
   desc:'Nefrometria de massa renal — complexidade (R.E.N.A.L.)'});

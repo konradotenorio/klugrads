@@ -220,6 +220,6 @@ function esteatoseTcRefresh(){
 }
 
 /* registra no catálogo (CALCS de app.js) — método TC, subespecialidade Medicina Interna */
-CALCS.push({id:'esteatose-tc', modality:'tc', subspec:'medint', badge:'FF',
+CALCS.push({id:'esteatose-tc', modality:'tc', subspec:'figado', badge:'FF',
   title:'Esteatose Hepática (TC)',
   desc:'Fração lipídica hepática por TC sem e com contraste'});

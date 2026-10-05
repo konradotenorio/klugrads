@@ -216,6 +216,6 @@ function adrenalRefresh(){
 }
 
 /* registra no catálogo (CALCS de app.js) — método TC, subespecialidade Medicina Interna */
-CALCS.push({id:'adrenal-tc', modality:'tc', subspec:'medint', badge:'AD',
+CALCS.push({id:'adrenal-tc', modality:'tc', subspec:'adrenal', badge:'AD',
   title:'Lesão Adrenal (TC)',
   desc:'Caracterização por densidade + tamanho (ESE 2023) e washout (legado)'});

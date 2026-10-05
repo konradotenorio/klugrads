@@ -85,6 +85,6 @@ function pancrSet(field, val){
 }
 
 /* registra no catálogo (CALCS de app.js) — método TC, subespecialidade Medicina Interna */
-CALCS.push({id:'pancr', modality:'tc', subspec:'medint', badge:'PA',
+CALCS.push({id:'pancr', modality:'tc', subspec:'pancreas', badge:'PA',
   title:'Coleções Pancreáticas',
   desc:'Nomenclatura na pancreatite (Atlanta revisada)'});

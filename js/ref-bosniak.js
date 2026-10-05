@@ -81,7 +81,7 @@ function bosniakPageHTML(mod){
   </div>`;
 }
 
-CALCS.push({id:'bosniak-tc', modality:'tc', subspec:'medint', badge:'BK', kind:'ref',
+CALCS.push({id:'bosniak-tc', modality:'tc', subspec:'rim', badge:'BK', kind:'ref',
   title:'Bosniak v2019 (TC)',
   desc:'Classificação das massas renais císticas na tomografia'});
 CALCS.push({id:'bosniak-rm', modality:'rm', subspec:'rim', badge:'BK', kind:'ref',
