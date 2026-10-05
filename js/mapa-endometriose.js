@@ -37,6 +37,7 @@ const LES = [
 ];
 const MARCA = 'Imagem ilustrada e editada em KlugRads';
 const ALPHA = 0.72, ZMAX = 8;
+const REFW = 1103;                      // largura (px) das imagens originais; as atuais são 2× maiores: pincel e cursor escalam com R.K
 
 /* ---- estado (em memória) ---- */
 function st(){
@@ -46,7 +47,7 @@ function st(){
   return m.em;
 }
 /* runtime (não vai para o state): canvases, imagem, gesto em curso */
-const R = {view:null, IW:0, IH:0, fw:0, fh:0, k:1, tx:0, ty:0, W:0, H:0, img:null, ready:false,
+const R = {view:null, IW:0, IH:0, K:1, fw:0, fh:0, k:1, tx:0, ty:0, W:0, H:0, img:null, ready:false,
            ptrs:new Map(), stroke:null, pan:null, pinch:null, used:[false,false,false], usedKey:'', scan:null,
            tok:0, bctx:null, pctx:null, rect:null, wired:false};
 const g = id => document.getElementById(id);
@@ -174,7 +175,7 @@ async function carregar(){
   R.img = im;
   const corte = s.pos.corte;
   if(R.view!==corte){
-    R.view = corte; R.IW = im.naturalWidth; R.IH = im.naturalHeight;
+    R.view = corte; R.IW = im.naturalWidth; R.IH = im.naturalHeight; R.K = R.IW/REFW;
     for(const id of ['em-base','em-paint']){ g(id).width = R.IW; g(id).height = R.IH; }
     R.bctx = g('em-base').getContext('2d'); R.pctx = g('em-paint').getContext('2d');
     g('em-paint').style.opacity = ALPHA;
@@ -302,7 +303,7 @@ function pinchMove(){
 function cursor(e){
   const c = g('em-cur'), stg = g('em-stage'); if(!c||!stg) return;
   if(e.pointerType==='touch'){ c.style.display='none'; return; }
-  const r = stg.getBoundingClientRect(), d = Math.max(4, st().w*R.fw*R.k/R.IW);
+  const r = stg.getBoundingClientRect(), d = Math.max(4, st().w*R.K*R.fw*R.k/R.IW);
   c.style.display='block'; c.style.width = c.style.height = d+'px'; c.style.left = (e.clientX-r.left)+'px'; c.style.top = (e.clientY-r.top)+'px';
 }
 
@@ -314,12 +315,12 @@ const espic = s => s.c===1 && !s.e;
 function rng(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
 function style(ctx,s){
   ctx.save(); ctx.beginPath(); ctx.rect(0,0,R.IW,R.IH); ctx.clip();
-  ctx.lineCap='round'; ctx.lineJoin='round'; ctx.lineWidth=s.w;
+  ctx.lineCap='round'; ctx.lineJoin='round'; ctx.lineWidth=s.w*R.K;
   const col = s.e ? '#000' : LES[s.c-1].cor; ctx.strokeStyle = col; ctx.fillStyle = col;
   ctx.globalCompositeOperation = s.e ? 'destination-out' : 'source-over';
 }
 function stamp(ctx,s,x,y){
-  const r = rng((s.seed||1)+s._n*7919), w = s.w, n = 6+Math.floor(r()*4), r0 = w*0.26, off = r()*Math.PI*2;
+  const r = rng((s.seed||1)+s._n*7919), w = s.w*R.K, n = 6+Math.floor(r()*4), r0 = w*0.26, off = r()*Math.PI*2;
   for(let k=0;k<n;k++){
     const a = off+(k+r()*0.8)*2*Math.PI/n, len = w*(0.55+r()*0.85), hw = w*(0.05+r()*0.05), bend = (r()-0.5)*w*0.34;
     const ca = Math.cos(a), sa = Math.sin(a);
@@ -329,10 +330,10 @@ function stamp(ctx,s,x,y){
   s._n++;
 }
 function spicRun(ctx,s){
-  const q = s.pts, step = s.w*0.4;
+  const q = s.pts, W = s.w*R.K, step = W*0.4;
   ctx.save(); ctx.beginPath(); ctx.rect(0,0,R.IW,R.IH); ctx.clip();
-  ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = ctx.strokeStyle = LES[0].cor; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.lineWidth = s.w*0.6;
-  if(s._i===0){ ctx.beginPath(); ctx.arc(q[0],q[1],s.w*0.3,0,Math.PI*2); ctx.fill(); stamp(ctx,s,q[0],q[1]); s._i=2; s._d=0; }
+  ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = ctx.strokeStyle = LES[0].cor; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.lineWidth = W*0.6;
+  if(s._i===0){ ctx.beginPath(); ctx.arc(q[0],q[1],W*0.3,0,Math.PI*2); ctx.fill(); stamp(ctx,s,q[0],q[1]); s._i=2; s._d=0; }
   while(s._i<q.length){
     const x0=q[s._i-2], y0=q[s._i-1], x1=q[s._i], y1=q[s._i+1], L=Math.hypot(x1-x0,y1-y0);
     ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke();           // miolo do traço
@@ -344,7 +345,7 @@ function spicRun(ctx,s){
 function drawStroke(ctx,s){
   if(espic(s)){ s._i=0; s._n=0; s._d=0; spicRun(ctx,s); return; }
   const q = s.pts; style(ctx,s);
-  if(q.length<4){ ctx.beginPath(); ctx.arc(q[0],q[1],s.w/2,0,Math.PI*2); ctx.fill(); }
+  if(q.length<4){ ctx.beginPath(); ctx.arc(q[0],q[1],s.w*R.K/2,0,Math.PI*2); ctx.fill(); }
   else{ ctx.beginPath(); ctx.moveTo(q[0],q[1]); ctx.lineTo((q[0]+q[2])/2,(q[1]+q[3])/2);
     for(let i=2;i<q.length-2;i+=2) ctx.quadraticCurveTo(q[i],q[i+1],(q[i]+q[i+2])/2,(q[i+1]+q[i+3])/2);
     ctx.lineTo(q[q.length-2],q[q.length-1]); ctx.stroke(); }
