@@ -1173,7 +1173,7 @@ function lauQtd(f, bag, id){ return f.q ? ((bag['d'+id]||{}).qtd || '1') : '1'; 
 const LAU_LOCT = 'às XXX horas, a XXX cm do mamilo, a XXX cm da pele, medindo XXX x XXX x XXX cm';
 function lauMulti(f){ return f.o==='mama' || f.kind==='tirads'; }
 /* modelo de localização/medidas de cada achado semelhante */
-function lauLocTpl(f){ return f.kind==='tirads' ? f.t : LAU_LOCT; }
+function lauLocTpl(f){ return f.kind==='tirads' ? f.t : (f.loct || LAU_LOCT); }
 function lauQn(d){ const n=parseInt((d||{}).qn,10); return isNaN(n) ? 2 : Math.max(2, Math.min(12, n)); }
 function lauLocs(f, id, bag, html){
   const d=bag['d'+id]||{}; const out=[lauFill(f.kind?f.t:LAU_LOCT, f.kind?bag['f'+id]:bag['f'+id+'_1'], html)];
@@ -1187,7 +1187,8 @@ function lauLocCurta(vals){
 }
 /* distâncias do mamilo e da pele são opcionais: sem valor, saem do texto */
 function lauSemDistVazia(t){
-  return t.replace(/a (<mark class="lau-ph">)?XXX(<\/mark>)? cm d[ao] (mamilo|pele), /g, '');
+  return t.replace(/a (<mark class="lau-ph">)?XXX(<\/mark>)? cm d[ao] (mamilo|pele), /g, '')
+          .replace(/,?\s*às (<mark class="lau-ph">)?XXX(<\/mark>)? horas(?=,)/g, '').replace(/:\s*,\s*/g, ': ');   // horário em branco sai do texto
 }
 /* trechos opcionais da frase (f.vaz): saem quando o campo ficou em branco */
 function lauTiraVazio(t, pats){
@@ -1231,7 +1232,7 @@ function lauFraseText(id, bag, html){
   }
   if(f.vaz) t = lauTiraVazio(t, f.vaz);
   if(LAU_MSK.indexOf(f.o)>=0) t = lauTiraMedVazia(t);
-  return f.o==='mama' ? lauSemDistVazia(t) : t;
+  return f.o==='mama' ? lauSemDistVazia(f.medOpc ? lauTiraMedVazia(t) : t) : t;
 }
 function lauFraseConc(id, bag, lbl){
   const f=lauFI(id); if(!f) return '';
@@ -1712,8 +1713,8 @@ function lauConcs(m){
   vis.forEach(it=>seeBr(state.lau.v[it.k].__f, state.lau.v[it.k].__v)); seeBr(state.lau.xf, state.lau.xv);
   if(m.metodo==='dmo' && typeof dmoConcs==='function') return dmoConcs(m);
   if(m.oct && typeof lauOctConcs==='function') return lauOctConcs(m);
-  if(m.metodo==='mmg'){
-    // mamografia: achados sem categoria em cada linha, iguais nas duas mamas viram uma frase só,
+  if(m.metodo==='mmg' || m.id==='us-mamas'){
+    // mamografia (e US das mamas): achados sem categoria em cada linha, iguais nas duas mamas viram uma frase só,
     // e uma única categoria BI-RADS® no fim (a mais alta)
     if(m.items.some(it=>it.sk==='mgcir' && !lauItemOutroLado(m,it) && (lauBuild(m,it).conc||[]).length)){
       cats.add('2');
@@ -1731,6 +1732,8 @@ function lauConcs(m){
 /* singular → plural quando o mesmo achado está nas duas mamas */
 const LAU_MG_PLURAL = [
   [/^Ginecomastia nas mamas/,'Ginecomastia bilateral'],
+  [/^Cisto simples/,'Cistos simples'], [/^Cisto complicado/,'Cistos complicados'], [/^Cisto oleoso/,'Cistos oleosos'],
+  [/^Massa complexa cística e sólida/,'Massas complexas císticas e sólidas'], [/^Coleção/,'Coleções'],
   [/^Nódulo /,'Nódulos '], [/^Linfonodo intramamário/,'Linfonodos intramamários'], [/^Fibroadenoma calcificado/,'Fibroadenomas calcificados'],
   [/^Assimetria global/,'Assimetrias globais'], [/^Assimetria focal/,'Assimetrias focais'], [/^Assimetria /,'Assimetrias '],
   [/^Distorção arquitetural cicatricial/,'Distorções arquiteturais cicatriciais'], [/^Distorção arquitetural/,'Distorções arquiteturais'],

@@ -67,6 +67,8 @@ const LAU_OCT_FRASES = [
   {o:'octhial', n:'Aderida só à papila', m:'sub', t:'Hialoide posterior aderida à região peripapilar, não aderida sobre a região macular.', c:''},
 
   /* ---- contorno foveal ---- */
+  {o:'octfov', n:'Contorno normal', m:'sub', t:'Anatomia do contorno foveal preservada.', c:''},
+  {o:'octfov', n:'Contorno alterado', m:'sub', t:'Alteração da anatomia do contorno foveal.', c:'alteração do contorno foveal'},
   {o:'octfov', n:'Buraco macular de espessura total', m:'sub', sup:['depressao foveal'],
    t:'Observa-se solução de continuidade foveal envolvendo toda a espessura da retina neurossensorial, achado compatível com buraco macular de espessura total.',
    c:'buraco macular de espessura total'},

@@ -256,7 +256,9 @@ function vozProcessa(txtOrig){
   const ab=tn.match(/^(abrir|abre|ir para|item)\s+(.+)$/);
   if(ab){ const it=vozAchaItem(m,' '+ab[2]+' '); if(it){ vozAbre(it.k); vozLog(txtOrig,'→ '+lauItemLabel(m,it),true); return; } }
   // achado: no item citado (ou no aberto); se não achar, procura em todos os itens
-  const itOrg = vozAchaItem(m,' '+tn+' ');
+  let itOrg = vozAchaItem(m,' '+tn+' ');
+  // OCT: cada item existe nos dois olhos; o ditado usa sempre o bloco do olho direito (o olho vai na própria frase)
+  if(m.oct && itOrg && lauOctOlho(itOrg)!=='d'){ const lb=lauItemLabel(m,itOrg); itOrg = m.items.find(x=>lauOctOlho(x)==='d' && lauItemLabel(m,x)===lb) || itOrg; }
   const melhor = it0=>{ if(!it0) return null; const f=vozAchaFrase(m,it0,tn), c=vozAchaCtrl(m,it0,tn);
     const a = f && (!c || f.sc>=c.sc) ? {it:it0, f:f.f, sc:f.sc} : c ? {it:it0, c, sc:c.sc} : null; return a; };
   let ach = itOrg ? melhor(itOrg) : null;
@@ -271,7 +273,10 @@ function vozProcessa(txtOrig){
     const it=ach.it, f=ach.f, i=f.i; const antes=(lauFraseList(it.k)||[]).slice();
     lauFraseToggle(it.k, i);
     const id=(lauFraseList(it.k)||[]).find(x=>antes.indexOf(x)<0);
-    if(id){ L.v[it.k].__v['f'+id]=vozPreenche(f, tn, t); VOZ.hist.push({t:'frase', k:it.k, id}); }
+    if(id){ L.v[it.k].__v['f'+id]=vozPreenche(f, tn, t); VOZ.hist.push({t:'frase', k:it.k, id});
+      // OCT: olho falado ("no olho direito", "olho esquerdo", "ambos os olhos") vira o olho afetado da frase
+      if(m.oct){ const olho = /ambos os olhos|nos dois olhos|bilateral/.test(tn) ? 'a' : /olho esquerdo|\boe\b/.test(tn) ? 'e' : /olho direito|\bod\b/.test(tn) ? 'd' : null;
+        if(olho){ const bag=L.v[it.k].__v; bag['d'+id]=Object.assign({}, bag['d'+id]||{}, {olho}); } } }
     else VOZ.hist.push({t:'toggle', k:it.k, i});   // frase "substitui" já estava marcada: foi desmarcada
     L.open=it.k; lauRenderLeft(); lauPatch(it.k); lauUpdSum(it.k);
     vozLog(txtOrig, `${lauItemLabel(m,it)||'item'} → ${f.n}`, true); return;
