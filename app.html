@@ -275,6 +275,24 @@
     padding-bottom:env(safe-area-inset-bottom);
   }
   .scroll::-webkit-scrollbar{width:0;height:0;}
+  .scroll{scrollbar-width:none;}
+  /* Desktop com mouse: barra de rolagem visível, encostada na borda direita da página.
+     Celular e tablet (toque) continuam sem barra. O conteúdo segue numa coluna de
+     1180px centralizada: só o rolador passa a ocupar a largura toda do palco. */
+  @media(min-width:900px) and (hover:hover) and (pointer:fine){
+    #app{max-width:none;}
+    .hdr,.subtabs{padding-left:max(12px,calc((100% - 1180px)/2 + 12px));padding-right:max(12px,calc((100% - 1180px)/2 + 12px));}
+    .scroll{
+      padding-left:max(min(48px,4vw),calc((100% - 1180px)/2 + min(48px,4vw)));
+      padding-right:max(min(48px,4vw),calc((100% - 1180px)/2 + min(48px,4vw)));
+      scrollbar-width:auto;
+      scrollbar-color:color-mix(in srgb,var(--dim) 55%,transparent) transparent;
+    }
+    .scroll::-webkit-scrollbar{width:12px;height:12px;}
+    .scroll::-webkit-scrollbar-track{background:transparent;}
+    .scroll::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--dim) 55%,transparent);border-radius:12px;border:3px solid transparent;background-clip:padding-box;}
+    .scroll::-webkit-scrollbar-thumb:hover{background:var(--dim);background-clip:padding-box;border:3px solid transparent;}
+  }
   .fade{animation:fade .22s ease;}
   @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 
