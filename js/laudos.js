@@ -107,8 +107,8 @@ const LAU_ABD_ITEMS = [
        alt=true;
        eco = {
          '1':'Ecogenicidade parenquimatosa difusamente aumentada, de grau leve, com boa caracterização das paredes dos vasos portais e do diafragma.',
-         '2':'Ecogenicidade parenquimatosa difusamente aumentada, de grau moderado, com menor definição das paredes dos vasos portais e do diafragma.',
-         '3':'Ecogenicidade parenquimatosa difusamente aumentada, de grau acentuado, com atenuação do feixe acústico que prejudica a caracterização das paredes dos vasos portais, do diafragma e das porções posteriores do lobo direito.',
+         '2':'Parênquima hepático com ecotextura homogênea e aumento difuso da ecogenicidade, que atenua o feixe acústico posterior e diminui a sensibilidade para a detecção de eventuais lesões.',
+         '3':'Parênquima hepático com aumento acentuado e difuso da ecogenicidade, com atenuação do feixe acústico posterior, que prejudica a avaliação das paredes dos vasos portais e do diafragma e diminui a sensibilidade para a detecção de eventuais lesões.',
        }[s.grau];
        conc.push({'1':'Esteatose hepática leve (grau I).','2':'Esteatose hepática moderada (grau II).','3':'Esteatose hepática acentuada (grau III).'}[s.grau]);
      }
