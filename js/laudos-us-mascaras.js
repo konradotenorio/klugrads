@@ -4286,7 +4286,7 @@ const LAU_US_MASKS = [
 {
 "k": "arteria-hepatica",
 "label": "Artéria hepática",
-"text": "pérvia, com fluxo bifásico de boa amplitude.",
+"text": "pérvia, com fluxo bifásico de boa amplitude e índice de resistividade (IR) de XXX.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -4400,7 +4400,7 @@ const LAU_US_MASKS = [
 {
 "k": "arteria-hepatica",
 "label": "Artéria hepática",
-"text": "pérvia, de calibre normal, com IR estimado em XXX.",
+"text": "pérvia, de calibre normal, com índice de resistividade (IR) de XXX.",
 "dash": true,
 "opts": [
 "Trombose XX estenose da artéria hepática. Há fluxo nos ramos arteriais intra-hepáticos, reenchidos por colaterais",

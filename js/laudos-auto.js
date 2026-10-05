@@ -19,7 +19,7 @@
 
 const LAU_AUTO_PADRAO = {on:true, rimMin:9, rimMax:13, bacoMax:13, prostMax:30, concLink:true,
   testMin:9, tireoMin:4, tireoMax:25, ovMax:10.4, ovMaxMeno:5.4, uteroMax:120, endoMenac:1.5, endoMeno:0.5,
-  residMin:30, portaMax:1.3, colMax:7, aortaEct:2.5, aortaAn:3, nervMed:10, nervUln:9};
+  residMin:30, portaMax:1.3, colMax:7, aortaEct:2.5, aortaAn:3, nervMed:10, nervUln:9, irHepMin:0.55, irHepMax:0.8};
 /* limites: padrão global (Configurações) + ajustes feitos só neste laudo (state.lau.auto) */
 function lauAutoCfgG(){ const c=lauCfgAll(); return Object.assign({}, LAU_AUTO_PADRAO, c.auto||{}); }
 function lauAutoLocal(){ const L=state.lau; if(!L) return {lim:{}, off:{}, fase:'menac'}; if(!L.auto) L.auto={lim:{}, off:{}, fase:'menac'}; return L.auto; }
@@ -139,6 +139,12 @@ const LAU_AUTO_TXT = [
    cond:(v,A)=> A.nervUln && v >= A.nervUln,
    txt:[[/com espessura, contornos e ecotextura normais/, 'espessado e hipoecogênico']],
    conc:v=>`Espessamento do nervo ulnar no cotovelo (área seccional de ${LAU_N(v)} mm²), compatível com neuropatia ulnar, a correlacionar com dados clínicos e eletroneuromiografia.`},
+  /* artéria hepática (Doppler): IR normal 0,55–0,80 (McNaughton & Abu-Yousef, RadioGraphics 2011) */
+  {id:'irHep', item:/^arteria hepatica/, campo:/resistividade \(?ir\)? de$/,
+   cond:(v,A)=> (A.irHepMin && v < A.irHepMin) || (A.irHepMax && v > A.irHepMax),
+   conc:v=>{ const A=lauAutoCfg(); return A.irHepMin && v < A.irHepMin
+     ? `Artéria hepática com índice de resistividade reduzido (IR de ${LAU_N(v)}).`
+     : `Artéria hepática com índice de resistividade aumentado (IR de ${LAU_N(v)}).`; }},
   {id:'endoHet', item:/^endometrio/, escolha:'heterogêneo',
    conc:()=>'Endométrio heterogêneo.'},
   {id:'residuo', item:/^residuo/, campo:/estimado em$/,
@@ -288,6 +294,9 @@ function lauAutoCfgHTML(){
     ${sub('Nervos (musculoesquelético)')}
     ${num('nervMed','Nervo mediano espessado a partir de (área seccional)','mm²')}
     ${num('nervUln','Nervo ulnar espessado a partir de (área seccional)','mm²')}
+    ${sub('Doppler abdominal')}
+    ${num('irHepMin','Artéria hepática: IR reduzido abaixo de','')}
+    ${num('irHepMax','Artéria hepática: IR aumentado acima de','')}
     <label class="lau-chk"><input type="checkbox" ${A.concLink?'checked':''} onchange="lauAutoSet('concLink',this.checked)"><span>Preencher os campos da conclusão com o valor do mesmo campo do laudo (ex.: massa da próstata, resíduo pós-miccional)</span></label>
     <div class="ti-legend-row" style="margin-top:6px"><span class="lt">Os limites valem para adultos; ajuste conforme a referência do seu serviço. Campo vazio = regra desligada. Dentro de cada laudo dá para mudar o limite só daquele exame (ex.: criança) no item correspondente.</span></div>
   </div>`;
@@ -305,6 +314,7 @@ const LAU_AUTO_LIMS = {
   residuo:[['residMin','Significativo a partir de','mL']],
   nervMed:[['nervMed','Espessado a partir de','mm²']], nervUln:[['nervUln','Espessado a partir de','mm²']],
   porta:[['portaMax','Aumentada acima de','cm']],
+  irHep:[['irHepMin','Reduzido abaixo de',''],['irHepMax','Aumentado acima de','']],
   rins:[['rimMin','Reduzido abaixo de','cm'],['rimMax','Aumentado acima de','cm']],
   baco:[['bacoMax','Aumentado acima de','cm']],
   vias:[['colMax','Colédoco dilatado acima de','mm']],

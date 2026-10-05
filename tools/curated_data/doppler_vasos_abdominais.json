@@ -152,6 +152,12 @@
     ["Veias hepáticas e VCI", "Onda", "Fásica, acompanhando o ciclo cardíaco"],
     ["VCI", "Diâmetro", "13–22 mm, colapsável à compressão"]
    ]},
+   {"title": "Índice de resistividade (IR) da artéria hepática", "source": "McNaughton 2011; Dodd 1994", "collapsible": true, "defaultOpen": true, "rows": [
+    ["Situação", "IR", "Interpretação"],
+    ["Fígado nativo (jejum)", "0,55–0,70 (até ~0,80)", "Normal; fluxo de baixa resistência com diástole contínua"],
+    ["IR aumentado", "> 0,80", "Inespecífico: hepatopatia crônica/cirrose, congestão hepática, estado pós-prandial, idade avançada; no transplante, rejeição ou edema nas primeiras 72 h"],
+    ["IR reduzido", "< 0,55", "Estenose arterial proximal (tronco celíaco/anastomose), shunts arteriovenosos/arterioportais, hipertensão portal"],
+    ["Fígado transplantado", "IR < 0,5 + tempo de aceleração sistólica > 0,08 s", "Padrão tardus-parvus: suspeita de estenose/trombose da artéria hepática (alta sensibilidade, especificidade moderada)"]]},
    {"title": "Achados anormais", "source": "StatPearls 2026", "collapsible": true, "defaultOpen": true, "rows": [
     ["Achado", "Significado"],
     ["Fluxo portal hepatofugal", "Fluxo afastando-se do fígado (retrógrado): anormal"],
@@ -166,7 +172,8 @@
     ["Posição", "Decúbito dorsal ou lateral esquerdo"]
    ]}
   ],
-  "refs": ["El-Nakeep S, Tafti D. Hepatic Doppler Ultrasonography. In: StatPearls. Treasure Island (FL): StatPearls Publishing; 2026. NBK567725; PMID 33620802."]
+  "refs": ["El-Nakeep S, Tafti D. Hepatic Doppler Ultrasonography. In: StatPearls. Treasure Island (FL): StatPearls Publishing; 2026. NBK567725; PMID 33620802.", "McNaughton DA, Abu-Yousef MM. Doppler US of the liver made simple. RadioGraphics. 2011;31(1):161–188.", "Dodd GD 3rd, Memel DS, Zajko AB, Baron RL, Santaguida LA. Hepatic artery stenosis and thrombosis in transplant recipients: Doppler diagnosis with resistive index and systolic acceleration time. Radiology. 1994;192(3):657–661."],
+  "footnotes": ["Limites usados na regra automática do laudo Doppler (ajustáveis em Padrões dos laudos): IR < 0,55 reduzido; IR > 0,80 aumentado."]
  },
  {
   "id": "doppler-figado-transplantado",

@@ -188,6 +188,10 @@ function vozAplicaCtrl(m, it, b, tn, t){
       const op=c.opts.find(o=>o[0] && ((seg && new RegExp('\\b'+seg+'\\b').test(o[0]+' '+o[1])) || vozScore(o[1], fala, sin)>=3));
       if(op) s[c.k]=op[0];
     }
+    else if(c.t==='radio' && c!==b.c && c.k==='grau' && /\bgrau\s+(um|1|i|dois|2|ii|tres|3|iii)\b/.test(vozNorm(tn))){   // "grau dois" / "grau 3"
+      const g={um:'1','1':'1',i:'1',dois:'2','2':'2',ii:'2',tres:'3','3':'3',iii:'3'}[vozNorm(tn).match(/\bgrau\s+(um|1|i|dois|2|ii|tres|3|iii)\b/)[1]];
+      if(c.opts.some(o=>o[0]===g)) s[c.k]=g;
+    }
     else if(c.t==='radio' && c!==b.c){ const op=c.opts.find(o=>vozScore(o[1], fala, [])>=3); if(op && (filho || ci>b.ci)) s[c.k]=op[0]; }
   });
   if(!usou && med && b.c.t==='radio'){ const n=it.ctrls.find(c=>c.t==='num' && (!c.show || c.show(s)) && c.unit && it.ctrls.indexOf(c)>b.ci); if(n){ s[n.k]=vozConv(vozMaior(med.vals), med.un||n.unit, n.unit); } }

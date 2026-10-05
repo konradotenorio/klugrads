@@ -963,7 +963,7 @@ Data do Exame:
 - Pâncreas: com dimensões, contornos e ecogenicidade normais.
 - Baço: com dimensões normais, homogêneo.
 Ao estudo Doppler:
-- Artéria hepática: pérvia, com fluxo bifásico de boa amplitude.
+- Artéria hepática: pérvia, com fluxo bifásico de boa amplitude e índice de resistividade (IR) de XXX.
 - Veia porta (tronco e ramos intrahepáticos): pérvia, de calibre normal, apresentando fluxo hepatopetal com velocidades no tronco em torno de 20 XX cm/s.
 - Veias esplênica e mesentérica superior: pérvias, de calibre normal, com fluxo de sentido preservado.
 - Veias hepáticas: pérvias, de calibres preservados e distribuição habitual, apresentando fluxo multifásico hepatofugal.
@@ -984,7 +984,7 @@ Data de Nascimento:
 Data do Exame: 
 - Fígado transplantado: de dimensões normais e contornos regulares. Ecotextura parenquimatosa hepática homogênea.
 Vascularização:
-- Artéria hepática: pérvia, de calibre normal, com IR estimado em XXX.
+- Artéria hepática: pérvia, de calibre normal, com índice de resistividade (IR) de XXX.
 XXX Trombose XX estenose da artéria hepática. Há fluxo nos ramos arteriais intra-hepáticos, reenchidos por colaterais 
 XXX Ramos arteriais intra-hepáticos sem fluxo detectável.
 - Veia porta: com calibre de XXX cm, exibindo fluxo hepatopetal XX hepatofugal com velocidade estimada em XXX cm/s.

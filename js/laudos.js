@@ -466,7 +466,7 @@ const LAU_ABD_ITEMS = [
   {k:'bexiga', label:'Bexiga',
    normal:'com paredes regulares e conteúdo anecogênico.',
    ctrls:[
-     {t:'radio', k:'rep', lbl:'Repleção', opts:[['n','Adequada'],['pouca','Pouca repleção'],['sonda','Vazia com sonda']]},
+     {t:'radio', k:'rep', lbl:'Repleção', opts:[['n','Adequada'],['pouca','Repleção parcial'],['sonda','Vazia com sonda']]},
      {t:'check', k:'par', lbl:'Paredes espessadas / trabeculadas', show:s=>s.rep!=='sonda'},
      {t:'num', k:'parD', lbl:'Espessura', unit:'mm', show:s=>s.rep!=='sonda'&&s.par, ind:1},
      {t:'check', k:'cal', lbl:'Cálculo', show:s=>s.rep!=='sonda'},
@@ -482,7 +482,7 @@ const LAU_ABD_ITEMS = [
      const volOn = s.vol && !(s.volAuto && lauVol(...(s.volV||[]))==null);
      if(s.rep==='n' && !s.par && !s.cal && !volOn && !s.res) return {txt:null, conc:[]};
      const conc=[];
-     let t = s.rep==='pouca' ? 'com pouca repleção, limitando a avaliação de suas paredes. Conteúdo anecogênico.'
+     let t = s.rep==='pouca' ? 'com repleção parcial, limitando a avaliação de suas paredes. Conteúdo anecogênico.'
            : s.par ? 'com paredes difusamente espessadas e trabeculadas' + (lauHas(s.parD)?` (${lauN(s.parD)} mm)`:'') + ' e conteúdo anecogênico.'
            : s.volAuto ? 'com repleção satisfatória, paredes regulares e conteúdo anecogênico.'
            : 'com paredes regulares e conteúdo anecogênico.';
@@ -502,20 +502,19 @@ const LAU_ABD_ITEMS = [
   {k:'aorta', label:'Aorta abdominal',
    normal:'com calibre normal.',
    ctrls:[
-     {t:'radio', k:'est', lbl:'Aspecto', opts:[['n','Normal'],['ate','Ateromatose'],['ect','Ectasia'],['an','Aneurisma']]},
+     {t:'radio', k:'vis', lbl:'Avaliação', opts:[['c','Completa'],['p','Parcial (gases)'],['nv','Não caracterizada']]},
+     {t:'radio', k:'est', lbl:'Aspecto', opts:[['n','Normal'],['ate','Ateromatose'],['ect','Ectasia'],['an','Aneurisma']], show:s=>s.vis!=='nv'},
      {t:'num', k:'diam', lbl:'Diâmetro máximo', unit:'cm', show:s=>s.est==='ect'||s.est==='an'},
      {t:'select', k:'seg', lbl:'Segmento', opts:[['infrarrenal','Infrarrenal'],['justarrenal','Justarrenal'],['suprarrenal','Suprarrenal']], show:s=>s.est==='an'},
      {t:'num', k:'ext', lbl:'Extensão (opcional)', unit:'cm', show:s=>s.est==='an'},
      {t:'check', k:'tro', lbl:'Trombo mural', show:s=>s.est==='an'},
    ],
    build(s){
-     if(s.est==='n') return {txt:null, conc:[]};
-     const d = lauHas(s.diam) ? `${lauN(s.diam)} cm` : '';
-     if(s.est==='ate') return {txt:'com calibre normal e placas parietais calcificadas.', conc:['Ateromatose aórtica.']};
-     if(s.est==='ect') return {txt:`com calibre aumentado${d?`, medindo ${d} de diâmetro máximo`:''}, sem configurar aneurisma.`, conc:[`Ectasia da aorta abdominal${d?` (${d})`:''}.`]};
-     let t = `com dilatação aneurismática fusiforme no segmento ${s.seg}${d?`, medindo ${d} de diâmetro máximo`:''}${lauHas(s.ext)?` e ${lauN(s.ext)} cm de extensão`:''}`;
-     t += s.tro ? ', com trombo mural.' : '.';
-     return {txt:t, conc:[`Aneurisma da aorta abdominal ${s.seg}${d?`, com ${d} de diâmetro máximo`:''}${s.tro?', com trombo mural':''}.`]};
+     if(s.vis==='nv') return {txt:'não caracterizada devido à interposição gasosa intestinal.', conc:[]};
+     const pc = s.vis==='p' ? 'parcialmente caracterizada devido à interposição gasosa intestinal; nas porções avaliadas, ' : '';
+     const r = lauAortaBuild(s);
+     if(!pc) return r;
+     return {txt: pc + (r.txt || 'com calibre normal.'), conc:r.conc};
    }},
 
   /* ---------------- PERITÔNEO / RETROPERITÔNIO ---------------- */
@@ -550,6 +549,16 @@ const LAU_ABD_ITEMS = [
 
 /* Itens com achados estruturados, reaproveitados em qualquer máscara que
    tenha o mesmo órgão (o texto normal vem da própria máscara). */
+function lauAortaBuild(s){
+     if(s.est==='n' || !s.est) return {txt:null, conc:[]};
+     const d = lauHas(s.diam) ? `${lauN(s.diam)} cm` : '';
+
+     if(s.est==='ate') return {txt:'com calibre normal e placas parietais calcificadas.', conc:['Ateromatose aórtica.']};
+     if(s.est==='ect') return {txt:`com calibre aumentado${d?`, medindo ${d} de diâmetro máximo`:''}, sem configurar aneurisma.`, conc:[`Ectasia da aorta abdominal${d?` (${d})`:''}.`]};
+     let t = `com dilatação aneurismática fusiforme no segmento ${s.seg}${d?`, medindo ${d} de diâmetro máximo`:''}${lauHas(s.ext)?` e ${lauN(s.ext)} cm de extensão`:''}`;
+     t += s.tro ? ', com trombo mural.' : '.';
+     return {txt:t, conc:[`Aneurisma da aorta abdominal ${s.seg}${d?`, com ${d} de diâmetro máximo`:''}${s.tro?', com trombo mural':''}.`]};
+}
 const LAU_STRUCT = {};
 LAU_ABD_ITEMS.forEach(it=>LAU_STRUCT[it.k]=it);
 const LAU_STRUCT_LABELS = {
@@ -1667,6 +1676,8 @@ function lauItemHTML(m, it){
   if(it.generic) txt = txt.replace(/medindo <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> (?:cm|mm), com (volume estimado em )(?!<mark)/, '$1');
   // nervos: área seccional não medida sai do texto
   if(it.generic && /^nervo (mediano|ulnar)/i.test(lauItemLabel(m,it)||'')) txt = txt.replace(/,? com área seccional de <mark class="lau-ph">XXX<\/mark> mm²[^.<]*/, '');
+  // artéria hepática (Doppler): IR não preenchido sai do texto
+  if(it.generic && /^arteria hepatica/.test(lauNorm(lauItemLabel(m,it)||''))) txt = txt.replace(/,? (?:e|com) índice de resistividade \(IR\) de <mark class="lau-ph">XXX<\/mark>/, '');
   // próstata: protrusão intravesical (IPP) sem medida → "não caracterizada"
   if(it.generic && /^protrusao prostatica intravesical/.test(lauNorm(lauItemLabel(m,it)||'')) && /^de cerca de <mark class="lau-ph">XXX<\/mark> (cm|mm)\.?$/.test(txt.trim())) txt = 'não caracterizada.';
   if(it.generic && !lauItemLabel(m,it)) txt = txt.replace(/^(Protrusão prostática intravesical(?: \(IPP\))?) (?:de cerca de|estimada em) <mark class="lau-ph">XXX<\/mark> (?:cm|mm)\./, '$1 não caracterizada.');
