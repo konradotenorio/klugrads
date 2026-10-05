@@ -18,6 +18,9 @@
      laudo:<id>          modelos de laudo (id do modelo)
      cont:<id>           tópicos de Meios de Contraste
      mapa:<órgão>        itens do Mapa Setorial Lesional  mapa:prostata  mapa:endometriose (PELVE)
+   Exceção (pedido do Konrado, 05/out/2026): na TELA INICIAL os cartões Favoritos, Nova Lista,
+   Configurações e Mapa Setorial Lesional ficam SEM marcador (nem 🚜 nem ✅); o menu lateral e o
+   título da tela continuam usando as chaves home:favoritos/novalista/config/mapa.
    ========================================================================= */
 const ST_OK = [
   'home:mapa',             // MAPA SETORIAL LESIONAL

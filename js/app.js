@@ -797,18 +797,18 @@ function modalityHTML(){
 
     <div class="modal-shortcuts cols3">${
       short(svgIcon(P.tools,22),'acc','Outras Ferramentas','Calculadoras e referências por especialidade',"setView('ferramentas')",'home:ferramentas')
-    + short(svgIcon(P.star,23,{fill:'currentColor',noStroke:true}),'star','Favoritos','Acesso rápido ao que você marcou',"setView('favoritos')",'home:favoritos')
-    + short(svgIcon(P.listplus,23),'acc','Nova Lista','Editável: crie e edite pacotes para o plantão',"setView('novalista')",'home:novalista')
+    + short(svgIcon(P.star,23,{fill:'currentColor',noStroke:true}),'star','Favoritos','Acesso rápido ao que você marcou',"setView('favoritos')")
+    + short(svgIcon(P.listplus,23),'acc','Nova Lista','Editável: crie e edite pacotes para o plantão',"setView('novalista')")
     }</div>
 
     <div class="modal-shortcuts cols3">${
       short(svgIcon(P.dicom,23),'acc','VISUALIZADOR DICOM','Abra exames do CD/pendrive direto no navegador','openViewer()','home:dicom')
     + short(svgIcon(P.laudo,23),'acc','LAUDOS ESTRUTURADOS','Monte o laudo por método e modelo','openLaudos()','home:laudos')
-    + short(svgIcon(P.gear,23),'acc','Configurações','Tema, tamanho da fonte e sugestões',"setView('config')",'home:config')
+    + short(svgIcon(P.gear,23),'acc','Configurações','Tema, tamanho da fonte e sugestões',"setView('config')")
     }</div>
 
     <div class="modal-shortcuts cols3">${
-      short(svgIcon(P.mapa,23),'acc','MAPA SETORIAL LESIONAL','Pinte as lesões no mapa (próstata ou pelve) e copie para o laudo',"setView('mapaLesional')",'home:mapa')
+      short(svgIcon(P.mapa,23),'acc','MAPA SETORIAL LESIONAL','Pinte as lesões no mapa (próstata ou pelve) e copie para o laudo',"setView('mapaLesional')")
     }</div>
   </div>`;
 }
