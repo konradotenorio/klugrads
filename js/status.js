@@ -17,10 +17,12 @@
      lmod:<id>           métodos de laudo               lmod:us  lmod:tc  lmod:mmg  lmod:dmo  lmod:cfg
      laudo:<id>          modelos de laudo (id do modelo)
      cont:<id>           tópicos de Meios de Contraste
-     mapa:<órgão>        itens do Mapa Setorial Lesional  mapa:prostata  mapa:pelve
+     mapa:<órgão>        itens do Mapa Setorial Lesional  mapa:prostata  mapa:endometriose (PELVE)
    ========================================================================= */
 const ST_OK = [
-  // (nenhum concluído ainda)
+  'home:mapa',             // MAPA SETORIAL LESIONAL
+  'mapa:prostata',         //   PRÓSTATA (PI-RADS)
+  'mapa:endometriose',     //   PELVE (Endometriose)
 ];
 
 function stOk(key){ return ST_OK.indexOf(key) >= 0; }
