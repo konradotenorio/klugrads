@@ -356,7 +356,7 @@ function svg(){
   let lx = 20; const ly = 474;
   it.forEach(([c,t])=>{ o += `<circle cx="${lx+7}" cy="${ly}" r="7" fill="${c}" stroke="rgba(0,0,0,.25)"/><text x="${lx+19}" y="${ly+4}" ${F} font-size="12.5" font-weight="600" fill="${C.txt}">${t}</text>`; lx += 30 + t.length*7; });
   o += `<line x1="${lx}" y1="${ly}" x2="${lx+26}" y2="${ly}" stroke="${C.polar}" stroke-width="1.6" stroke-dasharray="7 5"/><text x="${lx+32}" y="${ly+4}" ${F} font-size="12.5" font-weight="600" fill="${C.txt}">Linhas polares</text>`;
-  o += `<text x="20" y="${ly+24}" ${F} font-size="11" fill="${C.dim}">Hilo, de anterior para posterior: veia, artéria, pelve. Tracejado = lesão projetada fora do plano.</text>`;
+  o += `<text x="20" y="${ly+24}" ${F} font-size="11" fill="${C.dim}">Tracejado = lesão projetada fora do plano.</text>`;
   if(sc.ok){
     const tc = {low:'#1f9d55',mod:'#e07a1f',high:'#cf2020'}[sc.tone];
     o += `<rect x="${W-262}" y="${ly-22}" width="244" height="50" rx="12" fill="${tc}" fill-opacity=".12" stroke="${tc}" stroke-width="1.5"/>`;
