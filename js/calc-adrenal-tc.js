@@ -168,7 +168,7 @@ function calcAdrenalTcHTML(){
       <div class="tfg-sec-lbl">Categorias de lesão adrenal</div>
       <div class="tfg-ref-list">
         <div class="tfg-ref-item"><b>Mielolipoma</b> — gordura macroscópica (< 0 UH), ± calcificação.</div>
-        <div class="tfg-ref-item"><b>Cisto</b> — CT pré-contraste ≤ 10 UH + ausência de realce após contraste.</div>
+        <div class="tfg-ref-item"><b>Cisto</b> — CT pré-contraste de baixa densidade + ausência de realce após contraste.</div>
         <div class="tfg-ref-item"><b>Adenoma rico em lipídios</b> — CT pré-contraste ≤ 10 UH + realce após contraste (~70% dos adenomas).</div>
         <div class="tfg-ref-item"><b>Adenoma pobre em lipídios</b> — CT pré-contraste 10–20 UH; c/ queda de sinal na RM "out phase".</div>
         <div class="tfg-ref-item"><b>Feocromocitoma</b> — hipervascular (realce intenso), hiperssinal T2; dosar metanefrinas.</div>
@@ -230,7 +230,7 @@ function adrenalWoRefresh(){ const el=document.getElementById('adrenal-wo-res');
 /* registra no catálogo (CALCS de app.js) — método TC, subgrupo ADRENAL */
 CALCS.push({id:'adrenal-tc', modality:'tc', subspec:'adrenal', badge:'IN',
   title:'Incidentaloma',
-  desc:'Avaliação de incidentalomas de adrenais conforme proposta de Seow et al. 2025 (Insights into Imaging)'});
+  desc:'Avaliação de incidentalomas de adrenais conforme proposta de Seow et al. 2025'});
 CALCS.push({id:'adrenal-washout', modality:'tc', subspec:'adrenal', badge:'WO',
   title:'Washout',
   desc:'Avaliação de lesões adrenais conforme protocolo de Washout absoluto e relativo'});
