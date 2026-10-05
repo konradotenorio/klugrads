@@ -206,7 +206,7 @@ const LAU_FRASES = [
    c:'Sinais de pancreatopatia crônica.'},
   {o:'pancreas', s:1, n:'Lesão cística', m:'add',
    t:'Imagem cística na cabeça XX corpo XX cauda pancreática, medindo XXX cm.',
-   c:'Lesão cística pancreática. Sugere-se complementação com RM.'},
+   c:'Lesão cística pancreática. Sugere-se complementação com RM e colangiorressonância.'},
   {o:'pancreas', n:'Massa sólida', m:'add',
    t:'Massa sólida hipoecogênica na cabeça XX corpo XX cauda pancreática, medindo XXX cm.',
    c:'Massa sólida pancreática; prosseguir investigação com método seccional.'},

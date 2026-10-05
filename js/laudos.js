@@ -45,6 +45,7 @@ function lauHas(v){ return v!=null && String(v).trim()!==''; }
 function lauN(v){ return String(v==null?'':v).trim().replace(/\./g,','); }
 function lauF(v){ const n=parseFloat(String(v==null?'':v).replace(',','.')); return isNaN(n)?null:n; }
 function lauMed(v,u){ return lauHas(v) ? `medindo ${lauN(v)} ${u}` : ''; }
+function lauDimsTxt(v){ const d=(v||[]).filter(lauHas).map(lauN); return d.length ? `medindo ${d.join(' x ')} cm` : ''; }
 function lauVol(a,b,c){ a=lauF(a);b=lauF(b);c=lauF(c); if(!a||!b||!c) return null; return Math.round(a*b*c*0.523); }
 function lauJoin(parts){
   return parts.filter(Boolean).reduce((a,b)=> a ? a + (/\b[oa] maior$/.test(a) ? ' ' : ', ') + b : b, '');
@@ -188,19 +189,26 @@ const LAU_ABD_ITEMS = [
      {t:'radio', k:'polQ', lbl:'Quantidade', opts:LAU_QTD, show:s=>s.est!=='cx'&&s.pol, ind:1},
      {t:'num', k:'polD', lbl:'Medida (maior)', unit:'cm', show:s=>s.est!=='cx'&&s.pol, ind:1},
      {t:'check', k:'par', lbl:'Paredes espessadas', show:s=>s.est!=='cx'},
-     {t:'num', k:'parD', lbl:'Espessura', unit:'mm', show:s=>s.est!=='cx'&&s.par, ind:1},
+     {t:'num', k:'parD', lbl:'Espessura', unit:'mm', show:s=>s.est!=='cx'&&s.par&&!s.ccA, ind:1},
      {t:'check', k:'ccA', lbl:'Sinais de colecistite aguda', show:s=>s.est!=='cx'},
+     {t:'num', k:'parD', lbl:'Espessura da parede', unit:'mm', show:s=>s.est!=='cx'&&s.ccA, ind:1},
+     {t:'radio', k:'mur', lbl:'Sinal de Murphy ultrassonográfico', opts:[['','Não informar'],['pos','Positivo'],['neg','Negativo']], show:s=>s.est!=='cx'&&s.ccA, ind:1},
    ],
    build(s){
      if(s.est==='cx') return {txt:'não caracterizada (status pós-colecistectomia).', conc:['Status pós-colecistectomia.']};
      if(s.est==='n' && !s.calc && !s.lama && !s.pol && !s.par && !s.ccA) return {txt:null, conc:[]};
      const conc=[];
-     const dist = s.ccA ? 'distendida' : s.est==='hipo' ? 'pouco distendida, limitando a avaliação' : 'normodistendida';
+     const dist = s.ccA ? 'distendida' : 'normodistendida';
      const paredes = s.ccA ? 'com paredes espessadas e edemaciadas' + (lauHas(s.parD)?` (${lauN(s.parD)} mm)`:'')
                    : s.par ? 'com paredes difusamente espessadas' + (lauHas(s.parD)?` (${lauN(s.parD)} mm)`:'')
                    : 'com paredes finas e regulares';
      const semCalc = !s.calc ? ', sem cálculos' : '';
-     let t = `tópica, ${dist}, ${paredes} e conteúdo anecogênico${semCalc}.`;
+     // cálculo ou lama: o conteúdo deixa de ser anecogênico
+     let t = (s.calc || s.lama)
+       ? `tópica, ${dist}, ${paredes.replace(/^com /,'de ')}, com conteúdo hiperecogênico de permeio.`
+       : `tópica, ${dist}, ${paredes} e conteúdo anecogênico${semCalc}.`;
+     // pouco distendida: a parede não é avaliável — só a limitação
+     if(s.est==='hipo' && !s.ccA) t = 'tópica, pouco distendida, limitando a sua avaliação.' + (s.par ? ' ' + lauFrase('paredes aparentemente espessadas' + (lauHas(s.parD)?` (${lauN(s.parD)} mm)`:'')) : '');
      if(s.calc){
        const m=lauMed(s.calcD,'cm');
        if(s.calcQ==='n') t += ' ' + lauFrase(lauJoin([`múltiplos cálculos em seu interior, ${s.calcM==='imp'?'um deles impactado no infundíbulo':'móveis'}, com sombra acústica posterior, o maior`, m]));
@@ -211,8 +219,10 @@ const LAU_ABD_ITEMS = [
        const m=lauMed(s.polD,'cm');
        t += ' ' + lauFrase(s.polQ==='n' ? lauJoin(['imagens polipoides aderidas à parede, fixas, sem sombra acústica, a maior', m]) : lauJoin(['imagem polipoide aderida à parede, fixa, sem sombra acústica', m]));
      }
-     if(s.ccA) t += ' Sinal de Murphy ultrassonográfico positivo.';
-     if(s.ccA) conc.push(s.calc ? 'Achados sugestivos de colecistite aguda litiásica.' : 'Achados sugestivos de colecistite aguda.');
+     if(s.ccA && s.mur==='pos') t += ' Sinal de Murphy ultrassonográfico positivo.';
+     if(s.ccA && s.mur==='neg') t += ' Sinal de Murphy ultrassonográfico negativo.';
+     const mur = s.mur==='pos' ? ', com sinal de Murphy ultrassonográfico positivo' : '';
+     if(s.ccA) conc.push((s.calc ? 'Achados sugestivos de colecistite aguda litiásica' : 'Achados sugestivos de colecistite aguda') + mur + '.');
      else if(s.calc) conc.push(s.calcM==='imp' ? 'Colelitíase, com cálculo impactado no infundíbulo.' : 'Colelitíase.');
      if(s.ccA && s.calcM==='imp' && s.calc) conc.push('Cálculo impactado no infundíbulo.');
      if(s.lama) conc.push('Lama biliar.');
@@ -269,7 +279,7 @@ const LAU_ABD_ITEMS = [
      if(s.cis) t += ' ' + lauFrase(lauJoin([`imagem cística ${/^(cabeça|cauda)$/.test(s.cisL)?'na':'no'} ${s.cisL}`, lauMed(s.cisD,'cm')]));
      if(s.eco==='aum') conc.push('Aumento difuso da ecogenicidade pancreática, que pode corresponder a lipossubstituição.');
      if(s.wir) conc.push('Dilatação do ducto pancreático principal.');
-     if(s.cis) conc.push('Lesão cística pancreática. Sugere-se complementação com RM.');
+     if(s.cis) conc.push('Lesão cística pancreática. Sugere-se complementação com RM e colangiorressonância.');
      return {txt:t, conc};
    }},
 
@@ -279,6 +289,7 @@ const LAU_ABD_ITEMS = [
    ctrls:[
      {t:'radio', k:'dim', lbl:'Dimensões', opts:[['n','Normais'],['aum','Aumentadas'],['cx','Esplenectomia']]},
      {t:'num', k:'comp', lbl:'Maior eixo (opcional)', unit:'cm', show:s=>s.dim!=='cx'},
+     {t:'num', k:'trans', lbl:'Eixo transversal (opcional, para o índice esplênico)', unit:'cm', show:s=>s.dim!=='cx'},
      {t:'check', k:'acs', lbl:'Baço acessório', show:s=>s.dim!=='cx'},
      {t:'num', k:'acsD', lbl:'Medida', unit:'cm', show:s=>s.dim!=='cx'&&s.acs, ind:1},
      {t:'check', k:'cal', lbl:'Calcificações (granulomas)', show:s=>s.dim!=='cx'},
@@ -289,14 +300,19 @@ const LAU_ABD_ITEMS = [
      if(s.dim==='cx') return {txt:'não caracterizado (status pós-esplenectomia).', conc:['Status pós-esplenectomia.']};
      if(s.dim==='n' && !lauHas(s.comp) && !s.acs && !s.cal && !s.cis) return {txt:null, conc:[]};
      const conc=[]; const c = lauHas(s.comp) ? `${lauN(s.comp)} cm` : '';
-     let t = s.dim==='aum'
-       ? `com dimensões aumentadas${c?`, medindo ${c} no maior eixo`:''}, homogêneo.`
-       : `com dimensões normais${c?` (${c} no maior eixo)`:''}, homogêneo.`;
+     // índice esplênico uniplanar = maior eixo × eixo transversal (normal < 60, aba Referências → Baço); só com as duas medidas
+     const L=lauF(s.comp), T=lauF(s.trans), idx = L && T ? Math.round(L*T*10)/10 : null;
+     const idxTxt = idx!=null ? lauN(String(idx)) : '';
+     const med = idx!=null ? `maior eixo de ${c} e eixo transversal de ${lauN(s.trans)} cm; índice esplênico de ${idxTxt}` : c ? `${c} no maior eixo` : '';
+     const aum = s.dim==='aum' || (idx!=null && idx>=60);   // índice ≥ 60: dimensões aumentadas
+     let t = aum
+       ? `com dimensões aumentadas${med?` (${med})`:''}, homogêneo.`
+       : `com dimensões normais${med?` (${med})`:''}, homogêneo.`;
      if(s.acs) t += ' ' + lauFrase(lauJoin(['pequena imagem nodular junto ao hilo esplênico, com ecogenicidade semelhante à do baço', lauMed(s.acsD,'cm')]) + ', compatível com baço acessório');
      const les=[];
      if(s.cal) les.push('focos hiperecogênicos esparsos com sombra acústica posterior, compatíveis com calcificações (granulomas)');
      if(s.cis) les.push(lauJoin(['imagem cística simples no parênquima esplênico', lauMed(s.cisD,'cm')]));
-     if(s.dim==='aum') conc.push('Esplenomegalia' + (c?` (${c})`:'') + '.');
+     if(aum) conc.push('Esplenomegalia' + (idx!=null ? ` (índice esplênico de ${idxTxt})` : c?` (${c})`:'') + '.');
      if(s.acs) conc.push('Baço acessório.');
      if(s.cal) conc.push('Granulomas calcificados esplênicos.');
      if(s.cis) conc.push('Cisto esplênico.');
@@ -325,14 +341,23 @@ const LAU_ABD_ITEMS = [
        {t:'radio', k:'cisQ'+L, lbl:'Quantidade', opts:LAU_QTD, show:s=>ok(s)&&s['cis'+L], ind:1},
        {t:'num', k:'cisD'+L, lbl:'Medida (maior)', unit:'cm', show:s=>ok(s)&&s['cis'+L], ind:1},
        {t:'select', k:'cisL'+L, lbl:'Localização', opts:[['','—'],['terço superior','Terço superior'],['terço médio','Terço médio'],['terço inferior','Terço inferior']], show:s=>ok(s)&&s['cis'+L], ind:1},
+       {t:'check', k:'nod'+L, lbl:'Nódulo', show:ok},
+       {t:'dims', k:'nodV'+L, lbl:'Medidas', show:s=>ok(s)&&s['nod'+L], ind:1},
+       {t:'radio', k:'nodE'+L, lbl:'Ecogenicidade', opts:[['','—'],['hipoecogênico','Hipoecogênico'],['isoecogênico','Isoecogênico'],['hiperecogênico','Hiperecogênico'],['heterogêneo','Heterogêneo']], show:s=>ok(s)&&s['nod'+L], ind:1},
+       {t:'radio', k:'nodC'+L, lbl:'Contornos', opts:[['','—'],['regulares','Regulares'],['lobulados','Lobulados'],['irregulares','Irregulares']], show:s=>ok(s)&&s['nod'+L], ind:1},
+       {t:'select', k:'nodL'+L, lbl:'Localização', opts:[['','—'],['terço superior','Terço superior'],['terço médio','Terço médio'],['terço inferior','Terço inferior']], show:s=>ok(s)&&s['nod'+L], ind:1},
      ];
    }),
    build(s){
      const lado = L=>{
-       const alt = s['est'+L]!=='n' || s['dim'+L]!=='n' || s['calc'+L] || s['hid'+L] || s['cis'+L];
+       const alt = s['est'+L]!=='n' || s['dim'+L]!=='n' || s['calc'+L] || s['hid'+L] || s['cis'+L] || s['nod'+L];
        return {alt, med: lauHas(s['comp'+L]) || lauHas(s['parq'+L])};
      };
      const D=lado('D'), E=lado('E');
+     const nodTxt = (L, onde)=>{ if(s['est'+L]==='cx' || !s['nod'+L]) return '';
+       const desc=[s['nodE'+L], lauHas(s['nodC'+L])?`de contornos ${s['nodC'+L]}`:''].filter(lauHas).join(', ');
+       const loc = lauHas(s['nodL'+L]) ? `no ${s['nodL'+L]} ${onde?onde.replace(/^no /,'do '):''}`.trim() : (onde||'');
+       return ' ' + lauFrase(lauJoin([`nódulo sólido${desc?' '+desc:''}`, loc, lauDimsTxt(s['nodV'+L])])); };
      const medTxt = L=>{
        const c=s['comp'+L], p=s['parq'+L];
        return [lauHas(c)?`${lauN(c)} cm de comprimento`:'', lauHas(p)?`parênquima de ${lauN(p)} cm`:''].filter(Boolean).join(' e ');
@@ -367,6 +392,7 @@ const LAU_ABD_ITEMS = [
            ? lauJoin([`cistos simples, o maior ${loc}`.trim(), lauMed(s['cisD'+L],'cm')])
            : lauJoin([`cisto simples ${loc}`.trim(), lauMed(s['cisD'+L],'cm')]));
        }
+       t += nodTxt(L, '');
        if(sem.length===2) t += ' Sem hidronefrose ou cálculos detectáveis ao método.';
        else if(sem[0]==='hidronefrose') t += ' Sem hidronefrose.';
        else if(sem[0]==='cálculos') t += ' Sem cálculos detectáveis ao método.';
@@ -409,6 +435,7 @@ const LAU_ABD_ITEMS = [
            ? lauJoin([lauHas(l) ? `cistos simples ${noRim(L)}, o maior no ${l}` : `cistos simples ${noRim(L)}, o maior`, lauMed(s['cisD'+L],'cm')])
            : lauJoin([lauHas(l) ? `cisto simples no ${l} ${doRim(L)}` : `cisto simples ${noRim(L)}`, lauMed(s['cisD'+L],'cm')]));
        });
+       ['D','E'].forEach(L=>{ t += nodTxt(L, L==='D'?'no rim direito':'no rim esquerdo'); });
        const semH = !s.hidD && !s.hidE, semC = !s.calcD && !s.calcE;
        if(semH && semC) t += ' Sem hidronefrose ou cálculos detectáveis ao método.';
        else if(semH) t += ' Sem hidronefrose.';
@@ -428,6 +455,10 @@ const LAU_ABD_ITEMS = [
      const cD=s.estD!=='cx'&&s.cisD, cE=s.estE!=='cx'&&s.cisE;
      if(cD&&cE) conc.push('Cistos renais simples bilaterais.');
      else if(cD||cE){ const L=cD?'D':'E'; conc.push(`${s['cisQ'+L]==='n'?'Cistos renais simples':'Cisto renal simples'} ${cD?'à direita':'à esquerda'}.`); }
+     ['D','E'].forEach(L=>{ if(s['est'+L]==='cx' || !s['nod'+L]) return; const lado = L==='D'?'à direita':'à esquerda';
+       conc.push(s['nodE'+L]==='hiperecogênico'
+         ? `Nódulo renal hiperecogênico ${lado}, que pode corresponder a angiomiolipoma. Sugere-se complementação com TC ou RM para caracterização.`
+         : `Nódulo renal sólido ${lado}. Sugere-se complementação com TC ou RM para caracterização.`); });
      return {txt: juntos ? descJunto() : `${desc('D')} ${desc('E')}`, conc};
    }},
 
@@ -558,7 +589,7 @@ LAU_STRUCT.elasto = {k:'elasto', label:'Elastografia hepática', noNF:true,
     return {txt:t, conc};
   }};
 /* Alças intestinais — apêndice e intussuscepção */
-LAU_STRUCT.alcas = {k:'alcas', label:'Alças intestinais',
+LAU_STRUCT.alcas = {k:'alcas', label:'Alças intestinais', hideNormal:true,   // só entra no laudo quando marcado
   normal:'sem distensão ou espessamento parietal detectáveis ao método.',
   ctrls:[
     {t:'radio', k:'ap', lbl:'Apêndice cecal', opts:[['ns','Não descrever'],['n','Normal'],['nc','Não caracterizado'],['ap','Apendicite']]},
