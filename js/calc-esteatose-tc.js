@@ -111,7 +111,7 @@ function esttcNcFrase(){
   const y  = String(r.pdff).replace('.', ',');
   const g  = esttcGrade(r.pdff);
   if(g===0) return `Fígado com densidade parenquimatosa dentro dos limites da normalidade (média de ${hu} UH), com PDFF estimado em ${y}%, sem sinais de esteatose hepática.`;
-  return `Fígado apresentando redução da densidade parenquimatosa, com média de ${hu} UH, com PDFF estimado em ${y}%, compatível com esteatose hepática ${ESTTC_GRAU_TXT[g]}.`;
+  return `Fígado apresentando redução da densidade parenquimatosa, com média de ${hu} UH (PDFF estimado em ${y}%), compatível com esteatose hepática ${ESTTC_GRAU_TXT[g]}.`;
 }
 function esttcCtFrase(){
   const s = esteatoseTcState(); const r = esttcCtCalc(s); if(!r) return '';
