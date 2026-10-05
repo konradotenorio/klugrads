@@ -1171,7 +1171,7 @@ const LAU_QTPL = 'Identificam-se outras XXX formações de aspecto semelhante, a
 function lauQtd(f, bag, id){ return f.q ? ((bag['d'+id]||{}).qtd || '1') : '1'; }
 /* mama: em "vários semelhantes" informa-se a localização e as medidas de cada um */
 const LAU_LOCT = 'às XXX horas, a XXX cm do mamilo, a XXX cm da pele, medindo XXX x XXX x XXX cm';
-function lauMulti(f){ return f.o==='mama' || f.kind==='tirads'; }
+function lauMulti(f){ return (f.o==='mama' && !f.tn) || f.kind==='tirads'; }   // f.tn: "vários" numa frase só (o maior)
 /* modelo de localização/medidas de cada achado semelhante */
 function lauLocTpl(f){ return f.kind==='tirads' ? f.t : (f.loct || LAU_LOCT); }
 function lauQn(d){ const n=parseInt((d||{}).qn,10); return isNaN(n) ? 2 : Math.max(2, Math.min(12, n)); }
@@ -1188,7 +1188,8 @@ function lauLocCurta(vals){
 /* distâncias do mamilo e da pele são opcionais: sem valor, saem do texto */
 function lauSemDistVazia(t){
   return t.replace(/a (<mark class="lau-ph">)?XXX(<\/mark>)? cm d[ao] (mamilo|pele), /g, '')
-          .replace(/,?\s*às (<mark class="lau-ph">)?XXX(<\/mark>)? horas(?=,)/g, '').replace(/:\s*,\s*/g, ': ');   // horário em branco sai do texto
+          .replace(/,?\s*às (<mark class="lau-ph">)?XXX(<\/mark>)? horas(?=[,.])/g, '').replace(/:\s*,\s*/g, ': ')
+          .replace(/,? o maior(?=\.)/g, '').replace(/o maior, medindo/g, 'o maior medindo');   // horário em branco sai do texto
 }
 /* trechos opcionais da frase (f.vaz): saem quando o campo ficou em branco */
 function lauTiraVazio(t, pats){
@@ -1220,7 +1221,7 @@ function lauFraseText(id, bag, html){
   else if(f.kind==='orads') t = lauOradsText(f, bag['f'+id], bag['d'+id]||{}, html);
   else if(f.kind==='hernia') t = lauHerniaText(f, bag['f'+id], bag['d'+id]||{}, html);
   else if(f.kind==='birads') t = lauBiradsText(f, bag['f'+id], bag['d'+id]||{}, html);
-  else t = lauFill(f.t, bag['f'+id], html);
+  else t = lauFill(f.tn && lauQtd(f,bag,id)==='n' ? f.tn : f.t, bag['f'+id], html);
   if(f.mt){ const n=lauMtN(bag['d'+id]); for(let j=2;j<=n+1;j++) t += `${html?'<br>':'\n'}${f.mtn||'Nódulo'} ${j}: ${lauFill(f.mt, bag['f'+id+'_'+j], html)}.`; }
   if(f.loc && !lauMgK(f)){ const lt=lauMgLocTxt(bag['d'+id]||{}, html, false); t = lt ? t.replace('{LOC}', lt) : t.replace(/,?\s*\{LOC\}/, ''); }
   if(f.medOpc && !lauMgK(f)) t = lauTiraMedVazia(t);
@@ -1228,7 +1229,7 @@ function lauFraseText(id, bag, html){
     if(f.kind==='birads') t = lauBiradsText(f, bag['f'+id], bag['d'+id]||{}, html, lauLocs(f,id,bag,html));
     else if(f.kind==='tirads') t = lauTiradsText(f, bag['f'+id], bag['d'+id]||{}, html, lauLocs(f,id,bag,html));
     else if(lauMulti(f)) t += lauLocs(f,id,bag,html).slice(1).map((l,j)=>`${html?'<br>':'\n'}Formação semelhante ${j+2}: ${l}.`).join('');
-    else t += ' ' + lauFill(LAU_QTPL, bag['q'+id], html);
+    else if(!f.tn) t += ' ' + lauFill(LAU_QTPL, bag['q'+id], html);
   }
   if(f.vaz) t = lauTiraVazio(t, f.vaz);
   if(LAU_MSK.indexOf(f.o)>=0) t = lauTiraMedVazia(t);
@@ -2199,12 +2200,12 @@ function lauFrasesPanel(k, org, list, bag, estrut){
     // 1º achado (descrição principal) logo após os descritores; depois os demais e o botão +
     const tplK = lauKindTE(f) ? '' : null;
     const principal = tplK!=null ? (tplK ? `<div class="lau-rl">Medidas</div>${lauInlineForm(k,'f'+id,tplK,bag['f'+id])}` : '') : lauHasPh(f.t)
-      ? (f.kind||multi ? `<div class="lau-rl">${multi?nome1+' 1 — localização e medidas':f.kind==='hernia'||f.kind==='orads'?'Medidas':lauMgK(f)?(f.medOpc?'Medidas (opcional)':'Medidas'):'Localização e medidas'}</div>` : '') + lauInlineForm(k,'f'+id,f.t,bag['f'+id])
+      ? (f.kind||multi ? `<div class="lau-rl">${multi?nome1+' 1 — localização e medidas':f.kind==='hernia'||f.kind==='orads'?'Medidas':lauMgK(f)?(f.medOpc?'Medidas (opcional)':'Medidas'):'Localização e medidas'}</div>` : '') + lauInlineForm(k,'f'+id,(f.tn && qtd==='n') ? f.tn : f.t,bag['f'+id])
       : `<div class="lau-inl dim">${esc(f.t)}</div>`;
     const extras = multi
       ? Array.from({length:lauQn(d)-1},(_,j)=>`<div class="lau-rl lau-rlx">${nome1} ${j+2} — localização e medidas <button type="button" class="lau-xs" onclick="lauQnDel('${k}','${id}',${j+2})" aria-label="Remover">×</button></div>${lauInlineForm(k,'f'+id+'_'+(j+2),lauLocTpl(f),bag['f'+id+'_'+(j+2)])}`).join('')
         + `<button type="button" class="lau-addd" onclick="lauQnAdd('${k}','${id}')">+ adicionar ${f.kind?'nódulo':'formação'} semelhante</button>`
-      : (qtd==='n' ? `<div class="lau-rl">Os demais:</div>${lauInlineForm(k,'q'+id,LAU_QTPL,bag['q'+id])}` : '');
+      : (qtd==='n' && !f.tn ? `<div class="lau-rl">Os demais:</div>${lauInlineForm(k,'q'+id,LAU_QTPL,bag['q'+id])}` : '');
     const mtx = f.mt ? Array.from({length:lauMtN(d)},(_,j)=>`<div class="lau-rl lau-rlx">${esc(f.mtn||'Nódulo')} ${j+2} <button type="button" class="lau-xs" onclick="lauMtDel('${k}','${id}',${j+2})" aria-label="Remover">×</button></div>${lauInlineForm(k,'f'+id+'_'+(j+2),f.mt,bag['f'+id+'_'+(j+2)])}`).join('')
         + `<button type="button" class="lau-addd" onclick="lauMtAdd('${k}','${id}')">+ ${esc(f.mtb||'adicionar outro')}</button>` : '';
     const diff = qtd==='d' ? `<button type="button" class="lau-addd" onclick="lauFraseAddDiff('${k}',${fi})">+ adicionar outro diferente</button>` : '';
