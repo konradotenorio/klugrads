@@ -1732,7 +1732,8 @@ function openFavCalc(id){
 }
 /* Subespecialidades por método (fora do US). O US usa SPECIALTIES. */
 const MOD_SPECS = {
-  rm: [ {id:'medint', name:'Medicina Interna'} ],
+  rm: [ {id:'figado', name:'Fígado'}, {id:'adrenal', name:'Adrenal'}, {id:'rim', name:'Rim'},
+        {id:'prostata', name:'Próstata'}, {id:'ovario', name:'Ovário'}, {id:'utero', name:'Útero'} ],
   dxa: [ {id:'dxa', name:'Densitometria óssea'} ],
   tc: [ {id:'medint', name:'Medicina Interna'}, {id:'torax', name:'Tórax'},
         {id:'gu', name:'Genitourinário'}, {id:'gi', name:'Gastrointestinal'}, {id:'card', name:'Cardíaco e Tórax'},

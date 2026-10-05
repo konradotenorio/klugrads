@@ -225,6 +225,6 @@ function ferroT2SetCell(i,k,v){ const s=ferroT2State(); if(s.rows[i]){ s.rows[i]
 function ferroT2Refresh(){ const el=document.getElementById('ferrot2-res'); if(el) el.innerHTML=translateHTML(ferroT2ResHTML()); }
 
 /* registra no catálogo (CALCS de app.js) — método RM, subespecialidade Medicina Interna */
-CALCS.push({id:'ferro-t2', modality:'rm', subspec:'medint', badge:'T2*',
+CALCS.push({id:'ferro-t2', modality:'rm', subspec:'figado', badge:'T2*',
   title:'Ferro Hepático (T2*)',
   desc:'LIC por ajuste multi-eco T2* (regressão + curva) — 3 calibrações'});

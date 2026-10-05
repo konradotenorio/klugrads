@@ -129,6 +129,6 @@ function oradsMriSet(field, val){
 }
 
 /* registra no catálogo (CALCS de app.js) — método RM, subespecialidade Medicina Interna */
-CALCS.push({id:'orads-mri', modality:'rm', subspec:'medint', badge:'OM',
+CALCS.push({id:'orads-mri', modality:'rm', subspec:'ovario', badge:'OM',
   title:'O-RADS MRI',
   desc:'Lesão anexial na RM (ADNEX MR / curva tempo-intensidade)'});

@@ -74,6 +74,6 @@ function calcPreciseHTML(){
 }
 function preciseSet(val){ const s=preciseState(); s.change=(String(s.change)===String(val))?null:val; render(true); }
 
-CALCS.push({id:'precise', modality:'rm', subspec:'medint', badge:'PR',
+CALCS.push({id:'precise', modality:'rm', subspec:'prostata', badge:'PR',
   title:'PRECISE v2',
   desc:'Mudança radiológica na vigilância ativa da próstata (PRECISE v2)'});

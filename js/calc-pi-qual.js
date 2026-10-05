@@ -84,6 +84,6 @@ function calcPiQualHTML(){
 }
 function piqualSet(field,val){ const s=piqualState(); s[field]=(String(s[field])===String(val))?null:val; render(true); }
 
-CALCS.push({id:'pi-qual', modality:'rm', subspec:'medint', badge:'PQ',
+CALCS.push({id:'pi-qual', modality:'rm', subspec:'prostata', badge:'PQ',
   title:'PI-QUAL v2',
   desc:'Qualidade de imagem da RM de próstata (Prostate Imaging Quality v2)'});

@@ -73,6 +73,6 @@ function calcPiRrHTML(){
 }
 function pirrSet(field,val){ const s=pirrState(); s[field]=(String(s[field])===String(val))?null:val; render(true); }
 
-CALCS.push({id:'pi-rr', modality:'rm', subspec:'medint', badge:'RR',
+CALCS.push({id:'pi-rr', modality:'rm', subspec:'prostata', badge:'RR',
   title:'PI-RR',
   desc:'Recidiva local de câncer de próstata na RM pós-tratamento (PI-RR)'});

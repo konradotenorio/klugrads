@@ -139,6 +139,6 @@ function esteatoseRefresh(){
 }
 
 /* registra no catálogo (CALCS de app.js) — método RM, subespecialidade Medicina Interna */
-CALCS.push({id:'esteatose-rm', modality:'rm', subspec:'medint', badge:'FF',
+CALCS.push({id:'esteatose-rm', modality:'rm', subspec:'figado', badge:'FF',
   title:'Esteatose Hepática (RM)',
   desc:'Fração lipídica hepática por RM'});
