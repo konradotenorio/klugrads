@@ -774,12 +774,12 @@ function modalityHTML(){
     </div>
 
     <div class="home-note">
-      <div class="hn-t">Site em construção e em constante atualização:</div>
+      <div class="hn-t">Este site está em fase desenvolvimento e construção, recebendo atualizações constantes.</div>
       <ul>
-        <li>As ferramentas com <span role="img" aria-label="construção">🚧</span>: ainda estão em revisão e atualização</li>
-        <li>As ferramentas com <span role="img" aria-label="certo">✅</span>: já foram revisadas e já estão prontas para serem utilizadas</li>
-        <li>Contribua com suas informações e críticas — Em configurações coloquem suas observações e nos enviem suas mensagens.</li>
+        <li><span role="img" aria-label="construção">🚧</span> Em revisão: ferramentas ainda em fase de revisão e ajustes.</li>
+        <li><span role="img" aria-label="certo">✅</span> Revisadas: ferramentas já validadas e prontas para uso.</li>
       </ul>
+      <p>Sua opinião é importante. Envie sugestões, correções e críticas pela seção Configurações. Sua contribuição nos ajuda a aprimorar continuamente o conteúdo.</p>
     </div>
 
     <div class="home-find">
