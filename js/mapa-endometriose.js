@@ -15,8 +15,10 @@
      axial   (sup): útero × lateralização × ovário D × ovário E   (90)
      sagital (sag): útero × lateralização × ovário D              (30)
      coronal (abd): uma só                                         (1)
-   O corte axial das capturas é "visto de cima"; aqui ele é ESPELHADO para a
-   convenção anatômica/radiológica (direita do paciente à esquerda da imagem).
+   O corte axial é mostrado como VISÃO VIDEOLAPAROSCÓPICA (a imagem original, sem
+   espelhar): anterior no alto, posterior embaixo, esquerdo do paciente à esquerda da
+   imagem e direito à direita. Título e as quatro orientações são desenhados na própria
+   imagem (orientacao()), então vão junto na cópia/JPEG exportados.
 
    Estado em memória (state.msl.em), como o resto do Mapa Setorial Lesional.
    Tudo roda no navegador: nenhuma imagem ou desenho sai do aparelho.
@@ -29,7 +31,6 @@ const FLEX  = [['med','Mediofletido'],['ant','Antefletido'],['ret','Retrofletido
 const LADO  = [['c','Centralizado'],['e','Lateralizado à Esquerda'],['d','Lateralizado à Direita']];
 const OV    = [['p','Parauterino'],['r','Retrouterino'],['n','Não visibilizado']];
 const CORTES= [['sup','Axial (Pelve)'],['sag','Sagital (Pelve)'],['abd','Coronal (Abdome Superior)']];
-const FLIP  = {sup:true};
 const LES = [
   {id:1, nome:'Endometriose', cor:'#111111', cn:'PRETO'},
   {id:2, nome:'Endometrioma', cor:'#7A1F3D', cn:'VINHO'},
@@ -76,7 +77,7 @@ function html(){
   const tb = (id,ic,lbl,extra) => `<button type="button" class="msl-btn${extra||''}" id="${id}" title="${lbl}" aria-label="${lbl}">${mslIc(ic)}<span>${lbl}</span></button>`;
   return `<div id="em-root">
     <div class="ti-card em-ctl" id="em-ctl">${ctlHTML()}</div>
-    <div class="ti-legend-row" style="margin:0 0 10px"><span class="lt">Posicione os órgãos antes de marcar: a marcação fica no mesmo lugar da tela e não acompanha uma mudança de posição. Cada corte guarda a sua marcação. No corte axial, a direita do paciente fica à esquerda da imagem. Zoom: roda do mouse ou dois dedos; mover a imagem ampliada: botão direito do mouse ou dois dedos.</span></div>
+    <div class="ti-legend-row" style="margin:0 0 10px"><span class="lt">Posicione os órgãos antes de marcar: a marcação fica no mesmo lugar da tela e não acompanha uma mudança de posição. Cada corte guarda a sua marcação. O corte axial é a visão videolaparoscópica: as bordas indicam anterior, posterior, direito e esquerdo do paciente. Zoom: roda do mouse ou dois dedos; mover a imagem ampliada: botão direito do mouse ou dois dedos.</span></div>
     <div class="msl-ed${s.full?' full':''}" id="em-ed">
       <div class="msl-bar">
         <div class="msl-row">
@@ -209,10 +210,40 @@ function marca(ctx){
   ctx.shadowColor = 'rgba(0,0,0,.65)'; ctx.shadowBlur = fs*0.28; ctx.shadowOffsetY = 1;
   ctx.fillStyle = '#ffffff'; ctx.fillText(MARCA, m, R.IH-m*0.9); ctx.restore();
 }
+/* corte axial (visão videolaparoscópica): título no alto e as orientações nas quatro bordas.
+   Esquerdo/direito são do PACIENTE: a imagem original traz o lado esquerdo à esquerda da tela. */
+function orientacao(ctx){
+  const k = R.IW/1890, m = 26*k, F = (w,px)=>`${w} ${px}px "Segoe UI",Arial,Helvetica,sans-serif`;
+  ctx.save(); ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+  /* título: faixa escura, centralizada, no alto da imagem */
+  const tit = 'VISÃO ILUSTRATIVA VIDEOLAPAROSCÓPICA', th = 62*k, ty = m;
+  ctx.font = F(700,32*k); const tw = ctx.measureText(tit).width + 64*k, tx = (R.IW-tw)/2;
+  ctx.fillStyle = 'rgba(18,22,30,.80)'; roundRect(ctx,tx,ty,tw,th,th/2); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(tit, R.IW/2, ty+th/2+1*k); ctx.textAlign = 'left';
+  /* etiquetas das bordas: a seta aponta para fora da imagem (lado que o nome indica) */
+  const bh = 52*k, ar = 11*k;
+  const badge = (txt,dir,cx,cy)=>{
+    ctx.font = F(700,27*k); const w = ctx.measureText(txt).width + 34*k + 2*ar + 12*k, x = cx-w/2, y = cy-bh/2;
+    ctx.fillStyle = 'rgba(255,255,255,.90)'; ctx.strokeStyle = 'rgba(60,60,70,.45)'; ctx.lineWidth = 2*k; roundRect(ctx,x,y,w,bh,bh/2); ctx.fill(); ctx.stroke();
+    const ax = x+17*k+ar, ay = cy;                                  // centro da seta (à esquerda do texto)
+    const p = {up:[[0,-ar],[ar,ar*0.8],[-ar,ar*0.8]], down:[[0,ar],[ar,-ar*0.8],[-ar,-ar*0.8]],
+               left:[[-ar,0],[ar*0.8,ar],[ar*0.8,-ar]], right:[[ar,0],[-ar*0.8,ar],[-ar*0.8,-ar]]}[dir];
+    ctx.fillStyle = '#7A1F3D'; ctx.beginPath(); ctx.moveTo(ax+p[0][0],ay+p[0][1]); ctx.lineTo(ax+p[1][0],ay+p[1][1]); ctx.lineTo(ax+p[2][0],ay+p[2][1]); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#1f2630'; ctx.fillText(txt, ax+ar+12*k, cy+1*k);
+  };
+  badge('ANTERIOR','up',R.IW/2,ty+th+14*k+bh/2);
+  badge('POSTERIOR','down',R.IW/2,R.IH-m-bh/2);
+  ctx.font = F(700,27*k);
+  const bw = t => ctx.measureText(t).width + 34*k + 2*ar + 12*k;
+  badge('ESQUERDO','left',m+bw('ESQUERDO')/2,R.IH/2);
+  badge('DIREITO','right',R.IW-m-bw('DIREITO')/2,R.IH/2);
+  ctx.restore();
+}
 function drawBase(){
   const ctx = R.bctx; if(!ctx || !R.img) return;
   ctx.clearRect(0,0,R.IW,R.IH);
-  ctx.save(); if(FLIP[R.view]){ ctx.translate(R.IW,0); ctx.scale(-1,1); } ctx.drawImage(R.img,0,0,R.IW,R.IH); ctx.restore();
+  ctx.drawImage(R.img,0,0,R.IW,R.IH);
+  if(R.view==='sup') orientacao(ctx);
   marca(ctx);
   const rows = LES.filter(c=>R.used[c.id-1]);
   if(st().legend && rows.length) legenda(ctx,rows);
