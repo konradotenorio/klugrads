@@ -157,7 +157,7 @@ const tubo = (a,c,b,cor,borda,w) => curva(a,c,b,borda,w+2) + curva(a,c,b,cor,w);
    cálices menores (taça em cada papila), infundíbulos até os cálices maiores
    e a pelve; ramos da artéria e da veia nas colunas entre as pirâmides. */
 function rimAnatomico(o){
-  const {K, ox, oy, angs, sinus, junc, pelve, ramosA, ramosV, seioNotch} = o;
+  const {K, ox, oy, angs, sinus, junc, pelve, ramosA, ramosV, seioNotch} = o, z = o.z||1;
   const [sx,sy,srx,sry,srot] = sinus;
   let base = `<path d="${path(K)}" fill="url(#rmCortex)" stroke="#8E3F33" stroke-width="2.2"/>`;
   // seio renal (gordura) — elipse
@@ -169,8 +169,8 @@ function rimAnatomico(o){
   const papilas = [];
   angs.forEach(a=>{
     const dx=Math.cos(a), dy=Math.sin(a), D=raioDir(K,ox,oy,a), Ds=raioElipse(ox,oy,dx,dy,sx,sy,srx,sry,srot);
-    const tb=D-Math.max(9, Math.min(D*0.3, 16)); let ta=Math.max(Ds+1, tb*0.45); ta=Math.max(ta, tb-36); if(tb-ta<5) return;
-    const px=-dy, py=dx, w=Math.min(13, Math.max(5,(tb-ta)*0.5)), wa=2.2;
+    const tb=D-Math.max(9*z, Math.min(D*0.3, 16*z)); let ta=Math.max(Ds+1, tb*0.45); ta=Math.max(ta, tb-36*z); if(tb-ta<5) return;
+    const px=-dy, py=dx, w=Math.min(13*z, Math.max(5,(tb-ta)*0.5)), wa=2.2*z;
     const B=[ox+dx*tb, oy+dy*tb], A=[ox+dx*ta, oy+dy*ta], Bo=[ox+dx*(tb+4), oy+dy*(tb+4)];
     const b1=[B[0]+px*w,B[1]+py*w], b2=[B[0]-px*w,B[1]-py*w], a1=[A[0]+px*wa,A[1]+py*wa], a2=[A[0]-px*wa,A[1]-py*wa];
     const m1=[(b1[0]+a1[0])/2+px*w*0.18,(b1[1]+a1[1])/2+py*w*0.18], m2=[(b2[0]+a2[0])/2-px*w*0.18,(b2[1]+a2[1])/2-py*w*0.18];
@@ -180,10 +180,10 @@ function rimAnatomico(o){
   });
   // cálices menores (taça), infundíbulos, cálices maiores e pelve
   papilas.forEach(p=>{
-    const c1=[p.A[0]+p.px*6.5-p.dx*0.5, p.A[1]+p.py*6.5-p.dy*0.5], c2=[p.A[0]-p.px*6.5-p.dx*0.5, p.A[1]-p.py*6.5-p.dy*0.5];
-    const fundo=[p.A[0]-p.dx*6, p.A[1]-p.dy*6];
+    const c1=[p.A[0]+p.px*6.5*z-p.dx*0.5, p.A[1]+p.py*6.5*z-p.dy*0.5], c2=[p.A[0]-p.px*6.5*z-p.dx*0.5, p.A[1]-p.py*6.5*z-p.dy*0.5];
+    const fundo=[p.A[0]-p.dx*6*z, p.A[1]-p.dy*6*z];
     const J = junc(p.a);
-    cal += tubo(fundo,[(fundo[0]+J[0])/2,(fundo[1]+J[1])/2],J,'#F2D879','#A88A26',3.4);
+    cal += tubo(fundo,[(fundo[0]+J[0])/2,(fundo[1]+J[1])/2],J,'#F2D879','#A88A26',3.4*z);
     cal += `<path d="M${f1(c1[0])} ${f1(c1[1])}Q${f1(p.A[0]-p.dx*1)} ${f1(p.A[1]-p.dy*1)} ${f1(c2[0])} ${f1(c2[1])}Q${f1(fundo[0]-p.px*2)} ${f1(fundo[1]-p.py*2)} ${f1(fundo[0])} ${f1(fundo[1])}Q${f1(fundo[0]+p.px*2)} ${f1(fundo[1]+p.py*2)} ${f1(c1[0])} ${f1(c1[1])}Z" fill="#F2D879" stroke="#A88A26" stroke-width="1"/>`;
   });
   return {base, seio, pir, cal, papilas, pelve, ramosA, ramosV};
@@ -266,13 +266,14 @@ function coronal(s,ox,oy){
     }
   } else les = lesao(cx-sg*a*0.25, yl, r, true);
   const o = R.base + R.pir + R.seio + col + art + vei + les + polares(cx,yU,yL,a,ox,sg>0?-1:1);
-  return clip(ox,oy,o) + rotulos(ox,oy,'CORONAL', sg>0?['LATERAL','MEDIAL']:['MEDIAL','LATERAL'],['CRANIAL','CAUDAL']) + escala(ox,oy);
+  return clip(ox,oy,o) + rotulos(ox,oy,'CORONAL', sg>0?['LATERAL','MEDIAL']:['MEDIAL','LATERAL'],['CRANIAL','CAUDAL']);
 }
 
 /* ======================= AXIAL (nível do hilo) ======================= */
 function axial(s,ox,oy){
   const sg = s.lado==='d' ? 1 : -1;
-  const a=KT/2*PX_CM, b=KAP/2*PX_CM, cx=ox+130-sg*20, cy=oy+222;
+  const Z=1.9;                                         // axial ampliado (zoom) para ficar legível
+  const a=KT/2*PX_CM*Z, b=KAP/2*PX_CM*Z, cx=ox+150-sg*12, cy=oy+222;
   const notch = sg>0 ? -Math.PI/4 : -3*Math.PI/4;        // hilo voltado anteromedialmente
   const rot = sg>0 ? Math.PI/6 : -Math.PI/6;
   const K = bean(cx,cy,a,b,rot,notch,a*0.55,0.75);
@@ -283,21 +284,21 @@ function axial(s,ox,oy){
   const PV=[cx+dx*a*0.7, cy+dy*a*0.7];
   const ant = (dy*sg<0) ? [-dy,dx] : [dy,-dx];          // perpendicular que aponta para anterior (y menor)
   const A_ = ant[1]<0 ? ant : [-ant[0],-ant[1]];
-  const R = rimAnatomico({K, ox:c0x, oy:c0y, angs, sinus, junc:()=>[PV[0]-A_[0]*4,PV[1]-A_[1]*4], seioNotch:notch});
+  const R = rimAnatomico({K, ox:c0x, oy:c0y, angs, sinus, junc:()=>[PV[0]-A_[0]*4,PV[1]-A_[1]*4], seioNotch:notch, z:Z});
   // de anterior para posterior: veia, artéria, pelve (lanes paralelas saindo do hilo)
   const lane=(k,len)=>[[PV[0]+A_[0]*k-dx*4, PV[1]+A_[1]*k-dy*4],[PV[0]+A_[0]*k+dx*len*0.5, PV[1]+A_[1]*k+dy*len*0.5],[PV[0]+A_[0]*k+dx*len, PV[1]+A_[1]*k+dy*len]];
-  const pel = lane(-7,70), ar = lane(2,105), ve = lane(10,105);
-  let col = R.cal + tubo(pel[0],pel[1],pel[2],'#F2D879','#A88A26',7);
-  const art = ramos(K,c0x,c0y,angs,ar[0],'url(#rmArt)','#7F1010',1.5,0.06,0) + tubo(ar[0],ar[1],ar[2],'url(#rmArt)','#7F1010',6);
-  const vei = ramos(K,c0x,c0y,angs,ve[0],'url(#rmVeia)','#16336F',1.8,-0.07,2) + tubo(ve[0],ve[1],ve[2],'url(#rmVeia)','#16336F',9);
+  const pel = lane(-12,90), ar = lane(3,120), ve = lane(17,120);
+  let col = R.cal + tubo(pel[0],pel[1],pel[2],'#F2D879','#A88A26',12);
+  const art = ramos(K,c0x,c0y,angs,ar[0],'url(#rmArt)','#7F1010',2.2,0.06,0) + tubo(ar[0],ar[1],ar[2],'url(#rmArt)','#7F1010',9);
+  const vei = ramos(K,c0x,c0y,angs,ve[0],'url(#rmVeia)','#16336F',2.6,-0.07,2) + tubo(ve[0],ve[1],ve[2],'url(#rmVeia)','#16336F',13);
   const latA = sg>0 ? Math.PI : 0;
   const ang = s.pos==='lat' ? latA : s.pos==='med' ? (sg>0 ? Math.PI/10 : Math.PI-Math.PI/10)
             : s.pos==='ant' ? (sg>0 ? -Math.PI*0.6 : -Math.PI*0.4) : (sg>0 ? Math.PI*0.6 : Math.PI*0.4);
-  const r = raio(s), p = naDirecao(K,cx,cy,ang);
+  const r = raio(s)*Z, p = naDirecao(K,cx,cy,ang);
   let ux=p[0]-cx, uy=p[1]-cy; const un=Math.hypot(ux,uy)||1; ux/=un; uy/=un;
   const c = profundidade(p,ux,uy,r,s.exo);
   const o = R.base + R.pir + R.seio + col + art + vei + lesao(c[0],c[1],r,false);
-  return clip(ox,oy,o) + rotulos(ox,oy,'AXIAL (nível do hilo)', sg>0?['LATERAL','MEDIAL']:['MEDIAL','LATERAL'],['ANTERIOR','POSTERIOR']) + escala(ox,oy);
+  return clip(ox,oy,o) + rotulos(ox,oy,'AXIAL (nível do hilo)', sg>0?['LATERAL','MEDIAL']:['MEDIAL','LATERAL'],['ANTERIOR','POSTERIOR']);
 }
 
 /* ======================= SAGITAL ======================= */
@@ -323,7 +324,7 @@ function sagital(s,ox,oy){
     const c = profundidade(p,nx,ny,r,s.exo); les = lesao(c[0],c[1],r,false);
   } else les = lesao(cx, yl, r, true);
   const o = R.base + R.pir + R.seio + R.cal + vasos + les + polares(cx,yU,yL,a,ox,1);
-  return clip(ox,oy,o) + rotulos(ox,oy,'SAGITAL',['ANTERIOR','POSTERIOR'],['CRANIAL','CAUDAL']) + escala(ox,oy);
+  return clip(ox,oy,o) + rotulos(ox,oy,'SAGITAL',['ANTERIOR','POSTERIOR'],['CRANIAL','CAUDAL']);
 }
 let CLIPN = 0;
 function clip(ox,oy,inner){
@@ -355,7 +356,7 @@ function svg(){
   let lx = 20; const ly = 474;
   it.forEach(([c,t])=>{ o += `<circle cx="${lx+7}" cy="${ly}" r="7" fill="${c}" stroke="rgba(0,0,0,.25)"/><text x="${lx+19}" y="${ly+4}" ${F} font-size="12.5" font-weight="600" fill="${C.txt}">${t}</text>`; lx += 30 + t.length*7; });
   o += `<line x1="${lx}" y1="${ly}" x2="${lx+26}" y2="${ly}" stroke="${C.polar}" stroke-width="1.6" stroke-dasharray="7 5"/><text x="${lx+32}" y="${ly+4}" ${F} font-size="12.5" font-weight="600" fill="${C.txt}">Linhas polares</text>`;
-  o += `<text x="20" y="${ly+24}" ${F} font-size="11" fill="${C.dim}">Escala real (rim ≈ 11 × 4 × 3,5 cm). Hilo, de anterior para posterior: veia, artéria, pelve. Tracejado = lesão projetada fora do plano.</text>`;
+  o += `<text x="20" y="${ly+24}" ${F} font-size="11" fill="${C.dim}">Hilo, de anterior para posterior: veia, artéria, pelve. Tracejado = lesão projetada fora do plano.</text>`;
   if(sc.ok){
     const tc = {low:'#1f9d55',mod:'#e07a1f',high:'#cf2020'}[sc.tone];
     o += `<rect x="${W-262}" y="${ly-22}" width="244" height="50" rx="12" fill="${tc}" fill-opacity=".12" stroke="${tc}" stroke-width="1.5"/>`;
@@ -425,7 +426,7 @@ function html(){
   const d = dst();
   return `<div id="rim-root">
     <div class="ti-card em-ctl" id="rim-ctl">${ctlHTML()}</div>
-    <div class="ti-legend-row" style="margin:0 0 10px"><span class="lt">Descreva a lesão e o esquema se ajusta nos três planos, em escala real (rim de ~11 × 4 cm; a lesão segue o diâmetro informado). Coronal em visão anterior (convenção radiológica); axial no nível do hilo, anterior no alto; sagital com anterior à esquerda. <b>L</b>: as linhas polares passam pelos lábios superior e inferior do seio renal; lesão no terço médio é sempre L3. Se preferir, use <b>Desenhar à mão</b> para marcar por cima do esquema.</span></div>
+    <div class="ti-legend-row" style="margin:0 0 10px"><span class="lt">Descreva a lesão e o esquema se ajusta nos três planos, com a lesão proporcional ao diâmetro informado. Coronal em visão anterior (convenção radiológica); axial no nível do hilo, anterior no alto; sagital com anterior à esquerda. <b>L</b>: as linhas polares passam pelos lábios superior e inferior do seio renal; lesão no terço médio é sempre L3. Se preferir, use <b>Desenhar à mão</b> para marcar por cima do esquema.</span></div>
     <div class="ti-card" style="padding:8px">
       <div id="rim-dbar" style="margin:2px 2px 8px">${drawHTML()}</div>
       <div id="rim-stage" style="position:relative;width:100%;border-radius:10px;overflow:hidden;aspect-ratio:${W}/${H};touch-action:${d.on?'none':'auto'}">
@@ -448,7 +449,7 @@ function html(){
     </div>
     <div class="ti-card">
       <div class="tfg-sec-lbl">Referência</div>
-      <div class="msl-refintro">Ilustração esquemática original, em escala. Critérios do escore conforme a publicação abaixo (R ≤ 4 / 4–7 / ≥ 7 cm; E ≥ 50% / &lt; 50% exofítica / endofítica; N ≥ 7 / 4–7 / ≤ 4 mm; L além da linha polar / cruza / &gt; 50% além, entre as linhas ou cruzando a linha média axial; sufixos a, p, x e h). Complexidade: 4–6 baixa, 7–9 moderada, 10–12 alta.</div>
+      <div class="msl-refintro">Ilustração esquemática original. Critérios do escore conforme a publicação abaixo (R ≤ 4 / 4–7 / ≥ 7 cm; E ≥ 50% / &lt; 50% exofítica / endofítica; N ≥ 7 / 4–7 / ≤ 4 mm; L além da linha polar / cruza / &gt; 50% além, entre as linhas ou cruzando a linha média axial; sufixos a, p, x e h). Complexidade: 4–6 baixa, 7–9 moderada, 10–12 alta.</div>
       <div class="tfg-ref-list">${REF.map(r=>`<div class="tfg-ref-item">${esc(r)}</div>`).join('')}</div>
     </div>
   </div>`;
