@@ -1392,12 +1392,12 @@ const LAU_US_MASKS = [
 {
 "k": "endometrio",
 "label": "Endométrio",
-"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.",
 "dash": true,
 "opts": [],
 "grp": "",
 "alts": [
-"centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.",
+"centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.",
 "filiforme / não caracterizado."
 ]
 },
@@ -1514,7 +1514,7 @@ const LAU_US_MASKS = [
 {
 "k": "endometrio",
 "label": "Endométrio",
-"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -1620,7 +1620,7 @@ const LAU_US_MASKS = [
 {
 "k": "endometrio",
 "label": "Endométrio",
-"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -1738,7 +1738,7 @@ const LAU_US_MASKS = [
 {
 "k": "endometrio",
 "label": "Endométrio",
-"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -1989,7 +1989,7 @@ const LAU_US_MASKS = [
 {
 "k": "endometrio",
 "label": "Endométrio",
-"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.",
 "dash": true,
 "opts": [
 "Dispositivo contraceptivo: centrado na cavidade endometrial. Distância DIU-serosa fúndica: XXX ; distância DIU-fundo da cavidade: XXX cm."
@@ -3155,7 +3155,7 @@ const LAU_US_MASKS = [
 {
 "k": "nervo-ulnar",
 "label": "Nervo ulnar",
-"text": "com espessura, contornos e ecotextura normais.",
+"text": "com espessura, contornos e ecotextura normais, com área seccional de XXX mm² ao nível do epicôndilo medial.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -3785,7 +3785,7 @@ const LAU_US_MASKS = [
 {
 "k": "nervo-mediano",
 "label": "Nervo mediano",
-"text": "com trajeto preservado, contornos lisos e textura homogênea. Área seccional (AST) estimada em XXX cm² no túnel do carpo.",
+"text": "com trajeto preservado, contornos lisos e textura homogênea, com área seccional de XXX mm² na entrada do túnel do carpo.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -5050,7 +5050,7 @@ const LAU_US_MASKS = [
 {
 "k": "endometrio",
 "label": "Endométrio",
-"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm, sem focos de vascularização anômala.",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm, sem focos de vascularização anômala.",
 "dash": true,
 "opts": [],
 "grp": ""

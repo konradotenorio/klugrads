@@ -19,7 +19,7 @@
 
 const LAU_AUTO_PADRAO = {on:true, rimMin:9, rimMax:13, bacoMax:13, prostMax:30, concLink:true,
   testMin:9, tireoMin:4, tireoMax:25, ovMax:10.4, ovMaxMeno:5.4, uteroMax:120, endoMenac:1.5, endoMeno:0.5,
-  residMin:30, portaMax:1.3, colMax:7, aortaEct:2.5, aortaAn:3};
+  residMin:30, portaMax:1.3, colMax:7, aortaEct:2.5, aortaAn:3, nervMed:10, nervUln:9};
 /* limites: padrão global (Configurações) + ajustes feitos só neste laudo (state.lau.auto) */
 function lauAutoCfgG(){ const c=lauCfgAll(); return Object.assign({}, LAU_AUTO_PADRAO, c.auto||{}); }
 function lauAutoLocal(){ const L=state.lau; if(!L) return {lim:{}, off:{}, fase:'menac'}; if(!L.auto) L.auto={lim:{}, off:{}, fase:'menac'}; return L.auto; }
@@ -41,7 +41,8 @@ function lauAutoCampos(str, pre){
       // contexto longo: volta pelas palavras (pulando campos) até o fim da frase anterior
       const cw=[]; for(let x=j-1; x>=0 && cw.length<14; x--){ const k=toks[x]; if(k.t!=='w') continue; if(x<j-1 && /[.;]$/.test(k.s)) break; cw.unshift(k.s); }
       const lim=v=>lauNorm(v).replace(/[():;,.]/g,'').replace(/\s+/g,' ').trim();
-      out.push({i:t.i, antes:lim(txt), ctx:lim(cw.join(' ')), cm2mm});
+      const mmNat = !cm2mm && /^mm[.,;:)]*$/.test((toks[j+1]&&toks[j+1].s)||'') && !(raw && raw.lines[li] && raw.lines[li][j+1] && /^cm/.test(raw.lines[li][j+1].s||''));   // campo já em mm na máscara (ex.: endométrio)
+      out.push({i:t.i, antes:lim(txt), ctx:lim(cw.join(' ')), cm2mm: cm2mm || mmNat});
     });
   });
   return {tpl, campos:out};
@@ -128,7 +129,16 @@ const LAU_AUTO_TXT = [
    conc:v=>`Útero com dimensões aumentadas (volume estimado em ${LAU_N(v)} cm³).`},
   {id:'endometrio', item:/^endometrio/, campo:/espessura bilaminar de$/,
    cond:(v,A)=>{ const l=A.fase==='meno'?A.endoMeno:A.endoMenac; return l && v > l; },
-   conc:v=>`Endométrio espessado (${LAU_LEN(v)}).`},
+   conc:v=>`Endométrio espessado (${LAU_N(Math.round(v*100)/10)} mm).`},   // endométrio sempre em mm
+  /* nervos (área seccional em mm²): mediano na entrada do túnel do carpo ≥ 10 mm²; ulnar no epicôndilo medial ≥ 9 mm² */
+  {id:'nervMed', item:/^nervo mediano/, campo:/area seccional de$/,
+   cond:(v,A)=> A.nervMed && v >= A.nervMed,
+   txt:[[/com trajeto preservado, contornos lisos e textura homogênea/, 'espessado e hipoecogênico, com trajeto preservado']],
+   conc:v=>`Espessamento do nervo mediano na entrada do túnel do carpo (área seccional de ${LAU_N(v)} mm²), compatível com neuropatia compressiva (síndrome do túnel do carpo), a correlacionar com dados clínicos e eletroneuromiografia.`},
+  {id:'nervUln', item:/^nervo ulnar/, campo:/area seccional de$/,
+   cond:(v,A)=> A.nervUln && v >= A.nervUln,
+   txt:[[/com espessura, contornos e ecotextura normais/, 'espessado e hipoecogênico']],
+   conc:v=>`Espessamento do nervo ulnar no cotovelo (área seccional de ${LAU_N(v)} mm²), compatível com neuropatia ulnar, a correlacionar com dados clínicos e eletroneuromiografia.`},
   {id:'endoHet', item:/^endometrio/, escolha:'heterogêneo',
    conc:()=>'Endométrio heterogêneo.'},
   {id:'residuo', item:/^residuo/, campo:/estimado em$/,
@@ -275,6 +285,9 @@ function lauAutoCfgHTML(){
     ${num('uteroMax','Útero com volume aumentado acima de','cm³')}
     ${num('endoMenac','Endométrio espessado acima de (menacme)','cm')}
     ${num('endoMeno','Endométrio espessado acima de (pós-menopausa)','cm')}
+    ${sub('Nervos (musculoesquelético)')}
+    ${num('nervMed','Nervo mediano espessado a partir de (área seccional)','mm²')}
+    ${num('nervUln','Nervo ulnar espessado a partir de (área seccional)','mm²')}
     <label class="lau-chk"><input type="checkbox" ${A.concLink?'checked':''} onchange="lauAutoSet('concLink',this.checked)"><span>Preencher os campos da conclusão com o valor do mesmo campo do laudo (ex.: massa da próstata, resíduo pós-miccional)</span></label>
     <div class="ti-legend-row" style="margin-top:6px"><span class="lt">Os limites valem para adultos; ajuste conforme a referência do seu serviço. Campo vazio = regra desligada. Dentro de cada laudo dá para mudar o limite só daquele exame (ex.: criança) no item correspondente.</span></div>
   </div>`;
@@ -290,6 +303,7 @@ const LAU_AUTO_LIMS = {
   utero:[['uteroMax','Aumentado acima de','cm³']],
   endometrio:[['endoMenac','Espessado acima de','cm','menac'],['endoMeno','Espessado acima de','cm','meno']],
   residuo:[['residMin','Significativo a partir de','mL']],
+  nervMed:[['nervMed','Espessado a partir de','mm²']], nervUln:[['nervUln','Espessado a partir de','mm²']],
   porta:[['portaMax','Aumentada acima de','cm']],
   rins:[['rimMin','Reduzido abaixo de','cm'],['rimMax','Aumentado acima de','cm']],
   baco:[['bacoMax','Aumentado acima de','cm']],

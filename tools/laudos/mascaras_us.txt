@@ -349,7 +349,7 @@ Exame realizado pela via suprapúbica.
 - Bexiga: com paredes regulares e conteúdo anecogênico.
 - Útero: em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares. Relação corpo / colo uterino de XX.
 - Miométrio: com ecotextura característica, sem nódulos conspícuos.
-- Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm. || filiforme / não caracterizado.
+- Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm. || filiforme / não caracterizado.
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo folículos de até XXX cm.
 - Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo folículos de até XXX cm.
 - Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
@@ -370,7 +370,7 @@ Data do Exame:
 - Bexiga: com paredes regulares e conteúdo anecogênico.
 - Útero: em anteversoflexão* XX retroversão XX medioversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
 - Miométrio: com ecotextura característica, sem nódulos conspícuos.
-- Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.
+- Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 - Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 - Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
@@ -389,7 +389,7 @@ Data do Exame:
 - Bexiga: com paredes regulares e conteúdo anecogênico.
 - Útero: em anteversoflexão* XX retroversão XX medioversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
 - Miométrio: com ecotextura característica, sem nódulos conspícuos.
-- Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.
+- Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.
 - Dispositivo contraceptivo: centrado na cavidade endometrial. Distância DIU-serosa fúndica: XXX ; distância DIU-fundo da cavidade: XXX cm.
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 - Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
@@ -411,7 +411,7 @@ Data da última menstruação: XXX. Ciclo: Espontâneo XX induzido.
 Exame realizado no dia XX do ciclo, pelas vias suprapúbica e transvaginal.
 - Útero: em anteversoflexão* XX retroversão XX medioversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
 - Miométrio: com ecotextura característica, sem nódulos conspícuos.
-- Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.
+- Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo cerca de XX folículos maiores, o dominante medindo XX cm (diâmetro médio).
 - Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo cerca de XX folículos maiores, o dominante medindo XX cm (diâmetro médio).
 - Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
@@ -471,7 +471,7 @@ Data do Exame:
 - Miométrio: com ecotextura característica, sem nódulos conspícuos.
 XXX Nódulo miometrial hipoecogênico na parede corporal anterior X posterior X no fundo uterino, medindo cerca de XXX cm, comumente representando leiomioma. 
 XXX Assimetria das paredes uterinas com indefinição da interface endométrio / miométrio, sem XX com diminutos cistos subendometriais. Tais achados podem estar relacionados à adenomiose. A critério clínico, uma RM da pelve poderá trazer informações adicionais.
-- Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm.
+- Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.
 XXX - Dispositivo contraceptivo: centrado na cavidade endometrial. Distância DIU-serosa fúndica: XXX ; distância DIU-fundo da cavidade: XXX cm.
 - Colo uterino: forma normal e canal endocervical sem alterações ecográficas. 
 XXX Sinais de histerotomia (cicatriz cesárea) ístmica anterior sem particularidades XXX com pequena istmocele.
@@ -734,7 +734,7 @@ Data do Exame:
 - Tendão comum dos flexores: com espessura, contornos e textura preservados.
 - Tendões do tríceps braquial e bíceps distal: apresentando espessura, contornos e arranjo fibrilar preservados.
 - Fossas coronoide, ulnar e olecraniana: anatômicas.
-- Nervo ulnar: com espessura, contornos e ecotextura normais.
+- Nervo ulnar: com espessura, contornos e ecotextura normais, com área seccional de XXX mm² ao nível do epicôndilo medial.
 - Derrame articular: não há.
  
 Conclusão:
@@ -864,7 +864,7 @@ Data de Nascimento:
 Data do Exame: 
 - Tendões flexores dos dedos: com espessura, contornos e textura normais.
 - Compartimentos sinoviais extensores dos dedos: com aspecto habitual.
-- Nervo mediano: com trajeto preservado, contornos lisos e textura homogênea. Área seccional (AST) estimada em XXX cm² no túnel do carpo.
+- Nervo mediano: com trajeto preservado, contornos lisos e textura homogênea, com área seccional de XXX mm² na entrada do túnel do carpo.
 - Lesões sólidas ou císticas: não há.
  
 Conclusão:
@@ -1120,7 +1120,7 @@ Data do Exame:
 - Bexiga: com paredes regulares e conteúdo anecogênico.
 - Útero: em anteversoflexão* XX retroversão XX medioversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
 - Miométrio: com ecotextura característica, sem nódulos conspícuos. Vascularização miometrial de aspecto habitual ao Doppler colorido.
-- Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX cm, sem focos de vascularização anômala.
+- Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm, sem focos de vascularização anômala.
 - Artérias uterinas: com padrão espectral habitual.
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 - Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
