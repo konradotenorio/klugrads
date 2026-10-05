@@ -662,7 +662,7 @@ function dashboardHTML(){
     <div class="dash-tools">
       <div class="dash-tool" onclick="openViewer()">${svgIcon(P.dicom,24)}<div><div class="tt">VISUALIZADOR DICOM</div><div class="td">Abra exames do CD/pendrive no navegador</div></div></div>
       <div class="dash-tool" onclick="openLaudos()">${svgIcon(P.laudo,24)}<div><div class="tt">LAUDOS ESTRUTURADOS</div><div class="td">Monte o laudo por método e modelo</div></div></div>
-      <div class="dash-tool" onclick="setView('mapaLesional')">${svgIcon(P.mapa,24)}<div><div class="tt">MAPA SETORIAL LESIONAL</div><div class="td">Pinte as lesões no mapa (próstata ou pelve) e copie para o laudo</div></div></div>
+      <div class="dash-tool" onclick="setView('mapaLesional')">${svgIcon(P.mapa,24)}<div><div class="tt">MAPA SETORIAL LESIONAL</div><div class="td">Mapeie as lesões (próstata, pelve ou rim) e copie para o laudo</div></div></div>
       <div class="dash-tool" onclick="openCalcs()">${svgIcon(P.calc,24)}<div><div class="tt">Calculadoras</div><div class="td">TI-RADS, O-RADS, risco fetal…</div></div></div>
       <div class="dash-tool" onclick="setView('favoritos')">${svgIcon(P.star,24,{fill:'none'})}<div><div class="tt">Favoritos</div><div class="td">O que você marcou</div></div></div>
       <div class="dash-tool" onclick="setView('ferramentas')">${svgIcon(P.tools,24)}<div><div class="tt">Outras Ferramentas</div><div class="td">TFG e mais</div></div></div>
@@ -808,7 +808,7 @@ function modalityHTML(){
     }</div>
 
     <div class="modal-shortcuts cols3">${
-      short(svgIcon(P.mapa,23),'acc','MAPA SETORIAL LESIONAL','Pinte as lesões no mapa (próstata ou pelve) e copie para o laudo',"setView('mapaLesional')")
+      short(svgIcon(P.mapa,23),'acc','MAPA SETORIAL LESIONAL','Mapeie as lesões (próstata, pelve ou rim) e copie para o laudo',"setView('mapaLesional')")
     }</div>
   </div>`;
 }
