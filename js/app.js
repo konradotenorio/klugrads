@@ -773,6 +773,15 @@ function modalityHTML(){
       <div class="modal-slogan">Sua referência em Radiologia</div>
     </div>
 
+    <div class="home-note">
+      <div class="hn-t">Site em construção e em constante atualização:</div>
+      <ul>
+        <li>As ferramentas com <span role="img" aria-label="trator">🚜</span>: ainda estão em revisão e atualização</li>
+        <li>As ferramentas com <span role="img" aria-label="certo">✅</span>: já foram revisadas e já estão prontas para serem utilizadas</li>
+        <li>Contribua com suas informações e críticas — Em configurações coloquem suas observações e nos enviem suas mensagens.</li>
+      </ul>
+    </div>
+
     <div class="home-find">
       <div class="home-lbl">Busca Geral:</div>
       <div class="modal-search" onclick="setView('busca')" role="button" tabindex="0">
