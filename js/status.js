@@ -1,9 +1,9 @@
 /* =========================================================================
-   STATUS DOS ITENS — 🚜 em construção · ✅ concluído (revisado)
+   STATUS DOS ITENS — 🚧 em construção · ✅ concluído (revisado)
    -------------------------------------------------------------------------
-   Todo item do site aparece com 🚜 antes do nome. Quando o item estiver
+   Todo item do site aparece com 🚧 antes do nome. Quando o item estiver
    concluído e revisado (Konrado ou Valdemar), coloque a CHAVE dele na lista
-   ST_OK abaixo — o 🚜 vira ✅ em todos os lugares onde o nome aparece
+   ST_OK abaixo — o 🚧 vira ✅ em todos os lugares onde o nome aparece
    (início, menu lateral, listas, busca, favoritos e título da tela).
 
    Chaves (prefixo:id):
@@ -19,7 +19,7 @@
      cont:<id>           tópicos de Meios de Contraste
      mapa:<órgão>        itens do Mapa Setorial Lesional  mapa:prostata  mapa:endometriose (PELVE)
    Exceção (pedido do Konrado, 05/out/2026): na TELA INICIAL os cartões Favoritos, Nova Lista,
-   Configurações e Mapa Setorial Lesional ficam SEM marcador (nem 🚜 nem ✅); o menu lateral e o
+   Configurações e Mapa Setorial Lesional ficam SEM marcador (nem 🚧 nem ✅); o menu lateral e o
    título da tela continuam usando as chaves home:favoritos/novalista/config/mapa.
    ========================================================================= */
 const ST_OK = [
@@ -40,5 +40,5 @@ function stOk(key){ return ST_OK.indexOf(key) >= 0; }
 function stMark(key){
   if(!key) return '';
   const ok = stOk(key), t = ok ? 'Concluído e revisado' : 'Em construção';
-  return `<span class="stm" role="img" aria-label="${t}" title="${t}">${ok?'✅':'🚜'}</span>`;
+  return `<span class="stm" role="img" aria-label="${t}" title="${t}">${ok?'✅':'🚧'}</span>`;
 }

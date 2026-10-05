@@ -683,7 +683,7 @@ function renderHeader(){ $('hdr').innerHTML = headerHTML(); }
 
 function headerHTML(){
   const v = state.view;
-  let title='', sub='', stKey='';   // stKey: chave do status 🚜/✅ do item (ver js/status.js)
+  let title='', sub='', stKey='';   // stKey: chave do status 🚧/✅ do item (ver js/status.js)
   if(v==='refs'){ title='Referências'; stKey='sec:us:ref'; }
   else if(v==='detail'){ title=state.item?state.item.name:''; sub=(state.item&&state.item.abbr)?state.item.abbr:''; if(state.item) stKey='ref:'+state.item.id; }
   else if(v==='calc'){ const c = state.calcId ? findCalc(state.calcId) : null;
@@ -776,7 +776,7 @@ function modalityHTML(){
     <div class="home-note">
       <div class="hn-t">Site em construção e em constante atualização:</div>
       <ul>
-        <li>As ferramentas com <span role="img" aria-label="trator">🚜</span>: ainda estão em revisão e atualização</li>
+        <li>As ferramentas com <span role="img" aria-label="construção">🚧</span>: ainda estão em revisão e atualização</li>
         <li>As ferramentas com <span role="img" aria-label="certo">✅</span>: já foram revisadas e já estão prontas para serem utilizadas</li>
         <li>Contribua com suas informações e críticas — Em configurações coloquem suas observações e nos enviem suas mensagens.</li>
       </ul>
