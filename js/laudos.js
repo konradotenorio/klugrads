@@ -1746,7 +1746,7 @@ function lauConcs(m){
 /* singular → plural quando o mesmo achado está nas duas mamas */
 const LAU_MG_PLURAL = [
   [/^Ginecomastia nas mamas/,'Ginecomastia bilateral'],
-  [/^Cisto simples/,'Cistos simples'], [/^Cisto complicado/,'Cistos complicados'], [/^Cisto oleoso/,'Cistos oleosos'],
+  [/^Cisto simples/,'Cistos simples'], [/^Cisto de conteúdo espesso/,'Cistos de conteúdo espesso'], [/^Cisto oleoso/,'Cistos oleosos'],
   [/^Massa complexa cística e sólida/,'Massas complexas císticas e sólidas'], [/^Coleção/,'Coleções'],
   [/^Nódulo /,'Nódulos '], [/^Linfonodo intramamário/,'Linfonodos intramamários'], [/^Fibroadenoma calcificado/,'Fibroadenomas calcificados'],
   [/^Assimetria global/,'Assimetrias globais'], [/^Assimetria focal/,'Assimetrias focais'], [/^Assimetria /,'Assimetrias '],
