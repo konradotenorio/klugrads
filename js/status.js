@@ -27,6 +27,7 @@ const ST_OK = [
   'calc:esteatose-rm',     // Esteatose Hepática (RM)
   'calc:ferro-t2',         // Ferro Hepático (T2*)
   'calc:ferro-r2',         // Ferro Hepático (R2*)
+  'calc:pancr',            // Coleções Pancreáticas (TC) — sem frase de laudo, por decisão dele
 ];
 
 function stOk(key){ return ST_OK.indexOf(key) >= 0; }
