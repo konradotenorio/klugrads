@@ -23,6 +23,7 @@ const ST_OK = [
   'home:mapa',             // MAPA SETORIAL LESIONAL
   'mapa:prostata',         //   PRÓSTATA (PI-RADS)
   'mapa:endometriose',     //   PELVE (Endometriose)
+  'calc:esteatose-tc',     // Esteatose Hepática (TC)
 ];
 
 function stOk(key){ return ST_OK.indexOf(key) >= 0; }
