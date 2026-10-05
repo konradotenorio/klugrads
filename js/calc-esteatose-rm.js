@@ -82,8 +82,8 @@ function esteatoseFrase(){
   const r = esteatoseCalc(esteatoseState()); if(!r) return '';
   const y = String(r.ff).replace('.', ',');
   return r.ff >= 5
-    ? `Fígado apresentando sinais de deposição adiposa parenquimatosa, sendo calculada porcentagem de gordura em ${y}% (normal abaixo de 5%).`
-    : `Fígado sem sinais significativos de deposição adiposa parenquimatosa; porcentagem de gordura calculada em ${y}% (normal abaixo de 5%).`;
+    ? `Fígado apresentando sinais de deposição adiposa parenquimatosa, sendo calculada porcentagem lipídica em ${y}% (VR: Normal < 5%).`
+    : `Fígado sem sinais de esteatose hepática, com fração lipídica estimada em ${y}% (VR: Normal < 5%).`;
 }
 function esteatoseFraseHTML(){
   const f = esteatoseFrase(); if(!f) return '';
@@ -109,7 +109,7 @@ function calcEsteatoseRmHTML(){
         ${esteatoseField('op','Sinal out phase','ex.: 210', s.op)}
         ${esteatoseField('fat','Fat-only (fração lipídica)','ex.: 12', s.fat, '%')}
       </div>
-      <div class="ti-legend-row" style="margin-top:8px"><span class="lt">• Informe o sinal <b>in</b> e <b>out phase</b> (Dixon 2 ecos), ou apenas o <b>fat-only</b>.<br>• Se o fat-only for preenchido, ele tem prioridade no cálculo.<br>• <b>Aviso técnico:</b> a dupla-eco (in phase/out phase) fornece apenas uma estimativa semiquantitativa, pois sofre influência de viés T1, decaimento T2* (acentuado na sobrecarga de ferro) e do espectro multipico da gordura. Deve ser utilizada somente na ausência de sequência dedicada de fração de gordura (PDFF, por RM com codificação de desvio químico e correção de confundidores), que é o método de escolha.</span></div>
+      <div class="ti-legend-row" style="margin-top:8px"><span class="lt">• Informe o sinal <b>in</b> e <b>out phase</b>, ou apenas o <b>fat-only</b>.<br>• Se o fat-only for preenchido, ele tem prioridade no cálculo.<br>• <b>Aviso técnico:</b> as sequências in/out phase fornecem apenas uma estimativa semiquantitativa, pois sofre influência de viés T1, decaimento T2* (acentuado na sobrecarga de ferro) e do espectro multipico da gordura. Deve ser utilizada somente na ausência de sequência dedicada de fração de gordura (PDFF, por RM com codificação de desvio químico e correção de confundidores), que é o método de escolha.</span></div>
       <div id="est-res">${esteatoseResultHTML()}</div>
     </div>
     <div class="ti-card">
@@ -139,6 +139,6 @@ function esteatoseRefresh(){
 }
 
 /* registra no catálogo (CALCS de app.js) — método RM, subespecialidade Medicina Interna */
-CALCS.push({id:'esteatose-rm', modality:'rm', subspec:'medint', badge:'FF',
+CALCS.push({id:'esteatose-rm', modality:'rm', subspec:'figado', badge:'FF',
   title:'Esteatose Hepática (RM)',
   desc:'Fração lipídica hepática por RM'});

@@ -359,7 +359,7 @@ function pmapCopy(){ const f=pmapFrase(); if(f) klugCopy(f,'Frase copiada ✓');
 /* fora do ar a pedido (03/10/2026): o código continua carregado porque o esquema
    zonal (prostata-esquema.js) usa a geometria daqui; para voltar, PMAP_ATIVO = true */
 const PMAP_ATIVO = false;
-if(PMAP_ATIVO) CALCS.push({id:'prostata-setores', modality:'rm', subspec:'medint', badge:'MS',
+if(PMAP_ATIVO) CALCS.push({id:'prostata-setores', modality:'rm', subspec:'prostata', badge:'MS',
   title:'Mapa de Setores da Próstata',
   desc:'PI-RADS v2.1 — marque a lesão no esquema de 41 setores'});
 

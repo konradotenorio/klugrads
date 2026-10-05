@@ -300,7 +300,7 @@ let state = {
   newName:'', composingId:null, modalityId:null,
   calcId:null,
   tfgCr:'1.0', tfgAge:'45', tfgSexo:'M', tfgResult:null,
-  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null, volgastrico:null, prostMap:null, figo:null, mesaCac:null,
+  tirads:null, orads:null, pe:null, sga:null, gdm:null, ptb:null, esteatoseRm:null, esteatoseTc:null, ferroR2:null, ferroT2:null, adrenalTc:null, adrenalWo:null, adrenalRm:null, renal:null, ccls:null, pirads:null, crads:null, pancr:null, oradsMri:null, lungrads:null, fleischner:null, cadrads:null, piqual:null, precise:null, pirr:null, volgastrico:null, prostMap:null, figo:null, mesaCac:null,
   lang:'pt', fontScale:1, user:null,
   favCalcs:[], recents:[],
   nav:[],
@@ -506,10 +506,10 @@ function methodsNavHTML(){
     if(on && m.id!=='us'){
       const cs = allCalcs().filter(function(c){ return c.modality===m.id; });
       if(cs.length) sub = `<div class="side-children" style="display:block">`
-        + cs.map(function(c){ return `<div class="side-subitem ${state.calcId===c.id?'on':''}" onclick="openFavCalc('${esc(c.id)}')">${esc(c.title)}</div>`; }).join('')
+        + cs.map(function(c){ return `<div class="side-subitem ${state.calcId===c.id?'on':''}" onclick="openFavCalc('${esc(c.id)}')">${stMark('calc:'+c.id)}${esc(c.title)}</div>`; }).join('')
         + `</div>`;
     }
-    return `<div class="side-item ${on?'on':''}" onclick="openModality('${m.id}')"><span class="si">${svgIcon(m.icon,19)}</span>${esc(m.name)}</div>${sub}`;
+    return `<div class="side-item ${on?'on':''}" onclick="openModality('${m.id}')"><span class="si">${svgIcon(m.icon,19)}</span>${stMark('mod:'+m.id)}${esc(m.name)}</div>${sub}`;
   }).join('');
 }
 
@@ -521,7 +521,7 @@ function sidebarHTML(){
     const activeHead = state.view==='refs' && state.specialty===s.id;
     const items = specialtyItemsFor(s);
     const children = items.length
-      ? items.map(function(d){ return `<div class="side-subitem ${state.item&&state.item.id===d.id?'on':''}" onclick="openItem('${esc(d.id)}')">${esc(d.name)}</div>`; }).join('')
+      ? items.map(function(d){ return `<div class="side-subitem ${state.item&&state.item.id===d.id?'on':''}" onclick="openItem('${esc(d.id)}')">${stMark('ref:'+d.id)}${esc(d.name)}</div>`; }).join('')
       : `<div class="side-subempty">Em breve</div>`;
     return `<div class="side-group ${open?'open':''}">
       <div class="side-item side-ghead ${activeHead?'on':''}" onclick="openSpecialty('${s.id}')">
@@ -532,7 +532,7 @@ function sidebarHTML(){
       <div class="side-children">${children}</div>
     </div>`;
   }).join('');
-  const tool=(view,label,icon)=>`<div class="side-item ${state.view===view?'on':''}" onclick="setView('${view}')"><span class="si">${icon}</span>${esc(label)}</div>`;
+  const tool=(view,label,icon)=>`<div class="side-item ${state.view===view?'on':''}" onclick="setView('${view}')"><span class="si">${icon}</span>${stMark('home:'+view)}${esc(label)}</div>`;
   const searching = !!(state.gquery && state.gquery.trim());
   return `<div class="side-top" onclick="goInicio()">
       <div class="side-brand"><span class="k">KLUG</span><span class="r">RADS</span></div>
@@ -549,10 +549,10 @@ function sidebarHTML(){
       ${methodsNavHTML()}
       ${(state.modalityId==='us' && !isCalc) ? `<div class="side-sec">Ultrassonografia — Referências</div>${specGroups}` : ''}
       <div class="side-sec">Ferramentas</div>
-      <div class="side-item" onclick="openViewer()"><span class="si">${svgIcon(P.dicom,19)}</span>VISUALIZADOR DICOM</div>
-      <div class="side-item ${['laudos','laudoMod','laudoEdit','laudoCfg'].indexOf(state.view)>=0?'on':''}" onclick="openLaudos()"><span class="si">${svgIcon(P.laudo,19)}</span>LAUDOS ESTRUTURADOS</div>
-      <div class="side-item ${state.view==='mapaLesional'?'on':''}" onclick="setView('mapaLesional')"><span class="si">${svgIcon(P.mapa,19)}</span>MAPA SETORIAL LESIONAL</div>
-      <div class="side-item ${isCalc&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>Calculadoras (US)</div>
+      <div class="side-item" onclick="openViewer()"><span class="si">${svgIcon(P.dicom,19)}</span>${stMark('home:dicom')}VISUALIZADOR DICOM</div>
+      <div class="side-item ${['laudos','laudoMod','laudoEdit','laudoCfg'].indexOf(state.view)>=0?'on':''}" onclick="openLaudos()"><span class="si">${svgIcon(P.laudo,19)}</span>${stMark('home:laudos')}LAUDOS ESTRUTURADOS</div>
+      <div class="side-item ${state.view==='mapaLesional'?'on':''}" onclick="setView('mapaLesional')"><span class="si">${svgIcon(P.mapa,19)}</span>${stMark('home:mapa')}MAPA SETORIAL LESIONAL</div>
+      <div class="side-item ${isCalc&&state.modalityId==='us'?'on':''}" onclick="openCalcs()"><span class="si">${svgIcon(P.calc,19)}</span>${stMark('home:calcus')}Calculadoras (US)</div>
       ${tool('ferramentas','Outras Ferramentas', svgIcon(P.tools,19))}
       ${tool('favoritos','Favoritos', svgIcon(P.star,19,{fill:'none'}))}
       ${tool('config','Configurações', svgIcon(P.gear,19))}
@@ -603,12 +603,12 @@ function globalResultsHTML(q){
   if(refs.length){
     h += `<div class="side-sec">Referências</div>` + refs.map(function(d){
       var band = GROUP_BAND[d.group] || d.group;
-      return `<div class="side-result" onclick="pickResult('item','${esc(d.id)}')"><span class="rn">${esc(d.name)}</span><span class="rm">${esc(band)} · ${esc(d.region)}</span></div>`;
+      return `<div class="side-result" onclick="pickResult('item','${esc(d.id)}')"><span class="rn">${stMark('ref:'+d.id)}${esc(d.name)}</span><span class="rm">${esc(band)} · ${esc(d.region)}</span></div>`;
     }).join('');
   }
   if(calcs.length){
     h += `<div class="side-sec">Calculadoras</div>` + calcs.map(function(c){
-      return `<div class="side-result" onclick="pickResult('calc','${esc(c.id)}')"><span class="rn">${esc(c.title)}</span><span class="rm">${esc(c.desc||'')}</span></div>`;
+      return `<div class="side-result" onclick="pickResult('calc','${esc(c.id)}')"><span class="rn">${stMark('calc:'+c.id)}${esc(c.title)}</span><span class="rm">${esc(c.desc||'')}</span></div>`;
     }).join('');
   }
   return h;
@@ -662,7 +662,7 @@ function dashboardHTML(){
     <div class="dash-tools">
       <div class="dash-tool" onclick="openViewer()">${svgIcon(P.dicom,24)}<div><div class="tt">VISUALIZADOR DICOM</div><div class="td">Abra exames do CD/pendrive no navegador</div></div></div>
       <div class="dash-tool" onclick="openLaudos()">${svgIcon(P.laudo,24)}<div><div class="tt">LAUDOS ESTRUTURADOS</div><div class="td">Monte o laudo por método e modelo</div></div></div>
-      <div class="dash-tool" onclick="setView('mapaLesional')">${svgIcon(P.mapa,24)}<div><div class="tt">MAPA SETORIAL LESIONAL</div><div class="td">Pinte as lesões no mapa e copie para o laudo</div></div></div>
+      <div class="dash-tool" onclick="setView('mapaLesional')">${svgIcon(P.mapa,24)}<div><div class="tt">MAPA SETORIAL LESIONAL</div><div class="td">Pinte as lesões no mapa (próstata ou pelve) e copie para o laudo</div></div></div>
       <div class="dash-tool" onclick="openCalcs()">${svgIcon(P.calc,24)}<div><div class="tt">Calculadoras</div><div class="td">TI-RADS, O-RADS, risco fetal…</div></div></div>
       <div class="dash-tool" onclick="setView('favoritos')">${svgIcon(P.star,24,{fill:'none'})}<div><div class="tt">Favoritos</div><div class="td">O que você marcou</div></div></div>
       <div class="dash-tool" onclick="setView('ferramentas')">${svgIcon(P.tools,24)}<div><div class="tt">Outras Ferramentas</div><div class="td">TFG e mais</div></div></div>
@@ -683,27 +683,27 @@ function renderHeader(){ $('hdr').innerHTML = headerHTML(); }
 
 function headerHTML(){
   const v = state.view;
-  let title='', sub='';
-  if(v==='refs'){ title='Referências'; }
-  else if(v==='detail'){ title=state.item?state.item.name:''; sub=(state.item&&state.item.abbr)?state.item.abbr:''; }
+  let title='', sub='', stKey='';   // stKey: chave do status 🚧/✅ do item (ver js/status.js)
+  if(v==='refs'){ title='Referências'; stKey='sec:us:ref'; }
+  else if(v==='detail'){ title=state.item?state.item.name:''; sub=(state.item&&state.item.abbr)?state.item.abbr:''; if(state.item) stKey='ref:'+state.item.id; }
   else if(v==='calc'){ const c = state.calcId ? findCalc(state.calcId) : null;
-    if(c) title=c.title;
-    else if(state.modalityId && state.calcKind==='proto'){ const m=MODALITIES.find(x=>x.id===state.modalityId); title=(m?m.name:'Protocolos')+' — Protocolos'; }
-    else if(state.modalityId && state.modalityId!=='us'){ const m=MODALITIES.find(x=>x.id===state.modalityId); title=(m?m.name:'Calculadoras')+(state.calcKind==='ref'?' — Referências':' — Calculadoras'); }
-    else title='Calculadoras'; }
-  else if(v==='ferramentas'){ title='Outras Ferramentas'; }
-  else if(v==='contraste'){ title='Meios de Contraste'; }
-  else if(v==='laudos'){ title='Laudos Estruturados'; }
-  else if(v==='laudoMod'){ const m=laudoMod(state.laudoMod); title=m?m.nome:'Laudos'; sub='Laudos Estruturados'; }
-  else if(v==='laudoEdit'){ const m=lauModelo(state.laudoId); title=m?((m.oct?'':({mmg:'MG — ',dmo:'DO — ',tc:'TC — '}[m.metodo]||'US — '))+m.nome):'Laudo'; sub='Laudos Estruturados'; }
-  else if(v==='laudoCfg'){ title='Padrões dos laudos'; sub='Laudos Estruturados'; }
-  else if(v==='contrasteItem'){ const t=contrasteTopic(state.contrasteId); title=t?t.title:'Meios de Contraste'; sub='Meios de Contraste'; }
-  else if(v==='mapaLesional'){ title='Mapa Setorial Lesional'; sub=(MSL_ORGAOS[mslState().org]||{}).nome||''; }
-  else if(v==='config'){ title='Configurações'; }
+    if(c){ title=c.title; stKey='calc:'+c.id; }
+    else if(state.modalityId && state.calcKind==='proto'){ const m=MODALITIES.find(x=>x.id===state.modalityId); title=(m?m.name:'Protocolos')+' — Protocolos'; stKey='sec:'+state.modalityId+':proto'; }
+    else if(state.modalityId && state.modalityId!=='us'){ const m=MODALITIES.find(x=>x.id===state.modalityId); title=(m?m.name:'Calculadoras')+(state.calcKind==='ref'?' — Referências':' — Calculadoras'); stKey='sec:'+state.modalityId+(state.calcKind==='ref'?':ref':':calc'); }
+    else { title='Calculadoras'; stKey = state.modalityId==='us' ? 'home:calcus' : 'home:calcgerais'; } }
+  else if(v==='ferramentas'){ title='Outras Ferramentas'; stKey='home:ferramentas'; }
+  else if(v==='contraste'){ title='Meios de Contraste'; stKey='home:contraste'; }
+  else if(v==='laudos'){ title='Laudos Estruturados'; stKey='home:laudos'; }
+  else if(v==='laudoMod'){ const m=laudoMod(state.laudoMod); title=m?m.nome:'Laudos'; sub='Laudos Estruturados'; if(m) stKey='lmod:'+m.id; }
+  else if(v==='laudoEdit'){ const m=lauModelo(state.laudoId); title=m?((m.oct?'':({mmg:'MG — ',dmo:'DO — ',tc:'TC — '}[m.metodo]||'US — '))+m.nome):'Laudo'; sub='Laudos Estruturados'; if(m) stKey='laudo:'+m.id; }
+  else if(v==='laudoCfg'){ title='Padrões dos laudos'; sub='Laudos Estruturados'; stKey='lmod:cfg'; }
+  else if(v==='contrasteItem'){ const t=contrasteTopic(state.contrasteId); title=t?t.title:'Meios de Contraste'; sub='Meios de Contraste'; if(t) stKey='cont:'+t.id; }
+  else if(v==='mapaLesional'){ title='Mapa Setorial Lesional'; sub=(MSL_ORGAOS[mslState().org]||{}).nome||''; stKey='home:mapa'; }
+  else if(v==='config'){ title='Configurações'; stKey='home:config'; }
   else if(v==='termsRead'){ title=TT().title; }
-  else if(v==='favoritos'){ title='Favoritos'; }
-  else if(v==='novalista'){ const cl=state.lists.find(x=>x.id===state.composingId); title=cl?cl.name:'Minhas listas'; sub=cl?'Lista personalizada':''; }
-  else if(v==='construction'){ const m=MODALITIES.find(x=>x.id===state.modalityId)||{}; title=m.name||'Em Construção'; }
+  else if(v==='favoritos'){ title='Favoritos'; stKey='home:favoritos'; }
+  else if(v==='novalista'){ const cl=state.lists.find(x=>x.id===state.composingId); title=cl?cl.name:'Minhas listas'; sub=cl?'Lista personalizada':''; if(!cl) stKey='home:novalista'; }
+  else if(v==='construction'){ const m=MODALITIES.find(x=>x.id===state.modalityId)||{}; title=m.name||'Em Construção'; if(m.id) stKey='mod:'+m.id; }
   else if(v==='busca'){ title='Buscar'; }
 
   let right='';
@@ -720,7 +720,7 @@ function headerHTML(){
   }
 
   return `<button class="hbtn" onclick="goBack()" aria-label="Voltar">${svgIcon(P.back,22,{sw:2.2})}</button>
-    <div class="htitle-wrap"><div class="htitle">${esc(title)}</div>${sub?`<div class="hsub">${esc(sub)}</div>`:''}</div>
+    <div class="htitle-wrap"><div class="htitle">${stMark(stKey)}${esc(title)}</div>${sub?`<div class="hsub">${esc(sub)}</div>`:''}</div>
     <div class="hact">${right}${themeToggleBtn()}</div>`;
 }
 
@@ -756,13 +756,13 @@ function modalityHTML(){
   const cards = MODALITIES.map(m=>`
     <div class="mod-card ${m.active?'active':'locked'}" onclick="openModality('${m.id}')">
       <div class="mod-icon">${svgIcon(m.icon,22)}</div>
-      <div class="mod-name">${m.label}</div>
+      <div class="mod-name">${stMark('mod:'+m.id)}${m.label}</div>
       ${!m.active?'<div class="mod-badge">Em construção</div>':''}
     </div>`).join('');
-  const short = (icon,iconCls,t,d,act)=>`
+  const short = (icon,iconCls,t,d,act,key)=>`
       <div class="lc-short" onclick="${act}">
         <div class="si ${iconCls}">${icon}</div>
-        <div class="st"><div class="t">${t}</div><div class="d">${d}</div></div>
+        <div class="st"><div class="t">${stMark(key)}${t}</div><div class="d">${d}</div></div>
         <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
       </div>`;
   // Ordem da tela: Busca Geral → Métodos de Diagnóstico → (Outras Ferramentas · Favoritos · Nova Lista) → (Visualizador DICOM · Configurações)
@@ -771,6 +771,15 @@ function modalityHTML(){
     <div class="modal-head">
       <div class="modal-brand">KLUG<span>RADS</span></div>
       <div class="modal-slogan">Sua referência em Radiologia</div>
+    </div>
+
+    <div class="home-note">
+      <div class="hn-t">Este site está em fase de desenvolvimento e construção, recebendo atualizações constantes.</div>
+      <ul>
+        <li><span role="img" aria-label="construção">🚧</span> Em revisão: ferramentas ainda em fase de revisão e ajustes.</li>
+        <li><span role="img" aria-label="certo">✅</span> Revisadas: ferramentas já validadas e prontas para uso.</li>
+      </ul>
+      <p>Sua opinião é importante. Envie sugestões, correções e críticas pela seção Configurações. Sua contribuição nos ajuda a aprimorar continuamente o conteúdo.</p>
     </div>
 
     <div class="home-find">
@@ -787,19 +796,19 @@ function modalityHTML(){
     <div class="modal-grid">${cards}</div>
 
     <div class="modal-shortcuts cols3">${
-      short(svgIcon(P.tools,22),'acc','Outras Ferramentas','Calculadoras e referências por especialidade',"setView('ferramentas')")
+      short(svgIcon(P.tools,22),'acc','Outras Ferramentas','Calculadoras e referências por especialidade',"setView('ferramentas')",'home:ferramentas')
     + short(svgIcon(P.star,23,{fill:'currentColor',noStroke:true}),'star','Favoritos','Acesso rápido ao que você marcou',"setView('favoritos')")
     + short(svgIcon(P.listplus,23),'acc','Nova Lista','Editável: crie e edite pacotes para o plantão',"setView('novalista')")
     }</div>
 
     <div class="modal-shortcuts cols3">${
-      short(svgIcon(P.dicom,23),'acc','VISUALIZADOR DICOM','Abra exames do CD/pendrive direto no navegador','openViewer()')
-    + short(svgIcon(P.laudo,23),'acc','LAUDOS ESTRUTURADOS','Monte o laudo por método e modelo','openLaudos()')
+      short(svgIcon(P.dicom,23),'acc','VISUALIZADOR DICOM','Abra exames do CD/pendrive direto no navegador','openViewer()','home:dicom')
+    + short(svgIcon(P.laudo,23),'acc','LAUDOS ESTRUTURADOS','Monte o laudo por método e modelo','openLaudos()','home:laudos')
     + short(svgIcon(P.gear,23),'acc','Configurações','Tema, tamanho da fonte e sugestões',"setView('config')")
     }</div>
 
     <div class="modal-shortcuts cols3">${
-      short(svgIcon(P.mapa,23),'acc','MAPA SETORIAL LESIONAL','Pinte as lesões no mapa da próstata e copie para o laudo',"setView('mapaLesional')")
+      short(svgIcon(P.mapa,23),'acc','MAPA SETORIAL LESIONAL','Pinte as lesões no mapa (próstata ou pelve) e copie para o laudo',"setView('mapaLesional')")
     }</div>
   </div>`;
 }
@@ -810,11 +819,11 @@ function ferramentasHTML(){
     <div class="lc-top">
       <div class="lc-card fill" onclick="openGeneralCalcs()">
         <div class="lc-chip">${svgIcon(P.calc,26)}</div>
-        <div><div class="t">Calculadoras</div><div class="d">Demais calculadoras usadas para radiologia</div></div>
+        <div><div class="t">${stMark('home:calcgerais')}Calculadoras</div><div class="d">Demais calculadoras usadas para radiologia</div></div>
       </div>
       <div class="lc-card" onclick="openContrasteList()">
         <div class="lc-chip">${svgIcon(P.book,26)}</div>
-        <div><div class="t">Meios de Contraste</div><div class="d">Reações adversas, tratamento, fatores de risco, extravasamento e FSN</div></div>
+        <div><div class="t">${stMark('home:contraste')}Meios de Contraste</div><div class="d">Reações adversas, tratamento, fatores de risco, extravasamento e FSN</div></div>
       </div>
     </div>
   </div>`;
@@ -1087,19 +1096,19 @@ function homeHTML(){
       <div class="lc-top">
         <div class="lc-card" onclick="${protoOnclick}">
           <div class="lc-chip">${svgIcon(P.checklist,26)}</div>
-          <div><div class="t">Protocolos</div><div class="d">${esc(t.protoD)}</div></div>
+          <div><div class="t">${stMark('sec:'+mid+':proto')}Protocolos</div><div class="d">${esc(t.protoD)}</div></div>
         </div>
         <div class="lc-card fill" onclick="${refOnclick}">
           <div class="lc-chip">${svgIcon(P.book,26)}</div>
-          <div><div class="t">Referências</div><div class="d">${esc(t.refD)}</div></div>
+          <div><div class="t">${stMark('sec:'+mid+':ref')}Referências</div><div class="d">${esc(t.refD)}</div></div>
         </div>
         <div class="lc-card wide" onclick="${calcOnclick}">
           <div class="lc-chip">${svgIcon(P.calc,26)}</div>
-          <div><div class="t">Calculadoras</div><div class="d">${esc(t.calcD)}</div></div>
+          <div><div class="t">${stMark('sec:'+mid+':calc')}Calculadoras</div><div class="d">${esc(t.calcD)}</div></div>
         </div>
         ${lauMod ? `<div class="lc-card wide" onclick="openLaudoMod('${lauMod.id}')">
           <div class="lc-chip">${svgIcon(P.laudo,26)}</div>
-          <div><div class="t">Laudos</div><div class="d">Laudos estruturados de ${esc(lauMod.nome.toLowerCase())}</div></div>
+          <div><div class="t">${stMark('sec:'+mid+':laudos')}Laudos</div><div class="d">Laudos estruturados de ${esc(lauMod.nome.toLowerCase())}</div></div>
         </div>` : ''}
       </div>
     </div>
@@ -1175,7 +1184,7 @@ function dopplerIndexHTML(q){
 function dopplerSoonRowHTML(entry){
   return `<button class="row roadmap-row" type="button" disabled aria-label="${esc(entry.name)} — em breve">
     <span class="ic">${ICONS.drop}</span>
-    <span class="tx"><span class="nm">${esc(entry.name)}</span><span class="meta">${esc(entry.region)}</span></span>
+    <span class="tx"><span class="nm">${stMark('ref:'+entry.name)}${esc(entry.name)}</span><span class="meta">${esc(entry.region)}</span></span>
     <span class="soon-badge">Em breve</span>
   </button>`;
 }
@@ -1183,7 +1192,7 @@ function rowHTML(d){
   const isFav = state.favs.indexOf(d.id)>=0;
   return `<div class="row" onclick="openItem('${esc(d.id)}')">
     <div class="ic">${d.icon||ICONS.organ}</div>
-    <div class="tx"><div class="nm">${esc(d.name)}</div><div class="meta">${esc(metaOf(d))}</div></div>
+    <div class="tx"><div class="nm">${stMark('ref:'+d.id)}${esc(d.name)}</div><div class="meta">${esc(metaOf(d))}</div></div>
     <div class="star-btn ${isFav?'on':''}" onclick="event.stopPropagation();toggleFav('${esc(d.id)}')">${svgIcon(P.star,20,{fill:isFav?'currentColor':'none'})}</div>
     <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
   </div>`;
@@ -1196,7 +1205,7 @@ function detailHTML(){
   const contextLabel = d.group==='Doppler' ? 'Seção' : 'Faixa etária';
   const specObj = specialtyOf(d);
   const crumb = specObj ? `<div class="d-crumb"><span class="crumb-link" onclick="openSpecialty('${specObj.id}')">‹ ${esc(specObj.name)}</span></div>` : '';
-  let h = crumb + `<div class="d-name">${esc(d.name)}</div><div class="sec-label">${contextLabel}</div><div class="d-age">${esc(faixa)}</div>`;
+  let h = crumb + `<div class="d-name">${stMark('ref:'+d.id)}${esc(d.name)}</div><div class="sec-label">${contextLabel}</div><div class="d-age">${esc(faixa)}</div>`;
   h += referenceCalculatorHTML(d);
   h += calcLinkHTML(d);
   if(d.tables&&d.tables.length){ d.tables.forEach((t,i)=>{ h+=tableHTML(t,d.id+'-'+i); }); }
@@ -1227,7 +1236,7 @@ function detailRailHTML(d){
   let rel='';
   if(sib.length){
     rel = `<div class="rail-card"><h4>Nesta seção</h4><div class="rail-rel">`+
-      sib.map(x=>`<a onclick="openItem('${esc(x.id)}')"><span class="d"></span>${esc(x.name)}</a>`).join('')+`</div></div>`;
+      sib.map(x=>`<a onclick="openItem('${esc(x.id)}')"><span class="d"></span>${stMark('ref:'+x.id)}${esc(x.name)}</a>`).join('')+`</div></div>`;
   }
   const isFav = state.favs.indexOf(d.id)>=0;
   const fav = `<div class="rail-card"><h4>Ações</h4>
@@ -1656,6 +1665,7 @@ function calcViewHTML(){
   if(state.calcId === 'ferro-r2') return calcFerroR2HTML();
   if(state.calcId === 'ferro-t2') return calcFerroT2HTML();
   if(state.calcId === 'adrenal-tc') return calcAdrenalTcHTML();
+  if(state.calcId === 'adrenal-washout') return calcAdrenalWashoutHTML();
   if(state.calcId === 'adrenal-rm') return calcAdrenalRmHTML();
   if(state.calcId === 'renal') return calcRenalHTML();
   if(state.calcId === 'ccls') return calcCclsHTML();
@@ -1696,7 +1706,7 @@ function calcCardHTML(c){
   return `<div class="lc-short" onclick="openCalc('${esc(c.id)}')">
     ${icon}
     <div class="st">
-      <div class="t">${esc(c.title)}</div>
+      <div class="t">${stMark('calc:'+c.id)}${esc(c.title)}</div>
       <div class="d">${esc(c.desc)}</div>
     </div>
     <div class="star-btn ${isFav?'on':''}" onclick="event.stopPropagation();toggleFavCalc('${esc(c.id)}')" aria-label="Favoritar">${svgIcon(P.star,20,{fill:isFav?'currentColor':'none'})}</div>
@@ -1721,11 +1731,18 @@ function openFavCalc(id){
   else { state.modalityId=null; }
   state.calcId=id; state.view='calc'; pushRecent(id); render();
 }
-/* Subespecialidades por método (fora do US). O US usa SPECIALTIES. */
+/* Subespecialidades por método (fora do US). O US usa SPECIALTIES.
+   Dois níveis: `area` = especialidade (ex.: Medicina Interna) e `name` = subgrupo/órgão dentro dela
+   (ex.: Fígado). Outras especialidades entram como novas `area` (cada uma com seus órgãos).
+   Sem `area` = grupo solto (protocolos por região); `name===area` = especialidade sem subgrupos. */
+const AREA_MI = 'Medicina Interna';
 const MOD_SPECS = {
-  rm: [ {id:'medint', name:'Medicina Interna'} ],
+  rm: [ {id:'figado', name:'Fígado', area:AREA_MI}, {id:'adrenal', name:'Adrenal', area:AREA_MI}, {id:'rim', name:'Rim', area:AREA_MI},
+        {id:'prostata', name:'Próstata', area:AREA_MI}, {id:'ovario', name:'Ovário', area:AREA_MI}, {id:'utero', name:'Útero', area:AREA_MI} ],
   dxa: [ {id:'dxa', name:'Densitometria óssea'} ],
-  tc: [ {id:'medint', name:'Medicina Interna'}, {id:'torax', name:'Tórax'},
+  tc: [ {id:'figado', name:'Fígado', area:AREA_MI}, {id:'adrenal', name:'Adrenal', area:AREA_MI}, {id:'rim', name:'Rim', area:AREA_MI},
+        {id:'pancreas', name:'Pâncreas', area:AREA_MI}, {id:'colon', name:'Cólon', area:AREA_MI},
+        {id:'torax', name:'Tórax', area:'Tórax'},
         {id:'gu', name:'Genitourinário'}, {id:'gi', name:'Gastrointestinal'}, {id:'card', name:'Cardíaco e Tórax'},
         {id:'vasc', name:'Vascular'}, {id:'msk', name:'Musculoesquelético'} ],
 };
@@ -1738,11 +1755,13 @@ function calcListModalityHTML(mid){
     const label = kind==='ref' ? 'Referências' : kind==='proto' ? 'Protocolos' : 'Calculadoras';
     return `<div class="calc-list-wrap"><div class="empty"><div class="msg">${esc(label)} deste método <b>em breve</b>.</div></div></div>`;
   }
-  let h = '';
+  let h = '', lastArea = null;
   specs.forEach(function(sp){
     const items = mine.filter(c=>c.subspec===sp.id);
     if(!items.length) return;   // omite subespecialidade sem itens deste tipo (calc/ref)
-    h += `<div class="calc-intro-lbl">${esc(sp.name)}</div>`;
+    if(sp.area && sp.area!==lastArea) h += `<div class="calc-area-lbl">${esc(sp.area)}</div>`;   // título da especialidade
+    lastArea = sp.area || null;
+    if(sp.name!==sp.area) h += `<div class="calc-intro-lbl">${esc(sp.name)}</div>`;            // subgrupo (órgão)
     h += items.map(c=>calcCardHTML(c)).join('');
   });
   const orphans = mine.filter(c=>!c.subspec || !specs.find(s=>s.id===c.subspec));
@@ -2001,7 +2020,7 @@ function favHTML(){
     h += `<div class="grp">Recentes</div>`;
     h += recents.map(c=>{ const fav=state.favCalcs.indexOf(c.id)>=0; return `<div class="row" onclick="openFavCalc('${esc(c.id)}')">
       <div class="ic">${svgIcon(P.calc,19)}</div>
-      <div class="tx"><div class="nm">${esc(c.title)}</div><div class="meta">${esc(c.desc)}</div></div>
+      <div class="tx"><div class="nm">${stMark('calc:'+c.id)}${esc(c.title)}</div><div class="meta">${esc(c.desc)}</div></div>
       <div class="star-btn ${fav?'on':''}" onclick="event.stopPropagation();toggleFavCalc('${esc(c.id)}')">${svgIcon(P.star,20,{fill:fav?'currentColor':'none'})}</div>
     </div>`; }).join('');
   }
@@ -2009,7 +2028,7 @@ function favHTML(){
     h += `<div class="grp">Calculadoras</div>`;
     h += calcs.map(c=>`<div class="row" onclick="openFavCalc('${esc(c.id)}')">
       <div class="ic star">${svgIcon(P.calc,19)}</div>
-      <div class="tx"><div class="nm">${esc(c.title)}</div><div class="meta">${esc(c.desc)}</div></div>
+      <div class="tx"><div class="nm">${stMark('calc:'+c.id)}${esc(c.title)}</div><div class="meta">${esc(c.desc)}</div></div>
       <div class="star-btn on" onclick="event.stopPropagation();toggleFavCalc('${esc(c.id)}')">${svgIcon(P.star,20,{fill:'currentColor'})}</div>
     </div>`).join('');
   }
@@ -2017,7 +2036,7 @@ function favHTML(){
     h += `<div class="grp">Referências</div>`;
     h += refs.map(d=>`<div class="row" onclick="openItem('${esc(d.id)}')">
       <div class="ic star">${svgIcon(P.star,19,{fill:'currentColor',noStroke:true})}</div>
-      <div class="tx"><div class="nm">${esc(d.name)}</div><div class="meta">${esc(metaOf(d))}</div></div>
+      <div class="tx"><div class="nm">${stMark('ref:'+d.id)}${esc(d.name)}</div><div class="meta">${esc(metaOf(d))}</div></div>
       <div class="star-btn on" onclick="event.stopPropagation();toggleFav('${esc(d.id)}')">${svgIcon(P.star,20,{fill:'currentColor'})}</div>
     </div>`).join('');
   }
@@ -2045,7 +2064,7 @@ function listsHTML(){
     if(itemsIn.length){
       h += itemsIn.map(d=>`<div class="row" onclick="openItem('${esc(d.id)}')">
         <div class="ic">${d.icon||ICONS.organ}</div>
-        <div class="tx"><div class="nm">${esc(d.name)}</div><div class="meta">${esc(metaOf(d))}</div></div>
+        <div class="tx"><div class="nm">${stMark('ref:'+d.id)}${esc(d.name)}</div><div class="meta">${esc(metaOf(d))}</div></div>
         <div class="star-btn" onclick="event.stopPropagation();toggleInList('${cl.id}','${esc(d.id)}')">${svgIcon(P.minus,18,{sw:2})}</div>
       </div>`).join('');
     } else {
@@ -2056,7 +2075,7 @@ function listsHTML(){
       const inside = inIds.indexOf(d.id)>=0;
       return `<div class="pick-row" onclick="toggleInList('${cl.id}','${esc(d.id)}')">
         <div class="pick-box ${inside?'on':''}">${inside?'✓':''}</div>
-        <div class="tx" style="flex:1;min-width:0"><div class="nm">${esc(d.name)}</div><div class="meta">${esc(metaOf(d))}</div></div>
+        <div class="tx" style="flex:1;min-width:0"><div class="nm">${stMark('ref:'+d.id)}${esc(d.name)}</div><div class="meta">${esc(metaOf(d))}</div></div>
       </div>`;
     }).join('');
     h += `<div style="height:20px"></div>`;
@@ -2129,6 +2148,7 @@ function resetCalc(){
   else if(state.calcId==='ferro-r2') state.ferroR2=null;
   else if(state.calcId==='ferro-t2') state.ferroT2=null;
   else if(state.calcId==='adrenal-tc') state.adrenalTc=null;
+  else if(state.calcId==='adrenal-washout') state.adrenalWo=null;
   else if(state.calcId==='adrenal-rm') state.adrenalRm=null;
   else if(state.calcId==='renal') state.renal=null;
   else if(state.calcId==='ccls') state.ccls=null;

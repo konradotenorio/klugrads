@@ -29,7 +29,7 @@ const PROTO_TC = [
    pts:['Objetivo do estudo: confirmar ou afastar adenoma.',
         'Washout absoluto = (HU 60 s − HU 15 min) ÷ (HU 60 s − HU sem contraste) × 100.'],
    arm:['Realce acima de 120 HU aos 60 s: suspeitar de feocromocitoma, mesmo com washout favorável. Feocromocitomas podem realçar até 170–190 HU e ter washout > 60%.'],
-   rel:[['adrenal-tc','Washout adrenal (TC)']]},
+   rel:[['adrenal-washout','Washout adrenal (TC)']]},
 
   {id:'fistula-colovesical', g:'gu', t:'Fístula colovesical',
    ind:'Pesquisa de fístula entre a bexiga e o cólon.',

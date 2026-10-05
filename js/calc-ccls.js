@@ -150,6 +150,6 @@ function cclsSet(field, val){
 }
 
 /* registra no catálogo (CALCS de app.js) — método RM, subespecialidade Medicina Interna */
-CALCS.push({id:'ccls', modality:'rm', subspec:'medint', badge:'cc',
+CALCS.push({id:'ccls', modality:'rm', subspec:'rim', badge:'cc',
   title:'ccLS',
   desc:'Clear cell Likelihood Score — massa renal na RM'});

@@ -21,7 +21,7 @@
 
 const MSL_ORGAOS = {
   prostata: {
-    id:'prostata', nome:'Próstata',
+    id:'prostata', nome:'PRÓSTATA (PI-RADS)',
     img:'/img/pi-rads-padrao-inicial.webp', size:1890,
     // retângulo da imagem (px) sem desenho, onde a legenda das cores é escrita
     legenda:{x:868, y:1176, w:322},
@@ -81,8 +81,10 @@ function mapaLesionalHTML(){
   const tbtn=(t,ic,lbl)=>`<button type="button" class="msl-btn${s.tool===t?' on':''}" data-t="${t}" onclick="mslSetTool('${t}')" title="${lbl}">${mslIc(ic)}<span>${lbl}</span></button>`;
   const abtn=(id,fn,ic,lbl,dis)=>`<button type="button" class="msl-btn" id="${id}" onclick="${fn}" title="${lbl}" aria-label="${lbl}"${dis?' disabled':''}>${mslIc(ic)}<span>${lbl}</span></button>`;
   const orgs = Object.keys(MSL_ORGAOS).length>1
-    ? `<div class="ti-foci" style="margin-bottom:10px">${Object.keys(MSL_ORGAOS).map(k=>`<div class="ti-ftog ${s.org===k?'on':''}" onclick="mslSetOrg('${k}')">${esc(MSL_ORGAOS[k].nome)}</div>`).join('')}</div>`
+    ? `<div class="ti-foci" style="margin-bottom:10px">${Object.keys(MSL_ORGAOS).map(k=>`<div class="ti-ftog ${s.org===k?'on':''}" onclick="mslSetOrg('${k}')">${stMark('mapa:'+k)}${esc(MSL_ORGAOS[k].nome)}</div>`).join('')}</div>`
     : '';
+  /* órgão com tela própria (ex.: PELVE / Endometriose, em mapa-endometriose.js): o motor quadrado da próstata não é usado */
+  if(o.custom) return `<div class="msl-wrap">${orgs}${o.html()}</div>`;
   const legInputs = MSL_CORES.map(c=>`<div class="msl-leg-row"><span class="msl-dot" style="--c:${c.cor}"></span><input type="text" class="msl-in" maxlength="30" placeholder="Lesão ${c.id}" value="${esc(s.labels[c.id-1])}" oninput="mslSetLabel(${c.id},this.value)" aria-label="Legenda da cor ${esc(c.nome)}"></div>`).join('');
   return `<div class="msl-wrap">
     ${orgs}
@@ -129,6 +131,7 @@ function mapaLesionalHTML(){
 
 /* ======================= inicialização (após cada render) ======================= */
 function mslInit(){
+  const oc=MSL_ORGAOS[mslState().org]; if(oc && oc.custom){ oc.init(); return; }
   const base=$('msl-base'), paint=$('msl-paint'), stage=$('msl-stage');
   if(!base||!paint||!stage) return;
   const o=MSL_ORGAOS[mslState().org];
@@ -159,6 +162,7 @@ function mslWire(stage){
     window.addEventListener('resize', ()=>{ if(state.view==='mapaLesional') mslFit(); });
     window.addEventListener('keydown', e=>{
       if(state.view!=='mapaLesional') return;
+      if((MSL_ORGAOS[mslState().org]||{}).custom) return;          // órgão com tela própria cuida dos seus atalhos
       if(e.key==='Escape' && mslState().full){ mslToggleFull(); return; }
       const t=e.target&&e.target.tagName; if(t==='INPUT'||t==='TEXTAREA') return;
       if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='z'){ e.preventDefault(); e.shiftKey?mslRedo():mslUndo(); }
@@ -350,6 +354,10 @@ function mslDrawBase(){
   const ctx=MSL.bctx; if(!ctx||!MSL.img) return;
   const s=mslState(), o=MSL_ORGAOS[s.org], N=MSL.N;
   ctx.clearRect(0,0,N,N); ctx.drawImage(MSL.img,0,0,N,N);
+  // marca pequena, em preto, no canto inferior direito (a pelve tem a sua, em branco, no canto inferior esquerdo)
+  { const fs=Math.max(9,Math.round(N*0.0105)), m=N*0.014;
+    ctx.save(); ctx.font=`600 ${fs}px "Segoe UI",Arial,Helvetica,sans-serif`; ctx.textBaseline='alphabetic'; ctx.textAlign='right';
+    ctx.fillStyle='#000000'; ctx.fillText('Imagem ilustrada e editada em KlugRads', N-m, N-m*0.6); ctx.restore(); }
   // legenda na imagem: "Legenda:" e uma linha "(cor) - Lesão N" para cada lesão pintada
   const rows=MSL_CORES.filter(c=>MSL.used[c.id-1]);
   if(!s.legend || !rows.length) return;
@@ -388,7 +396,13 @@ function mslSyncUI(){
 function mslSetCor(i){ const s=mslState(); s.cor=i; if(s.tool!=='brush') s.tool='brush'; mslSyncUI(); }
 function mslSetTool(t){ mslState().tool=t; mslSyncUI(); }
 function mslSetW(v){ mslState().w=+v; }
-function mslSetOrg(k){ const s=mslState(); if(!MSL_ORGAOS[k]||s.org===k) return; s.org=k; s.strokes=[]; s.redo=[]; render(true); }
+function mslSetOrg(k){
+  const s=mslState(); if(!MSL_ORGAOS[k]||s.org===k) return;
+  // cada órgão guarda a sua pintura: ao voltar para ele, o desenho continua lá
+  (s.byOrg=s.byOrg||{})[s.org]={strokes:s.strokes, redo:s.redo};
+  const b=s.byOrg[k]; s.org=k; s.strokes=b?b.strokes:[]; s.redo=b?b.redo:[];
+  render(true);
+}
 function mslSetLabel(i,v){
   mslState().labels[i-1]=v;
   const el=$('msl-cl-'+i); if(el) el.textContent=v.trim()||('Lesão '+i);

@@ -93,6 +93,6 @@ function cradsSet(axis, val){
 }
 
 /* registra no catálogo (CALCS de app.js) — método TC, subespecialidade Medicina Interna */
-CALCS.push({id:'crads', modality:'tc', subspec:'medint', badge:'CR',
+CALCS.push({id:'crads', modality:'tc', subspec:'colon', badge:'CR',
   title:'C-RADS 2023',
   desc:'CT colonografia — categorias colorretal (C) e extracolônica (E)'});

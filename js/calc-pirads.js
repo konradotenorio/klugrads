@@ -115,6 +115,6 @@ function piradsSet(field, val){
 }
 
 /* registra no catálogo (CALCS de app.js) — método RM, subespecialidade Medicina Interna */
-CALCS.push({id:'pirads', modality:'rm', subspec:'medint', badge:'PI',
+CALCS.push({id:'pirads', modality:'rm', subspec:'prostata', badge:'PI',
   title:'PI-RADS v2.1',
   desc:'Próstata (RM) — categoria por zona (PZ/TZ)'});

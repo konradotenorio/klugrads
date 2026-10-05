@@ -235,9 +235,9 @@ function figoCopy(mod){ const f=figoFrase(mod); if(f) klugCopy(f,'Frase copiada 
 CALCS.push({id:'figo-us', spec:'abdome', badge:'FIGO',
   title:'Miomas — FIGO (US)',
   desc:'Classificação FIGO dos leiomiomas (0–8 e híbridos) no ultrassom'});
-CALCS.push({id:'figo-rm', modality:'rm', subspec:'medint', badge:'FIGO',
+CALCS.push({id:'figo-rm', modality:'rm', subspec:'utero', badge:'FIGO',
   title:'Miomas — FIGO (RM)',
   desc:'Classificação FIGO dos leiomiomas na RM, com IFM/OFM'});
-CALCS.push({id:'figo-rm-ref', modality:'rm', subspec:'medint', badge:'REF', kind:'ref',
+CALCS.push({id:'figo-rm-ref', modality:'rm', subspec:'utero', badge:'REF', kind:'ref',
   title:'Miomas — Referência RM',
   desc:'FIGO, protocolo ESUR, aspecto na RM e o que informar no laudo'});
