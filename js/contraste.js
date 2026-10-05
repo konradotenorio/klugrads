@@ -232,7 +232,7 @@ function contrasteTopic(id){ return CONTRASTE_TOPICS.find(t=>t.id===id); }
 function contrasteListHTML(){
   const cards = CONTRASTE_TOPICS.map(t=>`<div class="lc-short" onclick="openContraste('${t.id}')">
       <div class="si acc">${svgIcon(P.book,22)}</div>
-      <div class="st"><div class="t">${esc(t.title)}</div><div class="d">${esc(t.desc)}${t.pending?' · em conferência':''}</div></div>
+      <div class="st"><div class="t">${stMark('cont:'+t.id)}${esc(t.title)}</div><div class="d">${esc(t.desc)}${t.pending?' · em conferência':''}</div></div>
       <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
     </div>`).join('');
   return `<div class="calc-list-wrap">

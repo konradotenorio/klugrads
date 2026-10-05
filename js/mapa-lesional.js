@@ -81,7 +81,7 @@ function mapaLesionalHTML(){
   const tbtn=(t,ic,lbl)=>`<button type="button" class="msl-btn${s.tool===t?' on':''}" data-t="${t}" onclick="mslSetTool('${t}')" title="${lbl}">${mslIc(ic)}<span>${lbl}</span></button>`;
   const abtn=(id,fn,ic,lbl,dis)=>`<button type="button" class="msl-btn" id="${id}" onclick="${fn}" title="${lbl}" aria-label="${lbl}"${dis?' disabled':''}>${mslIc(ic)}<span>${lbl}</span></button>`;
   const orgs = Object.keys(MSL_ORGAOS).length>1
-    ? `<div class="ti-foci" style="margin-bottom:10px">${Object.keys(MSL_ORGAOS).map(k=>`<div class="ti-ftog ${s.org===k?'on':''}" onclick="mslSetOrg('${k}')">${esc(MSL_ORGAOS[k].nome)}</div>`).join('')}</div>`
+    ? `<div class="ti-foci" style="margin-bottom:10px">${Object.keys(MSL_ORGAOS).map(k=>`<div class="ti-ftog ${s.org===k?'on':''}" onclick="mslSetOrg('${k}')">${stMark('mapa:'+k)}${esc(MSL_ORGAOS[k].nome)}</div>`).join('')}</div>`
     : '';
   /* órgão com tela própria (ex.: PELVE / Endometriose, em mapa-endometriose.js): o motor quadrado da próstata não é usado */
   if(o.custom) return `<div class="msl-wrap">${orgs}${o.html()}</div>`;
