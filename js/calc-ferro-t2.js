@@ -147,8 +147,27 @@ function ferroT2ResHTML(){
     <div class="ti-legend-row" style="margin-top:10px"><span class="lt">T2*: <b>${ft2Fmt(ft2R(c.t2,1))} ms</b> · R2*: <b>${ft2Fmt(ft2R(c.r2star,1))} Hz</b> · ${c.nValid} ecos</span></div>
     <div class="ti-legend-row"><span class="lt">Qualidade do ajuste (R²): <b style="color:${fitOk?'#1f9d55':'#cf2020'}">${ft2Fmt(ft2R(c.r2fit,3))}</b>${fitOk?'':' — abaixo de 0,95, revise os dados'}</span></div>
     <div class="ti-legend-row"><span class="lt">${esc(FT2_REFNAME[ferroT2State().ref])}</span></div>
+    ${ft2FraseHTML()}
   </div>`;
 }
+
+/* ---- Frase pronta para o laudo (preenchida com R2* e LIC calculados) ---- */
+function ft2Frase(){
+  const c = ferroT2Compute();
+  if(c.nValid < 2 || c.invalid) return '';
+  const g = ft2Grade(c.lic);
+  if(g===0) return 'Ausência de sinais de sobrecarga férrica.';
+  return `Sinais de sobrecarga férrica ${FT2_C[g].name.toLowerCase()} (calculado R2* em ${ft2Fmt(ft2R(c.r2star,1))} Hertz; Concentração de Ferro - LIC de ${ft2Fmt(ft2R(c.lic,1))} mg/g).`;
+}
+function ft2FraseHTML(){
+  const f = ft2Frase(); if(!f) return '';
+  return `<div class="lau-frase">
+    <div class="lau-frase-lbl">Frase para o laudo</div>
+    <div class="lau-frase-tx">${esc(f)}</div>
+    <button type="button" class="lau-frase-btn" onclick="ferroT2CopyFrase()">${svgIcon(P.copy,16,{sw:2})} Copiar frase</button>
+  </div>`;
+}
+function ferroT2CopyFrase(){ const f=ft2Frase(); if(f) klugCopy(f, 'Frase copiada ✓'); }
 
 /* ---- linha editável de eco ---- */
 function ferroT2RowHTML(r, i, total){
