@@ -85,7 +85,7 @@ const anota = () => { const t = st().tool; return t==='arrow' || t==='ruler'; };
 const DICA_MEXER = 'Toque numa {x} para mexer nela: arraste-a para mover, arraste as bolinhas para ajustar as pontas, toque de novo para editar o texto, ou use Apagar (ou a tecla Delete).';
 function dica(t){
   return t==='ruler'
-    ? 'Régua: arraste de um ponto ao outro da medida (linha preta tracejada); depois escreva a medida (ex.: 12 mm), que aparece num balão no meio da linha. O texto é opcional. Toque numa régua para mexer nela: arraste a linha para mover, as bolinhas para ajustar as pontas e o balão para colocá-lo onde não atrapalhe a imagem (um fio fino o liga à régua); toque de novo para editar o texto e escolher o balão nas pontas (esquerda/direita) ou no meio, ou use Apagar (ou a tecla Delete).'
+    ? 'Régua: arraste de um ponto ao outro da medida (linha preta tracejada); depois escreva a medida (ex.: 12 mm), que aparece num balão no meio da linha. O texto é opcional. Toque numa régua para mexer nela: arraste a linha para mover, as bolinhas para ajustar as pontas e o balão para colocá-lo onde não atrapalhe a imagem (um fio fino o liga à ponta da régua mais próxima); toque de novo para editar o texto, ou use Apagar (ou a tecla Delete).'
     : 'Seta: arraste do local do texto até o achado (a ponta fica onde soltar); o texto é opcional. '+DICA_MEXER.replace('{x}','seta');
 }
 function html(){
@@ -553,24 +553,15 @@ function drawArrow(ctx,a){
 /* ---- RÉGUA: item da mesma lista das setas ({arrow:true, ruler:true, x0,y0,x1,y1,w,text}), então seleção, mover, ajustar as pontas,
    apagar, desfazer/refazer, limpar e exportação são os mesmos da seta. Desenho: linha preta TRACEJADA entre os dois pontos, com um
    pequeno traço transversal em cada ponta (como numa medição) e, se houver texto, um balão no meio da linha com a medida. */
-/* onde fica o balão da régua: 'meio' (sobre a linha, padrão), 'ini' / 'fim' (logo depois de uma das pontas, no prolongamento da linha) ou 'livre' (arrastado) */
-const posReg = a => a.pos || ((a.ox||a.oy) ? 'livre' : 'meio');
 function regMed(ctx,a){
   const K = R.K, k = R.IW/1890*ESC_TXT, lw = (0.9+a.w*0.03)*K;          // espessura da régua (px de referência): fina por padrão (≈1,4 com o controle em 18) e só chega a ≈3 no máximo
   const txt = (a.text||'').trim(), mx = (a.x0+a.x1)/2, my = (a.y0+a.y1)/2; let pill = null;
   if(txt){
     ctx.save(); ctx.font = `700 ${38*k}px "Segoe UI",Arial,Helvetica,sans-serif`;
     const pw = ctx.measureText(txt).width + 44*k, ph = 68*k; ctx.restore();
-    const pos = posReg(a); let px = mx, py = my;
-    if(pos==='livre'){ px = mx+(a.ox||0); py = my+(a.oy||0); }
-    else if(pos!=='meio'){                                           // ponta: o balão fica logo depois da ponta, no prolongamento da linha
-      const e = pos==='ini' ? [a.x0,a.y0] : [a.x1,a.y1], o = pos==='ini' ? [a.x1,a.y1] : [a.x0,a.y0];
-      let ux = e[0]-o[0], uy = e[1]-o[1]; const L = Math.hypot(ux,uy)||1; ux /= L; uy /= L;
-      const d = (pw/2)*Math.abs(ux) + (ph/2)*Math.abs(uy) + 7*K;      // meia extensão do balão na direção da linha + folga
-      px = e[0]+ux*d; py = e[1]+uy*d;
-    }
+    const px = mx+(a.ox||0), py = my+(a.oy||0);                      // meio da linha + o deslocamento de quando o balão foi arrastado
     const m = 8*k, cx = Math.min(R.IW-m-pw/2, Math.max(m+pw/2,px)), cy = Math.min(R.IH-m-ph/2, Math.max(m+ph/2,py));
-    pill = {x:cx-pw/2, y:cy-ph/2, w:pw, h:ph, cx, cy, txt, k, pos};
+    pill = {x:cx-pw/2, y:cy-ph/2, w:pw, h:ph, cx, cy, txt, k};
   }
   return {lw, sx:a.x0, sy:a.y0, hw:lw, pill, mx, my};
 }
@@ -583,9 +574,12 @@ function drawRegua(ctx,a){
   ctx.beginPath(); for(const [x,y] of [[a.x0,a.y0],[a.x1,a.y1]]){ ctx.moveTo(x-nx*h,y-ny*h); ctx.lineTo(x+nx*h,y+ny*h); } ctx.stroke();
   const p = G.pill;
   if(p){
-    if(p.pos==='livre' && Math.hypot(p.cx-G.mx,p.cy-G.my) > p.h*0.5){   // balão arrastado para longe: um fio fino o liga ao meio da régua (por baixo do balão)
-      ctx.lineWidth = Math.max(1*R.K,lw*0.8); ctx.beginPath(); ctx.moveTo(G.mx,G.my); ctx.lineTo(p.cx,p.cy); ctx.stroke();
-      ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(G.mx,G.my,Math.max(lw*1.2,1.8*R.K),0,Math.PI*2); ctx.fill();
+    /* balão afastado da régua: um fio fino o liga à PONTA mais próxima (por baixo do balão); encostado na régua, não precisa de fio */
+    const dEnd = (x,y)=>Math.hypot(x-p.cx,y-p.cy), e = dEnd(a.x0,a.y0) <= dEnd(a.x1,a.y1) ? [a.x0,a.y0] : [a.x1,a.y1];
+    let dmin = 1e9; for(let i=0;i<=40;i++){ const x = a.x0+dx*i/40, y = a.y0+dy*i/40;       // distância da linha ao retângulo do balão
+      dmin = Math.min(dmin, Math.hypot(Math.max(p.x-x,0,x-(p.x+p.w)), Math.max(p.y-y,0,y-(p.y+p.h)))); }
+    if(dmin > 3*R.K){
+      ctx.lineWidth = Math.max(1*R.K,lw*0.8); ctx.beginPath(); ctx.moveTo(e[0],e[1]); ctx.lineTo(p.cx,p.cy); ctx.stroke();
     }
     ctx.font = `700 ${38*p.k}px "Segoe UI",Arial,Helvetica,sans-serif`; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
     ctx.fillStyle = 'rgba(255,255,255,.96)'; ctx.strokeStyle = '#000'; ctx.lineWidth = 2.5*p.k;
@@ -639,7 +633,7 @@ function drawSel(){
   }
   ctx.restore();
 }
-const snap = a => { const o = {x0:a.x0,y0:a.y0,x1:a.x1,y1:a.y1}; if(a.ruler){ o.pos = posReg(a); o.ox = a.ox||0; o.oy = a.oy||0; } return o; };   // posição guardada para mover/desfazer
+const snap = a => { const o = {x0:a.x0,y0:a.y0,x1:a.x1,y1:a.y1}; if(a.ruler){ o.ox = a.ox||0; o.oy = a.oy||0; } return o; };   // posição guardada para mover/desfazer
 const SETA_MIN = 22;                                   // arrasto mínimo (px da imagem de referência) para valer como seta; menos que isso é um toque
 function setaStart(e){
   const w = g('em-world'); if(!w) return;
@@ -677,7 +671,7 @@ function dragMove(e){
   if(!d.moved){ if(Math.hypot(dx,dy)*f < 4) return; d.moved = true; fecharTxt(); }
   const cl = (v,lo,hi)=>Math.max(lo,Math.min(hi,v)), s = d.s0;
   if(d.mode==='pill'){                                                           // régua: muda só o balão (deslocamento em relação ao meio da linha)
-    a.pos = 'livre'; a.ox = d.c0.ox+dx; a.oy = d.c0.oy+dy; const G = regMed(R.actx,a);
+    a.ox = d.c0.ox+dx; a.oy = d.c0.oy+dy; const G = regMed(R.actx,a);
     if(G.pill){ a.ox = G.pill.cx-G.mx; a.oy = G.pill.cy-G.my; }                  // já dentro dos limites da imagem
     redrawSetas(); drawSel(); return;
   }
@@ -710,26 +704,12 @@ function abrirTxt(a){
   fecharTxt(); R.edit = a;
   const d = document.createElement('div'); d.className = 'em-txt'; d.id = 'em-txt';
   const qual = a.ruler ? 'régua' : 'seta', ph = a.ruler ? 'Medida no balão (ex.: 12 mm)' : 'Texto da seta (opcional)';
-  let pos = '';
-  if(a.ruler){          // onde fica o balão: na ponta de um lado, no meio ou na ponta do outro (rótulos pela posição na tela)
-    const h = Math.abs(a.x1-a.x0) >= Math.abs(a.y1-a.y0), p1 = (h ? a.x0<=a.x1 : a.y0<=a.y1) ? ['ini','fim'] : ['fim','ini'], n = h ? ['Esquerda','Direita'] : ['Cima','Baixo'];
-    const b = (v,t,ti)=>'<button type="button" class="msl-btn" data-pos="'+v+'" title="'+ti+'" aria-label="'+ti+'">'+t+'</button>';
-    pos = '<div class="em-txt-pos"><span>Balão:</span>'+b(p1[0],n[0],'Balão na ponta '+n[0].toLowerCase()+' da régua')+b('meio','Meio','Balão no meio da régua')+b(p1[1],n[1],'Balão na ponta '+n[1].toLowerCase()+' da régua')+'</div>';
-  }
-  d.innerHTML = '<div class="em-txt-r"><input type="text" id="em-txt-in" maxlength="'+(a.ruler?32:60)+'" placeholder="'+ph+'" autocomplete="off" enterkeyhint="done" aria-label="'+ph+'"><button type="button" class="msl-btn on" id="em-txt-ok">OK</button><button type="button" class="msl-btn" id="em-txt-del" title="Apagar esta '+qual+'" aria-label="Apagar esta '+qual+'">'+mslIc('trash')+'</button></div>'+pos;
+  d.innerHTML = '<input type="text" id="em-txt-in" maxlength="'+(a.ruler?32:60)+'" placeholder="'+ph+'" autocomplete="off" enterkeyhint="done" aria-label="'+ph+'"><button type="button" class="msl-btn on" id="em-txt-ok">OK</button><button type="button" class="msl-btn" id="em-txt-del" title="Apagar esta '+qual+'" aria-label="Apagar esta '+qual+'">'+mslIc('trash')+'</button>';
   ['pointerdown','pointerup','pointermove','wheel','contextmenu'].forEach(ev=>d.addEventListener(ev,x=>x.stopPropagation()));
   const inp = d.querySelector('input'); inp.value = a.text || '';
   inp.addEventListener('input',()=>{ a.text = inp.value; redrawSetas(); drawSel(); });
   inp.addEventListener('keydown',x=>{ if(x.key==='Enter'){ x.preventDefault(); fecharTxt(); } });
   d.querySelector('#em-txt-ok').addEventListener('click',()=>fecharTxt());
-  const marca = ()=>d.querySelectorAll('[data-pos]').forEach(x=>x.classList.toggle('on', x.dataset.pos===posReg(a)));
-  d.querySelectorAll('[data-pos]').forEach(x=>x.addEventListener('click',()=>{
-    if(posReg(a)===x.dataset.pos) return;
-    const antes = snap(a); a.pos = x.dataset.pos; a.ox = 0; a.oy = 0;
-    lista().push({mv:true, ref:a, from:antes, to:snap(a)}); st().redo[R.view] = [];       // entra no Desfazer/Refazer
-    redrawSetas(); drawSel(); sync(); marca(); posTxt(d,a);
-  }));
-  marca();
   d.querySelector('#em-txt-del').addEventListener('click',()=>{ R.sel = a; apagarSeta(); });
   stg.appendChild(d); posTxt(d,a);
   inp.focus({preventScroll:true});
