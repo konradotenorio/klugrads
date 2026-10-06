@@ -8302,7 +8302,7 @@ const LAU_MMG_MASKS = [
 "dash": true
 },
 {
-"text": "Categoria BI-RADS®: 1 (negativo). Rastreamento de rotina, conforme a faixa etária e o risco da paciente.",
+"text": "Categoria BI-RADS®: 1.",
 "dash": true
 }
 ],
