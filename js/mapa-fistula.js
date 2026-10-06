@@ -14,7 +14,7 @@
 
    Pincéis (2 cores fluorescentes, cada uma é um achado):
      TRAJETO FISTULOSO (verde fluorescente, com brilho) e
-     ABSCESSO (amarelo fluorescente, com contorno preto delimitando a área marcada).
+     ABSCESSO (amarelo fluorescente, sem contorno nem margem).
    O trajeto fica sempre por cima do abscesso. A seta é sempre preta.
    Cada pincel, a borracha e a seta guardam a sua própria espessura.
 
@@ -36,7 +36,7 @@ const LES = [
 ];
 const ALPHA = 0.9, ZMAX = 8;
 const GLOW = 5;                          // brilho (halo) em volta do TRAJETO, em px da imagem de referência: dá o efeito fluorescente
-const OUT = 3.5;                         // espessura (px de referência) do contorno preto em volta do ABSCESSO
+const OUT = 0;                           // contorno preto em volta do ABSCESSO (px de referência): 0 = sem contorno/margem (padrão). Se for > 0, contorno() volta a desenhar a faixa preta
 const REFW = 1103;                       // largura de referência (px): pincel, brilho, contorno e cursor escalam com R.K = largura da imagem / REFW
 const AX_TOP = 120, AX_BOT = 56;         // faixas extras da imagem axial (px): título + ANTERIOR no alto, POSTERIOR embaixo
 const SETA = {fill:'#000000', line:'#FFFFFF'};   // seta sempre preta; o fio branco só garante que ela apareça sobre o músculo escuro
@@ -72,7 +72,7 @@ function html(){
   const tb = (id,ic,lbl,extra) => `<button type="button" class="msl-btn${extra||''}" id="${id}" title="${lbl}" aria-label="${lbl}">${mslIc(ic)}<span>${lbl}</span></button>`;
   return `<div id="fp-root">
     <div class="ti-card em-ctl" id="fp-ctl">${ctlHTML()}</div>
-    <div class="ti-legend-row" style="margin:0 0 10px"><span class="lt">Escolha o corte (coronal ou axial) e marque, por cima da imagem, o trajeto fistuloso (verde) e os abscessos (amarelo, com contorno preto). Cada corte guarda a sua marcação. No corte axial, as bordas indicam anterior, posterior, direito e esquerdo do paciente (convenção radiológica: o lado direito do paciente fica à esquerda da imagem). Zoom: roda do mouse ou dois dedos; mover a imagem ampliada: botão direito do mouse ou dois dedos.</span></div>
+    <div class="ti-legend-row" style="margin:0 0 10px"><span class="lt">Escolha o corte (coronal ou axial) e marque, por cima da imagem, o trajeto fistuloso (verde) e os abscessos (amarelo). Cada corte guarda a sua marcação. No corte axial, as bordas indicam anterior, posterior, direito e esquerdo do paciente (convenção radiológica: o lado direito do paciente fica à esquerda da imagem). Zoom: roda do mouse ou dois dedos; mover a imagem ampliada: botão direito do mouse ou dois dedos.</span></div>
     <div class="msl-ed${s.full?' full':''}" id="fp-ed">
       <div class="msl-bar">
         <div class="msl-row">
@@ -209,7 +209,7 @@ function legenda(ctx,rows){
   rows.forEach((c,i)=>{
     const cy = y+titH+i*rowH+rowH/2-2*k;
     ctx.fillStyle = c.cor; ctx.beginPath(); ctx.arc(x+padX+15*k,cy,15*k,0,Math.PI*2); ctx.fill();
-    ctx.strokeStyle = 'rgba(30,36,46,.55)'; ctx.lineWidth = 2*k; ctx.stroke();       // aro escuro: o amarelo fluorescente some no fundo branco sem ele
+    ctx.strokeStyle = c.anel; ctx.lineWidth = 2*k; ctx.stroke();       // aro fino da própria cor (só na bolinha da legenda): o amarelo fluorescente some no fundo branco sem ele
     ctx.fillStyle = '#1f2630'; ctx.font = F(600,31*k); ctx.fillText(texts[i], x+padX+40*k, cy+1*k);
   });
   ctx.restore();
@@ -362,8 +362,9 @@ function cursor(e){
    render() do app são só "repintar os traços". Cada achado tem a sua camada: ABSCESSO (#fp-pa) e TRAJETO
    (#fp-pt, que fica por cima); a borracha (destination-out) apaga nas duas.
    TRAJETO leva um brilho (halo) da própria cor: é o que dá o aspecto fluorescente.
-   ABSCESSO leva um contorno preto (#fp-po, por baixo do preenchimento), recalculado a partir da camada do
-   abscesso (contorno()): assim ele acompanha também as bordas deixadas pela borracha e pelo desfazer. */
+   ABSCESSO não tem contorno (OUT = 0). Com OUT > 0, contorno() desenha uma faixa preta (#fp-po, por baixo do
+   preenchimento), recalculada a partir da camada do abscesso: assim ela acompanha também as bordas deixadas
+   pela borracha e pelo desfazer. */
 const alvos = s => s.e ? [R.ca,R.ct] : [s.c===2 ? R.ca : R.ct];
 function style(ctx,s){
   ctx.save(); ctx.beginPath(); ctx.rect(0,0,R.IW,R.IH); ctx.clip();
@@ -407,6 +408,7 @@ function caixaAbscesso(){
 function contorno(){
   const o = R.co; if(!o || !g('fp-po')) return;
   o.clearRect(0,0,R.IW,R.IH);
+  if(!(OUT>0)) return;                                        // sem contorno: a camada #fp-po fica vazia
   const b = caixaAbscesso(); if(!b || b.w<1 || b.h<1) return;
   const A = R.ca.canvas, rad = OUT*R.K;
   for(const [r,n] of [[rad/3,8],[rad*2/3,12],[rad,16]])
