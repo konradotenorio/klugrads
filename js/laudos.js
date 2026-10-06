@@ -301,7 +301,9 @@ const LAU_ABD_ITEMS = [
      {t:'num', k:'trans', lbl:'Eixo transversal (opcional, para o índice esplênico)', unit:'cm', show:s=>s.dim!=='cx'},
      {t:'check', k:'acs', lbl:'Baço acessório', show:s=>s.dim!=='cx'},
      {t:'num', k:'acsD', lbl:'Medida', unit:'cm', show:s=>s.dim!=='cx'&&s.acs, ind:1},
-     {t:'check', k:'cal', lbl:'Calcificações (granulomas)', show:s=>s.dim!=='cx'},
+     {t:'check', k:'cal', lbl:'Calcificação / calcificações (granulomas)', show:s=>s.dim!=='cx'},
+     {t:'radio', k:'calQ', lbl:'Quantidade', opts:[['1','Uma calcificação'],['n','Calcificações']], show:s=>s.dim!=='cx'&&s.cal, ind:1},
+     {t:'num', k:'calD', lbl:'Medida (opcional; a maior se várias)', unit:'cm', show:s=>s.dim!=='cx'&&s.cal, ind:1},
      {t:'check', k:'cis', lbl:'Cisto', show:s=>s.dim!=='cx'},
      {t:'num', k:'cisD', lbl:'Medida', unit:'cm', show:s=>s.dim!=='cx'&&s.cis, ind:1},
    ],
@@ -319,11 +321,14 @@ const LAU_ABD_ITEMS = [
        : `com dimensões normais${med?` (${med})`:''}, homogêneo.`;
      if(s.acs) t += ' ' + lauFrase(lauJoin(['pequena imagem nodular junto ao hilo esplênico, com ecogenicidade semelhante à do baço', lauMed(s.acsD,'cm')]) + ', compatível com baço acessório');
      const les=[];
-     if(s.cal) les.push('focos hiperecogênicos esparsos com sombra acústica posterior, compatíveis com calcificações (granulomas)');
+     if(s.cal){ const md=lauHas(s.calD)?lauN(s.calD)+' cm':'';
+       les.push(s.calQ==='1'
+         ? `foco hiperecogênico com sombra acústica posterior${md?`, medindo ${md}`:''}, compatível com calcificação (granuloma)`
+         : `focos hiperecogênicos esparsos com sombra acústica posterior${md?`, o maior medindo ${md}`:''}, compatíveis com calcificações (granulomas)`); }
      if(s.cis) les.push(lauJoin(['imagem cística simples no parênquima esplênico', lauMed(s.cisD,'cm')]));
      if(aum) conc.push('Esplenomegalia' + (idx!=null ? ` (índice esplênico de ${idxTxt})` : c?` (${c})`:'') + '.');
      if(s.acs) conc.push('Baço acessório.');
-     if(s.cal) conc.push('Granulomas calcificados esplênicos.');
+     if(s.cal) conc.push(s.calQ==='1' ? 'Granuloma calcificado esplênico.' : 'Granulomas calcificados esplênicos.');
      if(s.cis) conc.push('Cisto esplênico.');
      return {txt:t, conc, les};
    }},
