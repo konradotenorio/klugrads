@@ -1282,7 +1282,11 @@ const LAU_ALVOS = {
                  musc:[['gastrocnêmio medial','gastrocnêmio medial'],['vasto medial','vasto medial'],['vasto lateral','vasto lateral']]},
   'us-quadril': {tend:[['glúteo médio','do glúteo médio'],['glúteo mínimo','do glúteo mínimo'],['retofemoral','retofemoral'],['iliopsoas','do iliopsoas'],['isquiotibiais (origem)','dos isquiotibiais']],
                  musc:[['glúteo médio','glúteo médio'],['glúteo mínimo','glúteo mínimo'],['iliopsoas','iliopsoas'],['adutor longo','adutor longo'],['retofemoral','retofemoral']]},
-  'us-tornozelo':{lig:[['fibulotalar anterior','fibulotalar anterior'],['fibulocalcâneo','fibulocalcâneo'],['tibiofibular anterior','tibiofibular anterior'],['deltoide','deltoide']], tend:[['calcâneo','do calcâneo'],['tibial posterior','do tibial posterior'],['fibular longo','do fibular longo'],['fibular curto','do fibular curto'],['flexor longo dos dedos','do flexor longo dos dedos',{al:['flexores longos dos dedos']}],['flexor longo do hálux','do flexor longo do hálux',{al:['do hálux']}],['tibial anterior','do tibial anterior']], musc:[]},
+  'us-tornozelo':{lig:[['fibulotalar anterior','fibulotalar anterior'],['fibulocalcâneo','fibulocalcâneo'],['tibiofibular anterior','tibiofibular anterior'],['deltoide','deltoide']],
+                 // compartimentos: tendinopatia, tenossinovite ou tendinopatia com tenossinovite (t3)
+                 tend:[['calcâneo','do calcâneo'],['tibial anterior','do tibial anterior',{t3:1, ts:1}],['extensor longo do hálux','do extensor longo do hálux',{t3:1, ts:1}],['extensor longo dos dedos','do extensor longo dos dedos',{t3:1, ts:1}],
+                       ['tibial posterior','do tibial posterior',{t3:1, ts:1}],['flexor longo dos dedos','do flexor longo dos dedos',{t3:1, ts:1}],['flexor longo do hálux','do flexor longo do hálux',{t3:1, ts:1}],
+                       ['fibular longo','do fibular longo',{t3:1, ts:1}],['fibular curto','do fibular curto',{t3:1, ts:1}]], musc:[]},
   'us-pe':      {tend:[['tibial posterior','do tibial posterior'],['fibulares','dos fibulares'],['flexores','flexores'],['extensores','extensores']], musc:[['abdutor do hálux','abdutor do hálux'],['flexor curto dos dedos','flexor curto dos dedos'],['quadrado plantar','quadrado plantar']]},
   'us-braco':   {tend:[], musc:[['bíceps braquial','bíceps braquial'],['braquial','braquial'],['tríceps braquial','tríceps braquial'],['deltoide','deltoide'],['coracobraquial','coracobraquial']]},
   'us-antebraco':{tend:[], musc:[['flexor radial do carpo','flexor radial do carpo'],['flexores superficiais dos dedos','flexores superficiais dos dedos'],['extensor comum dos dedos','extensor comum dos dedos'],['braquiorradial','braquiorradial'],['pronador redondo','pronador redondo']]},
@@ -1600,6 +1604,13 @@ function lauDetSet(k, id, key, fld, v){
   lauRenderLeft();
   if(k==='__obs'){ lauPatchOpt('obs', lauObsHTML()); lauPatchConc(); lauSaveEd(); } else { lauPatch(k); lauUpdSum(k); }
 }
+/* alteração em 3 opções (tendinopatia / tenossinovite / as duas): grava tipo e bainha juntos; clicar de novo desmarca */
+function lauDet3(k, id, key, tipo, bainha){
+  const bag=lauPhBag(k); const d=bag['d'+id]=Object.assign({}, bag['d'+id]||{}); const det=d.det=Object.assign({}, d.det||{});
+  const t=Object.assign({}, det[key]||{}); const igual=(t.tipo||'')===tipo && !!t.bainha===!!bainha;
+  t.tipo = igual ? null : (tipo||null); t.bainha = igual ? null : (bainha?1:null); det[key]=t;
+  lauRenderLeft(); lauPatch(k); lauUpdSum(k);
+}
 function lauDescTxt(k, id, v, redesenha){
   const bag=lauPhBag(k); bag['d'+id]=Object.assign({}, bag['d'+id]||{}, {alvoTxt:v});
   if(redesenha) lauRenderLeft();
@@ -1643,7 +1654,7 @@ function lauDescHTML(k, id, f, d){
     h += lauAlvoList(f.kind, d).map(a=>{
       const t=det[a.key]||{}; const tpl=lauTendTpl(f,t);
       return `<div class="lau-tbox"><div class="lau-tbox-h">${esc(a.nome)}</div>
-        <div class="lau-chips">${T.filter(o=>!(a.x&&a.x.tipos) || a.x.tipos.indexOf(o[0])>=0).map(o=>dchip(a.key,'tipo',o[0],o[1],t.tipo===o[0])).join('')}${f.kind==='tend'?dchip(a.key,'bainha',1,a.x&&(a.x.tn||a.x.ts)?'Tenossinovite':'Distensão líquida da bainha',!!t.bainha):''}</div>
+        <div class="lau-chips">${a.x&&a.x.t3 ? [['tend',0,'Tendinopatia'],['',1,'Tenossinovite'],['tend',1,'Tendinopatia com tenossinovite']].map(([ti,bn,txt])=>`<button type="button" class="ti-ftog ${(t.tipo||'')===ti&&!!t.bainha===!!bn&&(ti||bn)?'on':''}" onclick="lauDet3('${k}','${id}','${a.key}','${ti}',${bn})">${txt}</button>`).join('') : T.filter(o=>!(a.x&&a.x.tipos) || a.x.tipos.indexOf(o[0])>=0).map(o=>dchip(a.key,'tipo',o[0],o[1],t.tipo===o[0])).join('')}${f.kind==='tend'&&!(a.x&&a.x.t3)?dchip(a.key,'bainha',1,a.x&&(a.x.tn||a.x.ts)?'Tenossinovite':'Distensão líquida da bainha',!!t.bainha):''}</div>
         ${f.kind==='tend'&&t.tipo==='parcial'?`<div class="lau-rl" style="margin-top:6px">Face</div><div class="lau-chips">${LAU_FACES.map((o,oi)=>dchip(a.key,'face',oi,o.replace('da face ','face '),(t.face||0)===oi)).join('')}</div>`:''}
         ${tpl?`<div class="lau-rl" style="margin-top:6px">Medidas</div>${lauInlineForm(k,'f'+id+'_'+a.key,tpl,bag['f'+id+'_'+a.key])}`:''}
       </div>`;
@@ -2277,7 +2288,7 @@ function lauFrasesPanel(k, org, list, bag, estrut){
   const tAl = (()=>{ if(k==='__obs') return null; const L0=state.lau, m0=lauModelo(L0.model), it0=m0.items.find(x=>x.k===k); const fT=fs.find(f=>lauKindTE(f) && lauAlvoOpts(f.kind, lauItemLabel(m0,it0)||'').length>=2); if(!fT) return null;
     const L=state.lau, m=lauModelo(L.model), it=m.items.find(x=>x.k===k); const ops=lauAlvoOpts(fT.kind, lauItemLabel(m,it)||'');
     if(ops.length<2) return null; const id=list.find(x=>parseInt(x,10)===fT.i); return {f:fT, ops, d:id?(bag['d'+id]||{}):null}; })();
-  const chips = (tAl ? `<span class="lau-rl" style="width:100%;margin:0 0 2px">${tAl.f.kind==='tend'?(tAl.ops.every(ai=>(lauAlvos('tend')[ai][2]||{}).ts)?'Compartimentos extensores':'Tendões'):tAl.f.kind==='lig'?'Ligamentos':'Músculos'}</span>` + tAl.ops.map(ai=>{ const on=tAl.d&&(tAl.d.alvos||[]).indexOf(ai)>=0; const nm=lauAlvos(tAl.f.kind)[ai][0];
+  const chips = (tAl ? `<span class="lau-rl" style="width:100%;margin:0 0 2px">${tAl.f.kind==='tend'?(tAl.ops.every(ai=>{ const x=lauAlvos('tend')[ai][2]||{}; return x.ts && !x.t3; })?'Compartimentos extensores':'Tendões'):tAl.f.kind==='lig'?'Ligamentos':'Músculos'}</span>` + tAl.ops.map(ai=>{ const on=tAl.d&&(tAl.d.alvos||[]).indexOf(ai)>=0; const nm=lauAlvos(tAl.f.kind)[ai][0];
       return `<button type="button" class="ti-ftog ${on?'on':''} lau-fk" onclick="lauTendAlvo('${k}',${tAl.f.i},${ai})">${esc(nm.charAt(0).toUpperCase()+nm.slice(1))}</button>`; }).join('') + `<span style="width:100%;height:0"></span>` : '')
     + fs.filter(f=>!(tAl && f===tAl.f)).map(f=>{ const n=nOf(f.i); return `<button type="button" class="ti-ftog ${n?'on':''}${f.kind?' lau-fk':''}" onclick="lauFraseToggle('${k}',${f.i})">${f.m==='sub'?'':'+ '}${esc(f.n)}${n>1?` <span class="n">${n}</span>`:''}</button>`; }).join('');
   const seq={};

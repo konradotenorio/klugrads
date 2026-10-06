@@ -4111,17 +4111,25 @@ const LAU_US_MASKS = [
 ],
 "items": [
 {
-"k": "tendoes-tibial-posterior-flexores-longos",
-"label": "Tendões tibial posterior, flexores longos dos dedos e do hálux",
+"k": "compartimento-anterior-tendoes-tibial-an",
+"label": "Compartimento anterior (tendões tibial anterior, extensor longo do hálux e extensor longo dos dedos)",
 "text": "com espessura, contornos e ecotextura normais.",
 "dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "tendoes-fibulares",
-"label": "Tendões fibulares",
-"text": "aparentemente preservados.",
+"k": "compartimento-medial-tendoes-tibial-post",
+"label": "Compartimento medial (tendões tibial posterior, flexor longo dos dedos e flexor longo do hálux)",
+"text": "com espessura, contornos e ecotextura normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "compartimento-lateral-tendoes-fibular-lo",
+"label": "Compartimento lateral (tendões fibular longo e fibular curto)",
+"text": "com espessura, contornos e ecotextura normais.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -4135,24 +4143,16 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "bursite-retrocalcaneana",
-"label": "Bursite retrocalcaneana",
-"text": "não caracterizada.",
-"dash": true,
-"opts": [],
-"grp": ""
-},
-{
-"k": "tendoes-extensores",
-"label": "Tendões extensores",
-"text": "sem alterações significativas.",
+"k": "bursa-retrocalcaneana",
+"label": "Bursa retrocalcaneana",
+"text": "sem distensão líquida.",
 "dash": true,
 "opts": [],
 "grp": ""
 },
 {
 "k": "ligamentos-fibulotalar-anterior-fibuloca",
-"label": "Ligamentos fíbulotalar anterior, fíbulocalcâneo e tibiofibular anterior",
+"label": "Ligamentos fibulotalar anterior, fibulocalcâneo, tibiofibular anterior e deltoide",
 "text": "preservados.",
 "dash": true,
 "opts": [],
@@ -4167,8 +4167,8 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "derrame-articular",
-"label": "Derrame articular",
+"k": "derrame-articular-tibiotarsico",
+"label": "Derrame articular tibiotársico",
 "text": "não há.",
 "dash": true,
 "opts": [],
@@ -4186,11 +4186,15 @@ const LAU_US_MASKS = [
 "seq": [
 {
 "t": "item",
-"k": "tendoes-tibial-posterior-flexores-longos"
+"k": "compartimento-anterior-tendoes-tibial-an"
 },
 {
 "t": "item",
-"k": "tendoes-fibulares"
+"k": "compartimento-medial-tendoes-tibial-post"
+},
+{
+"t": "item",
+"k": "compartimento-lateral-tendoes-fibular-lo"
 },
 {
 "t": "item",
@@ -4198,11 +4202,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "bursite-retrocalcaneana"
-},
-{
-"t": "item",
-"k": "tendoes-extensores"
+"k": "bursa-retrocalcaneana"
 },
 {
 "t": "item",
@@ -4214,15 +4214,20 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "derrame-articular"
+"k": "derrame-articular-tibiotarsico"
 },
 {
 "t": "item",
 "k": "pele-e-tecido-subcutaneo"
 }
 ],
-"concTitulo": null,
-"conc": [],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem achados significativos.",
+"dash": true
+}
+],
 "trailer": [],
 "flags": []
 },
