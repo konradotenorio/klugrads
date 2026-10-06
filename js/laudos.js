@@ -631,14 +631,17 @@ LAU_STRUCT.alcas = {k:'alcas', label:'Alças intestinais', hideNormal:true,   //
     {t:'check', k:'apG', lbl:'Densificação da gordura periapendicular', show:s=>s.ap==='ap', ind:1},
     {t:'check', k:'apQ', lbl:'Líquido periapendicular', show:s=>s.ap==='ap', ind:1},
     {t:'check', k:'apC', lbl:'Coleção / abscesso periapendicular', show:s=>s.ap==='ap', ind:1},
+    {t:'check', k:'dist', lbl:'Distensão líquida'},
     {t:'check', k:'int', lbl:'Intussuscepção'},
     {t:'select', k:'intL', lbl:'Localização', opts:[['no flanco direito','Flanco direito'],['na fossa ilíaca direita','Fossa ilíaca direita'],['no hipocôndrio direito','Hipocôndrio direito'],['no mesogástrio','Mesogástrio'],['no epigástrio','Epigástrio'],['no hipocôndrio esquerdo','Hipocôndrio esquerdo'],['no flanco esquerdo','Flanco esquerdo'],['na fossa ilíaca esquerda','Fossa ilíaca esquerda']], show:s=>s.int, ind:1},
     {t:'num', k:'intD', lbl:'Diâmetro (opcional)', unit:'cm', show:s=>s.int, ind:1},
   ],
   build(s){
-    if(s.ap==='ns' && !s.int) return {txt:null, conc:[]};
+    if(s.ap==='ns' && !s.int && !s.dist) return {txt:null, conc:[]};
     const conc=[]; const base = LAU_NORMAL('alcas') || 'sem distensão ou espessamento parietal detectáveis ao método.';
-    let t = s.int ? 'sem distensão difusa.' : base;
+    let t = s.dist ? 'distendidas por conteúdo líquido e gasoso, não sendo caracterizados sinais de sofrimento entérico ao método.'
+          : s.int ? 'sem distensão difusa.' : base;
+    if(s.dist) conc.push('Alças intestinais distendidas por conteúdo líquido e gasoso, sem sinais de sofrimento entérico ao método.');
     const d = lauHas(s.apD) ? ` (${lauN(s.apD)} mm)` : '';
     if(s.ap==='n') t += ` Apêndice cecal caracterizado, compressível, de calibre normal${d}, sem sinais inflamatórios.`;
     if(s.ap==='nc') t += ' Apêndice cecal não caracterizado.';
