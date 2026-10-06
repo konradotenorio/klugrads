@@ -18,9 +18,13 @@
    Não existe calibração que converta o R2* do baço em concentração de ferro
    tecidual (Henninger 2020) — por isso o resultado é uma classificação, sem mg/g.
 
+   Frase para o laudo (texto literal do Konrado, 05/out/2026; [<>] = R2* informado):
+     normal:               Baço sem sinais de sobrecarga férrica.
+     limítrofe/patológico: Baço com sinais de sobrecarga férrica (R2* de [<>] Hz).
+
    Reaproveita os auxiliares ferroNum / ferroR / ferroFmt de calc-ferro-r2.js
    (carregar DEPOIS dele). Segue o layout do Ferro Hepático (classes ti-*).
-   Ferramenta educacional. Sem frase de laudo (a redação depende de aprovação dele).
+   Ferramenta educacional.
    ========================================================================= */
 
 const ESPL_LIM = {
@@ -67,6 +71,23 @@ function esplField(s){
   </div>`;
 }
 
+/* ---- Frase pronta para o laudo (mesmo padrão das calculadoras de ferro hepático) ---- */
+function esplFrase(campo, v){
+  if(esplGrade(campo, v)===0) return 'Baço sem sinais de sobrecarga férrica.';
+  return `Baço com sinais de sobrecarga férrica (R2* de ${ferroFmt(ferroR(v))} Hz).`;
+}
+function esplFraseHTML(f){
+  return `<div class="lau-frase">
+    <div class="lau-frase-lbl">Frase para o laudo</div>
+    <div class="lau-frase-tx">${esc(f)}</div>
+    <button type="button" class="lau-frase-btn" onclick="esplCopyFrase()">${svgIcon(P.copy,16,{sw:2})} Copiar frase</button>
+  </div>`;
+}
+function esplCopyFrase(){
+  const s = esplState(), v = ferroNum(s.r2); if(v==null || v<=0) return;
+  klugCopy(esplFrase(s.campo, v), 'Frase copiada ✓');
+}
+
 function esplResHTML(){
   const s = esplState();
   const v = ferroNum(s.r2);
@@ -82,7 +103,7 @@ function esplResHTML(){
         <div class="b">${ref}</div>
       </div>
       <div class="pts" style="background:${g.c}">s⁻¹</div>
-    </div>`;
+    </div>${esplFraseHTML(esplFrase(s.campo, v))}`;
 }
 
 function calcFerroEsplHTML(){
