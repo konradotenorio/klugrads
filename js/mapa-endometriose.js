@@ -9,7 +9,7 @@
    achado (a ponta fica onde se solta) e a caixa de texto é opcional.
 
    Achados (3 cores): ENDOMETRIOSE (preto, pincel espiculado/irregular),
-   ENDOMETRIOMA (vinho, com contorno preto periférico de 2 mm) e SANGUE (vermelho).
+   ENDOMETRIOMA (vinho, sem contorno nem margem) e SANGUE (vermelho).
 
    As imagens (/img/endomap/) são do EndoMap (3Doctor) e são usadas na parceria
    3Doctor × KlugRads. Existe uma imagem por combinação de posicionamento:
@@ -37,14 +37,13 @@ const LES = [
   {id:2, nome:'Endometrioma', cor:'#7A1F3D', cn:'VINHO'},
   {id:3, nome:'Sangue',       cor:'#E11D2E', cn:'VERMELHO'},
 ];
-const MARCA = 'Imagem ilustrada e editada por KlugRads';
 const ALPHA = 0.72, ZMAX = 8;
 const REFW = 1103;                      // largura (px) das imagens originais; as atuais são 2× maiores: pincel e cursor escalam com R.K
 const SETA = {fill:'#FFD21F', line:'#1B1B1B'};   // seta amarela com contorno escuro: aparece sobre qualquer região do desenho
-/* contorno preto do ENDOMETRIOMA: faixa de 2 mm por FORA do círculo vinho (espessura fixa, não depende da espessura do pincel).
+/* contorno preto do ENDOMETRIOMA: REMOVIDO (ANEL_MM = 0). Com ANEL_MM > 0 volta a faixa por FORA do círculo vinho (espessura fixa, não depende da espessura do pincel).
    As imagens da pelve não têm escala em mm: adotei 1 mm = 3,78 px da imagem de referência (1103 px de largura), ou seja,
    a tela a 100% (≈96 dpi). Para outra calibração, basta mudar MM_PX (ou ANEL_MM). */
-const ANEL_MM = 2, MM_PX = 3.78;
+const ANEL_MM = 0, MM_PX = 3.78;     // ANEL_MM = largura do contorno em mm; 0 = sem contorno
 
 /* ---- estado (em memória) ---- */
 function st(){
@@ -71,7 +70,7 @@ function ctlHTML(){
   const s = st(), p = s.pos, sem = p.flex==='sem';
   const chips = (k,opts,dis) => opts.map(o=>`<button type="button" class="ti-ftog ${p[k]===o[0]?'on':''}" data-em="pos" data-k="${k}" data-v="${o[0]}"${dis?' disabled style="opacity:.4;cursor:default"':''}>${esc(o[1])}</button>`).join('');
   const row = (lbl,inner) => `<div class="em-rw"><div class="em-rl">${esc(lbl)}</div>${inner}</div>`;
-  const cores = LES.map(c=>`<button type="button" class="msl-cor${s.cor===c.id&&s.tool==='brush'?' on':''}${c.id===2?' em-ring':''}" data-em="cor" data-v="${c.id}" style="--c:${c.cor}" title="${esc(c.nome)} (${esc(c.cn)})"><span class="msl-dot"></span><span class="msl-cl">${esc(c.nome)}<span class="em-sub">${esc(c.cn)}</span></span></button>`).join('');
+  const cores = LES.map(c=>`<button type="button" class="msl-cor${s.cor===c.id&&s.tool==='brush'?' on':''}" data-em="cor" data-v="${c.id}" style="--c:${c.cor}" title="${esc(c.nome)} (${esc(c.cn)})"><span class="msl-dot"></span><span class="msl-cl">${esc(c.nome)}<span class="em-sub">${esc(c.cn)}</span></span></button>`).join('');
   return row('Corte',`<div class="em-chips">${chips('corte',CORTES)}</div>`)
        + row('Flexão do Útero',`<div class="em-chips">${chips('flex',FLEX)}</div>`)
        + row('Lateralização do Útero',`<div class="em-chips">${chips('lado',LADO,sem)}</div>`)
@@ -202,6 +201,7 @@ async function carregar(){
     R.tint = null;
     fecharTxt(); R.sel = null; R.drag = null;
     g('em-endo').style.opacity = ALPHA; g('em-paint').style.opacity = ALPHA;
+    if(window.msl3d){ msl3d.attach('em',{world:g('em-world'), layers:[g('em-endo'),g('em-paint')]}); msl3d.painel(g('em-ed')); }   // efeito 3D (padrão)
     fit(); redrawAll(); R.usedKey = '';
   }
   R.ready = true; const m = g('em-msg'); if(m) m.style.display = 'none';
@@ -221,18 +221,12 @@ function legenda(ctx,rows){
   rows.forEach((c,i)=>{
     const cy = y+titH+i*rowH+rowH/2-2*k;
     ctx.fillStyle = c.cor; ctx.beginPath(); ctx.arc(x+padX+15*k,cy,15*k,0,Math.PI*2); ctx.fill();
-    if(c.id===2){ ctx.strokeStyle = '#000'; ctx.lineWidth = 3.4*k; ctx.beginPath(); ctx.arc(x+padX+15*k,cy,15*k+1.7*k,0,Math.PI*2); ctx.stroke(); }   // endometrioma: com o contorno preto
     ctx.fillStyle = '#1f2630'; ctx.font = F(600,31*k); ctx.fillText(texts[i], x+padX+40*k, cy+1*k);
   });
   ctx.restore();
 }
-/* marca pequena, em letras brancas, no canto inferior esquerdo */
-function marca(ctx){
-  const fs = Math.max(9,Math.round(R.IW*0.0105)), m = R.IW*0.014;
-  ctx.save(); ctx.font = `600 ${fs}px "Segoe UI",Arial,sans-serif`; ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
-  ctx.shadowColor = 'rgba(0,0,0,.65)'; ctx.shadowBlur = fs*0.28; ctx.shadowOffsetY = 1;
-  ctx.fillStyle = '#ffffff'; ctx.fillText(MARCA, m, R.IH-m*0.9); ctx.restore();
-}
+/* marca padrão do Mapa Setorial Lesional (mslMarca, em mapa-lesional.js): branca, canto inferior esquerdo */
+function marca(ctx){ mslMarca(ctx, R.IW, R.IH, {cor:'#ffffff', canto:'esq', sombra:true}); }
 /* corte axial (visão videolaparoscópica): título no alto e as orientações nas quatro bordas.
    Esquerdo/direito são do PACIENTE: a imagem original traz o lado esquerdo à esquerda da tela. */
 function orientacao(ctx){
@@ -427,7 +421,7 @@ function drawStroke(ctx,s,comHalo){
       ctx.lineTo(q[q.length-2],q[q.length-1]); ctx.stroke(); }
   };
   style(ctx,s); go(); ctx.restore();
-  if(comHalo && vinho(s)){ style(ctx,s); halo(ctx,s); go(); ctx.restore(); }
+  if(comHalo && ANEL_MM>0 && vinho(s)){ style(ctx,s); halo(ctx,s); go(); ctx.restore(); }
 }
 /* o traço inteiro, nas camadas certas (ao vivo, o vinho também vai para a camada visível com o contorno provisório) */
 function drawStrokeAll(s,vivo){
@@ -437,12 +431,12 @@ function drawStrokeAll(s,vivo){
 }
 /* um pedaço de traço (continuação ao vivo), nas camadas certas */
 function paintSeg(s,build){
-  const put = (ctx,h)=>{ style(ctx,s); build(ctx); ctx.restore(); if(h){ style(ctx,s); halo(ctx,s); build(ctx); ctx.restore(); } };
+  const put = (ctx,h)=>{ style(ctx,s); build(ctx); ctx.restore(); if(h && ANEL_MM>0){ style(ctx,s); halo(ctx,s); build(ctx); ctx.restore(); } };
   if(vinho(s)){ put(R.wctx); put(R.ectx,true); }
   else if(s.e){ put(R.wctx); put(R.pctx); put(R.ectx); }
   else put(R.pctx);
 }
-/* camada visível do endometrioma = contorno preto (o vinho "engordado" em ANEL_MM) + vinho por cima */
+/* camada visível do endometrioma = vinho (com ANEL_MM > 0, mais o contorno preto: o vinho "engordado" em ANEL_MM, por baixo) */
 function rebuildEndo(){
   const e = R.ectx, w = R.wm; if(!e || !w) return;
   e.clearRect(0,0,R.IW,R.IH);
@@ -454,11 +448,13 @@ function rebuildEndo(){
     R.wctx.putImageData(im,0,0);
     if(!ha) return;                                     // sem endometrioma visível: nada a desenhar
   }
-  const t = R.tint || (R.tint = document.createElement('canvas')); if(t.width!==R.IW || t.height!==R.IH){ t.width = R.IW; t.height = R.IH; }
-  const x = t.getContext('2d'); x.globalCompositeOperation = 'source-over'; x.clearRect(0,0,R.IW,R.IH); x.drawImage(w,0,0);
-  x.globalCompositeOperation = 'source-in'; x.fillStyle = '#000'; x.fillRect(0,0,R.IW,R.IH); x.globalCompositeOperation = 'source-over';
-  const o = ANEL_MM*MM_PX*R.K;
-  for(let k=0;k<16;k++){ const a = k*Math.PI/8; e.drawImage(t,Math.cos(a)*o,Math.sin(a)*o); }
+  if(ANEL_MM>0){                                        // contorno preto (desligado por padrão: ANEL_MM = 0)
+    const t = R.tint || (R.tint = document.createElement('canvas')); if(t.width!==R.IW || t.height!==R.IH){ t.width = R.IW; t.height = R.IH; }
+    const x = t.getContext('2d'); x.globalCompositeOperation = 'source-over'; x.clearRect(0,0,R.IW,R.IH); x.drawImage(w,0,0);
+    x.globalCompositeOperation = 'source-in'; x.fillStyle = '#000'; x.fillRect(0,0,R.IW,R.IH); x.globalCompositeOperation = 'source-over';
+    const o = ANEL_MM*MM_PX*R.K;
+    for(let k=0;k<16;k++){ const a = k*Math.PI/8; e.drawImage(t,Math.cos(a)*o,Math.sin(a)*o); }
+  }
   e.drawImage(w,0,0);
 }
 function lista(){ return st().strokes[R.view] || (st().strokes[R.view]=[]); }
@@ -467,9 +463,11 @@ function redrawAll(){
   const ctx = R.pctx; if(!ctx) return; ctx.clearRect(0,0,R.IW,R.IH); R.wctx.clearRect(0,0,R.IW,R.IH);
   lista().forEach(s=>{ if(s.clear){ ctx.clearRect(0,0,R.IW,R.IH); R.wctx.clearRect(0,0,R.IW,R.IH); } else if(!s.arrow && !s.mv && !s.del) drawStrokeAll(s,false); });
   rebuildEndo(); redrawSetas(); drawSel();
+  if(window.msl3d) msl3d.update('em');
 }
 function strokeStart(e){
   const s = st(), w = g('em-world'); if(!w) return;
+  if(window.msl3d) msl3d.liveStart('em');
   R.rect = w.getBoundingClientRect(); const p = ptr(e,R.rect);
   R.stroke = {c:s.cor, w:s.w, e:s.tool==='erase', pts:[+p[0].toFixed(1),+p[1].toFixed(1)], seed:((Math.random()*2147483646)|0)+1, _i:0, _n:0, _d:0};
   drawStrokeAll(R.stroke,true);
@@ -494,6 +492,7 @@ function strokeEnd(){
   lista().push(s); st().redo[R.view] = [];
   if(vinho(s) || s.e) rebuildEndo();                    // contorno exato (e sem sobras do contorno onde o vinho foi apagado)
   refreshLegend(); sync();
+  if(window.msl3d) msl3d.liveEnd('em');
 }
 function cancelStroke(){
   if(R.arrow){ R.arrow = null; redrawSetas(); }
@@ -692,7 +691,8 @@ function limpar(){ const l=lista(); if(!l.length) return; fecharTxt(); l.push({c
 function exportCanvas(){
   const c = document.createElement('canvas'); c.width = R.IW; c.height = R.IH; const x = c.getContext('2d');
   x.fillStyle = '#fff'; x.fillRect(0,0,R.IW,R.IH); x.imageSmoothingQuality = 'high';
-  x.drawImage(g('em-base'),0,0); x.globalAlpha = ALPHA; x.drawImage(g('em-endo'),0,0); x.drawImage(g('em-paint'),0,0); x.globalAlpha = 1;
+  x.drawImage(g('em-base'),0,0);
+  if(!(window.msl3d && msl3d.draw('em',x,R.IW,R.IH))){ x.globalAlpha = ALPHA; x.drawImage(g('em-endo'),0,0); x.drawImage(g('em-paint'),0,0); x.globalAlpha = 1; }
   x.drawImage(g('em-arrows'),0,0); return c;
 }
 const blob = (tipo,q) => new Promise((ok,no)=>{ try{ exportCanvas().toBlob(b=>b?ok(b):no(new Error('canvas')),tipo,q); }catch(e){ no(e); } });

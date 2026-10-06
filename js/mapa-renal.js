@@ -24,7 +24,7 @@ const C = {
   coletor:'#E3B21F', coletorS:'#9A7A0E', art:'#D62828', veia:'#2B59C3',
   les:'#7E22CE', polar:'#1f2630', fundo:'#ffffff', txt:'#1f2630', dim:'#6b7280',
 };
-const MARCA = 'Ilustração esquemática — KlugRads';
+const MARCA = MSL_MARCA;   // frase padrão do Mapa Setorial Lesional (mapa-lesional.js)
 const REF = [
   'Kutikov A, Uzzo RG. The R.E.N.A.L. nephrometry score: a comprehensive standardized system for quantitating renal tumor size, location and depth. J Urol. 2009;182(3):844–853.',
 ];
@@ -363,7 +363,7 @@ function svg(){
     o += `<text x="${W-246}" y="${ly+2}" ${F} font-size="20" font-weight="800" fill="${tc}">R.E.N.A.L. ${sc.tot}${sc.suf}</text>`;
     o += `<text x="${W-246}" y="${ly+19}" ${F} font-size="11.5" font-weight="700" fill="${C.txt}">${sc.comp} · R${sc.R} E${sc.E} N${sc.N} L${sc.L}</text>`;
   }
-  o += `<text x="${W-12}" y="${H-8}" ${F} font-size="10" fill="#9aa1ab" text-anchor="end">${MARCA}</text>`;
+  o += `<text x="20" y="${H-8}" ${F} font-size="10" font-weight="600" fill="rgba(31,38,48,.82)">${MARCA}</text>`;
   return o + '</svg>';
 }
 
@@ -382,6 +382,7 @@ function traco(ctx,t){
 function redesenha(){
   const c=g('rim-draw'); if(!c) return; const x=c.getContext('2d'); DR.ctx=x; x.clearRect(0,0,c.width,c.height);
   dst().strokes.forEach(t=>t.clear ? x.clearRect(0,0,c.width,c.height) : traco(x,t));
+  if(window.msl3d) msl3d.update('rim');
 }
 function ptDraw(e){ const r=DR.rect; return [+( (e.clientX-r.left)/r.width*W ).toFixed(1), +((e.clientY-r.top)/r.height*H).toFixed(1)]; }
 function drawHTML(){
@@ -503,6 +504,7 @@ function init(){
     const d=dst(); if(!d.on || (e.pointerType==='mouse' && e.button!==0)) return;
     e.preventDefault(); try{ c.setPointerCapture(e.pointerId); }catch(_){}
     DR.rect = c.getBoundingClientRect();
+    if(window.msl3d) msl3d.liveStart('rim');
     DR.cur = {c:d.cor, w:d.tool==='erase'?Math.max(10,d.w*3):d.w, e:d.tool==='erase', pts:ptDraw(e)};
     traco(c.getContext('2d'), DR.cur);
   });
@@ -514,8 +516,9 @@ function init(){
     x.globalCompositeOperation = DR.cur.e?'destination-out':'source-over';
     x.beginPath(); x.moveTo(q[q.length-4],q[q.length-3]); x.lineTo(p[0],p[1]); x.stroke(); x.restore();
   });
-  const fim = ()=>{ if(!DR.cur) return; const d=dst(); d.strokes.push(DR.cur); d.redo=[]; DR.cur=null; barra(); };
+  const fim = ()=>{ if(!DR.cur) return; const d=dst(); d.strokes.push(DR.cur); d.redo=[]; DR.cur=null; barra(); if(window.msl3d) msl3d.liveEnd('rim'); };
   c.addEventListener('pointerup', fim); c.addEventListener('pointercancel', fim);
+  if(window.msl3d){ msl3d.attach('rim',{world:g('rim-stage'), layers:[c], hide:'opacity'}); msl3d.painel(g('rim-stage').parentNode); }   // efeito 3D (padrão)
   atualizar(false); redesenha();
 }
 
@@ -526,7 +529,7 @@ function canvas(){
     im.onload = ()=>{
       const c=document.createElement('canvas'); c.width=W*Z; c.height=H*Z; const x=c.getContext('2d');
       x.fillStyle='#fff'; x.fillRect(0,0,c.width,c.height); x.drawImage(im,0,0,c.width,c.height);
-      const dc=g('rim-draw'); if(dc && dst().strokes.length) x.drawImage(dc,0,0,c.width,c.height);
+      const dc=g('rim-draw'); if(dc && dst().strokes.length && !(window.msl3d && msl3d.draw('rim',x,c.width,c.height))) x.drawImage(dc,0,0,c.width,c.height);
       ok(c);
     };
     im.onerror = no;

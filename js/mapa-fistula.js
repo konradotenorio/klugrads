@@ -14,7 +14,7 @@
 
    Pincéis (2 cores fluorescentes, cada uma é um achado):
      TRAJETO FISTULOSO (verde fluorescente, com brilho) e
-     ABSCESSO (amarelo fluorescente, com contorno preto delimitando a área marcada).
+     ABSCESSO (amarelo fluorescente, sem contorno nem margem).
    O trajeto fica sempre por cima do abscesso. A seta é sempre preta.
    Cada pincel, a borracha e a seta guardam a sua própria espessura.
 
@@ -34,10 +34,9 @@ const LES = [
   {id:1, nome:'Trajeto fistuloso', cor:'#39FF14', anel:'#16A34A', cn:'VERDE'},
   {id:2, nome:'Abscesso',          cor:'#F5FF1F', anel:'#B59B00', cn:'AMARELO'},
 ];
-const MARCA = 'Imagem ilustrada e editada em KlugRads';
 const ALPHA = 0.9, ZMAX = 8;
 const GLOW = 5;                          // brilho (halo) em volta do TRAJETO, em px da imagem de referência: dá o efeito fluorescente
-const OUT = 3.5;                         // espessura (px de referência) do contorno preto em volta do ABSCESSO
+const OUT = 0;                           // contorno preto em volta do ABSCESSO (px de referência): 0 = sem contorno/margem (padrão). Se for > 0, contorno() volta a desenhar a faixa preta
 const REFW = 1103;                       // largura de referência (px): pincel, brilho, contorno e cursor escalam com R.K = largura da imagem / REFW
 const AX_TOP = 120, AX_BOT = 56;         // faixas extras da imagem axial (px): título + ANTERIOR no alto, POSTERIOR embaixo
 const SETA = {fill:'#000000', line:'#FFFFFF'};   // seta sempre preta; o fio branco só garante que ela apareça sobre o músculo escuro
@@ -73,7 +72,7 @@ function html(){
   const tb = (id,ic,lbl,extra) => `<button type="button" class="msl-btn${extra||''}" id="${id}" title="${lbl}" aria-label="${lbl}">${mslIc(ic)}<span>${lbl}</span></button>`;
   return `<div id="fp-root">
     <div class="ti-card em-ctl" id="fp-ctl">${ctlHTML()}</div>
-    <div class="ti-legend-row" style="margin:0 0 10px"><span class="lt">Escolha o corte (coronal ou axial) e marque, por cima da imagem, o trajeto fistuloso (verde) e os abscessos (amarelo, com contorno preto). Cada corte guarda a sua marcação. No corte axial, as bordas indicam anterior, posterior, direito e esquerdo do paciente (convenção radiológica: o lado direito do paciente fica à esquerda da imagem). Zoom: roda do mouse ou dois dedos; mover a imagem ampliada: botão direito do mouse ou dois dedos.</span></div>
+    <div class="ti-legend-row" style="margin:0 0 10px"><span class="lt">Escolha o corte (coronal ou axial) e marque, por cima da imagem, o trajeto fistuloso (verde) e os abscessos (amarelo). Cada corte guarda a sua marcação. No corte axial, as bordas indicam anterior, posterior, direito e esquerdo do paciente (convenção radiológica: o lado direito do paciente fica à esquerda da imagem). Zoom: roda do mouse ou dois dedos; mover a imagem ampliada: botão direito do mouse ou dois dedos.</span></div>
     <div class="msl-ed${s.full?' full':''}" id="fp-ed">
       <div class="msl-bar">
         <div class="msl-row">
@@ -190,6 +189,7 @@ async function carregar(){
     R.actx = g('fp-arrows').getContext('2d'); R.sctx = g('fp-sel').getContext('2d');
     fecharTxt(); R.sel = null; R.drag = null;
     g('fp-pa').style.opacity = ALPHA; g('fp-pt').style.opacity = ALPHA;
+    if(window.msl3d){ msl3d.attach('fp',{world:g('fp-world'), layers:[g('fp-pa'),g('fp-pt')]}); msl3d.painel(g('fp-ed')); }   // efeito 3D (padrão)
     fit(); redrawAll(); R.usedKey = '';
   }
   R.ready = true; const m = g('fp-msg'); if(m) m.style.display = 'none';
@@ -209,17 +209,13 @@ function legenda(ctx,rows){
   rows.forEach((c,i)=>{
     const cy = y+titH+i*rowH+rowH/2-2*k;
     ctx.fillStyle = c.cor; ctx.beginPath(); ctx.arc(x+padX+15*k,cy,15*k,0,Math.PI*2); ctx.fill();
-    ctx.strokeStyle = 'rgba(30,36,46,.55)'; ctx.lineWidth = 2*k; ctx.stroke();       // aro escuro: o amarelo fluorescente some no fundo branco sem ele
+    ctx.strokeStyle = c.anel; ctx.lineWidth = 2*k; ctx.stroke();       // aro fino da própria cor (só na bolinha da legenda): o amarelo fluorescente some no fundo branco sem ele
     ctx.fillStyle = '#1f2630'; ctx.font = F(600,31*k); ctx.fillText(texts[i], x+padX+40*k, cy+1*k);
   });
   ctx.restore();
 }
-/* marca pequena, em letras escuras (o fundo do esquema é claro), no canto inferior esquerdo */
-function marca(ctx){
-  const fs = Math.max(9,Math.round(R.IW*0.0105)), m = R.IW*0.014;
-  ctx.save(); ctx.font = `600 ${fs}px "Segoe UI",Arial,sans-serif`; ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
-  ctx.fillStyle = 'rgba(31,38,48,.82)'; ctx.fillText(MARCA, m, R.IH-m*0.9); ctx.restore();
-}
+/* marca padrão do Mapa Setorial Lesional (mslMarca, em mapa-lesional.js): escura (fundo claro), canto inferior esquerdo */
+function marca(ctx){ mslMarca(ctx, R.IW, R.IH, {cor:'rgba(31,38,48,.82)', canto:'esq'}); }
 /* corte axial: título no alto e as orientações nas quatro bordas (nas faixas extras, em cima e embaixo).
    Esquerdo/direito são do PACIENTE, na convenção radiológica: o direito fica à esquerda da imagem. */
 function orientacao(ctx){
@@ -366,8 +362,9 @@ function cursor(e){
    render() do app são só "repintar os traços". Cada achado tem a sua camada: ABSCESSO (#fp-pa) e TRAJETO
    (#fp-pt, que fica por cima); a borracha (destination-out) apaga nas duas.
    TRAJETO leva um brilho (halo) da própria cor: é o que dá o aspecto fluorescente.
-   ABSCESSO leva um contorno preto (#fp-po, por baixo do preenchimento), recalculado a partir da camada do
-   abscesso (contorno()): assim ele acompanha também as bordas deixadas pela borracha e pelo desfazer. */
+   ABSCESSO não tem contorno (OUT = 0). Com OUT > 0, contorno() desenha uma faixa preta (#fp-po, por baixo do
+   preenchimento), recalculada a partir da camada do abscesso: assim ela acompanha também as bordas deixadas
+   pela borracha e pelo desfazer. */
 const alvos = s => s.e ? [R.ca,R.ct] : [s.c===2 ? R.ca : R.ct];
 function style(ctx,s){
   ctx.save(); ctx.beginPath(); ctx.rect(0,0,R.IW,R.IH); ctx.clip();
@@ -393,6 +390,7 @@ function redrawAll(){
   if(!R.ca) return; R.ca.clearRect(0,0,R.IW,R.IH); R.ct.clearRect(0,0,R.IW,R.IH);
   lista().forEach(s=>{ if(s.clear){ R.ca.clearRect(0,0,R.IW,R.IH); R.ct.clearRect(0,0,R.IW,R.IH); } else if(!s.arrow && !s.mv && !s.del) drawStroke(s); });
   contorno(); redrawSetas(); drawSel();
+  if(window.msl3d) msl3d.update('fp');
 }
 /* caixa (px da imagem) que pode conter abscesso: só os traços de abscesso depois do último "Limpar tudo", com folga para o contorno */
 function caixaAbscesso(){
@@ -410,6 +408,7 @@ function caixaAbscesso(){
 function contorno(){
   const o = R.co; if(!o || !g('fp-po')) return;
   o.clearRect(0,0,R.IW,R.IH);
+  if(!(OUT>0)) return;                                        // sem contorno: a camada #fp-po fica vazia
   const b = caixaAbscesso(); if(!b || b.w<1 || b.h<1) return;
   const A = R.ca.canvas, rad = OUT*R.K;
   for(const [r,n] of [[rad/3,8],[rad*2/3,12],[rad,16]])
@@ -422,6 +421,7 @@ function contorno(){
 function agendaContorno(){ if(R.raf) return; R.raf = requestAnimationFrame(()=>{ R.raf = 0; contorno(); }); }   // durante o traço: no máximo uma vez por quadro
 function strokeStart(e){
   const s = st(), w = g('fp-world'); if(!w) return;
+  if(window.msl3d) msl3d.liveStart('fp');
   R.rect = w.getBoundingClientRect(); const p = ptr(e,R.rect);
   R.stroke = {c:s.cor, w:tam(s), e:s.tool==='erase', pts:[+p[0].toFixed(1),+p[1].toFixed(1)]};
   drawStroke(R.stroke); if(R.stroke.e || R.stroke.c===2) agendaContorno();
@@ -446,6 +446,7 @@ function strokeEnd(){
   lista().push(s); st().redo[R.view] = [];
   if(s.e || s.c===2) contorno();
   refreshLegend(); sync();
+  if(window.msl3d) msl3d.liveEnd('fp');
 }
 function cancelStroke(){
   if(R.arrow){ R.arrow = null; redrawSetas(); }
@@ -646,7 +647,7 @@ function exportCanvas(){
   const c = document.createElement('canvas'); c.width = R.IW; c.height = R.IH; const x = c.getContext('2d');
   x.fillStyle = '#fff'; x.fillRect(0,0,R.IW,R.IH); x.imageSmoothingQuality = 'high';
   x.drawImage(g('fp-base'),0,0); x.drawImage(g('fp-po'),0,0);
-  x.globalAlpha = ALPHA; x.drawImage(g('fp-pa'),0,0); x.drawImage(g('fp-pt'),0,0); x.globalAlpha = 1;
+  if(!(window.msl3d && msl3d.draw('fp',x,R.IW,R.IH))){ x.globalAlpha = ALPHA; x.drawImage(g('fp-pa'),0,0); x.drawImage(g('fp-pt'),0,0); x.globalAlpha = 1; }
   x.drawImage(g('fp-arrows'),0,0); return c;
 }
 const blob = (tipo,q) => new Promise((ok,no)=>{ try{ exportCanvas().toBlob(b=>b?ok(b):no(new Error('canvas')),tipo,q); }catch(e){ no(e); } });
