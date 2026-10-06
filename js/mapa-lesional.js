@@ -82,8 +82,12 @@ function mapaLesionalHTML(){
   const cores = MSL_CORES.map(c=>`<button type="button" class="msl-cor${s.cor===c.id?' on':''}" data-c="${c.id}" style="--c:${c.cor}" onclick="mslSetCor(${c.id})" title="${esc(c.nome)}" aria-label="${esc(c.nome)}"><span class="msl-dot"></span><span class="msl-cl" id="msl-cl-${c.id}">${esc(s.labels[c.id-1])}</span></button>`).join('');
   const tbtn=(t,ic,lbl)=>`<button type="button" class="msl-btn${s.tool===t?' on':''}" data-t="${t}" onclick="mslSetTool('${t}')" title="${lbl}">${mslIc(ic)}<span>${lbl}</span></button>`;
   const abtn=(id,fn,ic,lbl,dis)=>`<button type="button" class="msl-btn" id="${id}" onclick="${fn}" title="${lbl}" aria-label="${lbl}"${dis?' disabled':''}>${mslIc(ic)}<span>${lbl}</span></button>`;
-  const orgs = Object.keys(MSL_ORGAOS).length>1
-    ? `<div class="ti-foci" style="margin-bottom:10px">${Object.keys(MSL_ORGAOS).map(k=>`<div class="ti-ftog ${s.org===k?'on':''}" onclick="mslSetOrg('${k}')">${stMark('mapa:'+k)}${esc(MSL_ORGAOS[k].nome)}</div>`).join('')}</div>`
+  /* órgãos separados no topo: concluídos (✅) e em construção (🚧); grupo vazio não aparece */
+  const chip = k=>`<div class="ti-ftog ${s.org===k?'on':''}" onclick="mslSetOrg('${k}')">${stMark('mapa:'+k)}${esc(MSL_ORGAOS[k].nome)}</div>`;
+  const grp = (lbl,ks)=> ks.length ? `<div class="msl-og"><div class="msl-og-lbl">${lbl}</div><div class="ti-foci">${ks.map(chip).join('')}</div></div>` : '';
+  const ks = Object.keys(MSL_ORGAOS);
+  const orgs = ks.length>1
+    ? `<div class="msl-orgs">${grp('Concluídos',ks.filter(k=>stOk('mapa:'+k)))}${grp('Em construção',ks.filter(k=>!stOk('mapa:'+k)))}</div>`
     : '';
   /* órgão com tela própria (ex.: PELVE / Endometriose, em mapa-endometriose.js): o motor quadrado da próstata não é usado */
   if(o.custom) return `<div class="msl-wrap">${orgs}${o.html()}</div>`;
