@@ -122,7 +122,7 @@ const LAU_US_MASKS = [
 {
 "k": "vesicula-biliar",
 "label": "Vesícula biliar",
-"text": "tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.\nFoi realizada a reavaliação da vesícula biliar XXX minutos após uma refeição gordurosa, evidenciando-se esvaziamento estimado em XXX%.",
+"text": "tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.\nFoi realizada a reavaliação da vesícula biliar XXX minutos após uma refeição gordurosa. Volume em jejum (VA) de XXX mL e após o estímulo (VB) de XXX mL, evidenciando esvaziamento de XXX%.",
 "dash": true,
 "opts": [],
 "grp": ""

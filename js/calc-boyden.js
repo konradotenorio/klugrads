@@ -42,7 +42,7 @@ function calc(s){
 function feTxt(fe){ return fmt(Math.round(fe), 0); }
 function frase(r, s){
   const min = num(s.min);
-  return `Foi realizada a reavaliação da vesícula biliar ${min!=null?fmt(min,0):'XXX'} minutos após uma refeição gordurosa, evidenciando-se esvaziamento estimado em ${feTxt(r.fe)}% (fração de ejeção).`;
+  return `Foi realizada a reavaliação da vesícula biliar ${min!=null?fmt(min,0):'XXX'} minutos após uma refeição gordurosa. Volume em jejum (VA) de ${fmt(r.va,1)} mL e após o estímulo (VB) de ${fmt(r.vb,1)} mL, evidenciando esvaziamento de ${feTxt(r.fe)}%.`;
 }
 function conc(r){
   const t = {hipo:' (hipocinesia biliar)', norm:'', hiper:' (hipercinesia biliar)'}[r.cls];
@@ -128,7 +128,8 @@ window.boydenMascara = function(){
         const n=lauItemNormal(m,it); if(!/refeição gordurosa/.test(n||'')) return;
         const ps=lauTpl(n).lines.flat().filter(t=>t.t==='p');
         if(ps[0] && min!=null) lauPh(it.k,'n',ps[0].i,fmt(min,0),n);
-        if(ps[1]) lauPh(it.k,'n',ps[1].i,fe,n);
+        if(ps.length>=4){ lauPh(it.k,'n',ps[1].i,fmt(r.va,1),n); lauPh(it.k,'n',ps[2].i,fmt(r.vb,1),n); lauPh(it.k,'n',ps[3].i,fe,n); }
+        else if(ps[1]) lauPh(it.k,'n',ps[1].i,fe,n);
       });
       // conclusão: "esvaziamento de XXX% …" (+ hipo/hipercinesia)
       lauConcNormalLines(m).forEach((c,i)=>{ if(!/Boyden/.test(c.text)) return; const p=lauTpl(c.text).lines.flat().find(t=>t.t==='p'); if(p) lauPh('__conc','n'+i,p.i,fe,c.text); });

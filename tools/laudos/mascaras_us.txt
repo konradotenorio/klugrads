@@ -101,7 +101,7 @@ Data do Exame:
 - Fígado: com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea.
 - Veias porta e hepáticas: com calibres preservados.
 - Vesícula biliar: tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.
-Foi realizada a reavaliação da vesícula biliar XXX minutos após uma refeição gordurosa, evidenciando-se esvaziamento estimado em XXX%.
+Foi realizada a reavaliação da vesícula biliar XXX minutos após uma refeição gordurosa. Volume em jejum (VA) de XXX mL e após o estímulo (VB) de XXX mL, evidenciando esvaziamento de XXX%.
 - Vias biliares intra e extra-hepáticas: sem dilatações 
 - Pâncreas: com dimensões, contornos e ecogenicidade normais.
 - Baço: com dimensões normais, homogêneo.

@@ -978,6 +978,15 @@ function lauTplRaw(str){
         }
       }
     }
+    // prova de Boyden: "jejum (VA) de XXX mL … estímulo (VB) de XXX mL … esvaziamento de XXX%" = (VA − VB) / VA × 100
+    { let iA=null, iB=null;
+      for(let b=0;b<t.length;b++){
+        if(t[b].t!=='p') continue;
+        const ant=t.slice(Math.max(0,b-4),b).map(x=>x.s||'').join(' ');
+        if(/est[ií]mulo/i.test(ant)) iB=t[b].i;
+        else if(/jejum/i.test(ant)) iA=t[b].i;
+        else if(/esvaziamento/i.test(ant) && iA!=null && iB!=null) auto[t[b].i]={ej:[iA,iB]};
+      } }
     // "volume ... total: XXX cm³" = soma dos volumes automáticos anteriores
     for(let b=0;b<t.length;b++){
       if(t[b].t!=='p' || auto[t[b].i]) continue;
@@ -992,6 +1001,7 @@ function lauTplRaw(str){
 function lauAutoVal(tpl, vals, i){
   const d=tpl.auto[i]; if(!d) return null;
   let r;
+  if(d.ej){ const a=lauF(vals[d.ej[0]]), b=lauF(vals[d.ej[1]]); if(!a || b==null) return null; return String(Math.round((a-b)/a*100)); }
   if(d.mean){
     const v=d.mean.map(j=>lauF(vals[j])); if(v.some(x=>!x)) return null;
     return String(Math.round(v.reduce((a,b)=>a+b,0)/v.length*10)/10).replace('.',',');
@@ -1727,6 +1737,11 @@ function lauItemHTML(m, it){
   const lblRaw = lauLblLado(m, lauItemLabel(m,it));
   const lbl = lblRaw ? lauFill(lblRaw, s.__v.l, true)+':' : '';
   let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : r.html ? r.txt : esc(r.txt).replace(/\n/g,'<br>');
+  // item estruturado com linhas extras na máscara (ex.: prova de Boyden na vesícula): a alteração troca só a 1ª linha
+  if(r.txt!=null && it.sk && /\n[^]*refeição gordurosa/.test(lauItemNormal(m,it)||'')){
+    const extra = lauFill(lauItemNormal(m,it), s.__v.n, true).split('<br>').slice(1).join('<br>');
+    if(extra) txt += '<br>' + extra;
+  }
   if(r.txt==null && it.generic && typeof lauAutoTxt==='function') txt = lauAutoTxt(m, it, txt);
   if(r.txt==null && it.generic) txt = lauAteroTxt(m, txt);
   if(m.lado && m.lado.ambos && state.lau.lado==='b') txt = lauBilPlural(txt);
