@@ -536,10 +536,10 @@ const LAU_FRASES = [
   /* ================= MUSCULOESQUELÉTICO ================= */
   {o:'tendao', n:'Tendinopatia / rotura', m:'sub', kind:'tend', t:'',
    c:''},
-  {o:'tendao', n:'Tenossinovite', m:'add', nlb:/cabeca longa do biceps/,
+  {o:'tendao', n:'Tenossinovite', m:'add', nlb:/cabeca longa do biceps|compartimentos sinoviais extensores/,
    t:'Distensão líquida da bainha do tendão XXX, com espessamento sinovial e hiperemia ao Doppler.',
    c:'Tenossinovite do {0}.'},
-  {o:'tendao', n:'Entesopatia', m:'add', nlb:/cabeca longa do biceps/, vaz:[' do tendão XXX'],
+  {o:'tendao', n:'Entesopatia', m:'add', nlb:/cabeca longa do biceps|compartimentos sinoviais extensores/, vaz:[' do tendão XXX'],
    t:'Irregularidades corticais e entesófitos na inserção do tendão XXX.',
    c:'Entesopatia do {0}.'},
   {o:'tendao', n:'Distensão líquida da bainha', m:'add', so:['us-ombro'], lb:/cabeca longa do biceps/,
