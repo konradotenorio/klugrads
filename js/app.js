@@ -1932,6 +1932,7 @@ function calcTiradsHTML(){
     </div>
     <div class="ti-card" style="text-align:center">
       <img src="/img/tirads-acr-2017.png" alt="Quadro ACR TI-RADS 2017 (ACR White Paper 2017)" style="max-width:100%;height:auto;display:block;margin:0 auto;border-radius:10px">
+      <div class="ti-legend-row" style="margin-top:6px;justify-content:center"><span class="lt">Toque na imagem para ampliar.</span></div>
     </div>
     <div class="ti-card">
       <div class="tfg-sec-lbl">Referências</div>
