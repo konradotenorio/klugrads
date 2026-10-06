@@ -1,7 +1,7 @@
 /* =========================================================================
    KlugRads — Ferro Esplênico por R2* (RM)
    ---------------------------------------------------------------------------
-   Método: RM · Subespecialidade: Fígado.
+   Método: RM · Subespecialidade: Baço (Medicina Interna).
    Seletor de campo magnético (1,5 T / 3,0 T). A partir do R2* do baço (s⁻¹ = Hz),
    classifica o resultado em relação ao limiar de normalidade do campo e mostra o
    T2* (ms) correspondente.
@@ -153,7 +153,7 @@ function esplSetCampo(id){ esplState().campo=id; render(true); }
 function esplSet(v){ esplState().r2=v; esplRefresh(); }
 function esplRefresh(){ const el=document.getElementById('espl-res'); if(el) el.innerHTML=translateHTML(esplResHTML()); }
 
-/* registra no catálogo (CALCS de app.js) — método RM, subespecialidade Fígado */
-CALCS.push({id:'ferro-espl', modality:'rm', subspec:'figado', badge:'Fe',
+/* registra no catálogo (CALCS de app.js) — método RM, subespecialidade Baço */
+CALCS.push({id:'ferro-espl', modality:'rm', subspec:'baco', badge:'Fe',
   title:'Ferro Esplênico (R2*)',
   desc:'Avaliação do ferro esplênico por R2* em relação ao limiar - 1,5T e 3,0T'});

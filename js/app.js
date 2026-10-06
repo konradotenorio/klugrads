@@ -1738,7 +1738,7 @@ function openFavCalc(id){
    Sem `area` = grupo solto (protocolos por região); `name===area` = especialidade sem subgrupos. */
 const AREA_MI = 'Medicina Interna';
 const MOD_SPECS = {
-  rm: [ {id:'figado', name:'Fígado', area:AREA_MI}, {id:'adrenal', name:'Adrenal', area:AREA_MI}, {id:'rim', name:'Rim', area:AREA_MI},
+  rm: [ {id:'figado', name:'Fígado', area:AREA_MI}, {id:'baco', name:'Baço', area:AREA_MI}, {id:'adrenal', name:'Adrenal', area:AREA_MI}, {id:'rim', name:'Rim', area:AREA_MI},
         {id:'prostata', name:'Próstata', area:AREA_MI}, {id:'ovario', name:'Ovário', area:AREA_MI}, {id:'utero', name:'Útero', area:AREA_MI} ],
   dxa: [ {id:'dxa', name:'Densitometria óssea'} ],
   tc: [ {id:'figado', name:'Fígado', area:AREA_MI}, {id:'adrenal', name:'Adrenal', area:AREA_MI}, {id:'rim', name:'Rim', area:AREA_MI},
