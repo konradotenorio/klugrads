@@ -1267,6 +1267,8 @@ function lauFraseText(id, bag, html){
     else if(lauMulti(f)) t += lauLocs(f,id,bag,html).slice(1).map((l,j)=>`${html?'<br>':'\n'}Formação semelhante ${j+2}: ${l}.`).join('');
     else if(!f.tn) t += ' ' + lauFill(LAU_QTPL, bag['q'+id], html);
   }
+  if(f.contra){ const tk=lauTpl(f.t).lines.flat().find(x=>x.t==='c'); const v=tk&&((bag['f'+id]||[])[tk.i]||tk.def);
+    if(v==='direito'||v==='esquerdo') t += ' ' + f.contra.replace('{X}', v==='direito'?'esquerdo':'direito'); }
   if(f.vaz) t = lauTiraVazio(t, f.vaz);
   if(LAU_MSK.indexOf(f.o)>=0) t = lauTiraMedVazia(t);
   return f.o==='mama' ? lauSemDistVazia(f.medOpc ? lauTiraMedVazia(t) : t) : t;
@@ -1760,7 +1762,10 @@ function lauItemHTML(m, it){
   const lesF = (s.__f||[]).filter(id=>{ const f=lauFI(id); return f && f.m==='add' && f.les; });
   const les = (r.les||[]).map(x=>esc(x)).concat(lesF.map(id=>lauFraseText(id, s.__v, true)));
   if(les.length) txt = lauExceto(txt, les);
-  const adds = (s.__f||[]).filter(id=>{ const f=lauFI(id); return f && f.m==='add' && !f.les; }).map(id=>lauFraseText(id, s.__v, true));
+  // testículos: alteração difusa (microlitíase, orquite, ausência de fluxo) descrita no próprio testículo afetado
+  const tUsados = (r.txt==null && !subs.length) ? lauTestRefaz(s) : null;
+  if(tUsados) txt = tUsados.txt;
+  const adds = (s.__f||[]).filter(id=>{ const f=lauFI(id); return f && f.m==='add' && !f.les && !(tUsados && tUsados.ids.indexOf(id)>=0); }).map(id=>lauFraseText(id, s.__v, true));
   if(adds.length && !subs.length && r.txt==null){
     const ws=[]; (s.__f||[]).forEach(id=>{ const f=lauFI(id); if(!f || f.m!=='add') return; const K=lauMgK(f); const xs = K ? K.x(s.__v['d'+id]||{}) : (f.x || (/^mg/.test(f.o) ? ['\u0000'] : null)); if(xs) ws.push(...xs); });
     txt = lauNegStrip(txt, ws, true);
@@ -1775,6 +1780,7 @@ function lauItemHTML(m, it){
   // obstétrico (2º/3º tri, Doppler, gemelar): IR, percentil e MoM não preenchidos saem do laudo
   // "medindo XXX x XXX x XXX cm, com volume estimado em 30 mL": sem as medidas, fica só o volume digitado
   if(it.generic) txt = txt.replace(/medindo <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> (?:cm|mm), com (volume estimado em )(?!<mark)/, '$1');
+  if(it.generic) txt = txt.replace(/medindo <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> (?:cm|mm) \((volume estimado em )(?!<mark)([^)]*)\)/g, 'com $1$2');
   // nervos: área seccional não medida sai do texto
   if(it.generic && /^nervo (mediano|ulnar)/i.test(lauItemLabel(m,it)||'')) txt = txt.replace(/,? com área seccional de <mark class="lau-ph">XXX<\/mark> mm²[^.<]*/, '');
   // artéria hepática (Doppler): IR não preenchido sai do texto
@@ -2238,6 +2244,40 @@ function lauTendAlvo(k, fi, ai){
     if(!a.length && !lauHas(d.alvoTxt)){ list.splice(list.indexOf(id),1); delete L.v[k].__v['d'+id]; }
   }
   lauFraseAfter(k);
+}
+/* Testículos: frases com t.td (descrição) e lado escolhido reescrevem o item por testículo:
+   "tópicos. Testículo direito <alteração>, medindo …; testículo esquerdo com morfologia normal, …, medindo …" */
+function lauTestLado(f, id, bag){
+  const tk=lauTpl(f.t).lines.flat().find(x=>x.t==='c'); if(!tk) return null;
+  const v=(bag['f'+id]||[])[tk.i]||tk.def; return /^(direito|esquerdo|bilateral)$/.test(v||'') ? v : null;
+}
+function lauTestRefaz(s){
+  const L=lauCur(); if(!L) return null;
+  const m=lauModelo(L.model); if(!m) return null;
+  const it=m.items.find(x=>state.lau.v[x.k]===s); if(!it) return null;
+  const nrm=lauItemNormal(m,it)||'';
+  if(!/^tópicos, com morfologia normal, contornos regulares e ecotextura homogênea\. Testículo direito .*; testículo esquerdo /.test(nrm)) return null;
+  const desc={D:[], E:[]}, ids=[];
+  (s.__f||[]).forEach(id=>{ const f=lauFI(id); if(!f || f.o!=='testiculo' || !f.td) return; const lado=lauTestLado(f,id,s.__v); if(!lado) return;
+    if(lado!=='esquerdo') desc.D.push(f.td); if(lado!=='direito') desc.E.push(f.td); ids.push(id); });
+  if(!ids.length) return null;
+  const full=lauFill(nrm, s.__v.n, true);
+  const mm=full.match(/^tópicos, com morfologia normal, contornos regulares e ecotextura homogênea\. Testículo direito (.*?); testículo esquerdo (.*?)\.((?: .*)?)$/);
+  if(!mm) return null;
+  const NORMAL='com morfologia normal, contornos regulares e ecotextura homogênea';
+  const dsc = a => a.length ? a.join(', ') : NORMAL;
+  let resto = mm[3]||'';
+  // Doppler: "Vascularização preservada." vale só para o lado sem alteração de fluxo
+  const fluxo = a => a.some(x=>/Doppler|fluxo|vasculariza/.test(x));
+  if(/Vascularização preservada/.test(resto)){
+    const fD=fluxo(desc.D), fE=fluxo(desc.E);
+    if(fD && fE) resto = resto.replace(/ ?Vascularização preservada\./,'');
+    else if(fD || fE) resto = resto.replace('Vascularização preservada.', `Vascularização preservada no testículo ${fD?'esquerdo':'direito'}.`);
+  }
+  const igual = desc.D.length && desc.D.join()===desc.E.join();
+  const txt = igual ? `tópicos, ${dsc(desc.D)}, bilateralmente. Testículo direito ${mm[1]}; testículo esquerdo ${mm[2]}.${resto}`
+    : `tópicos. Testículo direito ${dsc(desc.D)}, ${mm[1]}. Testículo esquerdo ${dsc(desc.E)}, ${mm[2]}.${resto}`;
+  return {txt, ids};
 }
 function lauFraseAfter(k){
   lauRenderLeft();
