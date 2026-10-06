@@ -90,6 +90,12 @@ const LAU_ABD_ITEMS = [
      {t:'select', k:'hemS', lbl:'Localização', opts:LAU_SEGS, show:s=>s.hem, ind:1},
      {t:'check', k:'nod', lbl:'Nódulo sólido indeterminado'},
      {t:'radio', k:'nodE', lbl:'Ecogenicidade', opts:[['hipoecogênico','Hipo'],['hiperecogênico','Hiper'],['isoecogênico','Iso'],['heterogêneo','Heterogêneo']], show:s=>s.nod, ind:1},
+     {t:'radio', k:'nodC', lbl:'Contornos', opts:[['','—'],['bem definidos','Bem definidos'],['lobulados','Lobulados'],['irregulares','Irregulares'],['mal definidos','Mal definidos']], show:s=>s.nod, ind:1},
+     {t:'radio', k:'nodT', lbl:'Ecotextura', opts:[['','—'],['homogênea','Homogênea'],['heterogênea','Heterogênea']], show:s=>s.nod, ind:1},
+     {t:'check', k:'nodH', lbl:'Halo hipoecogênico', show:s=>s.nod, ind:1},
+     {t:'check', k:'nodCa', lbl:'Calcificações internas', show:s=>s.nod, ind:1},
+     {t:'check', k:'nodCi', lbl:'Componente cístico / necrose central', show:s=>s.nod, ind:1},
+     {t:'radio', k:'nodF', lbl:'Doppler', opts:[['','—'],['sem fluxo','Sem fluxo'],['com fluxo periférico','Fluxo periférico'],['com fluxo interno','Fluxo interno']], show:s=>s.nod, ind:1},
      {t:'dims', k:'nodV', lbl:'Medidas (opcional)', show:s=>s.nod, ind:1},
      {t:'select', k:'nodS', lbl:'Localização', opts:LAU_SEGS, show:s=>s.nod, ind:1},
      {t:'check', k:'calc', lbl:'Calcificação / granuloma'},
@@ -128,7 +134,9 @@ const LAU_ABD_ITEMS = [
        if(s.hemQ==='n'){ ext.push(lauFrase(lauJoin([`nódulos hiperecogênicos, homogêneos e bem delimitados, o maior ${loc}`.trim(), m]) + ', com aspecto sugestivo de hemangiomas')); conc.push('Nódulos hepáticos com aspecto ultrassonográfico sugestivo de hemangiomas.'); }
        else { ext.push(lauFrase(lauJoin([`nódulo hiperecogênico, homogêneo e bem delimitado ${loc}`.trim(), m]) + ', com aspecto sugestivo de hemangioma')); conc.push('Nódulo hepático com aspecto ultrassonográfico sugestivo de hemangioma.'); }
      }
-     if(s.nod){ alt=true; ext.push(lauFrase(lauJoin([`nódulo sólido ${s.nodE} ${lauSeg(s.nodS)}`.trim(), lauDimsTxt(s.nodV)||lauMed(s.nodD,'cm')])));
+     if(s.nod){ alt=true;
+       const dsc=[lauHas(s.nodC)?`de contornos ${s.nodC}`:'', lauHas(s.nodT)?`com ecotextura ${s.nodT}`:'', s.nodH?'com halo hipoecogênico':'', s.nodCa?'com calcificações internas':'', s.nodCi?'com componente cístico / necrose central':'', lauHas(s.nodF)?`${s.nodF} ao Doppler`:''].filter(Boolean);
+       ext.push(lauFrase(lauJoin([`nódulo sólido ${s.nodE} ${lauSeg(s.nodS)}`.trim()].concat(dsc, [lauDimsTxt(s.nodV)||lauMed(s.nodD,'cm')]))));
        conc.push('Nódulo hepático sólido indeterminado. Sugere-se complementação com método seccional (TC ou RM com contraste).'); }
      if(s.calc){ alt=true; ext.push(lauFrase(lauJoin([`foco hiperecogênico com sombra acústica posterior ${lauSeg(s.calcS)}`.trim(), lauMed(s.calcD,'cm')]) + ', compatível com calcificação (granuloma calcificado)'));
        conc.push('Calcificação hepática (granuloma calcificado).'); }
