@@ -52,7 +52,7 @@ function st(){
 /* runtime (não vai para o state): canvases, imagem, gesto em curso */
 const R = {view:null, IW:0, IH:0, K:1, fw:0, fh:0, k:1, tx:0, ty:0, W:0, H:0, img:null, ready:false,
            ptrs:new Map(), stroke:null, pan:null, pinch:null, used:[false,false,false], usedKey:'', scan:null,
-           tok:0, bctx:null, pctx:null, actx:null, rect:null, wired:false, arrow:null, edit:null};
+           tok:0, bctx:null, pctx:null, actx:null, sctx:null, rect:null, wired:false, arrow:null, edit:null, sel:null, drag:null};
 const g = id => document.getElementById(id);
 
 /* ======================= tela ======================= */
@@ -83,10 +83,10 @@ function html(){
     <div class="msl-ed${s.full?' full':''}" id="em-ed">
       <div class="msl-bar">
         <div class="msl-row">
-          ${tb('em-b-brush','pen','Pincel',s.tool==='brush'?' on':'')}${tb('em-b-erase','eraser','Borracha',s.tool==='erase'?' on':'')}${tb('em-b-arrow','arrow','Seta',s.tool==='arrow'?' on':'')}
+          ${tb('em-b-brush','pen','Pincel',s.tool==='brush'?' on':'')}${tb('em-b-erase','eraser','Borracha',s.tool==='erase'?' on':'')}${tb('em-b-arrow','arrow','Seta',s.tool==='arrow'?' on':'')}<button type="button" class="msl-btn" id="em-b-delarrow" title="Apagar a seta selecionada" aria-label="Apagar a seta selecionada" disabled${s.tool==='arrow'?'':' style="display:none"'}>${mslIc('trash')}<span>Apagar seta</span></button>
           <label class="msl-size" title="Espessura do pincel e tamanho da seta"><span>Espessura</span><input type="range" id="em-w" min="4" max="70" step="1" value="${s.w}"></label>
         </div>
-        <div class="msl-row em-hint" id="em-hint"${s.tool==='arrow'?'':' style="display:none"'}>Seta: arraste do local do texto até o achado; a ponta fica onde você soltar. Em seguida escreva um texto ou deixe em branco. Para editar o texto de uma seta, toque nela.</div>
+        <div class="msl-row em-hint" id="em-hint"${s.tool==='arrow'?'':' style="display:none"'}>Seta: arraste do local do texto até o achado (a ponta fica onde soltar); o texto é opcional. Toque numa seta para mexer nela: arraste-a para mover, arraste as bolinhas para ajustar as pontas, toque de novo para editar o texto, ou use Apagar seta (ou a tecla Delete).</div>
         <div class="msl-row">
           ${tb('em-b-undo','undo','Desfazer')}${tb('em-b-redo','redo','Refazer')}${tb('em-b-clear','eraser','Limpar tudo')}
           ${tb('em-b-leg','list','Legenda',s.legend?' on':'')}
@@ -97,7 +97,7 @@ function html(){
         </div>
       </div>
       <div class="msl-stage em-stage" id="em-stage">
-        <div class="msl-world" id="em-world"><canvas id="em-base"></canvas><canvas id="em-paint"></canvas><canvas id="em-arrows"></canvas></div>
+        <div class="msl-world" id="em-world"><canvas id="em-base"></canvas><canvas id="em-paint"></canvas><canvas id="em-arrows"></canvas><canvas id="em-sel"></canvas></div>
         <div class="msl-cur" id="em-cur"></div>
         <div class="msl-msg" id="em-msg">Carregando o mapa…</div>
       </div>
@@ -115,7 +115,7 @@ function html(){
 /* ======================= inicialização (após cada render) ======================= */
 function init(){
   const root = g('em-root'); if(!root) return;
-  R.view = null; R.ready = false; R.ptrs.clear(); R.stroke = null; R.arrow = null; R.edit = null; R.pan = null; R.pinch = null; R.usedKey = ''; R.k = 1;
+  R.view = null; R.ready = false; R.ptrs.clear(); R.stroke = null; R.arrow = null; R.edit = null; R.sel = null; R.drag = null; R.pan = null; R.pinch = null; R.usedKey = ''; R.k = 1;
   root.addEventListener('click', onClick);
   g('em-w').addEventListener('input', e=>{ st().w = +e.target.value; });
   const stg = g('em-stage');
@@ -132,8 +132,10 @@ function init(){
     window.addEventListener('keydown', e=>{
       if(!ativo()) return;
       if(e.key==='Escape' && R.edit){ fecharTxt(); return; }
+      if(e.key==='Escape' && R.sel && st().tool==='arrow'){ R.sel = null; drawSel(); return; }
       if(e.key==='Escape' && st().full){ toggleFull(); return; }
       const t = e.target && e.target.tagName; if(t==='INPUT'||t==='TEXTAREA') return;
+      if((e.key==='Delete'||e.key==='Backspace') && R.sel && st().tool==='arrow'){ e.preventDefault(); apagarSeta(); return; }
       if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='z'){ e.preventDefault(); e.shiftKey ? redo() : undo(); }
     });
   }
@@ -141,20 +143,26 @@ function init(){
 }
 function ativo(){ return state.view==='mapaLesional' && mslState().org==='endometriose' && !!g('em-root'); }
 
+function setTool(t){
+  const s = st(); s.tool = t;
+  if(t!=='arrow'){ fecharTxt(); R.sel = null; }
+  g('em-ctl').innerHTML = ctlHTML(); sync();
+}
 function onClick(e){
   if(R.edit && !e.target.closest('#em-txt,#em-stage')) fecharTxt();          // o "click" que vem após o arrasto cai no palco: não fecha
   const d = e.target.closest('[data-em]');
   if(d && !d.disabled){
     const s = st();
     if(d.dataset.em==='pos'){ s.pos[d.dataset.k] = d.dataset.v; g('em-ctl').innerHTML = ctlHTML(); carregar(); return; }
-    if(d.dataset.em==='cor'){ s.cor = +d.dataset.v; s.tool = 'brush'; g('em-ctl').innerHTML = ctlHTML(); sync(); return; }
+    if(d.dataset.em==='cor'){ s.cor = +d.dataset.v; setTool('brush'); return; }
   }
   const b = e.target.closest('button[id^="em-b-"]'); if(!b) return;
   const s = st();
   switch(b.id){
-    case 'em-b-brush': s.tool='brush'; g('em-ctl').innerHTML=ctlHTML(); sync(); break;
-    case 'em-b-erase': s.tool='erase'; g('em-ctl').innerHTML=ctlHTML(); sync(); break;
-    case 'em-b-arrow': s.tool='arrow'; g('em-ctl').innerHTML=ctlHTML(); sync(); break;
+    case 'em-b-brush': setTool('brush'); break;
+    case 'em-b-erase': setTool('erase'); break;
+    case 'em-b-arrow': setTool('arrow'); break;
+    case 'em-b-delarrow': apagarSeta(); break;
     case 'em-b-undo': undo(); break;
     case 'em-b-redo': redo(); break;
     case 'em-b-clear': limpar(); break;
@@ -183,9 +191,9 @@ async function carregar(){
   const corte = s.pos.corte;
   if(R.view!==corte){
     R.view = corte; R.IW = im.naturalWidth; R.IH = im.naturalHeight; R.K = R.IW/REFW;
-    for(const id of ['em-base','em-paint','em-arrows']){ g(id).width = R.IW; g(id).height = R.IH; }
-    R.bctx = g('em-base').getContext('2d'); R.pctx = g('em-paint').getContext('2d'); R.actx = g('em-arrows').getContext('2d');
-    fecharTxt();
+    for(const id of ['em-base','em-paint','em-arrows','em-sel']){ g(id).width = R.IW; g(id).height = R.IH; }
+    R.bctx = g('em-base').getContext('2d'); R.pctx = g('em-paint').getContext('2d'); R.actx = g('em-arrows').getContext('2d'); R.sctx = g('em-sel').getContext('2d');
+    fecharTxt(); R.sel = null; R.drag = null;
     g('em-paint').style.opacity = ALPHA;
     fit(); redrawAll(); R.usedKey = '';
   }
@@ -291,6 +299,7 @@ function applyView(){
   const w = g('em-world'); if(!w) return; clampPan();
   w.style.transform = `translate(${R.tx}px,${R.ty}px) scale(${R.k})`;
   const z = g('em-zoom'); if(z) z.textContent = Math.round(R.k*100)+'%';
+  if(R.sel) drawSel();                                    // as bolinhas mantêm o tamanho na tela quando o zoom muda
 }
 function zoomAt(cx,cy,nk){ nk = Math.min(ZMAX,Math.max(1,nk)); const px=(cx-R.tx)/R.k, py=(cy-R.ty)/R.k; R.k=nk; R.tx=cx-px*nk; R.ty=cy-py*nk; applyView(); }
 function zoomBy(f){ zoomAt(R.W/2,R.H/2,R.k*f); }
@@ -320,6 +329,7 @@ function onMove(e){
   if(R.pinch && R.ptrs.size>=2){ pinchMove(); return; }
   if(R.pan){ R.tx = R.pan.tx+(e.clientX-R.pan.x); R.ty = R.pan.ty+(e.clientY-R.pan.y); applyView(); return; }
   if(R.arrow && R.ptrs.size===1){ setaMove(e); return; }
+  if(R.drag && R.ptrs.size===1){ dragMove(e); return; }
   if(R.stroke && R.ptrs.size===1){ const evs=(e.getCoalescedEvents&&e.getCoalescedEvents())||[e]; (evs.length?evs:[e]).forEach(strokeAdd); }
 }
 function onUp(e){
@@ -327,6 +337,7 @@ function onUp(e){
   if(R.pinch && R.ptrs.size<2) R.pinch = null;
   if(R.pan){ R.pan = null; const stg=g('em-stage'); if(stg) stg.classList.remove('grabbing'); }
   if(R.arrow) setaEnd();
+  if(R.drag) dragEnd();
   if(R.stroke) strokeEnd();
   if(e.pointerType!=='mouse'){ const c=g('em-cur'); if(c) c.style.display='none'; }
 }
@@ -343,6 +354,10 @@ function pinchMove(){
 }
 function cursor(e){
   const c = g('em-cur'), stg = g('em-stage'); if(!c||!stg) return;
+  if(st().tool==='arrow' && e.pointerType==='mouse' && R.ready && !R.arrow && !R.drag && !R.pan){      // mouse sobre uma seta: mostra que dá para mexer
+    const w = g('em-world'), p = w ? ptr(e,w.getBoundingClientRect()) : null, h = p && setaAlvo(p[0],p[1],false);
+    stg.style.cursor = h ? (h.mode==='move' ? 'move' : 'grab') : '';
+  }
   if(e.pointerType==='touch' || st().tool==='arrow'){ c.style.display='none'; return; }
   const r = stg.getBoundingClientRect(), d = Math.max(4, st().w*R.K*R.fw*R.k/R.IW);
   c.style.display='block'; c.style.width = c.style.height = d+'px'; c.style.left = (e.clientX-r.left)+'px'; c.style.top = (e.clientY-r.top)+'px';
@@ -396,8 +411,8 @@ function lista(){ return st().strokes[R.view] || (st().strokes[R.view]=[]); }
 function listaRedo(){ return st().redo[R.view] || (st().redo[R.view]=[]); }
 function redrawAll(){
   const ctx = R.pctx; if(!ctx) return; ctx.clearRect(0,0,R.IW,R.IH);
-  lista().forEach(s=>{ if(s.clear) ctx.clearRect(0,0,R.IW,R.IH); else if(!s.arrow) drawStroke(ctx,s); });
-  redrawSetas();
+  lista().forEach(s=>{ if(s.clear) ctx.clearRect(0,0,R.IW,R.IH); else if(!s.arrow && !s.mv && !s.del) drawStroke(ctx,s); });
+  redrawSetas(); drawSel();
 }
 function strokeStart(e){
   const s = st(), w = g('em-world'); if(!w) return;
@@ -423,6 +438,7 @@ function strokeEnd(){
 }
 function cancelStroke(){
   if(R.arrow){ R.arrow = null; redrawSetas(); }
+  if(R.drag){ Object.assign(R.drag.a,R.drag.s0); R.drag = null; redrawSetas(); drawSel(); }
   if(!R.stroke) return; R.stroke = null; redrawAll();
 }
 
@@ -463,28 +479,64 @@ function drawArrow(ctx,a){
   }
   ctx.restore();
 }
-/* setas visíveis: as que vieram depois do último "Limpar tudo" */
-function setasVis(){ const l = lista(); let i = l.length-1; while(i>=0 && !l[i].clear) i--; return l.slice(i+1).filter(s=>s.arrow); }
+/* setas visíveis: as criadas depois do último "Limpar tudo" e ainda não apagadas.
+   Mover e apagar entram na mesma lista como itens {mv:true,ref,from,to} e {del:true,ref}, para o Desfazer/Refazer valer. */
+function setasVis(){
+  const l = lista(); let i = l.length-1; while(i>=0 && !l[i].clear) i--;
+  const v = [];
+  for(let j=i+1;j<l.length;j++){ const s = l[j]; if(s.arrow) v.push(s); else if(s.del){ const k = v.indexOf(s.ref); if(k>=0) v.splice(k,1); } }
+  return v;
+}
 function redrawSetas(prev){
   const ctx = R.actx; if(!ctx) return; ctx.clearRect(0,0,R.IW,R.IH);
   setasVis().forEach(a=>drawArrow(ctx,a)); if(prev) drawArrow(ctx,prev);
 }
-function setaHit(x,y){
-  const l = setasVis(), tol = 16*R.K;
+const esc1 = () => R.fw/R.IW*R.k;                      // pixels de tela por pixel da imagem (com o zoom atual)
+/* o que está sob o ponteiro: bolinha da ponta/início da seta selecionada, ou o corpo (haste, ponta ou etiqueta) de uma seta */
+function setaAlvo(x,y,touch){
+  const f = esc1()||1, tolH = (touch?26:16)/f, sel = R.sel && setasVis().includes(R.sel) ? R.sel : null;
+  if(sel){
+    if(Math.hypot(x-sel.x1,y-sel.y1) <= tolH) return {a:sel, mode:'head'};
+    if(Math.hypot(x-sel.x0,y-sel.y0) <= tolH) return {a:sel, mode:'tail'};
+  }
+  const l = setasVis(), tol = (touch?20:12)/f;
   for(let i=l.length-1;i>=0;i--){
     const a = l[i], G = setaMed(R.actx,a), p = G.pill;
-    if(p && x>=p.x && x<=p.x+p.w && y>=p.y && y<=p.y+p.h) return a;
+    if(p && x>=p.x && x<=p.x+p.w && y>=p.y && y<=p.y+p.h) return {a, mode:'move'};
     const vx = a.x1-G.sx, vy = a.y1-G.sy, t = Math.max(0,Math.min(1,((x-G.sx)*vx+(y-G.sy)*vy)/(vx*vx+vy*vy||1)));
-    if(Math.hypot(x-(G.sx+vx*t),y-(G.sy+vy*t)) <= Math.max(G.hw,tol)) return a;
+    if(Math.hypot(x-(G.sx+vx*t),y-(G.sy+vy*t)) <= Math.max(G.hw,tol)) return {a, mode:'move'};
   }
   return null;
+}
+/* bolinhas nas pontas e contorno tracejado na etiqueta da seta selecionada (camada própria: não vai para a imagem exportada) */
+function drawSel(){
+  const ctx = R.sctx; if(!ctx) return;
+  ctx.clearRect(0,0,R.IW,R.IH);
+  if(R.sel && !setasVis().includes(R.sel)){ R.sel = null; }
+  const b = g('em-b-delarrow'); if(b){ b.style.display = st().tool==='arrow' ? '' : 'none'; b.disabled = !R.sel; }
+  const a = R.sel; if(!a || st().tool!=='arrow') return;
+  const f = esc1()||1, r = 9/f, G = setaMed(R.actx,a), p = G.pill;
+  ctx.save(); ctx.lineWidth = 2.5/f; ctx.strokeStyle = '#12a9c9';
+  if(p){ ctx.setLineDash([8/f,6/f]); ctx.strokeRect(p.x-6/f,p.y-6/f,p.w+12/f,p.h+12/f); ctx.setLineDash([]); }
+  for(const [x,y] of [[a.x0,a.y0],[a.x1,a.y1]]){
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 3/f; ctx.stroke();
+    ctx.beginPath(); ctx.arc(x,y,r*0.38,0,Math.PI*2); ctx.fillStyle = '#12a9c9'; ctx.fill();
+  }
+  ctx.restore();
 }
 const SETA_MIN = 22;                                   // arrasto mínimo (px da imagem de referência) para valer como seta; menos que isso é um toque
 function setaStart(e){
   const w = g('em-world'); if(!w) return;
   fecharTxt();
-  R.rect = w.getBoundingClientRect(); const p = ptr(e,R.rect);
-  R.arrow = {arrow:true, x0:p[0], y0:p[1], x1:p[0], y1:p[1], w:st().w, text:'', hit:setaHit(p[0],p[1])};
+  R.rect = w.getBoundingClientRect(); const p = ptr(e,R.rect), touch = e.pointerType!=='mouse';
+  const alvo = setaAlvo(p[0],p[1],touch);
+  if(alvo){                                            // tocou numa seta: seleciona e prepara mover / ajustar (se não arrastar, é um toque: edita o texto)
+    const a = alvo.a; R.sel = a; drawSel();
+    R.drag = {mode:alvo.mode, a, p0:p, s0:{x0:a.x0,y0:a.y0,x1:a.x1,y1:a.y1}, moved:false};
+    return;
+  }
+  const had = !!R.sel; R.sel = null; drawSel();
+  R.arrow = {arrow:true, x0:p[0], y0:p[1], x1:p[0], y1:p[1], w:st().w, text:'', had};
 }
 function setaMove(e){
   const a = R.arrow; if(!a) return; const p = ptr(e,R.rect); a.x1 = p[0]; a.y1 = p[1];
@@ -492,13 +544,41 @@ function setaMove(e){
 }
 function setaEnd(){
   const a = R.arrow; R.arrow = null; if(!a) return;
-  if(Math.hypot(a.x1-a.x0,a.y1-a.y0) < SETA_MIN*R.K){        // toque: edita a seta tocada, ou ensina o gesto
+  if(Math.hypot(a.x1-a.x0,a.y1-a.y0) < SETA_MIN*R.K){        // toque em lugar vazio: tira a seleção, ou ensina o gesto
     redrawSetas();
-    if(a.hit) abrirTxt(a.hit); else klugToast('Arraste na imagem para desenhar a seta');
+    if(!a.had) klugToast('Arraste na imagem para desenhar a seta');
     return;
   }
-  delete a.hit; ['x0','y0','x1','y1'].forEach(k=>{ a[k] = +a[k].toFixed(1); });
-  lista().push(a); st().redo[R.view] = []; redrawSetas(); sync(); abrirTxt(a);
+  delete a.had; ['x0','y0','x1','y1'].forEach(k=>{ a[k] = +a[k].toFixed(1); });
+  lista().push(a); st().redo[R.view] = []; R.sel = a; redrawSetas(); drawSel(); sync(); abrirTxt(a);
+}
+/* mover a seta inteira ou ajustar uma das pontas */
+function dragMove(e){
+  const d = R.drag, a = d.a, p = ptr(e,R.rect), f = esc1()||1;
+  const dx = p[0]-d.p0[0], dy = p[1]-d.p0[1];
+  if(!d.moved){ if(Math.hypot(dx,dy)*f < 4) return; d.moved = true; fecharTxt(); }
+  const cl = (v,lo,hi)=>Math.max(lo,Math.min(hi,v)), s = d.s0;
+  if(d.mode==='move'){
+    const mx = cl(dx,-Math.min(s.x0,s.x1),R.IW-Math.max(s.x0,s.x1)), my = cl(dy,-Math.min(s.y0,s.y1),R.IH-Math.max(s.y0,s.y1));
+    a.x0 = s.x0+mx; a.y0 = s.y0+my; a.x1 = s.x1+mx; a.y1 = s.y1+my;
+  }else{
+    const x = cl(p[0],0,R.IW), y = cl(p[1],0,R.IH), o = d.mode==='head' ? [a.x0,a.y0] : [a.x1,a.y1];
+    if(Math.hypot(x-o[0],y-o[1]) < SETA_MIN*R.K*0.5) return;                    // não deixa a seta virar um ponto
+    if(d.mode==='head'){ a.x1 = x; a.y1 = y; } else { a.x0 = x; a.y0 = y; }
+  }
+  redrawSetas(); drawSel();
+}
+function dragEnd(){
+  const d = R.drag; R.drag = null; if(!d) return;
+  const a = d.a;
+  if(!d.moved){ abrirTxt(a); return; }                                          // toque na seta: editar o texto / apagar
+  ['x0','y0','x1','y1'].forEach(k=>{ a[k] = +a[k].toFixed(1); });
+  lista().push({mv:true, ref:a, from:d.s0, to:{x0:a.x0,y0:a.y0,x1:a.x1,y1:a.y1}}); st().redo[R.view] = []; sync();
+}
+function apagarSeta(){
+  const a = R.sel; if(!a || !setasVis().includes(a)) return;
+  fecharTxt(); lista().push({del:true, ref:a}); st().redo[R.view] = []; R.sel = null;
+  redrawSetas(); drawSel(); sync(); klugToast('Seta apagada — use Desfazer para voltar');
 }
 /* caixa de texto (opcional) da seta: aparece ao lado do início da seta; o texto vai para a imagem enquanto se digita */
 function fecharTxt(){ const d = g('em-txt'); if(d) d.remove(); R.edit = null; }
@@ -506,12 +586,13 @@ function abrirTxt(a){
   const stg = g('em-stage'); if(!stg) return;
   fecharTxt(); R.edit = a;
   const d = document.createElement('div'); d.className = 'em-txt'; d.id = 'em-txt';
-  d.innerHTML = '<input type="text" id="em-txt-in" maxlength="60" placeholder="Texto da seta (opcional)" autocomplete="off" enterkeyhint="done" aria-label="Texto da seta (opcional)"><button type="button" class="msl-btn on" id="em-txt-ok">OK</button>';
+  d.innerHTML = '<input type="text" id="em-txt-in" maxlength="60" placeholder="Texto da seta (opcional)" autocomplete="off" enterkeyhint="done" aria-label="Texto da seta (opcional)"><button type="button" class="msl-btn on" id="em-txt-ok">OK</button><button type="button" class="msl-btn" id="em-txt-del" title="Apagar esta seta" aria-label="Apagar esta seta">'+mslIc('trash')+'</button>';
   ['pointerdown','pointerup','pointermove','wheel','contextmenu'].forEach(ev=>d.addEventListener(ev,x=>x.stopPropagation()));
   const inp = d.firstChild; inp.value = a.text || '';
-  inp.addEventListener('input',()=>{ a.text = inp.value; redrawSetas(); });
+  inp.addEventListener('input',()=>{ a.text = inp.value; redrawSetas(); drawSel(); });
   inp.addEventListener('keydown',x=>{ if(x.key==='Enter'){ x.preventDefault(); fecharTxt(); } });
-  d.lastChild.addEventListener('click',()=>fecharTxt());
+  d.querySelector('#em-txt-ok').addEventListener('click',()=>fecharTxt());
+  d.querySelector('#em-txt-del').addEventListener('click',()=>{ R.sel = a; apagarSeta(); });
   stg.appendChild(d); posTxt(d,a);
   inp.focus({preventScroll:true});
 }
@@ -537,13 +618,15 @@ function sync(){
   const s = st();
   const set = (id,on)=>{ const b=g(id); if(b) b.classList.toggle('on',on); };
   set('em-b-brush',s.tool==='brush'); set('em-b-erase',s.tool==='erase'); set('em-b-arrow',s.tool==='arrow'); set('em-b-leg',s.legend);
-  const stg = g('em-stage'); if(stg) stg.classList.toggle('em-arrow',s.tool==='arrow');
+  const stg = g('em-stage'); if(stg){ stg.classList.toggle('em-arrow',s.tool==='arrow'); if(s.tool!=='arrow') stg.style.cursor = ''; }
   const hint = g('em-hint'); if(hint) hint.style.display = s.tool==='arrow' ? '' : 'none';
   const dis = (id,d)=>{ const b=g(id); if(b) b.disabled=d; };
   dis('em-b-undo',!lista().length); dis('em-b-redo',!listaRedo().length); dis('em-b-clear',!lista().length);
+  drawSel();
 }
-function undo(){ const l=lista(); if(!l.length) return; fecharTxt(); listaRedo().push(l.pop()); redrawAll(); refreshLegend(); sync(); }
-function redo(){ const r=listaRedo(); if(!r.length) return; fecharTxt(); lista().push(r.pop()); redrawAll(); refreshLegend(); sync(); }
+/* desfazer/refazer também valem para mover (volta/reaplica a posição) e apagar seta */
+function undo(){ const l=lista(); if(!l.length) return; fecharTxt(); const s=l.pop(); if(s.mv) Object.assign(s.ref,s.from); listaRedo().push(s); redrawAll(); refreshLegend(); sync(); }
+function redo(){ const r=listaRedo(); if(!r.length) return; fecharTxt(); const s=r.pop(); if(s.mv) Object.assign(s.ref,s.to); lista().push(s); redrawAll(); refreshLegend(); sync(); }
 function limpar(){ const l=lista(); if(!l.length) return; fecharTxt(); l.push({clear:true}); st().redo[R.view]=[]; redrawAll(); refreshLegend(); sync(); klugToast('Marcação apagada — use Desfazer para voltar'); }
 
 /* ======================= exportação ======================= */
