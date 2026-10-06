@@ -17,7 +17,7 @@
      lmod:<id>           métodos de laudo               lmod:us  lmod:tc  lmod:mmg  lmod:dmo  lmod:cfg
      laudo:<id>          modelos de laudo (id do modelo)
      cont:<id>           tópicos de Meios de Contraste
-     mapa:<órgão>        itens do Mapa Setorial Lesional  mapa:prostata  mapa:endometriose (PELVE)
+     mapa:<órgão>        itens do Mapa Setorial Lesional  mapa:prostata  mapa:endometriose (PELVE)  mapa:fistula (FÍSTULA PERINAL)
    Exceção (pedido do Konrado, 05/out/2026): na TELA INICIAL os cartões Favoritos, Nova Lista,
    Configurações e Mapa Setorial Lesional ficam SEM marcador (nem 🚧 nem ✅); o menu lateral e o
    título da tela continuam usando as chaves home:favoritos/novalista/config/mapa.
@@ -26,6 +26,7 @@ const ST_OK = [
   'home:mapa',             // MAPA SETORIAL LESIONAL
   'mapa:prostata',         //   PRÓSTATA (PI-RADS)
   'mapa:endometriose',     //   PELVE (Endometriose)
+  'mapa:fistula',          //   FÍSTULA PERINAL
   'calc:esteatose-tc',     // Esteatose Hepática (TC)
   'calc:esteatose-rm',     // Esteatose Hepática (RM)
   'calc:ferro-t2',         // Ferro Hepático (T2*)
