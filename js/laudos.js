@@ -1764,9 +1764,15 @@ function lauTireoCx(m){
     else if(f.n==='Tireoidectomia parcial' && !(r&&r.total)){ const tk=lauTpl(f.t).lines.flat().find(x=>x.t==='c'); const v=tk&&((s.__v['f'+id]||[])[tk.i]||tk.def); r={parcial:v||null}; } });
   return r;
 }
+function lauDiuNoEndometrio(m){
+  const e=m.items.find(i=>/^endometrio/.test(lauNorm(lauItemLabel(m,i)||''))); if(!e) return false;
+  const s=state.lau.v[e.k]; return !!s && (s.__f||[]).some(id=>/^DIU /.test((LAU_FRASES[parseInt(id)]||{}).n||''));
+}
 function lauItemOculto(m, it){
   // tireoidectomia total: a linha "Volumes estimados" sai do laudo
   if(/^volumes estimados/i.test(lauItemLabel(m,it)||'')){ const c=lauTireoCx(m); if(c && c.total) return true; }
+  // DIU descrito no endométrio: a linha fixa "Dispositivo contraceptivo" da máscara sai do laudo
+  if(/^dispositivo contraceptivo/i.test(lauItemLabel(m,it)||'') && lauDiuNoEndometrio(m)) return true;
   // obstétricos com Doppler: bexiga, útero e colo só entram no laudo quando alterados; US tórax: pericárdio idem
   if((/^us-obstetrico-(doppler|gemelar-com-doppler)$/.test(m.id) && /^(bexiga|utero|colo-uterino)$/.test(it.k)) || (m.id==='us-torax' && it.k==='pericardio')){
     const s=state.lau.v[it.k];
@@ -2053,7 +2059,7 @@ function lauPatch(k){
     const h=lauItemHTML(m,it); p.innerHTML = h; p.hidden = !h; if(h) lauFlash(p);
     if(typeof lauAutoStUpd==='function') lauAutoStUpd(m,it);
     const outros = m.oct || (typeof lauAutoAfetaOutros==='function' && lauAutoAfetaOutros(m,it))
-      || /^tireoide$/.test(lauNorm(lauItemLabel(m,it)||''));   // tireoidectomia muda a linha dos volumes
+      || /^(tireoide|endometrio)$/.test(lauNorm(lauItemLabel(m,it)||''));   // tireoidectomia muda a linha dos volumes; DIU no endométrio oculta a linha do dispositivo
     if(outros) m.items.forEach(o=>{ if(o.k===k) return; const q=ed.querySelector(`[data-k="${o.k}"]`); if(!q) return; const hh=lauItemHTML(m,o); if(q.innerHTML!==hh){ q.innerHTML=hh; q.hidden=!hh; } });   // frases que ocultam itens do mesmo olho
   }
   lauPatchConc(); lauSaveEd();
