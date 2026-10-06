@@ -1080,14 +1080,6 @@ const LAU_US_MASKS = [
 ],
 "items": [
 {
-"k": "estudo-realizado-com-o-pacient",
-"label": "",
-"text": "Estudo realizado com o paciente em posição ortostática e em decúbito dorsal, com manobras de Valsalva para a pesquisa de hérnias, direcionado para a região XXX (local da queixa do paciente).",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
 "k": "pele-e-tecido-celular-subcutaneo",
 "label": "Pele e tecido celular subcutâneo",
 "text": "de espessura e ecogenicidade preservadas.",
@@ -1129,10 +1121,6 @@ const LAU_US_MASKS = [
 }
 ],
 "seq": [
-{
-"t": "item",
-"k": "estudo-realizado-com-o-pacient"
-},
 {
 "t": "item",
 "k": "pele-e-tecido-celular-subcutaneo"

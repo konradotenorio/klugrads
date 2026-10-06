@@ -286,7 +286,6 @@ ULTRASSONOGRAFIA DA PAREDE ABDOMINAL
 Nome do Paciente: 
 Data de Nascimento: 
 Data do Exame: 
-Estudo realizado com o paciente em posição ortostática e em decúbito dorsal, com manobras de Valsalva para a pesquisa de hérnias, direcionado para a região XXX (local da queixa do paciente).
 - Pele e tecido celular subcutâneo: de espessura e ecogenicidade preservadas.
 - Planos musculares: com arquitetura preservada.
 - Herniações: não caracterizadas, mesmo após as manobras de esforço.
