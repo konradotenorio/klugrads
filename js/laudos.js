@@ -2039,7 +2039,8 @@ function lauPatch(k){
     }
     const h=lauItemHTML(m,it); p.innerHTML = h; p.hidden = !h; if(h) lauFlash(p);
     if(typeof lauAutoStUpd==='function') lauAutoStUpd(m,it);
-    const outros = m.oct || (typeof lauAutoAfetaOutros==='function' && lauAutoAfetaOutros(m,it));
+    const outros = m.oct || (typeof lauAutoAfetaOutros==='function' && lauAutoAfetaOutros(m,it))
+      || /^tireoide$/.test(lauNorm(lauItemLabel(m,it)||''));   // tireoidectomia muda a linha dos volumes
     if(outros) m.items.forEach(o=>{ if(o.k===k) return; const q=ed.querySelector(`[data-k="${o.k}"]`); if(!q) return; const hh=lauItemHTML(m,o); if(q.innerHTML!==hh){ q.innerHTML=hh; q.hidden=!hh; } });   // frases que ocultam itens do mesmo olho
   }
   lauPatchConc(); lauSaveEd();
