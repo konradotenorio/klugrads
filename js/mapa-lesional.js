@@ -42,6 +42,21 @@ const MSL_CORES = [
   {id:3, cor:'#7E22CE', nome:'Roxo'},
   {id:4, cor:'#059669', nome:'Verde'},
 ];
+/* MARCA PADRÃO de TODOS os mapas do Mapa Setorial Lesional (próstata, pelve, fístula, rim…).
+   Um mapa novo deve chamar mslMarca() ao desenhar a base (e usar MSL_MARCA no texto), para a
+   frase, o tamanho e a posição ficarem iguais em todos. Cada mapa escolhe só a cor e o canto
+   conforme o fundo da sua imagem (preto em fundo claro, branco em fundo escuro). */
+const MSL_MARCA = 'Imagem ilustrada e editada em KlugRads';
+function mslMarca(ctx, W, H, o){
+  o = o || {};
+  const dir = o.canto!=='esq', fs = Math.max(9,Math.round(W*0.0105)), m = W*0.014;
+  ctx.save();
+  ctx.font = `600 ${fs}px "Segoe UI",Arial,Helvetica,sans-serif`; ctx.textBaseline = 'alphabetic'; ctx.textAlign = dir ? 'right' : 'left';
+  if(o.sombra){ ctx.shadowColor = 'rgba(0,0,0,.65)'; ctx.shadowBlur = fs*0.28; ctx.shadowOffsetY = 1; }
+  ctx.fillStyle = o.cor || '#000000';
+  ctx.fillText(MSL_MARCA, dir ? W-m : m, H-m*0.9);
+  ctx.restore();
+}
 const MSL_ALPHA = 0.72;      // opacidade da pintura (deixa ver os setores por baixo)
 const MSL_ZMAX = 8;          // zoom máximo
 
@@ -360,10 +375,8 @@ function mslDrawBase(){
   const ctx=MSL.bctx; if(!ctx||!MSL.img) return;
   const s=mslState(), o=MSL_ORGAOS[s.org], N=MSL.N;
   ctx.clearRect(0,0,N,N); ctx.imageSmoothingQuality='high'; ctx.drawImage(MSL.img,0,0,N,N);
-  // marca pequena, em preto, no canto inferior direito (a pelve tem a sua, em branco, no canto inferior esquerdo)
-  { const fs=Math.max(9,Math.round(N*0.0105)), m=N*0.014;
-    ctx.save(); ctx.font=`600 ${fs}px "Segoe UI",Arial,Helvetica,sans-serif`; ctx.textBaseline='alphabetic'; ctx.textAlign='right';
-    ctx.fillStyle='#000000'; ctx.fillText('Imagem ilustrada e editada por KlugRads', N-m, N-m*0.6); ctx.restore(); }
+  // marca padrão (próstata: preto, canto inferior direito)
+  mslMarca(ctx, N, N, {cor:'#000000', canto:'dir'});
   // legenda na imagem: "Legenda:" e uma linha "(cor) - Lesão N" para cada lesão pintada
   const rows=MSL_CORES.filter(c=>MSL.used[c.id-1]);
   if(!s.legend || !rows.length) return;

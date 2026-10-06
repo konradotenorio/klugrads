@@ -37,7 +37,6 @@ const LES = [
   {id:2, nome:'Endometrioma', cor:'#7A1F3D', cn:'VINHO'},
   {id:3, nome:'Sangue',       cor:'#E11D2E', cn:'VERMELHO'},
 ];
-const MARCA = 'Imagem ilustrada e editada por KlugRads';
 const ALPHA = 0.72, ZMAX = 8;
 const REFW = 1103;                      // largura (px) das imagens originais; as atuais são 2× maiores: pincel e cursor escalam com R.K
 const SETA = {fill:'#FFD21F', line:'#1B1B1B'};   // seta amarela com contorno escuro: aparece sobre qualquer região do desenho
@@ -226,13 +225,8 @@ function legenda(ctx,rows){
   });
   ctx.restore();
 }
-/* marca pequena, em letras brancas, no canto inferior esquerdo */
-function marca(ctx){
-  const fs = Math.max(9,Math.round(R.IW*0.0105)), m = R.IW*0.014;
-  ctx.save(); ctx.font = `600 ${fs}px "Segoe UI",Arial,sans-serif`; ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
-  ctx.shadowColor = 'rgba(0,0,0,.65)'; ctx.shadowBlur = fs*0.28; ctx.shadowOffsetY = 1;
-  ctx.fillStyle = '#ffffff'; ctx.fillText(MARCA, m, R.IH-m*0.9); ctx.restore();
-}
+/* marca padrão do Mapa Setorial Lesional (mslMarca, em mapa-lesional.js): branca, canto inferior esquerdo */
+function marca(ctx){ mslMarca(ctx, R.IW, R.IH, {cor:'#ffffff', canto:'esq', sombra:true}); }
 /* corte axial (visão videolaparoscópica): título no alto e as orientações nas quatro bordas.
    Esquerdo/direito são do PACIENTE: a imagem original traz o lado esquerdo à esquerda da tela. */
 function orientacao(ctx){

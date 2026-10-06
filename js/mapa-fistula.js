@@ -34,7 +34,6 @@ const LES = [
   {id:1, nome:'Trajeto fistuloso', cor:'#39FF14', anel:'#16A34A', cn:'VERDE'},
   {id:2, nome:'Abscesso',          cor:'#F5FF1F', anel:'#B59B00', cn:'AMARELO'},
 ];
-const MARCA = 'Imagem ilustrada e editada em KlugRads';
 const ALPHA = 0.9, ZMAX = 8;
 const GLOW = 5;                          // brilho (halo) em volta do TRAJETO, em px da imagem de referência: dá o efeito fluorescente
 const OUT = 3.5;                         // espessura (px de referência) do contorno preto em volta do ABSCESSO
@@ -214,12 +213,8 @@ function legenda(ctx,rows){
   });
   ctx.restore();
 }
-/* marca pequena, em letras escuras (o fundo do esquema é claro), no canto inferior esquerdo */
-function marca(ctx){
-  const fs = Math.max(9,Math.round(R.IW*0.0105)), m = R.IW*0.014;
-  ctx.save(); ctx.font = `600 ${fs}px "Segoe UI",Arial,sans-serif`; ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
-  ctx.fillStyle = 'rgba(31,38,48,.82)'; ctx.fillText(MARCA, m, R.IH-m*0.9); ctx.restore();
-}
+/* marca padrão do Mapa Setorial Lesional (mslMarca, em mapa-lesional.js): escura (fundo claro), canto inferior esquerdo */
+function marca(ctx){ mslMarca(ctx, R.IW, R.IH, {cor:'rgba(31,38,48,.82)', canto:'esq'}); }
 /* corte axial: título no alto e as orientações nas quatro bordas (nas faixas extras, em cima e embaixo).
    Esquerdo/direito são do PACIENTE, na convenção radiológica: o direito fica à esquerda da imagem. */
 function orientacao(ctx){

@@ -24,7 +24,7 @@ const C = {
   coletor:'#E3B21F', coletorS:'#9A7A0E', art:'#D62828', veia:'#2B59C3',
   les:'#7E22CE', polar:'#1f2630', fundo:'#ffffff', txt:'#1f2630', dim:'#6b7280',
 };
-const MARCA = 'Ilustração esquemática — KlugRads';
+const MARCA = MSL_MARCA;   // frase padrão do Mapa Setorial Lesional (mapa-lesional.js)
 const REF = [
   'Kutikov A, Uzzo RG. The R.E.N.A.L. nephrometry score: a comprehensive standardized system for quantitating renal tumor size, location and depth. J Urol. 2009;182(3):844–853.',
 ];
@@ -363,7 +363,7 @@ function svg(){
     o += `<text x="${W-246}" y="${ly+2}" ${F} font-size="20" font-weight="800" fill="${tc}">R.E.N.A.L. ${sc.tot}${sc.suf}</text>`;
     o += `<text x="${W-246}" y="${ly+19}" ${F} font-size="11.5" font-weight="700" fill="${C.txt}">${sc.comp} · R${sc.R} E${sc.E} N${sc.N} L${sc.L}</text>`;
   }
-  o += `<text x="${W-12}" y="${H-8}" ${F} font-size="10" fill="#9aa1ab" text-anchor="end">${MARCA}</text>`;
+  o += `<text x="${W-12}" y="${H-8}" ${F} font-size="10" font-weight="600" fill="rgba(31,38,48,.82)" text-anchor="end">${MARCA}</text>`;
   return o + '</svg>';
 }
 
