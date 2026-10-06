@@ -2394,6 +2394,11 @@ function laudosHTML(){
     <div class="lau-beta"><b>Em desenvolvimento · fase de testes.</b> Os modelos ainda estão sendo construídos e revisados.</div>
     <div class="calc-intro-lbl">Escolha o método</div>
     ${cards}
+    <div class="lc-short" onclick="location.href='/reconhecimento-voz'">
+      <div class="si acc">${svgIcon(P.laudo,22)}</div>
+      <div class="st"><div class="t">${stMark('lmod:voz')}Reconhecimento de voz</div><div class="d">Ditado com filtro de vocabulário médico · EM TESTES</div></div>
+      <div class="chev">${svgIcon(P.chev,18,{sw:2})}</div>
+    </div>
     <div class="lc-short" onclick="openLaudoCfg()">
       <div class="si acc">${svgIcon(P.gear,22)}</div>
       <div class="st"><div class="t">${stMark('lmod:cfg')}Padrões dos laudos</div><div class="d">Formatação geral e textos de cada laudo</div></div>

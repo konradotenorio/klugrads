@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reconhecimento de voz (em testes) – KlugRads</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --card:#fff; --ink:#1b2430; --muted:#6b7686; --line:#e1e6ee;
+    --brand:#0f5fa8; --brand-d:#0b4a86; --ok:#1f9d55; --warn:#d9822b; --bad:#c93b3b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+  .wrap{max-width:900px;margin:0 auto;padding:20px 16px 40px}
+  h1{font-size:1.35rem;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:.9rem;margin-bottom:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button{font:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 14px;border-radius:8px;cursor:pointer}
+  button:hover{background:#f0f3f8}
+  button.primary{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600}
+  button.primary:hover{background:var(--brand-d)}
+  button.rec{background:var(--bad);border-color:var(--bad);color:#fff;font-weight:600}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .status{display:inline-flex;align-items:center;gap:8px;font-size:.9rem;color:var(--muted)}
+  .dot{width:10px;height:10px;border-radius:50%;background:#b8c0cc}
+  .dot.on{background:var(--bad);animation:pulse 1.2s infinite}
+  @keyframes pulse{50%{opacity:.35}}
+  .meter{height:12px;background:#e9edf3;border-radius:6px;overflow:hidden;flex:1;min-width:160px}
+  .meter>i{display:block;height:100%;width:0;background:var(--ok);transition:width .06s}
+  .meter.hot>i{background:var(--warn)}
+  label{font-size:.88rem;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+  select,input[type=range]{font:inherit}
+  select{padding:7px;border:1px solid var(--line);border-radius:8px;background:#fff}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+  .check{flex-direction:row;align-items:center;gap:8px;color:var(--ink)}
+  #out{min-height:220px;line-height:1.6;font-size:1.02rem;white-space:pre-wrap;outline:none}
+  #out .interim{color:#8a95a5}
+  #out mark{background:#fde7c8;border-radius:3px;padding:0 2px}
+  .hint{font-size:.82rem;color:var(--muted)}
+  .badge{font-size:.75rem;padding:2px 8px;border-radius:99px;background:#e8f1fb;color:var(--brand)}
+  details summary{cursor:pointer;font-weight:600}
+  textarea{width:100%;min-height:90px;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px}
+  .alert{background:#fff6e8;border:1px solid #f0d3a6;color:#7a4a0e;padding:10px 12px;border-radius:8px;font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="/app" style="display:inline-block;margin-bottom:10px;color:var(--brand);text-decoration:none;font-size:.9rem">← Voltar aos Laudos Estruturados</a>
+  <h1>Reconhecimento de voz <span class="badge">Klug Rads</span> <span class="badge" style="background:#fde7c8;color:#7a4a0e">EM TESTES</span></h1>
+  <div class="sub">Ditado em português com filtro de vocabulário médico/radiológico.</div>
+  <div class="alert" style="margin-bottom:14px;background:#fff1d6;border-color:#e8c27a">
+    <strong>Recurso em fase de testes.</strong> A transcrição pode conter erros e deve ser sempre revisada antes de ser usada em laudos. Não é um recurso final e pode mudar ou ser desativado a qualquer momento.
+  </div>
+
+  <div id="unsupported" class="alert" style="display:none">
+    Este navegador não suporta reconhecimento de voz. Use Google Chrome, Microsoft Edge ou Safari recente.
+  </div>
+
+  <div class="card">
+    <div class="row" style="margin-bottom:12px">
+      <button id="btnRec" class="primary">🎙️ Iniciar ditado</button>
+      <button id="btnClear">Limpar</button>
+      <button id="btnCopy">Copiar</button>
+      <button id="btnTxt">Baixar .txt</button>
+      <span class="status"><span id="dot" class="dot"></span><span id="statusTxt">Parado</span></span>
+    </div>
+    <div class="row">
+      <span class="hint">Nível do microfone</span>
+      <div id="meter" class="meter"><i id="meterFill"></i></div>
+      <span id="gateState" class="hint">—</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="grid">
+      <label>Microfone
+        <select id="selMic"><option value="">Padrão do sistema</option></select>
+      </label>
+      <label>Idioma
+        <select id="selLang">
+          <option value="pt-BR" selected>Português (Brasil)</option>
+          <option value="pt-PT">Português (Portugal)</option>
+          <option value="en-US">English (US)</option>
+          <option value="es-ES">Español</option>
+        </select>
+      </label>
+      <label>Filtro de vocabulário
+        <select id="selFilter">
+          <option value="off">Desligado</option>
+          <option value="mark" selected>Destacar termos fora do contexto</option>
+          <option value="remove">Remover termos fora do contexto</option>
+        </select>
+      </label>
+      <label>Rigor do filtro: <span id="strictVal">Médio</span>
+        <input id="strict" type="range" min="0" max="2" step="1" value="1">
+      </label>
+    </div>
+    <div class="grid" style="margin-top:12px">
+      <label class="check"><input id="chkNS" type="checkbox" checked> Supressão de ruído do navegador</label>
+      <label class="check"><input id="chkEC" type="checkbox" checked> Cancelamento de eco</label>
+      <label class="check"><input id="chkAGC" type="checkbox" checked> Controle automático de ganho</label>
+      <label class="check"><input id="chkFX" type="checkbox" checked> Filtro de voz (passa-faixa + compressor)</label>
+      <label class="check"><input id="chkGate" type="checkbox" checked> Noise gate (silencia ruído de fundo)</label>
+      <label class="check"><input id="chkPunct" type="checkbox" checked> Pontuação por voz ("vírgula", "ponto"…)</label>
+    </div>
+    <div class="hint" style="margin-top:10px">Mudanças de áudio têm efeito ao reiniciar o ditado. Obs.: nesta versão, o reconhecimento nativo do Chrome/Edge usa o microfone padrão do sistema e o seu próprio tratamento de ruído; os filtros acima atuam no medidor e na captação local.</div>
+  </div>
+
+  <div class="card">
+    <div id="out" contenteditable="true" spellcheck="false" aria-label="Texto ditado"></div>
+    <div class="hint" style="margin-top:8px">O texto pode ser editado manualmente. Termos <mark>destacados</mark> não foram reconhecidos como vocabulário médico/comum.</div>
+  </div>
+
+  <div class="card">
+    <details>
+      <summary>Vocabulário personalizado</summary>
+      <p class="hint">Adicione termos da sua rotina (um por linha ou separados por vírgula): nomes de exames, siglas, medicamentos, equipamentos. Ficam salvos neste navegador.</p>
+      <textarea id="customVocab" placeholder="ex.: Klug, colangiorressonância, BI-RADS, Gadovist"></textarea>
+      <div class="row" style="margin-top:8px"><button id="btnSaveVocab">Salvar vocabulário</button></div>
+    </details>
+  </div>
+
+  <div class="alert">
+    <strong>Privacidade:</strong> o reconhecimento de voz nativo do navegador (Chrome/Edge) envia o áudio a servidores do fornecedor para transcrição. Para dados de pacientes (LGPD), avalie um provedor com contrato adequado antes de usar em produção.
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  /* ========= Vocabulário ========= */
+
+  // Palavras comuns do português necessárias para frases (nunca filtradas)
+  const COMMON = `a o as os um uma uns umas de do da dos das em no na nos nas por para com sem sob sobre entre até ao aos à às
+  e ou mas que se como quando onde porque pois já não sim mais menos muito muita muitos muitas pouco pouca poucos poucas
+  é são foi foram era eram será ser estar está estão esteve estava tem têm tinha há havia haver sendo sido ter
+  este esta estes estas esse essa esses essas isto isso aquele aquela aquilo seu sua seus suas meu minha dele dela
+  também ainda apenas somente cerca aproximadamente cada todo toda todos todas outro outra outros outras mesmo mesma
+  lado direito direita esquerdo esquerda anterior posterior superior inferior medial lateral proximal distal
+  um dois duas três quatro cinco seis sete oito nove dez onze doze treze quatorze quinze vinte trinta quarenta cinquenta
+  sessenta setenta oitenta noventa cem mil milímetros milímetro centímetros centímetro mm cm ml mg kg cc
+  vírgula ponto parágrafo dois-pontos parênteses hífen barra
+  sem alterações presença ausência aspecto padrão formato dimensões medidas medindo mede
+  paciente exame laudo relatório impressão conclusão técnica indicação achados comparação prévio prévios`;
+
+  // Termos médicos / radiológicos (base inicial – amplie pelo painel)
+  const MEDICAL = `
+  radiologia radiográfico radiografia raio-x raios tomografia tomográfico computadorizada ressonância magnética ultrassonografia
+  ultrassom ecografia doppler mamografia densitometria cintilografia pet-ct pet angiografia angiotomografia colangiorressonância
+  contraste contrastado gadolínio iodado realce hipercaptante hipocaptante captação
+  hiperdenso hipodenso isodenso hiperecogênico hipoecogênico anecoico anecogênico isoecogênico heterogêneo homogêneo
+  hiperintenso hipointenso isointenso sinal t1 t2 flair dwc difusão restrição
+  nódulo massa lesão cisto cístico sólido calcificação calcificado microcalcificações espessamento derrame efusão
+  atelectasia consolidação infiltrado opacidade vidro-fosco enfisema pneumotórax pneumonia bronquiectasias fibrose
+  pulmão pulmonar pulmões pleura pleural mediastino mediastinal hilo hilar traqueia brônquio brônquios diafragma
+  coração cardíaco cardiomegalia pericárdio aorta aórtico coronárias coronariana artéria artérias veia veias vascular
+  fígado hepático hepatomegalia esteatose hepatite cirrose vesícula biliar colecistite colelitíase litíase cálculo cálculos
+  pâncreas pancreático baço esplênico rim renal rins ureter ureteral bexiga vesical próstata prostático hidronefrose
+  adrenal suprarrenal estômago intestino intestinal cólon colón apêndice apendicite apendicular diverticulite divertículos
+  peritônio peritoneal retroperitônio ascite linfonodo linfonodos linfonodomegalia adenopatia gânglio
+  útero uterino endométrio miometrial miomas mioma ovário ovários ovariano anexo anexos folículo endometrioma colo cervical
+  mama mamário mamária axila axilar bi-rads birads ductal lobular
+  tireoide tireoidiano paratireoide pescoço cervical carótida jugular
+  crânio encéfalo cérebro cerebral cerebelo tronco ventrículo ventricular hidrocefalia hemorragia hematoma isquemia infarto
+  avc aneurisma sela turca hipófise órbita órbitas seios paranasais sinusite mastoide ouvido
+  coluna vertebral vértebra vértebras lombar torácica cervical sacral disco discal hérnia protrusão abaulamento estenose
+  forame canal medular espondilose osteófito osteófitos listese espondilolistese escoliose
+  osso ósseo osteopenia osteoporose fratura fraturas luxação articulação articular derrame sinovite menisco meniscal
+  ligamento ligamentar cruzado tendão tendinopatia manguito rotador ombro joelho quadril tornozelo cotovelo punho mão pé
+  fêmur tíbia fíbula úmero rádio ulna clavícula escápula costela costelas esterno pelve sacro cóccix
+  tumor neoplasia neoplásico maligno benigno metástase metastático carcinoma adenocarcinoma linfoma melanoma
+  inflamação inflamatório infecção abscesso edema líquido livre coleção
+  agudo aguda crônico crônica subagudo bilateral unilateral difuso focal multifocal segmentar
+  normal normais preservado preservada preservados preservadas conservado discreto discreta leve moderado moderada importante acentuado acentuada
+  regular irregular contornos limites bem definidos mal definidos espiculado lobulado
+  volume volumoso aumentado aumentada reduzido reduzida diminuído diminuída dilatado dilatada ectasia
+  parênquima parenquimatoso cortical medular córtex seio pelve pielocalicial
+  sonda cateter dreno prótese stent stents clipe clipes marcapasso implante material cirúrgico pós-operatório pós-cirúrgico
+  hiperplasia hipertrofia atrofia atrófico degenerativo degeneração
+  suv sul hounsfield hu cm3 ml
+  axial coronal sagital oblíquo reformatação série sequência sequências corte cortes
+  recomenda-se sugere-se correlação clínica correlacionar controle seguimento complementação investigação
+  `;
+
+  const MEDICAL_FIXES = [ // correções comuns de erros do reconhecedor
+    [/\bressonancia\b/gi, "ressonância"],
+    [/\btomografia computadorizada\b/gi, "tomografia computadorizada"],
+    [/\bpet scan\b/gi, "PET-CT"],
+    [/\bbi hrads\b|\bbirads\b|\bbi rads\b/gi, "BI-RADS"],
+    [/\braio x\b|\braios x\b/gi, "raio-X"],
+    [/\bt um\b/gi, "T1"],
+    [/\bt dois\b/gi, "T2"],
+  ];
+
+  const PUNCT = [
+    [/\s*\bvírgula\b\s*/gi, ", "],
+    [/\s*\bponto final\b\s*/gi, ". "],
+    [/\s*\bponto parágrafo\b\s*/gi, ".\n"],
+    [/\s*\bnovo parágrafo\b\s*/gi, "\n"],
+    [/\s*\bnova linha\b\s*/gi, "\n"],
+    [/\s*\bdois pontos\b\s*/gi, ": "],
+    [/\s*\bponto e vírgula\b\s*/gi, "; "],
+    [/\s*\bponto de interrogação\b\s*/gi, "? "],
+    [/\s*\babre parênteses\b\s*/gi, " ("],
+    [/\s*\bfecha parênteses\b\s*/gi, ") "],
+  ];
+
+  const norm = w => w.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const wordsOf = s => s.split(/\s+/).map(x => x.trim()).filter(Boolean);
+
+  let vocabSet = new Set();
+  function buildVocab() {
+    vocabSet = new Set();
+    wordsOf(COMMON + " " + MEDICAL).forEach(w => vocabSet.add(norm(w)));
+    try {
+      const custom = localStorage.getItem("klug_custom_vocab") || "";
+      custom.split(/[\n,;]+/).forEach(t => wordsOf(t).forEach(w => vocabSet.add(norm(w))));
+    } catch (e) {}
+  }
+
+  // Considera palavra "ok" se: está no vocabulário, é número/unidade, ou tem raiz/sufixo médico
+  const MED_SUFFIX = /(ite|ose|oma|patia|ectomia|ostomia|otomia|scopia|grafia|plastia|algia|emia|penia|megalia|rragia|cele|ectasia|plasia|trofia|lise|lítico|lítica|gênico|gênica|denso|densa|intenso|intensa|vascular|cular|ário|ária|ico|ica)$/i;
+  const MED_PREFIX = /^(hiper|hipo|iso|peri|intra|extra|retro|infra|supra|sub|trans|para|endo|pos|pre|inter|neo|poli|multi|bi|uni)/i;
+
+  function isInContext(token, strict) {
+    const clean = token.replace(/[.,;:!?()\[\]"']/g, "");
+    if (!clean) return true;
+    if (/^[\d.,/%x×-]+$/.test(clean)) return true;        // números, medidas
+    if (/^\d+[a-zA-Z]+\d*$/.test(clean)) return true;      // 3cm, T2, 10mm
+    const n = norm(clean);
+    if (vocabSet.has(n)) return true;
+    if (strict === 0) { // permissivo: aceita por sufixo, prefixo ou palavras curtas
+      if (MED_SUFFIX.test(clean) || MED_PREFIX.test(clean) || clean.length <= 3) return true;
+    } else if (strict === 1) { // médio: aceita por sufixo/prefixo médico
+      if (MED_SUFFIX.test(clean) || (MED_PREFIX.test(clean) && clean.length > 6)) return true;
+    }
+    // rigor alto (2): somente vocabulário
+    return false;
+  }
+
+  function applyFixes(text, usePunct) {
+    let t = text;
+    MEDICAL_FIXES.forEach(([re, to]) => t = t.replace(re, to));
+    if (usePunct) PUNCT.forEach(([re, to]) => t = t.replace(re, to));
+    return t;
+  }
+
+  /* ========= Elementos ========= */
+  const $ = id => document.getElementById(id);
+  const btnRec = $("btnRec"), out = $("out"), dot = $("dot"), statusTxt = $("statusTxt");
+  const meter = $("meter"), meterFill = $("meterFill"), gateState = $("gateState");
+
+  /* ========= Estado ========= */
+  let recognition = null, running = false, wantRun = false;
+  let restartTimes = [], lastErr = "";
+  let stream = null, audioCtx = null, rafId = null, analyser = null, gateGain = null;
+  let finalText = "";    // texto confirmado (já filtrado)
+  let interimText = "";
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { $("unsupported").style.display = "block"; btnRec.disabled = true; }
+  else if (location.protocol === "file:") {
+    const u = $("unsupported");
+    u.textContent = "Você abriu o arquivo direto do computador (file://). O reconhecimento de voz não funciona assim. Rode um servidor local (ex.: na pasta do arquivo, 'python3 -m http.server 8000' e abra http://localhost:8000/) ou publique em HTTPS.";
+    u.style.display = "block";
+  }
+
+  buildVocab();
+  try { $("customVocab").value = localStorage.getItem("klug_custom_vocab") || ""; } catch (e) {}
+
+  $("strict").addEventListener("input", e => {
+    $("strictVal").textContent = ["Baixo", "Médio", "Alto"][+e.target.value];
+  });
+  $("btnSaveVocab").onclick = () => {
+    try { localStorage.setItem("klug_custom_vocab", $("customVocab").value); } catch (e) {}
+    buildVocab();
+    alert("Vocabulário salvo.");
+  };
+
+  /* ========= Microfones ========= */
+  async function listMics() {
+    try {
+      const devs = await navigator.mediaDevices.enumerateDevices();
+      const sel = $("selMic"), cur = sel.value;
+      sel.innerHTML = '<option value="">Padrão do sistema</option>';
+      devs.filter(d => d.kind === "audioinput").forEach((d, i) => {
+        const o = document.createElement("option");
+        o.value = d.deviceId; o.textContent = d.label || ("Microfone " + (i + 1));
+        sel.appendChild(o);
+      });
+      sel.value = cur;
+    } catch (e) {}
+  }
+  if (navigator.mediaDevices) {
+    listMics();
+    navigator.mediaDevices.addEventListener?.("devicechange", listMics);
+  }
+
+  /* ========= Áudio: captação + filtros + medidor ========= */
+  async function startAudio() {
+    const constraints = {
+      audio: {
+        deviceId: $("selMic").value ? { exact: $("selMic").value } : undefined,
+        noiseSuppression: $("chkNS").checked,
+        echoCancellation: $("chkEC").checked,
+        autoGainControl: $("chkAGC").checked,
+        channelCount: 1,
+        sampleRate: 48000
+      }
+    };
+    stream = await navigator.mediaDevices.getUserMedia(constraints);
+    listMics(); // agora com rótulos
+
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const src = audioCtx.createMediaStreamSource(stream);
+    let node = src;
+
+    if ($("chkFX").checked) {
+      const hp = audioCtx.createBiquadFilter();  // corta graves (ar-condicionado, vibração)
+      hp.type = "highpass"; hp.frequency.value = 100; hp.Q.value = 0.7;
+      const lp = audioCtx.createBiquadFilter();  // corta agudos (chiado)
+      lp.type = "lowpass"; lp.frequency.value = 7500; lp.Q.value = 0.7;
+      const presence = audioCtx.createBiquadFilter(); // realça inteligibilidade da voz
+      presence.type = "peaking"; presence.frequency.value = 2800; presence.gain.value = 3; presence.Q.value = 0.9;
+      const comp = audioCtx.createDynamicsCompressor();
+      comp.threshold.value = -30; comp.knee.value = 20; comp.ratio.value = 4;
+      comp.attack.value = 0.005; comp.release.value = 0.2;
+      node.connect(hp); hp.connect(lp); lp.connect(presence); presence.connect(comp);
+      node = comp;
+    }
+
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 1024;
+    node.connect(analyser);
+
+    // Noise gate: mede nível e abre/fecha um ganho (visual + saída processada)
+    gateGain = audioCtx.createGain();
+    node.connect(gateGain);
+    const dest = audioCtx.createMediaStreamDestination();
+    gateGain.connect(dest);
+
+    const buf = new Float32Array(analyser.fftSize);
+    let floor = 0.01, open = false, holdUntil = 0;
+    const loop = () => {
+      analyser.getFloatTimeDomainData(buf);
+      let sum = 0; for (let i = 0; i < buf.length; i++) sum += buf[i] * buf[i];
+      const rms = Math.sqrt(sum / buf.length);
+      // estima o piso de ruído lentamente
+      if (rms < floor * 1.5) floor = floor * 0.98 + rms * 0.02;
+      floor = Math.min(Math.max(floor, 0.003), 0.05);
+      const thr = floor * 2.8 + 0.004;
+      const now = performance.now();
+      if (rms > thr) { open = true; holdUntil = now + 350; }
+      else if (now > holdUntil) open = false;
+
+      const useGate = $("chkGate").checked;
+      const g = useGate ? (open ? 1 : 0.05) : 1;
+      gateGain.gain.setTargetAtTime(g, audioCtx.currentTime, 0.02);
+
+      const pct = Math.min(100, Math.round(rms * 400));
+      meterFill.style.width = pct + "%";
+      meter.classList.toggle("hot", pct > 85);
+      gateState.textContent = useGate ? (open ? "voz detectada" : "silêncio / ruído") : "gate desligado";
+      rafId = requestAnimationFrame(loop);
+    };
+    loop();
+  }
+
+  function stopAudio() {
+    cancelAnimationFrame(rafId);
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    if (audioCtx) audioCtx.close().catch(() => {});
+    stream = audioCtx = analyser = gateGain = null;
+    meterFill.style.width = "0"; gateState.textContent = "—";
+  }
+
+  /* ========= Reconhecimento ========= */
+  function filterChunk(text) {
+    const mode = $("selFilter").value;
+    const strict = +$("strict").value;
+    if (mode === "off") return { text, flagged: [] };
+    const toks = text.split(/(\s+)/);
+    const flagged = [];
+    const kept = toks.map(t => {
+      if (/^\s+$/.test(t) || !t) return t;
+      if (isInContext(t, strict)) return t;
+      flagged.push(t);
+      return mode === "remove" ? "" : "\u0001" + t + "\u0002";
+    }).join("").replace(/ {2,}/g, " ");
+    return { text: kept, flagged };
+  }
+
+  function render() {
+    const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    let html = esc(finalText).replace(/\u0001/g, "<mark>").replace(/\u0002/g, "</mark>");
+    if (interimText) html += '<span class="interim">' + esc(interimText) + "</span>";
+    out.innerHTML = html;
+    out.scrollTop = out.scrollHeight;
+  }
+
+  function setupRecognition() {
+    recognition = new SR();
+    recognition.lang = $("selLang").value;
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 3;
+
+    recognition.onresult = ev => {
+      interimText = "";
+      for (let i = ev.resultIndex; i < ev.results.length; i++) {
+        const res = ev.results[i];
+        if (res.isFinal) {
+          // escolhe a alternativa com mais termos reconhecidos no contexto
+          let best = res[0].transcript, bestScore = -1;
+          for (let a = 0; a < res.length; a++) {
+            const tr = res[a].transcript;
+            const score = wordsOf(tr).filter(w => isInContext(w, 1)).length + res[a].confidence;
+            if (score > bestScore) { bestScore = score; best = tr; }
+          }
+          let t = applyFixes(best.trim(), $("chkPunct").checked);
+          const { text } = filterChunk(t);
+          if (text.trim()) {
+            const sep = finalText && !/[\n(]$/.test(finalText) ? " " : "";
+            finalText += sep + text.trim();
+          }
+        } else {
+          interimText += res[0].transcript;
+        }
+      }
+      render();
+    };
+
+    recognition.onerror = e => {
+      const fatal = {
+        "not-allowed": "Permissão do microfone negada ou página sem HTTPS. Abra por https:// ou http://localhost (não por arquivo local).",
+        "service-not-allowed": "O navegador bloqueou o serviço de reconhecimento de voz. Abra por https:// ou http://localhost.",
+        "audio-capture": "Nenhum microfone encontrado ou ele está em uso por outro programa.",
+        "network": "Sem conexão com o serviço de reconhecimento de voz (precisa de internet).",
+        "language-not-supported": "Idioma não suportado neste navegador."
+      };
+      lastErr = e.error;
+      if (fatal[e.error]) {
+        if (!wantRun) return;            // evita alertas repetidos
+        wantRun = false;                 // impede o reinício automático
+        setStatus("Erro: " + e.error, false);
+        stop();
+        alert(fatal[e.error] + "\n\n(código do erro: " + e.error + ")");
+      } else if (e.error !== "no-speech" && e.error !== "aborted") {
+        setStatus("Erro: " + e.error, true);
+      }
+    };
+    recognition.onend = () => {
+      running = false;
+      if (!wantRun) { setStatus("Parado", false); return; }
+      // proteção contra loop: no máximo 5 reinícios em 6 segundos
+      const now = Date.now();
+      restartTimes = restartTimes.filter(t => now - t < 6000);
+      restartTimes.push(now);
+      if (restartTimes.length > 5) {
+        wantRun = false;
+        stop();
+        alert("O reconhecimento de voz parou e reiniciou várias vezes seguidas, então foi interrompido.\n\nÚltimo erro: " + (lastErr || "nenhum") + "\n\nFeche outros programas que usem o microfone (Zoom, Meet, Teams), confira o microfone padrão do sistema e tente de novo.");
+        return;
+      }
+      setTimeout(() => {
+        if (!wantRun) return;
+        try { recognition.start(); running = true; } catch (err) {}
+      }, 300);                           // mantém contínuo, com pequena pausa
+    };
+  }
+
+  function setStatus(txt, on) {
+    statusTxt.textContent = txt;
+    dot.classList.toggle("on", !!on);
+  }
+
+  async function start() {
+    try {
+      await startAudio();
+    } catch (e) {
+      setStatus("Não foi possível acessar o microfone", false);
+      alert("Não foi possível acessar o microfone. Verifique a permissão do navegador (e que a página esteja em HTTPS).");
+      return;
+    }
+    setupRecognition();
+    restartTimes = []; lastErr = "";
+    wantRun = true;
+    try { recognition.start(); running = true; } catch (e) {}
+    btnRec.textContent = "⏹ Parar ditado";
+    btnRec.classList.remove("primary"); btnRec.classList.add("rec");
+    setStatus("Ouvindo…", true);
+  }
+
+  function stop() {
+    wantRun = false;
+    try { recognition && recognition.stop(); } catch (e) {}
+    stopAudio();
+    interimText = ""; render();
+    btnRec.textContent = "🎙️ Iniciar ditado";
+    btnRec.classList.add("primary"); btnRec.classList.remove("rec");
+    setStatus("Parado", false);
+  }
+
+  btnRec.onclick = () => (wantRun ? stop() : start());
+
+  /* ========= Ações ========= */
+  // sincroniza edições manuais
+  out.addEventListener("input", () => { finalText = out.innerText.replace(/\n$/, ""); });
+
+  $("btnClear").onclick = () => { finalText = ""; interimText = ""; render(); };
+  $("btnCopy").onclick = async () => {
+    const t = out.innerText;
+    try { await navigator.clipboard.writeText(t); setStatus("Texto copiado", wantRun); }
+    catch (e) { const r = document.createRange(); r.selectNodeContents(out); const s = getSelection(); s.removeAllRanges(); s.addRange(r); document.execCommand("copy"); }
+  };
+  $("btnTxt").onclick = () => {
+    const blob = new Blob([out.innerText], { type: "text/plain;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ditado-" + new Date().toISOString().slice(0, 16).replace(/[:T]/g, "-") + ".txt";
+    a.click(); URL.revokeObjectURL(a.href);
+  };
+
+  window.addEventListener("beforeunload", () => { if (wantRun) stop(); });
+})();
+</script>
+</body>
+</html>
