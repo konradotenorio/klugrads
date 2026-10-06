@@ -441,7 +441,7 @@ const LAU_FRASES = [
    c:'Cisto de epidídimo.'},
   {o:'epididimo', n:'Epididimite', m:'sub',
    t:'epidídimo direito XX esquerdo aumentado, heterogêneo e hipervascularizado ao Doppler.', contra:'Epidídimo {X} com dimensões normais e ecotextura característica.',
-   c:'Sinais de epididimite no epidídimo {0}.'},
+   c:'Epididimite à {0}.'},
   {o:'testiculo', n:'Microlitíase', m:'add', td:'com múltiplos pequenos focos ecogênicos sem sombra acústica no parênquima (microlitíase)',
    t:'Múltiplos pequenos focos ecogênicos sem sombra acústica no parênquima testicular direito XX esquerdo XX bilateral.',
    c:'Microlitíase testicular.'},

@@ -1314,7 +1314,8 @@ function lauFraseConc(id, bag, lbl){
   if(f.kind==='nodpm') return lauNodPmConc(f, bag['f'+id], bag['d'+id]||{});
   if(f.kind==='tirads') return lauTiradsConc(f, bag['f'+id], bag['d'+id]||{}, n, n ? [bag['f'+id]].concat(Array.from({length:lauQn(bag['d'+id])-1},(_,j)=>bag['f'+id+'_'+(j+2)])) : null);
   if(f.kind==='birads') return lauBiradsConc(f, bag['f'+id], bag['d'+id]||{}, lbl, n, n ? [bag['f'+id]].concat(Array.from({length:lauQn(bag['d'+id])-1},(_,j)=>bag['f'+id+'_'+(j+2)])) : null);
-  return lauFraseConcHTML(n && f.cp ? Object.assign({}, f, {c:f.cp}) : f, bag['f'+id], lbl);
+  // "à direito/esquerdo" (lado escolhido no masculino, ex.: epidídimo) → "à direita/esquerda"
+  return lauFraseConcHTML(n && f.cp ? Object.assign({}, f, {c:f.cp}) : f, bag['f'+id], lbl).replace(/(^|\s)à (direit|esquerd)o\b/g, '$1à $2a');
 }
 function lauFraseLines(list, bag, mode){
   return (list||[]).filter(id=>{ const f=lauFI(id); return f && f.m===mode; }).map(id=>lauFraseText(id, bag, true));
