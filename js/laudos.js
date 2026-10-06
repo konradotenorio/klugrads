@@ -2404,10 +2404,12 @@ function lauCtrlHTML(k, s, c){
   return '';
 }
 /* texto da máscara com os campos embutidos (para preencher) */
-function lauInlineForm(k, tplId, str, vals){
+function lauInlineForm(k, tplId, str, vals, seg){
   const tpl=lauTpl(str); vals=vals||[];
   const sj = JSON.stringify(str).replace(/"/g,'&quot;');
-  return `<div class="lau-inl">${tpl.lines.map(toks=>toks.map(tk=>{
+  // seg: mostra só o trecho n.º seg (trechos separados por ";"), ex.: lobo remanescente na tireoidectomia parcial
+  const noSeg = toks=>{ if(seg==null) return toks; let n=0; const out=[]; toks.forEach(tk=>{ if(n===seg) out.push(tk); if(/;$/.test(tk.t==='w'?tk.s:(tk.suf||''))) n++; }); if(out.length){ const l=out[out.length-1]; if(l.t==='w') out[out.length-1]={t:'w', s:l.s.replace(/;$/,'.')}; else out[out.length-1]=Object.assign({},l,{suf:(l.suf||'').replace(/;$/,'.')}); } return out; };
+  return `<div class="lau-inl">${tpl.lines.map(toks=>noSeg(toks).map(tk=>{
     if(tk.t==='w') return esc(tk.s);
     const v=vals[tk.i]||'';
     if(tk.t==='c') return esc(tk.pre)+`<select class="lau-ph-sel" onchange="lauPh('${k}','${tplId}',${tk.i},this.value,${sj})">${tk.def?'':`<option value="">${esc(tk.o.join(' / '))}</option>`}${tk.o.map(o=>`<option ${(v||tk.def)===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`+esc(tk.suf);
@@ -2475,7 +2477,11 @@ function lauItemPanel(m, it){
     const tw=lauOctGemeo(m,it);
     h += `<div class="lau-rl">Olho direito</div>${lauInlineForm(k,'n',normal,s.__v.n)}`;
     if(tw) h += `<div class="lau-rl" style="margin-top:8px">Olho esquerdo</div>${lauInlineForm(tw.k,'n',lauItemNormal(m,tw),state.lau.v[tw.k].__v.n)}`;
-  } else if(lauHasPh(normal) && !it.noNF) h += `<div class="lau-rl">${it.generic?'Texto da máscara — preencha os campos':'Medidas do texto padrão'}</div>${lauInlineForm(k,'n',String(normal).replace(/^\n+/,''),s.__v.n)}`;
+  } else if(lauHasPh(normal) && !it.noNF){
+    // tireoidectomia parcial: só os campos do lobo remanescente; total: sem campos de volume
+    let seg=null; if(/^volumes estimados/i.test(lauItemLabel(m,it)||'')){ const c=lauTireoCx(m); if(c && c.parcial) seg = c.parcial==='direito' ? 1 : 0; }
+    h += `<div class="lau-rl">${it.generic?'Texto da máscara — preencha os campos':'Medidas do texto padrão'}${seg!=null?` (lobo ${seg?'esquerdo':'direito'} remanescente)`:''}</div>${lauInlineForm(k,'n',String(normal).replace(/^\n+/,''),s.__v.n,seg)}`;
+  }
   else if(it.generic) h += `<div class="lau-rl">Texto da máscara</div><div class="lau-inl dim">${esc(normal).replace(/\n/g,'<br>')}</div>`;
   if(!it.generic) h += it.ctrls.map(c=>lauCtrlHTML(k,s,c)).join('');
   if(typeof lauAutoBoxHTML==='function') h += lauAutoBoxHTML(m, it);
