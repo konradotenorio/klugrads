@@ -2239,7 +2239,7 @@ function lauFrasesPanel(k, org, list, bag, estrut){
   const lblK = (()=>{ const L=state.lau, m=L&&lauModelo(L.model), it=m&&m.items.find(x=>x.k===k); return it?lauNorm(lauItemLabel(m,it)):''; })();
   const mid = state.lau && state.lau.model;
   const mItens = (()=>{ const m=mid&&lauModelo(mid); return m ? m.items.map(i=>lauNorm(lauItemLabel(m,i)||'')) : []; })();
-  const fs = lauFrasesDe(org).filter(f=>!(estrut && f.s) && !(f.n==='Tenossinovite' && /pata de ganso/.test(lblK)) && !(f.so && f.so.indexOf(mid)<0)
+  const fs = lauFrasesDe(org).filter(f=>!(estrut && f.s) && !(f.n==='Tenossinovite' && /pata de ganso/.test(lblK)) && !(f.so && f.so.indexOf(mid)<0) && !(f.nso && f.nso.indexOf(mid)>=0)
     && !(f.lb && !f.lb.test(lblK)) && !(f.nlb && f.nlb.test(lblK))   // lb/nlb: só no item / fora do item cujo rótulo casa
     && !(f.nm && mItens.some(l=>f.nm.test(l))));   // nm: some quando o laudo tem item próprio (ex.: miomas vão no "Miométrio")
   if(!fs.length) return '';
