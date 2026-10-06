@@ -82,15 +82,15 @@ const LAU_ABD_ITEMS = [
      {t:'radio', k:'grau', lbl:'Grau da esteatose', opts:[['1','Leve'],['2','Moderada'],['3','Acentuada']], show:s=>s.par==='est'},
      {t:'check', k:'cisto', lbl:'Cisto simples'},
      {t:'radio', k:'cistoQ', lbl:'Quantidade', opts:LAU_QTD, show:s=>s.cisto, ind:1},
-     {t:'num', k:'cistoD', lbl:'Medida (maior)', unit:'cm', show:s=>s.cisto, ind:1},
+     {t:'dims', k:'cistoV', lbl:'Medidas (maior, opcional)', show:s=>s.cisto, ind:1},
      {t:'select', k:'cistoS', lbl:'Localização', opts:LAU_SEGS, show:s=>s.cisto, ind:1},
      {t:'check', k:'hem', lbl:'Nódulo sugestivo de hemangioma'},
      {t:'radio', k:'hemQ', lbl:'Quantidade', opts:LAU_QTD, show:s=>s.hem, ind:1},
-     {t:'num', k:'hemD', lbl:'Medida (maior)', unit:'cm', show:s=>s.hem, ind:1},
+     {t:'dims', k:'hemV', lbl:'Medidas (maior, opcional)', show:s=>s.hem, ind:1},
      {t:'select', k:'hemS', lbl:'Localização', opts:LAU_SEGS, show:s=>s.hem, ind:1},
      {t:'check', k:'nod', lbl:'Nódulo sólido indeterminado'},
      {t:'radio', k:'nodE', lbl:'Ecogenicidade', opts:[['hipoecogênico','Hipo'],['hiperecogênico','Hiper'],['isoecogênico','Iso'],['heterogêneo','Heterogêneo']], show:s=>s.nod, ind:1},
-     {t:'num', k:'nodD', lbl:'Medida', unit:'cm', show:s=>s.nod, ind:1},
+     {t:'dims', k:'nodV', lbl:'Medidas (opcional)', show:s=>s.nod, ind:1},
      {t:'select', k:'nodS', lbl:'Localização', opts:LAU_SEGS, show:s=>s.nod, ind:1},
      {t:'check', k:'calc', lbl:'Calcificação / granuloma'},
      {t:'num', k:'calcD', lbl:'Medida', unit:'cm', show:s=>s.calc, ind:1},
@@ -120,15 +120,15 @@ const LAU_ABD_ITEMS = [
      }
      if(s.dim==='red' && s.par!=='hep') conc.push('Fígado de dimensões reduzidas.');
      const ext=[];
-     if(s.cisto){ alt=true; const loc=lauSeg(s.cistoS), m=lauMed(s.cistoD,'cm');
+     if(s.cisto){ alt=true; const loc=lauSeg(s.cistoS), m=lauDimsTxt(s.cistoV)||lauMed(s.cistoD,'cm');
        if(s.cistoQ==='n'){ ext.push(lauFrase(lauJoin([`imagens císticas simples (anecogênicas, de paredes finas, com reforço acústico posterior) esparsas pelo parênquima, a maior ${loc}`.trim(), m]))); conc.push('Cistos hepáticos simples.'); }
        else { ext.push(lauFrase(lauJoin([`imagem cística simples (anecogênica, de paredes finas, com reforço acústico posterior) ${loc}`.trim(), m]))); conc.push('Cisto hepático simples.'); }
      }
-     if(s.hem){ alt=true; const loc=lauSeg(s.hemS), m=lauMed(s.hemD,'cm');
+     if(s.hem){ alt=true; const loc=lauSeg(s.hemS), m=lauDimsTxt(s.hemV)||lauMed(s.hemD,'cm');
        if(s.hemQ==='n'){ ext.push(lauFrase(lauJoin([`nódulos hiperecogênicos, homogêneos e bem delimitados, o maior ${loc}`.trim(), m]) + ', com aspecto sugestivo de hemangiomas')); conc.push('Nódulos hepáticos com aspecto ultrassonográfico sugestivo de hemangiomas.'); }
        else { ext.push(lauFrase(lauJoin([`nódulo hiperecogênico, homogêneo e bem delimitado ${loc}`.trim(), m]) + ', com aspecto sugestivo de hemangioma')); conc.push('Nódulo hepático com aspecto ultrassonográfico sugestivo de hemangioma.'); }
      }
-     if(s.nod){ alt=true; ext.push(lauFrase(lauJoin([`nódulo sólido ${s.nodE} ${lauSeg(s.nodS)}`.trim(), lauMed(s.nodD,'cm')])));
+     if(s.nod){ alt=true; ext.push(lauFrase(lauJoin([`nódulo sólido ${s.nodE} ${lauSeg(s.nodS)}`.trim(), lauDimsTxt(s.nodV)||lauMed(s.nodD,'cm')])));
        conc.push('Nódulo hepático sólido indeterminado. Sugere-se complementação com método seccional (TC ou RM com contraste).'); }
      if(s.calc){ alt=true; ext.push(lauFrase(lauJoin([`foco hiperecogênico com sombra acústica posterior ${lauSeg(s.calcS)}`.trim(), lauMed(s.calcD,'cm')]) + ', compatível com calcificação (granuloma calcificado)'));
        conc.push('Calcificação hepática (granuloma calcificado).'); }

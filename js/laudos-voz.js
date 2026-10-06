@@ -184,6 +184,7 @@ function vozAplicaCtrl(m, it, b, tn, t){
     if(!c.k || (c.show && !c.show(s))) return;
     const filho = ci>b.ci && c.ind && it.ctrls.slice(b.ci+1, ci).every(x=>x.ind);
     if(c.t==='num' && filho && med && !usou){ s[c.k]=vozConv(vozMaior(med.vals), med.un||c.unit, c.unit); usou=true; }
+    else if(c.t==='dims' && filho && med && !usou){ s[c.k]=med.vals.slice(0,3).map(v=>vozConv(v, med.un||'cm', 'cm')); usou=true; }
     else if(c.t==='select' && filho){
       const sm=tn.match(/segmento\s+(\d|[ivx]+)\b/); const seg=sm ? (/\d/.test(sm[1]) ? VOZ_ROM[+sm[1]] : sm[1].toUpperCase()) : null;
       const op=c.opts.find(o=>o[0] && ((seg && new RegExp('\\b'+seg+'\\b').test(o[0]+' '+o[1])) || vozScore(o[1], fala, sin)>=3));
