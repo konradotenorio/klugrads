@@ -74,9 +74,6 @@
 
   <div class="card">
     <div class="grid">
-      <label>Microfone
-        <select id="selMic"><option value="">Padrão do sistema</option></select>
-      </label>
       <label>Idioma
         <select id="selLang">
           <option value="pt-BR" selected>Português (Brasil)</option>
@@ -97,14 +94,10 @@
       </label>
     </div>
     <div class="grid" style="margin-top:12px">
-      <label class="check"><input id="chkNS" type="checkbox" checked> Supressão de ruído do navegador</label>
-      <label class="check"><input id="chkEC" type="checkbox" checked> Cancelamento de eco</label>
-      <label class="check"><input id="chkAGC" type="checkbox" checked> Controle automático de ganho</label>
-      <label class="check"><input id="chkFX" type="checkbox" checked> Filtro de voz (passa-faixa + compressor)</label>
-      <label class="check"><input id="chkGate" type="checkbox" checked> Noise gate (silencia ruído de fundo)</label>
       <label class="check"><input id="chkPunct" type="checkbox" checked> Pontuação por voz ("vírgula", "ponto"…)</label>
+      <label class="check"><input id="chkMeter" type="checkbox"> Mostrar medidor de nível do microfone</label>
     </div>
-    <div class="hint" style="margin-top:10px">Mudanças de áudio têm efeito ao reiniciar o ditado. Obs.: nesta versão, o reconhecimento nativo do Chrome/Edge usa o microfone padrão do sistema e o seu próprio tratamento de ruído; os filtros acima atuam no medidor e na captação local.</div>
+    <div class="hint" style="margin-top:10px">O medidor vem desligado: em alguns computadores ele usa o microfone ao mesmo tempo que o ditado e pode atrapalhar. O ditado usa o microfone padrão do sistema e o tratamento de ruído do próprio navegador.</div>
   </div>
 
   <div class="card">
@@ -255,7 +248,7 @@
   /* ========= Estado ========= */
   let recognition = null, running = false, wantRun = false;
   let restartTimes = [], lastErr = "";
-  let stream = null, audioCtx = null, rafId = null, analyser = null, gateGain = null;
+  let stream = null, audioCtx = null, rafId = null, analyser = null;
   let finalText = "";    // texto confirmado (já filtrado)
   let interimText = "";
 
@@ -279,90 +272,22 @@
     alert("Vocabulário salvo.");
   };
 
-  /* ========= Microfones ========= */
-  async function listMics() {
-    try {
-      const devs = await navigator.mediaDevices.enumerateDevices();
-      const sel = $("selMic"), cur = sel.value;
-      sel.innerHTML = '<option value="">Padrão do sistema</option>';
-      devs.filter(d => d.kind === "audioinput").forEach((d, i) => {
-        const o = document.createElement("option");
-        o.value = d.deviceId; o.textContent = d.label || ("Microfone " + (i + 1));
-        sel.appendChild(o);
-      });
-      sel.value = cur;
-    } catch (e) {}
-  }
-  if (navigator.mediaDevices) {
-    listMics();
-    navigator.mediaDevices.addEventListener?.("devicechange", listMics);
-  }
-
-  /* ========= Áudio: captação + filtros + medidor ========= */
+  /* ========= Medidor de nível (opcional) ========= */
   async function startAudio() {
-    const constraints = {
-      audio: {
-        deviceId: $("selMic").value ? { exact: $("selMic").value } : undefined,
-        noiseSuppression: $("chkNS").checked,
-        echoCancellation: $("chkEC").checked,
-        autoGainControl: $("chkAGC").checked,
-        channelCount: 1,
-        sampleRate: 48000
-      }
-    };
-    stream = await navigator.mediaDevices.getUserMedia(constraints);
-    listMics(); // agora com rótulos
-
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const src = audioCtx.createMediaStreamSource(stream);
-    let node = src;
-
-    if ($("chkFX").checked) {
-      const hp = audioCtx.createBiquadFilter();  // corta graves (ar-condicionado, vibração)
-      hp.type = "highpass"; hp.frequency.value = 100; hp.Q.value = 0.7;
-      const lp = audioCtx.createBiquadFilter();  // corta agudos (chiado)
-      lp.type = "lowpass"; lp.frequency.value = 7500; lp.Q.value = 0.7;
-      const presence = audioCtx.createBiquadFilter(); // realça inteligibilidade da voz
-      presence.type = "peaking"; presence.frequency.value = 2800; presence.gain.value = 3; presence.Q.value = 0.9;
-      const comp = audioCtx.createDynamicsCompressor();
-      comp.threshold.value = -30; comp.knee.value = 20; comp.ratio.value = 4;
-      comp.attack.value = 0.005; comp.release.value = 0.2;
-      node.connect(hp); hp.connect(lp); lp.connect(presence); presence.connect(comp);
-      node = comp;
-    }
-
     analyser = audioCtx.createAnalyser();
     analyser.fftSize = 1024;
-    node.connect(analyser);
-
-    // Noise gate: mede nível e abre/fecha um ganho (visual + saída processada)
-    gateGain = audioCtx.createGain();
-    node.connect(gateGain);
-    const dest = audioCtx.createMediaStreamDestination();
-    gateGain.connect(dest);
-
+    src.connect(analyser);
     const buf = new Float32Array(analyser.fftSize);
-    let floor = 0.01, open = false, holdUntil = 0;
+    gateState.textContent = "medidor ligado";
     const loop = () => {
       analyser.getFloatTimeDomainData(buf);
       let sum = 0; for (let i = 0; i < buf.length; i++) sum += buf[i] * buf[i];
-      const rms = Math.sqrt(sum / buf.length);
-      // estima o piso de ruído lentamente
-      if (rms < floor * 1.5) floor = floor * 0.98 + rms * 0.02;
-      floor = Math.min(Math.max(floor, 0.003), 0.05);
-      const thr = floor * 2.8 + 0.004;
-      const now = performance.now();
-      if (rms > thr) { open = true; holdUntil = now + 350; }
-      else if (now > holdUntil) open = false;
-
-      const useGate = $("chkGate").checked;
-      const g = useGate ? (open ? 1 : 0.05) : 1;
-      gateGain.gain.setTargetAtTime(g, audioCtx.currentTime, 0.02);
-
-      const pct = Math.min(100, Math.round(rms * 400));
+      const pct = Math.min(100, Math.round(Math.sqrt(sum / buf.length) * 400));
       meterFill.style.width = pct + "%";
       meter.classList.toggle("hot", pct > 85);
-      gateState.textContent = useGate ? (open ? "voz detectada" : "silêncio / ruído") : "gate desligado";
       rafId = requestAnimationFrame(loop);
     };
     loop();
@@ -372,7 +297,7 @@
     cancelAnimationFrame(rafId);
     if (stream) stream.getTracks().forEach(t => t.stop());
     if (audioCtx) audioCtx.close().catch(() => {});
-    stream = audioCtx = analyser = gateGain = null;
+    stream = audioCtx = analyser = null;
     meterFill.style.width = "0"; gateState.textContent = "—";
   }
 
@@ -476,14 +401,7 @@
     dot.classList.toggle("on", !!on);
   }
 
-  async function start() {
-    try {
-      await startAudio();
-    } catch (e) {
-      setStatus("Não foi possível acessar o microfone", false);
-      alert("Não foi possível acessar o microfone. Verifique a permissão do navegador (e que a página esteja em HTTPS).");
-      return;
-    }
+  function start() {
     setupRecognition();
     restartTimes = []; lastErr = "";
     wantRun = true;
@@ -491,6 +409,9 @@
     btnRec.textContent = "⏹ Parar ditado";
     btnRec.classList.remove("primary"); btnRec.classList.add("rec");
     setStatus("Ouvindo…", true);
+    if ($("chkMeter").checked && navigator.mediaDevices) {
+      startAudio().catch(() => { gateState.textContent = "medidor indisponível"; });
+    }
   }
 
   function stop() {
