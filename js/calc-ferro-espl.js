@@ -7,11 +7,13 @@
    T2* (ms) correspondente.
 
    Limiares (R2* esplênico):
-     1,5 T:  normal < 70 s⁻¹ · ≥ 100 s⁻¹ = patológico
+     1,5 T:  normal ≤ 70 s⁻¹ · limítrofe > 70 e < 100 · patológico ≥ 100 s⁻¹
              (Henninger 2020, a partir da coorte saudável de Schwenzer 2008, 1,5 T:
               baço 8,8–69 s⁻¹, média 22,8 s⁻¹)
-     3,0 T:  normal < 137 s⁻¹ (valor adotado pelo Konrado; NÃO consta nos artigos de
-              referência — ver ESPL_NOTA_3T; o limite de 100 s⁻¹ só é descrito em 1,5 T)
+     3,0 T:  normal ≤ 140 s⁻¹ · limítrofe > 140 e < 200 · patológico ≥ 200 s⁻¹ (T2* ≤ 5 ms)
+             Derivados dos de 1,5 T pela proporcionalidade ao campo (R2* ≈ dobra em 3,0 T;
+             T2* cai à metade — Henninger 2020; Tipirneni-Sajja 2025). Os artigos NÃO trazem
+             cortes esplênicos medidos em 3,0 T (ver ESPL_NOTA_3T). Definição do Konrado (05/out/2026).
 
    Não existe calibração que converta o R2* do baço em concentração de ferro
    tecidual (Henninger 2020) — por isso o resultado é uma classificação, sem mg/g.
@@ -23,14 +25,14 @@
 
 const ESPL_LIM = {
   '15':{nome:'1,5 T', lim:70,  pat:100},
-  '30':{nome:'3,0 T', lim:137, pat:null},
+  '30':{nome:'3,0 T', lim:140, pat:200},
 };
-/* Nota exibida na tela sobre a origem do valor de 3,0 T (apagar quando houver fonte). */
-const ESPL_NOTA_3T = 'O limiar de 3,0 T (137 s⁻¹) é o valor de referência adotado no KlugRads; não consta nos artigos listados abaixo.';
+/* Nota exibida na tela sobre a origem dos valores de 3,0 T. */
+const ESPL_NOTA_3T = 'Os cortes de 3,0 T (140 e 200 s⁻¹) correspondem ao dobro dos de 1,5 T, pois o R2* é proporcional ao campo magnético (T2* cai à metade). Os artigos citados não trazem cortes esplênicos medidos em 3,0 T.';
 
 const ESPL_C = {
   0:{c:'#1f9d55', name:'Normal'},
-  1:{c:'#e07a1f', name:'Acima do limiar'},
+  1:{c:'#e07a1f', name:'Limítrofe'},
   2:{c:'#cf2020', name:'Patológico'},
 };
 
@@ -46,12 +48,12 @@ function esplState(){
   if(!state.ferroEspl.campo) state.ferroEspl.campo='15';
   return state.ferroEspl;
 }
-/* 0 = normal (< limiar) · 1 = acima do limiar · 2 = patológico (só definido em 1,5 T) */
+/* 0 = normal (≤ limiar) · 1 = limítrofe (> limiar e < corte patológico) · 2 = patológico (≥ corte) */
 function esplGrade(campo, v){
   const L = ESPL_LIM[campo];
-  if(v < L.lim) return 0;
-  if(L.pat!=null && v >= L.pat) return 2;
-  return 1;
+  if(v >= L.pat) return 2;
+  if(v > L.lim) return 1;
+  return 0;
 }
 
 /* ---- UI ---- */
@@ -71,7 +73,7 @@ function esplResHTML(){
   if(v==null || v<=0) return '';
   const L = ESPL_LIM[s.campo], g = ESPL_C[esplGrade(s.campo, v)];
   const t = ferroR(1000/v);
-  const ref = `Referência (${L.nome}): normal &lt; ${L.lim} s⁻¹` + (L.pat!=null ? ` · patológico ≥ ${L.pat} s⁻¹` : '');
+  const ref = `Referência (${L.nome}): normal ≤ ${L.lim} s⁻¹ · patológico ≥ ${L.pat} s⁻¹`;
   return `<div class="ti-legend-row" style="margin-top:12px"><span class="lt">T2* (${L.nome}): <b>${ferroFmt(t)} ms</b></span></div>
     <div class="ti-res" style="background:${g.c}22;margin-top:10px">
       <div class="lv" style="color:${g.c}">${ferroFmt(ferroR(v))}</div>
@@ -102,9 +104,9 @@ function calcFerroEsplHTML(){
     <div class="ti-card">
       <div class="tfg-sec-lbl">Valores de referência (R2* do baço)</div>
       <div class="ti-legend">
-        ${leg(0,'1,5 T: &lt; 70 s⁻¹ · 3,0 T: &lt; 137 s⁻¹')}
-        ${leg(1,'R2* ≥ 70 s⁻¹ (1,5 T) · ≥ 137 s⁻¹ (3,0 T)')}
-        ${leg(2,'R2* ≥ 100 s⁻¹ (1,5 T) — patamar patológico descrito apenas para 1,5 T')}
+        ${leg(0,'R2* ≤ 70 s⁻¹ (1,5 T) · ≤ 140 s⁻¹ (3,0 T)')}
+        ${leg(1,'R2* &gt; 70 e &lt; 100 s⁻¹ (1,5 T) · &gt; 140 e &lt; 200 s⁻¹ (3,0 T) — começa a desviar da normalidade')}
+        ${leg(2,'R2* ≥ 100 s⁻¹ (1,5 T) · ≥ 200 s⁻¹ ou T2* ≤ 5 ms (3,0 T) — depósito patológico de ferro')}
       </div>
       <div class="ti-legend-row" style="margin-top:6px"><span class="lt">${esc(ESPL_NOTA_3T)}</span></div>
     </div>
