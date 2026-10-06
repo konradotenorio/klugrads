@@ -921,7 +921,7 @@ const LAU_IND_MMG = ['Rastreamento','Controle de achado prévio','Complementaç�
 const LAU_PREP = ['à','ao','a','de','do','da','em','no','na','e'];
 const LAU_PH_RE = /^([(\[]*)(X{1,3})([^\sX]*)$/;
 const LAU_UNIT = /^(cm|mm|m|ml|mL|g|kg|bpm|kPa|%|cm³|mm³|semanas?|dias?|anos?|meses)[.,;:)]*$/;
-function lauIsWord(w){ return (/^[A-Za-zÀ-ÿ-]+\*?[.,;:)]*$/.test(w||'') || /^0\*?[.,;:)]*$/.test(w||'')) && !/^x$/i.test(w) && !/^X{1,3}$/.test(w); }   // "0": grau 0 de Grannum
+function lauIsWord(w){ return (/^[A-Za-zÀ-ÿ-]+(?:[_/][A-Za-zÀ-ÿ-]+)*\*?[.,;:)]*$/.test(w||'') || /^0\*?[.,;:)]*$/.test(w||'')) && !/^x$/i.test(w) && !/^X{1,3}$/.test(w); }   // "0": grau 0 de Grannum
 function lauTokLine(line, start){
   const W = line.split(' '); const out=[]; let i=0, n=start;
   while(i<W.length){
@@ -944,7 +944,8 @@ function lauTokLine(line, start){
         j=k; break;
       }
       const def = (opts.find(o=>/\*$/.test(o))||'').replace(/\*$/,'');
-      out.push({t:'c', i:n++, o:opts.map(o=>o.replace(/\*$/,'')), def, pre:'', suf}); i=j; continue;
+      // opção com várias palavras: unidas por "_" na máscara (ex.: corporal_anterior)
+      out.push({t:'c', i:n++, o:opts.map(o=>o.replace(/\*$/,'').replace(/_/g,' ')), def:def.replace(/_/g,' '), pre:'', suf}); i=j; continue;
     }
     if(m && (m[2].length>=2 || /^(cm|mm|m|g|kg|mL|ml|%|cm³|kPa|bpm)/.test(W[i+1]||'') )){ out.push({t:'p', i:n++, pre:m[1], suf:m[3]}); i++; continue; }
     out.push({t:'w', s:w}); i++;
