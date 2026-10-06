@@ -1595,7 +1595,7 @@ function lauDescHTML(k, id, f, d){
     const nome = f.kind==='tend'?'Tendão':f.kind==='lig'?'Ligamento':'Músculo';
     const bag=lauPhBag(k); const det=d.det||{};
     let h='';
-    if(!d.fixo){
+    if(!d.fixo && !d.chip){
       const ops = (d.opts&&d.opts.length) ? d.opts : al.map((a,i)=>i);
       h += `<div class="lau-row"><div class="lau-rl">${nome}(s) acometido(s) — marque um ou mais</div><div class="lau-chips">${ops.map(ai=>chip('alvos',ai,al[ai][0],(d.alvos||[]).indexOf(ai)>=0)).join('')}</div>
       <input class="lau-txt" style="margin-top:6px" type="text" placeholder="${ops.length?'outro (opcional)':'digite o nome'}" value="${esc(d.alvoTxt||'')}" onchange="lauDescTxt('${k}','${id}',this.value,true)" oninput="lauDescTxt('${k}','${id}',this.value)"></div>`;
@@ -2142,6 +2142,20 @@ function lauFraseDel(k, id){
   const list=lauFraseList(k); const j=list.indexOf(id); if(j>=0) list.splice(j,1);
   lauFraseAfter(k);
 }
+/* tendão clicado no item de vários tendões: liga/desliga o tendão na frase "Tendinopatia / rotura" do item */
+function lauTendAlvo(k, fi, ai){
+  const L=lauCur(); if(!L) return;
+  const list=lauFraseList(k); let id=list.find(x=>parseInt(x,10)===fi);
+  const m=lauModelo(L.model), it=m.items.find(x=>x.k===k), ops=lauAlvoOpts('tend', lauItemLabel(m,it)||'');
+  if(!id){ id=fi+'_'+(++_lauFseq); list.push(id); L.v[k].__v['d'+id] = {opts:ops, alvos:[ai], chip:1}; }
+  else {
+    const d=L.v[k].__v['d'+id]=Object.assign({}, L.v[k].__v['d'+id]||{}, {chip:1}); const a=(d.alvos||[]).slice(); const j=a.indexOf(ai);
+    if(j>=0){ a.splice(j,1); if(d.det){ d.det=Object.assign({}, d.det); delete d.det[String(ai)]; } } else a.push(ai);
+    d.alvos=a;
+    if(!a.length && !lauHas(d.alvoTxt)){ list.splice(list.indexOf(id),1); delete L.v[k].__v['d'+id]; }
+  }
+  lauFraseAfter(k);
+}
 function lauFraseAfter(k){
   lauRenderLeft();
   if(k==='__obs'){ lauPatchOpt('obs', lauObsHTML()); lauPatchConc(); lauSaveEd(); }
@@ -2218,7 +2232,14 @@ function lauFrasesPanel(k, org, list, bag, estrut){
     && !(f.nm && mItens.some(l=>f.nm.test(l))));   // nm: some quando o laudo tem item próprio (ex.: miomas vão no "Miométrio")
   if(!fs.length) return '';
   const nOf = i=>list.filter(id=>parseInt(id,10)===i).length;
-  const chips = fs.map(f=>{ const n=nOf(f.i); return `<button type="button" class="ti-ftog ${n?'on':''}${f.kind?' lau-fk':''}" onclick="lauFraseToggle('${k}',${f.i})">${f.m==='sub'?'':'+ '}${esc(f.n)}${n>1?` <span class="n">${n}</span>`:''}</button>`; }).join('');
+  // item com vários tendões no rótulo (ex.: "Tendões supraespinhal, infraespinhal e subescapular"):
+  // primeiro os nomes dos tendões; clicando no tendão aparecem as alterações dele
+  const tAl = (()=>{ if(k==='__obs') return null; const fT=fs.find(f=>f.kind==='tend'); if(!fT) return null;
+    const L=state.lau, m=lauModelo(L.model), it=m.items.find(x=>x.k===k); const ops=lauAlvoOpts('tend', lauItemLabel(m,it)||'');
+    if(ops.length<2) return null; const id=list.find(x=>parseInt(x,10)===fT.i); return {f:fT, ops, d:id?(bag['d'+id]||{}):null}; })();
+  const chips = (tAl ? `<span class="lau-rl" style="width:100%;margin:0 0 2px">Tendões</span>` + tAl.ops.map(ai=>{ const on=tAl.d&&(tAl.d.alvos||[]).indexOf(ai)>=0; const nm=lauAlvos('tend')[ai][0];
+      return `<button type="button" class="ti-ftog ${on?'on':''} lau-fk" onclick="lauTendAlvo('${k}',${tAl.f.i},${ai})">${esc(nm.charAt(0).toUpperCase()+nm.slice(1))}</button>`; }).join('') + `<span style="width:100%;height:0"></span>` : '')
+    + fs.filter(f=>!(tAl && f===tAl.f)).map(f=>{ const n=nOf(f.i); return `<button type="button" class="ti-ftog ${n?'on':''}${f.kind?' lau-fk':''}" onclick="lauFraseToggle('${k}',${f.i})">${f.m==='sub'?'':'+ '}${esc(f.n)}${n>1?` <span class="n">${n}</span>`:''}</button>`; }).join('');
   const seq={};
   const sel = list.map(id=>{ const f=lauFI(id); const d=bag['d'+id]||{}; const fi=parseInt(id,10);
     seq[fi]=(seq[fi]||0)+1; const num = nOf(fi)>1 ? ' '+seq[fi] : '';
