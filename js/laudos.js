@@ -1336,8 +1336,23 @@ function lauTendText(f, id, bag, html){
   const nomeK = f.kind==='tend'?'tendão':f.kind==='lig'?'ligamento':'músculo';
   if(!al.length) return `${nomeK} ${lauMk('___',html)} ${lauMk('(marque o '+nomeK+')',html)}.`;
   if(d.fixo) return lauTendFrase(f, al[0], det[al[0].key], bag['f'+id+'_'+al[0].key], html, '');
-  const frases = al.map(a=>lauTendFrase(f, a, det[a.key], bag['f'+id+'_'+a.key], html,
-    (f.kind==='tend'?'tendão ':f.kind==='lig'?'ligamento ':'músculo ') + (html?esc(a.prep):a.prep)));
+  // tendinopatia (sem rotura) em mais de um tendão: uma frase só ("tendões do supraespinal e do infraespinal espessados e hipoecogênicos…")
+  const sig = a=>{ const t=det[a.key]||{}; return f.kind==='tend' && t.tipo==='tend' && !(a.x&&(a.x.pl||a.x.tn)) ? 'tend|'+(t.bainha?1:0) : null; };
+  const feitos = {}; const frases = [];
+  al.forEach(a=>{
+    const g = sig(a);
+    if(g){
+      if(feitos[g]) return; feitos[g]=1;
+      const grupo = al.filter(b=>sig(b)===g);
+      if(grupo.length>1){
+        const preps = grupo.map(b=>html?esc(b.prep):b.prep);
+        frases.push(lauTendFrase(f, {x:{pl:1}}, det[a.key], [], html, 'tendões '+lauJuntaE(preps)));
+        return;
+      }
+    }
+    frases.push(lauTendFrase(f, a, det[a.key], bag['f'+id+'_'+a.key], html,
+      (f.kind==='tend'?'tendão ':f.kind==='lig'?'ligamento ':'músculo ') + (html?esc(a.prep):a.prep)));
+  });
   return frases.map((x,i)=> i ? x.charAt(0).toUpperCase()+x.slice(1) : x).join(' ');
 }
 /* conclusão: objetos agrupáveis {g, pre, de, suf, musc}; lauConcs junta os do mesmo grupo
@@ -1721,7 +1736,7 @@ function lauConcs(m){
   });
   (state.lau.xf||[]).forEach(id=>push(lauFraseConc(id, state.lau.xv, '')));
   out.forEach(o=>{ if(o.grupo){ const g=grupos[o.grupo]; const pl=g.des.length>1;
-    const alvo = g.lig ? `${pl?'dos ligamentos':'do ligamento'} ${lauJuntaE(g.des)}` : g.musc ? `${g.hemat?(pl?'nos músculos':'no músculo'):(pl?'dos músculos':'do músculo')} ${lauJuntaE(g.des)}` : g.des.join(', ').replace(/, ([^,]*)$/, pl&&g.des.length>2?', $1':', $1');
+    const alvo = g.lig ? `${pl?'dos ligamentos':'do ligamento'} ${lauJuntaE(g.des)}` : g.musc ? `${g.hemat?(pl?'nos músculos':'no músculo'):(pl?'dos músculos':'do músculo')} ${lauJuntaE(g.des)}` : lauJuntaE(g.des);
     o.html = esc(`${g.pre} ${alvo}${g.suf}`); delete o.grupo; } });
   (m.concOpts||[]).forEach((c,i)=>{ if(state.lau.conc.o[i]) out.push({html:lauFill(c.text, state.lau.conc.v['o'+i], true)}); });
   // categoria BI-RADS final do exame = a mais alta entre os achados
@@ -2199,6 +2214,7 @@ function lauFrasesPanel(k, org, list, bag, estrut){
   const mid = state.lau && state.lau.model;
   const mItens = (()=>{ const m=mid&&lauModelo(mid); return m ? m.items.map(i=>lauNorm(lauItemLabel(m,i)||'')) : []; })();
   const fs = lauFrasesDe(org).filter(f=>!(estrut && f.s) && !(f.n==='Tenossinovite' && /pata de ganso/.test(lblK)) && !(f.so && f.so.indexOf(mid)<0)
+    && !(f.lb && !f.lb.test(lblK)) && !(f.nlb && f.nlb.test(lblK))   // lb/nlb: só no item / fora do item cujo rótulo casa
     && !(f.nm && mItens.some(l=>f.nm.test(l))));   // nm: some quando o laudo tem item próprio (ex.: miomas vão no "Miométrio")
   if(!fs.length) return '';
   const nOf = i=>list.filter(id=>parseInt(id,10)===i).length;

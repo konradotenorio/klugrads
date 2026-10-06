@@ -147,7 +147,8 @@ function vozFrasesDoItem(m, it){
   const lbl=lauItemLabel(m,it), mt=m.metodo==='tc' && !m.oct ? 'tcg' : m.metodo;
   const orgs = it.sk ? [it.sk] : lauFraseOrgao(lbl || String(lauItemNormal(m,it)).slice(0,60), mt);
   const itens = m.items.map(i=>lauNorm(lauItemLabel(m,i)||''));
-  return lauFrasesDe(orgs).filter(f=>!(it.sk && f.s) && !(f.so && f.so.indexOf(m.id)<0) && !(f.nm && itens.some(l=>f.nm.test(l))) && !f.kind);
+  const lblV=lauNorm(lauItemLabel(m,it)||'');
+  return lauFrasesDe(orgs).filter(f=>!(it.sk && f.s) && !(f.so && f.so.indexOf(m.id)<0) && !(f.lb && !f.lb.test(lblV)) && !(f.nlb && f.nlb.test(lblV)) && !(f.nm && itens.some(l=>f.nm.test(l))) && !f.kind);
 }
 function vozAchaFrase(m, it, tn){
   const {fala, sin}=vozFala(tn); let best=null;
