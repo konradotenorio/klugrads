@@ -7724,6 +7724,224 @@ const LAU_US_MASKS = [
 ],
 "trailer": [],
 "flags": []
+},
+{
+"id": "us-abdome-total-e-pelvico",
+"metodo": "us",
+"nome": "Abdome Total e Pélvico",
+"grupo": "Medicina interna",
+"titulo": [
+"ULTRASSONOGRAFIA DE ABDOME TOTAL E PÉLVICA"
+],
+"items": [
+{
+"k": "figado",
+"label": "Fígado",
+"text": "com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veias-porta-e-hepaticas",
+"label": "Veias porta e hepáticas",
+"text": "com calibres preservados.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vesicula-biliar",
+"label": "Vesícula biliar",
+"text": "tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares-intra-e-extra-hepaticas",
+"label": "Vias biliares intra e extra-hepáticas",
+"text": "sem dilatações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "com dimensões, contornos e ecogenicidade normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "com dimensões normais, homogêneo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, com espessura e ecogenicidade parenquimatosas preservadas, sem hidronefrose ou cálculos detectáveis ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-abdominal",
+"label": "Aorta abdominal",
+"text": "com calibre normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "sem distensão ou espessamento parietal detectáveis ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "utero",
+"label": "Útero",
+"text": "em anteversão XX retroversão, medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), de contornos regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "miometrio",
+"label": "Miométrio",
+"text": "com ecotextura característica, sem nódulos conspícuos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "endometrio",
+"label": "Endométrio",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XXX mm.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XXX mm.",
+"filiforme / não caracterizado."
+]
+},
+{
+"k": "ovario-direito",
+"label": "Ovário direito",
+"text": "medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), de aspecto habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "ovario-esquerdo",
+"label": "Ovário esquerdo",
+"text": "medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), de aspecto habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritoneo-e-retroperitoneo",
+"label": "Peritôneo e retroperitôneo",
+"text": "ausência de líquido livre ou coleções detectáveis na cavidade abdominal e pélvica.",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "veias-porta-e-hepaticas"
+},
+{
+"t": "item",
+"k": "vesicula-biliar"
+},
+{
+"t": "item",
+"k": "vias-biliares-intra-e-extra-hepaticas"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "aorta-abdominal"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "utero"
+},
+{
+"t": "item",
+"k": "miometrio"
+},
+{
+"t": "item",
+"k": "endometrio"
+},
+{
+"t": "item",
+"k": "ovario-direito"
+},
+{
+"t": "item",
+"k": "ovario-esquerdo"
+},
+{
+"t": "item",
+"k": "peritoneo-e-retroperitoneo"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem alterações significativas.",
+"dash": true
+}
+],
+"trailer": [],
+"flags": []
 }
 ];
 const LAU_MMG_MASKS = [
