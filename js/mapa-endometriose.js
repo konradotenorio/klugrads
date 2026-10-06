@@ -37,7 +37,7 @@ const LES = [
   {id:2, nome:'Endometrioma', cor:'#7A1F3D', cn:'VINHO'},
   {id:3, nome:'Sangue',       cor:'#E11D2E', cn:'VERMELHO'},
 ];
-const MARCA = 'Imagem ilustrada e editada em KlugRads';
+const MARCA = 'Imagem ilustrada e editada por KlugRads';
 const ALPHA = 0.72, ZMAX = 8;
 const REFW = 1103;                      // largura (px) das imagens originais; as atuais são 2× maiores: pincel e cursor escalam com R.K
 const SETA = {fill:'#FFD21F', line:'#1B1B1B'};   // seta amarela com contorno escuro: aparece sobre qualquer região do desenho

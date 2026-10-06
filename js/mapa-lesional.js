@@ -363,7 +363,7 @@ function mslDrawBase(){
   // marca pequena, em preto, no canto inferior direito (a pelve tem a sua, em branco, no canto inferior esquerdo)
   { const fs=Math.max(9,Math.round(N*0.0105)), m=N*0.014;
     ctx.save(); ctx.font=`600 ${fs}px "Segoe UI",Arial,Helvetica,sans-serif`; ctx.textBaseline='alphabetic'; ctx.textAlign='right';
-    ctx.fillStyle='#000000'; ctx.fillText('Imagem ilustrada e editada em KlugRads', N-m, N-m*0.6); ctx.restore(); }
+    ctx.fillStyle='#000000'; ctx.fillText('Imagem ilustrada e editada por KlugRads', N-m, N-m*0.6); ctx.restore(); }
   // legenda na imagem: "Legenda:" e uma linha "(cor) - Lesão N" para cada lesão pintada
   const rows=MSL_CORES.filter(c=>MSL.used[c.id-1]);
   if(!s.legend || !rows.length) return;
