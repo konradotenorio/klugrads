@@ -978,6 +978,15 @@ function lauTplRaw(str){
         }
       }
     }
+    // útero: "Corpo uterino de XXX cm e colo uterino de XXX cm (relação corpo/colo de XXX)" = corpo / colo
+    { let iC=null, iK=null;
+      for(let b=0;b<t.length;b++){
+        if(t[b].t!=='p') continue;
+        const ant=t.slice(Math.max(0,b-4),b).map(x=>x.s||'').join(' ');
+        if(/rela[cç][aã]o corpo\/colo/i.test(ant)){ if(iC!=null && iK!=null) auto[t[b].i]={rel:[iC,iK]}; }
+        else if(/corpo uterino/i.test(ant)) iC=t[b].i;
+        else if(/colo uterino/i.test(ant)) iK=t[b].i;
+      } }
     // prova de Boyden: "jejum (VA) de XXX mL … estímulo (VB) de XXX mL … esvaziamento de XXX%" = (VA − VB) / VA × 100
     { let iA=null, iB=null;
       for(let b=0;b<t.length;b++){
@@ -1001,6 +1010,7 @@ function lauTplRaw(str){
 function lauAutoVal(tpl, vals, i){
   const d=tpl.auto[i]; if(!d) return null;
   let r;
+  if(d.rel){ const a=lauF(vals[d.rel[0]]), b=lauF(vals[d.rel[1]]); if(!a || !b) return null; return String(Math.round(a/b*10)/10).replace('.',','); }
   if(d.ej){ const a=lauF(vals[d.ej[0]]), b=lauF(vals[d.ej[1]]); if(!a || b==null) return null; return String(Math.round((a-b)/a*100)); }
   if(d.mean){
     const v=d.mean.map(j=>lauF(vals[j])); if(v.some(x=>!x)) return null;
@@ -1796,6 +1806,8 @@ function lauItemHTML(m, it){
   // "medindo XXX x XXX x XXX cm, com volume estimado em 30 mL": sem as medidas, fica só o volume digitado
   if(it.generic) txt = txt.replace(/medindo <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> (?:cm|mm), com (volume estimado em )(?!<mark)/, '$1');
   if(it.generic) txt = txt.replace(/medindo <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> (?:cm|mm) \((volume estimado em )(?!<mark)([^)]*)\)/g, 'com $1$2');
+  // útero: corpo/colo não medidos saem do texto
+  if(it.generic) txt = txt.replace(/ ?Corpo uterino de <mark class="lau-ph">XXX<\/mark> cm e colo uterino de <mark class="lau-ph">XXX<\/mark> cm \(relação corpo\/colo de <mark class="lau-ph">XXX<\/mark>\)\./, '');
   // nervos: área seccional não medida sai do texto
   if(it.generic && /^nervo (mediano|ulnar)/i.test(lauItemLabel(m,it)||'')) txt = txt.replace(/,? com área seccional de <mark class="lau-ph">XXX<\/mark> mm²[^.<]*/, '');
   // artéria hepática (Doppler): IR não preenchido sai do texto

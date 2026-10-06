@@ -345,7 +345,7 @@ Data de Nascimento:
 Data do Exame: 
 Exame realizado pela via suprapúbica.
 - Bexiga: com paredes regulares e conteúdo anecogênico.
-- Útero: em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares. Relação corpo / colo uterino de XX.
+- Útero: em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares. Corpo uterino de XXX cm e colo uterino de XXX cm (relação corpo/colo de XXX).
 - Miométrio: com ecotextura característica, sem nódulos conspícuos.
 - Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm. || filiforme / não caracterizado.
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo folículos de até XXX cm.

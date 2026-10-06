@@ -636,6 +636,10 @@ const LAU_FRASES = [
   /* parede abdominal: planos musculares */
   {o:'musculo', so:['us-parede-abdominal'], n:'Distância inter-retos (diástase)', m:'sub', retos:1,
    t:'com arquitetura preservada; distância entre os músculos retos abdominais de XXX cm, na região epigástrica XX mesogástrica XX hipogástrica.', c:''},
+  {o:'musculo', so:['us-partes-moles'], q:1, n:'Lipoma intramuscular', m:'add', medOpc:1, vaz:[', em XXX'],
+   cp:'Lesões com aspecto sugestivo de lipomas intramusculares.',
+   t:'Formação ovalada, isoecogênica XX hiperecogênica ao tecido adiposo, homogênea, de limites bem definidos, sem fluxo ao Doppler, no interior do plano muscular, em XXX, medindo XXX x XXX x XXX cm, distando XXX cm da pele, com aspecto sugestivo de lipoma.',
+   c:'Lesão no plano muscular com aspecto sugestivo de lipoma.'},
   {o:'musculo', so:['us-parede-abdominal'], n:'Lipossubstituição', m:'add',
    t:'Sinais de lipossubstituição dos planos musculares.', c:'Lipossubstituição dos planos musculares da parede abdominal.'},
   /* partes moles / parede abdominal: coleções */

@@ -1368,7 +1368,7 @@ const LAU_US_MASKS = [
 {
 "k": "utero",
 "label": "Útero",
-"text": "em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares. Relação corpo / colo uterino de XX.",
+"text": "em anteversão XX retroversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares. Corpo uterino de XXX cm e colo uterino de XXX cm (relação corpo/colo de XXX).",
 "dash": true,
 "opts": [],
 "grp": ""
