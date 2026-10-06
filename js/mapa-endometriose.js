@@ -9,7 +9,7 @@
    achado (a ponta fica onde se solta) e a caixa de texto é opcional.
 
    Achados (3 cores): ENDOMETRIOSE (preto, pincel espiculado/irregular),
-   ENDOMETRIOMA (vinho) e SANGUE (vermelho).
+   ENDOMETRIOMA (vinho, com contorno preto periférico de 2 mm) e SANGUE (vermelho).
 
    As imagens (/img/endomap/) são do EndoMap (3Doctor) e são usadas na parceria
    3Doctor × KlugRads. Existe uma imagem por combinação de posicionamento:
@@ -41,6 +41,10 @@ const MARCA = 'Imagem ilustrada e editada em KlugRads';
 const ALPHA = 0.72, ZMAX = 8;
 const REFW = 1103;                      // largura (px) das imagens originais; as atuais são 2× maiores: pincel e cursor escalam com R.K
 const SETA = {fill:'#FFD21F', line:'#1B1B1B'};   // seta amarela com contorno escuro: aparece sobre qualquer região do desenho
+/* contorno preto do ENDOMETRIOMA: faixa de 2 mm por FORA do círculo vinho (espessura fixa, não depende da espessura do pincel).
+   As imagens da pelve não têm escala em mm: adotei 1 mm = 3,78 px da imagem de referência (1103 px de largura), ou seja,
+   a tela a 100% (≈96 dpi). Para outra calibração, basta mudar MM_PX (ou ANEL_MM). */
+const ANEL_MM = 2, MM_PX = 3.78;
 
 /* ---- estado (em memória) ---- */
 function st(){
@@ -52,7 +56,8 @@ function st(){
 /* runtime (não vai para o state): canvases, imagem, gesto em curso */
 const R = {view:null, IW:0, IH:0, K:1, fw:0, fh:0, k:1, tx:0, ty:0, W:0, H:0, img:null, ready:false,
            ptrs:new Map(), stroke:null, pan:null, pinch:null, used:[false,false,false], usedKey:'', scan:null,
-           tok:0, bctx:null, pctx:null, actx:null, sctx:null, rect:null, wired:false, arrow:null, edit:null, sel:null, drag:null};
+           tok:0, bctx:null, pctx:null, actx:null, sctx:null, rect:null, wired:false, arrow:null, edit:null, sel:null, drag:null,
+           wm:null, wctx:null, ectx:null, tint:null};
 const g = id => document.getElementById(id);
 
 /* ======================= tela ======================= */
@@ -66,7 +71,7 @@ function ctlHTML(){
   const s = st(), p = s.pos, sem = p.flex==='sem';
   const chips = (k,opts,dis) => opts.map(o=>`<button type="button" class="ti-ftog ${p[k]===o[0]?'on':''}" data-em="pos" data-k="${k}" data-v="${o[0]}"${dis?' disabled style="opacity:.4;cursor:default"':''}>${esc(o[1])}</button>`).join('');
   const row = (lbl,inner) => `<div class="em-rw"><div class="em-rl">${esc(lbl)}</div>${inner}</div>`;
-  const cores = LES.map(c=>`<button type="button" class="msl-cor${s.cor===c.id&&s.tool==='brush'?' on':''}" data-em="cor" data-v="${c.id}" style="--c:${c.cor}" title="${esc(c.nome)} (${esc(c.cn)})"><span class="msl-dot"></span><span class="msl-cl">${esc(c.nome)}<span class="em-sub">${esc(c.cn)}</span></span></button>`).join('');
+  const cores = LES.map(c=>`<button type="button" class="msl-cor${s.cor===c.id&&s.tool==='brush'?' on':''}${c.id===2?' em-ring':''}" data-em="cor" data-v="${c.id}" style="--c:${c.cor}" title="${esc(c.nome)} (${esc(c.cn)})"><span class="msl-dot"></span><span class="msl-cl">${esc(c.nome)}<span class="em-sub">${esc(c.cn)}</span></span></button>`).join('');
   return row('Corte',`<div class="em-chips">${chips('corte',CORTES)}</div>`)
        + row('Flexão do Útero',`<div class="em-chips">${chips('flex',FLEX)}</div>`)
        + row('Lateralização do Útero',`<div class="em-chips">${chips('lado',LADO,sem)}</div>`)
@@ -97,7 +102,7 @@ function html(){
         </div>
       </div>
       <div class="msl-stage em-stage" id="em-stage">
-        <div class="msl-world" id="em-world"><canvas id="em-base"></canvas><canvas id="em-paint"></canvas><canvas id="em-arrows"></canvas><canvas id="em-sel"></canvas></div>
+        <div class="msl-world" id="em-world"><canvas id="em-base"></canvas><canvas id="em-endo"></canvas><canvas id="em-paint"></canvas><canvas id="em-arrows"></canvas><canvas id="em-sel"></canvas></div>
         <div class="msl-cur" id="em-cur"></div>
         <div class="msl-msg" id="em-msg">Carregando o mapa…</div>
       </div>
@@ -191,10 +196,12 @@ async function carregar(){
   const corte = s.pos.corte;
   if(R.view!==corte){
     R.view = corte; R.IW = im.naturalWidth; R.IH = im.naturalHeight; R.K = R.IW/REFW;
-    for(const id of ['em-base','em-paint','em-arrows','em-sel']){ g(id).width = R.IW; g(id).height = R.IH; }
-    R.bctx = g('em-base').getContext('2d'); R.pctx = g('em-paint').getContext('2d'); R.actx = g('em-arrows').getContext('2d'); R.sctx = g('em-sel').getContext('2d');
+    for(const id of ['em-base','em-endo','em-paint','em-arrows','em-sel']){ g(id).width = R.IW; g(id).height = R.IH; }
+    R.bctx = g('em-base').getContext('2d'); R.ectx = g('em-endo').getContext('2d'); R.pctx = g('em-paint').getContext('2d'); R.actx = g('em-arrows').getContext('2d'); R.sctx = g('em-sel').getContext('2d');
+    R.wm = document.createElement('canvas'); R.wm.width = R.IW; R.wm.height = R.IH; R.wctx = R.wm.getContext('2d');   // máscara só do vinho (fora da tela)
+    R.tint = null;
     fecharTxt(); R.sel = null; R.drag = null;
-    g('em-paint').style.opacity = ALPHA;
+    g('em-endo').style.opacity = ALPHA; g('em-paint').style.opacity = ALPHA;
     fit(); redrawAll(); R.usedKey = '';
   }
   R.ready = true; const m = g('em-msg'); if(m) m.style.display = 'none';
@@ -214,6 +221,7 @@ function legenda(ctx,rows){
   rows.forEach((c,i)=>{
     const cy = y+titH+i*rowH+rowH/2-2*k;
     ctx.fillStyle = c.cor; ctx.beginPath(); ctx.arc(x+padX+15*k,cy,15*k,0,Math.PI*2); ctx.fill();
+    if(c.id===2){ ctx.strokeStyle = '#000'; ctx.lineWidth = 3.4*k; ctx.beginPath(); ctx.arc(x+padX+15*k,cy,15*k+1.7*k,0,Math.PI*2); ctx.stroke(); }   // endometrioma: com o contorno preto
     ctx.fillStyle = '#1f2630'; ctx.font = F(600,31*k); ctx.fillText(texts[i], x+padX+40*k, cy+1*k);
   });
   ctx.restore();
@@ -270,6 +278,9 @@ function scanUsed(){
   const d = x.getImageData(0,0,M,h).data, n = [0,0,0], rgb = LES.map(k=>[1,3,5].map(i=>parseInt(k.cor.substr(i,2),16)));
   for(let i=0;i<d.length;i+=4){ if(d[i+3]<30) continue;
     for(let k=0;k<3;k++){ const q=rgb[k], e=(d[i]-q[0])**2+(d[i+1]-q[1])**2+(d[i+2]-q[2])**2; if(e<1500){ n[k]++; break; } } }
+  /* o vinho (endometrioma) vive na própria máscara; o contorno preto fica fora dela e não conta como endometriose */
+  x.clearRect(0,0,M,h); x.drawImage(R.wm,0,0,M,h); const w = x.getImageData(0,0,M,h).data; n[1] = 0;
+  for(let i=3;i<w.length;i+=4) if(w[i]>=30) n[1]++;
   return n.map(v=>v>=2);
 }
 function refreshLegend(force){
@@ -359,7 +370,8 @@ function cursor(e){
     stg.style.cursor = h ? (h.mode==='move' ? 'move' : 'grab') : '';
   }
   if(e.pointerType==='touch' || st().tool==='arrow'){ c.style.display='none'; return; }
-  const r = stg.getBoundingClientRect(), d = Math.max(4, st().w*R.K*R.fw*R.k/R.IW);
+  const s = st(), extra = (s.tool==='brush' && s.cor===2) ? 2*ANEL_MM*MM_PX : 0;     // o círculo do endometrioma inclui o contorno
+  const r = stg.getBoundingClientRect(), d = Math.max(4, (s.w+extra)*R.K*R.fw*R.k/R.IW);
   c.style.display='block'; c.style.width = c.style.height = d+'px'; c.style.left = (e.clientX-r.left)+'px'; c.style.top = (e.clientY-r.top)+'px';
 }
 
@@ -398,43 +410,90 @@ function spicRun(ctx,s){
   }
   ctx.restore();
 }
-function drawStroke(ctx,s){
+/* ENDOMETRIOMA (vinho) não é pintado na camada geral: vai para a máscara do vinho (R.wm) e para a camada #em-endo, onde o
+   contorno preto é DERIVADO do vinho que sobrou (rebuildEndo). Assim a borracha, o desfazer e o "limpar" levam o contorno junto. */
+const vinho = s => s.c===2 && !s.e;
+function halo(ctx,s){                                  // contorno ao vivo: traço mais largo, atrás do que já existe na camada
+  ctx.globalCompositeOperation = 'destination-over'; ctx.strokeStyle = ctx.fillStyle = '#000';
+  ctx.lineWidth = s.w*R.K + 2*ANEL_MM*MM_PX*R.K;
+}
+function drawStroke(ctx,s,comHalo){
   if(espic(s)){ s._i=0; s._n=0; s._d=0; spicRun(ctx,s); return; }
-  const q = s.pts; style(ctx,s);
-  if(q.length<4){ ctx.beginPath(); ctx.arc(q[0],q[1],s.w*R.K/2,0,Math.PI*2); ctx.fill(); }
-  else{ ctx.beginPath(); ctx.moveTo(q[0],q[1]); ctx.lineTo((q[0]+q[2])/2,(q[1]+q[3])/2);
-    for(let i=2;i<q.length-2;i+=2) ctx.quadraticCurveTo(q[i],q[i+1],(q[i]+q[i+2])/2,(q[i+1]+q[i+3])/2);
-    ctx.lineTo(q[q.length-2],q[q.length-1]); ctx.stroke(); }
-  ctx.restore();
+  const q = s.pts;
+  const go = ()=>{
+    if(q.length<4){ ctx.beginPath(); ctx.arc(q[0],q[1],ctx.lineWidth/2,0,Math.PI*2); ctx.fill(); }
+    else{ ctx.beginPath(); ctx.moveTo(q[0],q[1]); ctx.lineTo((q[0]+q[2])/2,(q[1]+q[3])/2);
+      for(let i=2;i<q.length-2;i+=2) ctx.quadraticCurveTo(q[i],q[i+1],(q[i]+q[i+2])/2,(q[i+1]+q[i+3])/2);
+      ctx.lineTo(q[q.length-2],q[q.length-1]); ctx.stroke(); }
+  };
+  style(ctx,s); go(); ctx.restore();
+  if(comHalo && vinho(s)){ style(ctx,s); halo(ctx,s); go(); ctx.restore(); }
+}
+/* o traço inteiro, nas camadas certas (ao vivo, o vinho também vai para a camada visível com o contorno provisório) */
+function drawStrokeAll(s,vivo){
+  if(vinho(s)){ drawStroke(R.wctx,s); if(vivo) drawStroke(R.ectx,s,true); }
+  else if(s.e){ drawStroke(R.wctx,s); drawStroke(R.pctx,s); if(vivo) drawStroke(R.ectx,s); }
+  else drawStroke(R.pctx,s);
+}
+/* um pedaço de traço (continuação ao vivo), nas camadas certas */
+function paintSeg(s,build){
+  const put = (ctx,h)=>{ style(ctx,s); build(ctx); ctx.restore(); if(h){ style(ctx,s); halo(ctx,s); build(ctx); ctx.restore(); } };
+  if(vinho(s)){ put(R.wctx); put(R.ectx,true); }
+  else if(s.e){ put(R.wctx); put(R.pctx); put(R.ectx); }
+  else put(R.pctx);
+}
+/* camada visível do endometrioma = contorno preto (o vinho "engordado" em ANEL_MM) + vinho por cima */
+function rebuildEndo(){
+  const e = R.ectx, w = R.wm; if(!e || !w) return;
+  e.clearRect(0,0,R.IW,R.IH);
+  /* limpa da máscara os restos quase transparentes (borda antialiasada que a borracha não cobriu): sem isso o contorno os amplificaria em "fios" */
+  const ls = lista(); if(!ls.some(vinho)) return;       // nunca houve endometrioma: nada a desenhar
+  if(ls.some(s=>s.e)){                                  // só quando já houve borracha (única origem desses restos)
+    const im = R.wctx.getImageData(0,0,R.IW,R.IH), dd = im.data; let ha = false;
+    for(let i=3;i<dd.length;i+=4){ const a = dd[i]; if(a){ if(a<100) dd[i] = 0; else ha = true; } }
+    R.wctx.putImageData(im,0,0);
+    if(!ha) return;                                     // sem endometrioma visível: nada a desenhar
+  }
+  const t = R.tint || (R.tint = document.createElement('canvas')); if(t.width!==R.IW || t.height!==R.IH){ t.width = R.IW; t.height = R.IH; }
+  const x = t.getContext('2d'); x.globalCompositeOperation = 'source-over'; x.clearRect(0,0,R.IW,R.IH); x.drawImage(w,0,0);
+  x.globalCompositeOperation = 'source-in'; x.fillStyle = '#000'; x.fillRect(0,0,R.IW,R.IH); x.globalCompositeOperation = 'source-over';
+  const o = ANEL_MM*MM_PX*R.K;
+  for(let k=0;k<16;k++){ const a = k*Math.PI/8; e.drawImage(t,Math.cos(a)*o,Math.sin(a)*o); }
+  e.drawImage(w,0,0);
 }
 function lista(){ return st().strokes[R.view] || (st().strokes[R.view]=[]); }
 function listaRedo(){ return st().redo[R.view] || (st().redo[R.view]=[]); }
 function redrawAll(){
-  const ctx = R.pctx; if(!ctx) return; ctx.clearRect(0,0,R.IW,R.IH);
-  lista().forEach(s=>{ if(s.clear) ctx.clearRect(0,0,R.IW,R.IH); else if(!s.arrow && !s.mv && !s.del) drawStroke(ctx,s); });
-  redrawSetas(); drawSel();
+  const ctx = R.pctx; if(!ctx) return; ctx.clearRect(0,0,R.IW,R.IH); R.wctx.clearRect(0,0,R.IW,R.IH);
+  lista().forEach(s=>{ if(s.clear){ ctx.clearRect(0,0,R.IW,R.IH); R.wctx.clearRect(0,0,R.IW,R.IH); } else if(!s.arrow && !s.mv && !s.del) drawStrokeAll(s,false); });
+  rebuildEndo(); redrawSetas(); drawSel();
 }
 function strokeStart(e){
   const s = st(), w = g('em-world'); if(!w) return;
   R.rect = w.getBoundingClientRect(); const p = ptr(e,R.rect);
   R.stroke = {c:s.cor, w:s.w, e:s.tool==='erase', pts:[+p[0].toFixed(1),+p[1].toFixed(1)], seed:((Math.random()*2147483646)|0)+1, _i:0, _n:0, _d:0};
-  drawStroke(R.pctx,R.stroke);
+  drawStrokeAll(R.stroke,true);
 }
 function strokeAdd(ev){
   const s = R.stroke; if(!s) return; const p = ptr(ev,R.rect), q = s.pts;
   if(Math.hypot(p[0]-q[q.length-2],p[1]-q[q.length-1]) < (espic(s)?2.5:1.2)) return;
   q.push(+p[0].toFixed(1),+p[1].toFixed(1));
   if(espic(s)){ spicRun(R.pctx,s); return; }
-  const ctx = R.pctx; style(ctx,s); const m = q.length; ctx.beginPath();
-  if(m===4){ ctx.moveTo(q[0],q[1]); ctx.lineTo((q[0]+q[2])/2,(q[1]+q[3])/2); }
-  else{ const ax=(q[m-6]+q[m-4])/2, ay=(q[m-5]+q[m-3])/2, bx=(q[m-4]+q[m-2])/2, by=(q[m-3]+q[m-1])/2; ctx.moveTo(ax,ay); ctx.quadraticCurveTo(q[m-4],q[m-3],bx,by); }
-  ctx.stroke(); ctx.restore();
+  const m = q.length;
+  paintSeg(s,ctx=>{
+    ctx.beginPath();
+    if(m===4){ ctx.moveTo(q[0],q[1]); ctx.lineTo((q[0]+q[2])/2,(q[1]+q[3])/2); }
+    else{ const ax=(q[m-6]+q[m-4])/2, ay=(q[m-5]+q[m-3])/2, bx=(q[m-4]+q[m-2])/2, by=(q[m-3]+q[m-1])/2; ctx.moveTo(ax,ay); ctx.quadraticCurveTo(q[m-4],q[m-3],bx,by); }
+    ctx.stroke();
+  });
 }
 function strokeEnd(){
   const s = R.stroke; R.stroke = null; if(!s) return;
   const q = s.pts, m = q.length;
-  if(!espic(s) && m>=4){ const ctx=R.pctx; style(ctx,s); ctx.beginPath(); ctx.moveTo((q[m-4]+q[m-2])/2,(q[m-3]+q[m-1])/2); ctx.lineTo(q[m-2],q[m-1]); ctx.stroke(); ctx.restore(); }
-  lista().push(s); st().redo[R.view] = []; refreshLegend(); sync();
+  if(!espic(s) && m>=4) paintSeg(s,ctx=>{ ctx.beginPath(); ctx.moveTo((q[m-4]+q[m-2])/2,(q[m-3]+q[m-1])/2); ctx.lineTo(q[m-2],q[m-1]); ctx.stroke(); });
+  lista().push(s); st().redo[R.view] = [];
+  if(vinho(s) || s.e) rebuildEndo();                    // contorno exato (e sem sobras do contorno onde o vinho foi apagado)
+  refreshLegend(); sync();
 }
 function cancelStroke(){
   if(R.arrow){ R.arrow = null; redrawSetas(); }
@@ -633,7 +692,7 @@ function limpar(){ const l=lista(); if(!l.length) return; fecharTxt(); l.push({c
 function exportCanvas(){
   const c = document.createElement('canvas'); c.width = R.IW; c.height = R.IH; const x = c.getContext('2d');
   x.fillStyle = '#fff'; x.fillRect(0,0,R.IW,R.IH); x.imageSmoothingQuality = 'high';
-  x.drawImage(g('em-base'),0,0); x.globalAlpha = ALPHA; x.drawImage(g('em-paint'),0,0); x.globalAlpha = 1;
+  x.drawImage(g('em-base'),0,0); x.globalAlpha = ALPHA; x.drawImage(g('em-endo'),0,0); x.drawImage(g('em-paint'),0,0); x.globalAlpha = 1;
   x.drawImage(g('em-arrows'),0,0); return c;
 }
 const blob = (tipo,q) => new Promise((ok,no)=>{ try{ exportCanvas().toBlob(b=>b?ok(b):no(new Error('canvas')),tipo,q); }catch(e){ no(e); } });
