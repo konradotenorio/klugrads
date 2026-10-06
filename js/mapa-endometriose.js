@@ -554,7 +554,7 @@ function drawArrow(ctx,a){
    apagar, desfazer/refazer, limpar e exportação são os mesmos da seta. Desenho: linha preta TRACEJADA entre os dois pontos, com um
    pequeno traço transversal em cada ponta (como numa medição) e, se houver texto, um balão no meio da linha com a medida. */
 function regMed(ctx,a){
-  const K = R.K, k = R.IW/1890*ESC_TXT, lw = Math.min(9,Math.max(3.2,a.w*0.18))*K;
+  const K = R.K, k = R.IW/1890*ESC_TXT, lw = (0.9+a.w*0.03)*K;          // espessura da régua (px de referência): fina por padrão (≈1,4 com o controle em 18) e só chega a ≈3 no máximo
   const txt = (a.text||'').trim(), mx = (a.x0+a.x1)/2, my = (a.y0+a.y1)/2; let pill = null;
   if(txt){
     ctx.save(); ctx.font = `700 ${38*k}px "Segoe UI",Arial,Helvetica,sans-serif`;
@@ -566,16 +566,16 @@ function regMed(ctx,a){
 }
 function drawRegua(ctx,a){
   const G = regMed(ctx,a), lw = G.lw, dx = a.x1-a.x0, dy = a.y1-a.y0, L = Math.hypot(dx,dy)||1, nx = -dy/L, ny = dx/L;
-  const dash = lw*3.4, gap = lw*2.4, n = Math.max(1,Math.round((L+gap)/(dash+gap))), sc = L/(n*dash+(n-1)*gap);   // n traços que cabem certinho: começa e termina em traço
+  const dash = Math.max(lw*3.4,6.5*R.K), gap = Math.max(lw*2.4,4.5*R.K), n = Math.max(1,Math.round((L+gap)/(dash+gap))), sc = L/(n*dash+(n-1)*gap);   // n traços que cabem certinho: começa e termina em traço
   ctx.save(); ctx.strokeStyle = '#000'; ctx.lineWidth = lw; ctx.lineCap = 'butt';
   ctx.setLineDash([dash*sc,gap*sc]); ctx.beginPath(); ctx.moveTo(a.x0,a.y0); ctx.lineTo(a.x1,a.y1); ctx.stroke(); ctx.setLineDash([]);
-  const h = Math.max(lw*2.6,10*R.K);
+  const h = Math.max(lw*2.6,8*R.K);
   ctx.beginPath(); for(const [x,y] of [[a.x0,a.y0],[a.x1,a.y1]]){ ctx.moveTo(x-nx*h,y-ny*h); ctx.lineTo(x+nx*h,y+ny*h); } ctx.stroke();
   const p = G.pill;
   if(p){
     if(Math.hypot(p.cx-G.mx,p.cy-G.my) > p.h*0.5){                    // balão fora da linha: um fio fino o liga ao meio da régua (por baixo do balão)
-      ctx.lineWidth = Math.max(2*R.K,lw*0.5); ctx.beginPath(); ctx.moveTo(G.mx,G.my); ctx.lineTo(p.cx,p.cy); ctx.stroke();
-      ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(G.mx,G.my,lw*1.1,0,Math.PI*2); ctx.fill();
+      ctx.lineWidth = Math.max(1*R.K,lw*0.8); ctx.beginPath(); ctx.moveTo(G.mx,G.my); ctx.lineTo(p.cx,p.cy); ctx.stroke();
+      ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(G.mx,G.my,Math.max(lw*1.2,1.8*R.K),0,Math.PI*2); ctx.fill();
     }
     ctx.font = `700 ${38*p.k}px "Segoe UI",Arial,Helvetica,sans-serif`; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
     ctx.fillStyle = 'rgba(255,255,255,.96)'; ctx.strokeStyle = '#000'; ctx.lineWidth = 2.5*p.k;
