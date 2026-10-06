@@ -34,13 +34,12 @@ const MSL_ORGAOS = {
     },
   },
 };
-/* 4 cores fixas (cada cor = uma lesão). Escolhidas para contrastar com o rosa, o
-   amarelo, o verde e o azul do esquema. */
+/* 4 cores fixas (cada cor = uma lesão): preto, vermelho, azul e roxo (mesmas cores do mapa do rim). */
 const MSL_CORES = [
-  {id:1, cor:'#E11D2E', nome:'Vermelho'},
-  {id:2, cor:'#1D4ED8', nome:'Azul'},
-  {id:3, cor:'#7E22CE', nome:'Roxo'},
-  {id:4, cor:'#059669', nome:'Verde'},
+  {id:1, cor:'#111111', nome:'Preto'},
+  {id:2, cor:'#E11D2E', nome:'Vermelho'},
+  {id:3, cor:'#1D4ED8', nome:'Azul'},
+  {id:4, cor:'#7E22CE', nome:'Roxo'},
 ];
 /* MARCA PADRÃO de TODOS os mapas do Mapa Setorial Lesional (próstata, pelve, fístula, rim…).
    Um mapa novo deve chamar mslMarca() ao desenhar a base (e usar MSL_MARCA no texto), para a

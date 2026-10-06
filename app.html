@@ -575,7 +575,9 @@
   .msl-cor{display:inline-flex;align-items:center;gap:7px;max-width:100%;border:2px solid var(--line);background:var(--sf2);color:var(--tx);font:inherit;font-size:12.5px;font-weight:650;padding:5px 12px 5px 6px;border-radius:999px;cursor:pointer;}
   .msl-cor .msl-cl{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:190px;}
   .msl-cor.on{border-color:var(--c);background:var(--sf);box-shadow:0 0 0 2px var(--c);}
+  .msl-cor.on{box-shadow:0 0 0 2px var(--c),0 0 0 3.5px color-mix(in srgb,var(--tx) 32%,transparent);} /* anel claro: a cor preta some no tema escuro */
   .msl-dot{flex:none;display:inline-block;width:20px;height:20px;border-radius:50%;background:var(--c);}
+  .msl-dot{box-shadow:0 0 0 1px color-mix(in srgb,var(--tx) 28%,transparent);}
   .msl-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
   .msl-sp{flex:1;min-width:4px;}
   .msl-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--sf2);color:var(--tx);font:inherit;font-size:12.5px;font-weight:650;padding:8px 10px;border-radius:10px;cursor:pointer;line-height:1;}
@@ -1156,66 +1158,66 @@
   </div>
 </noscript>
 
-<script src="/js/i18n.js?v=0.100.78"></script>
-<script src="/js/config.js?v=0.100.78"></script>
+<script src="/js/i18n.js?v=0.100.80"></script>
+<script src="/js/config.js?v=0.100.80"></script>
 <!-- Modo estático/aberto: o conteúdo (74 itens) é embutido aqui, antes do
      app.js, que o lê de window.SEED. Sem login e sem backend. -->
-<script src="/js/seed.js?v=0.100.78"></script>
-<script src="/js/sessao.js?v=0.100.78"></script>
-<script src="/js/status.js?v=0.100.78"></script>
-<script src="/js/app.js?v=0.100.78"></script>
-<script src="/js/zoom.js?v=0.100.78"></script>
-<script src="/js/contraste.js?v=0.100.78"></script>
-<script src="/js/laudos-us-mascaras.js?v=0.100.78"></script>
-<script src="/js/laudos-frases.js?v=0.100.78"></script>
-<script src="/js/laudos.js?v=0.100.78"></script>
-<script src="/js/laudos-dmo.js?v=0.100.78"></script>
-<script src="/js/laudos-frases-tc.js?v=0.100.78"></script>
-<script src="/js/laudos-oct.js?v=0.100.78"></script>
-<script src="/js/laudos-auto.js?v=0.100.78"></script>
-<script src="/js/laudos-voz.js?v=0.100.78"></script>
-<script src="/js/laudos-ig.js?v=0.100.78"></script>
-<script src="/js/calc-fetal.js?v=0.100.78"></script>
-<script src="/js/calc-orads.js?v=0.100.78"></script>
-<script src="/js/calc-volume-gastrico.js?v=0.100.78"></script>
-<script src="/js/calc-boyden.js?v=0.100.78"></script>
-<script src="/js/calc-figo-miomas.js?v=0.100.78"></script>
-<script src="/js/ref-bosniak.js?v=0.100.78"></script>
-<script src="/js/protocolos-tc.js?v=0.100.78"></script>
-<script src="/js/dxa.js?v=0.100.78"></script>
-<script src="/js/calc-doppler-renais.js?v=0.100.78"></script>
-<script src="/js/calc-esteatose-rm.js?v=0.100.78"></script>
-<script src="/js/calc-esteatose-tc.js?v=0.100.78"></script>
-<script src="/js/calc-ferro-r2.js?v=0.100.78"></script>
-<script src="/js/calc-ferro-t2.js?v=0.100.78"></script>
-<script src="/js/calc-ferro-espl.js?v=0.100.78"></script>
-<script src="/js/calc-adrenal-tc.js?v=0.100.78"></script>
-<script src="/js/calc-adrenal-rm.js?v=0.100.78"></script>
-<script src="/js/calc-renal.js?v=0.100.78"></script>
-<script src="/js/calc-ccls.js?v=0.100.78"></script>
-<script src="/js/calc-pirads.js?v=0.100.78"></script>
-<script src="/js/calc-prostata-setores.js?v=0.100.78"></script>
-<script src="/js/prostata-esquema.js?v=0.100.78"></script>
-<script src="/js/calc-crads.js?v=0.100.78"></script>
-<script src="/js/calc-pancreatite.js?v=0.100.78"></script>
-<script src="/js/calc-orads-mri.js?v=0.100.78"></script>
-<script src="/js/calc-lung-rads.js?v=0.100.78"></script>
-<script src="/js/calc-fleischner.js?v=0.100.78"></script>
-<script src="/js/calc-idade-ossea.js?v=0.100.78"></script>
-<script src="/js/calc-cadrads.js?v=0.100.78"></script>
-<script src="/js/calc-mesa-cac.js?v=0.100.78"></script>
-<script src="/js/calc-pi-qual.js?v=0.100.78"></script>
-<script src="/js/calc-precise.js?v=0.100.78"></script>
-<script src="/js/calc-pi-rr.js?v=0.100.78"></script>
-<script src="/js/calc-trisomias.js?v=0.100.78"></script>
-<script src="/js/calc-preeclampsia.js?v=0.100.78"></script>
-<script src="/js/calc-sga.js?v=0.100.78"></script>
-<script src="/js/calc-gdm.js?v=0.100.78"></script>
-<script src="/js/calc-ptb.js?v=0.100.78"></script>
-<script src="/js/mapa-lesional.js?v=0.100.78"></script>
-<script src="/js/mapa-lesional-3d.js?v=0.100.78"></script>
-<script src="/js/mapa-endometriose.js?v=0.100.78"></script>
-<script src="/js/mapa-renal.js?v=0.100.78"></script>
-<script src="/js/mapa-fistula.js?v=0.100.78"></script>
+<script src="/js/seed.js?v=0.100.80"></script>
+<script src="/js/sessao.js?v=0.100.80"></script>
+<script src="/js/status.js?v=0.100.80"></script>
+<script src="/js/app.js?v=0.100.80"></script>
+<script src="/js/zoom.js?v=0.100.80"></script>
+<script src="/js/contraste.js?v=0.100.80"></script>
+<script src="/js/laudos-us-mascaras.js?v=0.100.80"></script>
+<script src="/js/laudos-frases.js?v=0.100.80"></script>
+<script src="/js/laudos.js?v=0.100.80"></script>
+<script src="/js/laudos-dmo.js?v=0.100.80"></script>
+<script src="/js/laudos-frases-tc.js?v=0.100.80"></script>
+<script src="/js/laudos-oct.js?v=0.100.80"></script>
+<script src="/js/laudos-auto.js?v=0.100.80"></script>
+<script src="/js/laudos-voz.js?v=0.100.80"></script>
+<script src="/js/laudos-ig.js?v=0.100.80"></script>
+<script src="/js/calc-fetal.js?v=0.100.80"></script>
+<script src="/js/calc-orads.js?v=0.100.80"></script>
+<script src="/js/calc-volume-gastrico.js?v=0.100.80"></script>
+<script src="/js/calc-boyden.js?v=0.100.80"></script>
+<script src="/js/calc-figo-miomas.js?v=0.100.80"></script>
+<script src="/js/ref-bosniak.js?v=0.100.80"></script>
+<script src="/js/protocolos-tc.js?v=0.100.80"></script>
+<script src="/js/dxa.js?v=0.100.80"></script>
+<script src="/js/calc-doppler-renais.js?v=0.100.80"></script>
+<script src="/js/calc-esteatose-rm.js?v=0.100.80"></script>
+<script src="/js/calc-esteatose-tc.js?v=0.100.80"></script>
+<script src="/js/calc-ferro-r2.js?v=0.100.80"></script>
+<script src="/js/calc-ferro-t2.js?v=0.100.80"></script>
+<script src="/js/calc-ferro-espl.js?v=0.100.80"></script>
+<script src="/js/calc-adrenal-tc.js?v=0.100.80"></script>
+<script src="/js/calc-adrenal-rm.js?v=0.100.80"></script>
+<script src="/js/calc-renal.js?v=0.100.80"></script>
+<script src="/js/calc-ccls.js?v=0.100.80"></script>
+<script src="/js/calc-pirads.js?v=0.100.80"></script>
+<script src="/js/calc-prostata-setores.js?v=0.100.80"></script>
+<script src="/js/prostata-esquema.js?v=0.100.80"></script>
+<script src="/js/calc-crads.js?v=0.100.80"></script>
+<script src="/js/calc-pancreatite.js?v=0.100.80"></script>
+<script src="/js/calc-orads-mri.js?v=0.100.80"></script>
+<script src="/js/calc-lung-rads.js?v=0.100.80"></script>
+<script src="/js/calc-fleischner.js?v=0.100.80"></script>
+<script src="/js/calc-idade-ossea.js?v=0.100.80"></script>
+<script src="/js/calc-cadrads.js?v=0.100.80"></script>
+<script src="/js/calc-mesa-cac.js?v=0.100.80"></script>
+<script src="/js/calc-pi-qual.js?v=0.100.80"></script>
+<script src="/js/calc-precise.js?v=0.100.80"></script>
+<script src="/js/calc-pi-rr.js?v=0.100.80"></script>
+<script src="/js/calc-trisomias.js?v=0.100.80"></script>
+<script src="/js/calc-preeclampsia.js?v=0.100.80"></script>
+<script src="/js/calc-sga.js?v=0.100.80"></script>
+<script src="/js/calc-gdm.js?v=0.100.80"></script>
+<script src="/js/calc-ptb.js?v=0.100.80"></script>
+<script src="/js/mapa-lesional.js?v=0.100.80"></script>
+<script src="/js/mapa-lesional-3d.js?v=0.100.80"></script>
+<script src="/js/mapa-endometriose.js?v=0.100.80"></script>
+<script src="/js/mapa-renal.js?v=0.100.80"></script>
+<script src="/js/mapa-fistula.js?v=0.100.80"></script>
 </body>
 </html>
