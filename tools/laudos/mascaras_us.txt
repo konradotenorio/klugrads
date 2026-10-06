@@ -245,7 +245,6 @@ Ausência de hidronefrose ou cálculos detectáveis ao método.
 Conclusão:
 - Próstata com massa estimada em XXX gramas.
 - Resíduo pós-miccional estimado em XXX mL.
-Restante do exame sem particularidades.
 Liberado por: 
 CRM: 
 
@@ -276,7 +275,6 @@ Data do Exame:
 Conclusão:
 - Próstata com massa estimada em XXX gramas.
 - Resíduo pós-miccional estimado em XXX mL.
-Restante do exame sem particularidades.
 Liberado por: 
 CRM: 
 

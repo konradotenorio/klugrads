@@ -859,10 +859,6 @@ const LAU_US_MASKS = [
 {
 "text": "Resíduo pós-miccional estimado em XXX mL.",
 "dash": true
-},
-{
-"text": "Restante do exame sem particularidades.",
-"dash": false
 }
 ],
 "trailer": [],
@@ -1069,10 +1065,6 @@ const LAU_US_MASKS = [
 {
 "text": "Resíduo pós-miccional estimado em XXX mL.",
 "dash": true
-},
-{
-"text": "Restante do exame sem particularidades.",
-"dash": false
 }
 ],
 "trailer": [],
