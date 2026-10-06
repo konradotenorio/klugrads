@@ -2469,6 +2469,10 @@ function lauTopicoForm(k, tplId, str, vals, seg, rotulo){
   const segs=[]; let cur=[];
   toks.forEach(tk=>{ cur.push(tk); const fim = tk.t==='w' ? (tk.s==='\n' || /[.;]$/.test(tk.s)) : /[.;]$/.test(tk.suf||''); if(fim){ segs.push(cur); cur=[]; } });
   if(cur.length) segs.push(cur);
+  // linha "ACCD: VPS = XXX cm/s; VD = XXX cm/s." fica numa linha só (o ";" só separa quando o trecho seguinte tem rótulo próprio "xxx:")
+  const temRot = sg=>{ const ws=sg.filter(t=>t.t==='w' && t.s!=='\n').slice(0,4); const j=ws.findIndex(t=>/:$/.test(t.s)); return j>=0 && sg.slice(0, sg.indexOf(ws[j])).every(t=>t.t==='w'); };
+  for(let j=segs.length-1;j>0;j--){ const a=segs[j-1], b=segs[j]; const fa=a[a.length-1]; const fimPv = fa.t==='w' ? /;$/.test(fa.s) : /;$/.test(fa.suf||'');
+    if(fimPv && temRot(a) && !temRot(b) && !(b[0].t==='w' && b[0].s==='\n')){ segs[j-1]=a.concat(b); segs.splice(j,1); } }
   const inp = tk=>{ const v=vals[tk.i]||'';
     if(tk.t==='c') return `<select class="lau-ph-sel" onchange="lauPh('${k}','${tplId}',${tk.i},this.value,${sj})">${tk.def?'':`<option value="">${esc(tk.o.join(' / '))}</option>`}${tk.o.map(o=>`<option ${(v||tk.def)===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
     const av=lauAutoVal(tpl, vals, tk.i);
@@ -2480,7 +2484,12 @@ function lauTopicoForm(k, tplId, str, vals, seg, rotulo){
         if(ultInp && LAU_TOP_UN.test(c)){ parts.push(`<span class="lau-top-u">${esc(c.replace(/[()]/g,''))}</span>`); return; }
         buf.push(tk.s); ultInp=false; return; }
       if(tk.pre) buf.push(tk.pre);
-      if(lbl==null){ lbl = lauTopLbl(buf, true); }
+      if(lbl==null){
+        // rótulo com dois-pontos no começo ("ACCD: VPS =") tem prioridade; o resto vira o nome do campo
+        const ws=buf.join(' ').split(/\s+/).filter(Boolean); const jc=ws.slice(0,4).findIndex(w=>/:$/.test(w));
+        if(jc>=0 && ws.slice(jc+1).length){ lbl=ws.slice(0,jc+1).join(' ').replace(/^[-–•]+\s*/,'').replace(/:$/,''); const t=lauTopLbl(ws.slice(jc+1), false); if(t) parts.push(`<span class="lau-top-c">${esc(t)}</span>`); }
+        else lbl = lauTopLbl(buf, true);
+      }
       else { const cn = buf.join(' ').replace(/[(),]/g,' ').trim(); if(cn){ const t = /^x$/i.test(cn) ? '×' : lauTopLbl(buf, false); if(t) parts.push(`<span class="lau-top-c">${esc(t)}</span>`); } }
       buf=[]; parts.push(inp(tk)); ultInp = tk.t==='p';
       if(tk.suf){ const u=tk.suf.replace(/[;.,]+$/,''); if(LAU_TOP_UN.test(u)) parts.push(`<span class="lau-top-u">${esc(u.replace(/[()]/g,''))}</span>`); }
