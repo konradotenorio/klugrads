@@ -5945,7 +5945,7 @@ const LAU_US_MASKS = [
 {
 "k": "velocidades",
 "label": "Velocidades",
-"text": "\nACCD: VPS = XXX cm/s; VD = XXX cm/s.\nACID: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACID/ACCD: XXX.\nEMI à direita: XXX cm.\nACCE: VPS = XXX cm/s; VD = XXX cm/s.\nACIE: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACIE/ACCE: XXX.\nEMI à esquerda: XXX cm.",
+"text": "\nEMI ACCD: XXX cm.\nACCD: VPS = XXX cm/s; VD = XXX cm/s.\nACID: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACID/ACCD: XXX.\nEMI ACCE: XXX cm.\nACCE: VPS = XXX cm/s; VD = XXX cm/s.\nACIE: VPS = XXX cm/s; VD = XXX cm/s.\nRelação VPS ACIE/ACCE: XXX.",
 "dash": false,
 "opts": [],
 "grp": ""
@@ -8302,7 +8302,7 @@ const LAU_MMG_MASKS = [
 "dash": true
 },
 {
-"text": "Categoria BI-RADS®: 1 (negativo). Rastreamento de rotina, conforme a faixa etária e o risco da paciente.",
+"text": "Categoria BI-RADS®: 1.",
 "dash": true
 }
 ],
