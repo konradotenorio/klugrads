@@ -44,6 +44,8 @@ const SETA = {fill:'#FFD21F', line:'#1B1B1B'};   // seta amarela com contorno es
 /* contorno preto do ENDOMETRIOMA: REMOVIDO (ANEL_MM = 0). Com ANEL_MM > 0 volta a faixa por FORA do círculo vinho (espessura fixa, não depende da espessura do pincel).
    As imagens da pelve não têm escala em mm: adotei 1 mm = 3,78 px da imagem de referência (1103 px de largura), ou seja,
    a tela a 100% (≈96 dpi). Para outra calibração, basta mudar MM_PX (ou ANEL_MM). */
+const ESC_ORI = 0.75;                   // escala das etiquetas de lateralidade (anterior, posterior, direito, esquerdo)
+const ESC_TXT = 0.75;                   // escala da caixa de texto (balão) da seta e da régua
 const ANEL_MM = 0, MM_PX = 3.78;     // ANEL_MM = largura do contorno em mm; 0 = sem contorno
 
 /* ---- estado (em memória) ---- */
@@ -83,7 +85,7 @@ const anota = () => { const t = st().tool; return t==='arrow' || t==='ruler'; };
 const DICA_MEXER = 'Toque numa {x} para mexer nela: arraste-a para mover, arraste as bolinhas para ajustar as pontas, toque de novo para editar o texto, ou use Apagar (ou a tecla Delete).';
 function dica(t){
   return t==='ruler'
-    ? 'Régua: arraste de um ponto ao outro da medida (linha preta tracejada); depois escreva a medida (ex.: 12 mm), que aparece num balão no meio da linha. O texto é opcional. '+DICA_MEXER.replace('{x}','régua')
+    ? 'Régua: arraste de um ponto ao outro da medida (linha preta tracejada); depois escreva a medida (ex.: 12 mm), que aparece num balão no meio da linha. O texto é opcional. Toque numa régua para mexer nela: arraste a linha para mover, as bolinhas para ajustar as pontas e o balão para colocá-lo onde não atrapalhe a imagem (um fio fino o liga à régua); toque de novo para editar o texto, ou use Apagar (ou a tecla Delete).'
     : 'Seta: arraste do local do texto até o achado (a ponta fica onde soltar); o texto é opcional. '+DICA_MEXER.replace('{x}','seta');
 }
 function html(){
@@ -247,20 +249,20 @@ function orientacao(ctx){
   ctx.fillStyle = 'rgba(18,22,30,.80)'; roundRect(ctx,tx,ty,tw,th,th/2); ctx.fill();
   ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(tit, R.IW/2, ty+th/2+1*k); ctx.textAlign = 'left';
   /* etiquetas das bordas: a seta aponta para fora da imagem (lado que o nome indica) */
-  const bh = 52*k, ar = 11*k;
+  const kb = k*ESC_ORI, bh = 52*kb, ar = 11*kb;                     // kb: escala das etiquetas de lateralidade (ESC_ORI = 0,75 → 25% menores)
   const badge = (txt,dir,cx,cy)=>{
-    ctx.font = F(700,27*k); const w = ctx.measureText(txt).width + 34*k + 2*ar + 12*k, x = cx-w/2, y = cy-bh/2;
-    ctx.fillStyle = 'rgba(255,255,255,.90)'; ctx.strokeStyle = 'rgba(60,60,70,.45)'; ctx.lineWidth = 2*k; roundRect(ctx,x,y,w,bh,bh/2); ctx.fill(); ctx.stroke();
-    const ax = x+17*k+ar, ay = cy;                                  // centro da seta (à esquerda do texto)
+    ctx.font = F(700,27*kb); const w = ctx.measureText(txt).width + 34*kb + 2*ar + 12*kb, x = cx-w/2, y = cy-bh/2;
+    ctx.fillStyle = 'rgba(255,255,255,.90)'; ctx.strokeStyle = 'rgba(60,60,70,.45)'; ctx.lineWidth = 2*kb; roundRect(ctx,x,y,w,bh,bh/2); ctx.fill(); ctx.stroke();
+    const ax = x+17*kb+ar, ay = cy;                                 // centro da seta (à esquerda do texto)
     const p = {up:[[0,-ar],[ar,ar*0.8],[-ar,ar*0.8]], down:[[0,ar],[ar,-ar*0.8],[-ar,-ar*0.8]],
                left:[[-ar,0],[ar*0.8,ar],[ar*0.8,-ar]], right:[[ar,0],[-ar*0.8,ar],[-ar*0.8,-ar]]}[dir];
     ctx.fillStyle = '#7A1F3D'; ctx.beginPath(); ctx.moveTo(ax+p[0][0],ay+p[0][1]); ctx.lineTo(ax+p[1][0],ay+p[1][1]); ctx.lineTo(ax+p[2][0],ay+p[2][1]); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#1f2630'; ctx.fillText(txt, ax+ar+12*k, cy+1*k);
+    ctx.fillStyle = '#1f2630'; ctx.fillText(txt, ax+ar+12*kb, cy+1*kb);
   };
   badge('ANTERIOR','up',R.IW/2,ty+th+14*k+bh/2);
   badge('POSTERIOR','down',R.IW/2,R.IH-m-bh/2);
-  ctx.font = F(700,27*k);
-  const bw = t => ctx.measureText(t).width + 34*k + 2*ar + 12*k;
+  ctx.font = F(700,27*kb);
+  const bw = t => ctx.measureText(t).width + 34*kb + 2*ar + 12*kb;
   badge('ESQUERDO','left',m+bw('ESQUERDO')/2,R.IH/2);
   badge('DIREITO','right',R.IW-m-bw('DIREITO')/2,R.IH/2);
   ctx.restore();
@@ -370,7 +372,7 @@ function cursor(e){
   const c = g('em-cur'), stg = g('em-stage'); if(!c||!stg) return;
   if(anota() && e.pointerType==='mouse' && R.ready && !R.arrow && !R.drag && !R.pan){      // mouse sobre uma seta: mostra que dá para mexer
     const w = g('em-world'), p = w ? ptr(e,w.getBoundingClientRect()) : null, h = p && setaAlvo(p[0],p[1],false);
-    stg.style.cursor = h ? (h.mode==='move' ? 'move' : 'grab') : '';
+    stg.style.cursor = h ? (h.mode==='move' || h.mode==='pill' ? 'move' : 'grab') : '';
   }
   if(e.pointerType==='touch' || anota()){ c.style.display='none'; return; }
   const s = st(), extra = (s.tool==='brush' && s.cor===2) ? 2*ANEL_MM*MM_PX : 0;     // o círculo do endometrioma inclui o contorno
@@ -516,7 +518,7 @@ function cancelStroke(){
    só aparece se houver texto; fica encostada no início da seta, do lado oposto ao da ponta. */
 function setaMed(ctx,a){
   if(a.ruler) return regMed(ctx,a);
-  const K = R.K, k = R.IW/1890, sw = Math.max(3,a.w*0.4)*K, hl = sw*4.6, hw = sw*2.3;
+  const K = R.K, k = R.IW/1890*ESC_TXT, sw = Math.max(3,a.w*0.4)*K, hl = sw*4.6, hw = sw*2.3;
   let dx = a.x1-a.x0, dy = a.y1-a.y0; const L = Math.hypot(dx,dy)||1; dx /= L; dy /= L;
   const txt = (a.text||'').trim(); let pill = null, sx = a.x0, sy = a.y0;
   if(txt){
@@ -552,15 +554,15 @@ function drawArrow(ctx,a){
    apagar, desfazer/refazer, limpar e exportação são os mesmos da seta. Desenho: linha preta TRACEJADA entre os dois pontos, com um
    pequeno traço transversal em cada ponta (como numa medição) e, se houver texto, um balão no meio da linha com a medida. */
 function regMed(ctx,a){
-  const K = R.K, k = R.IW/1890, lw = Math.min(9,Math.max(3.2,a.w*0.18))*K;
-  const txt = (a.text||'').trim(); let pill = null;
+  const K = R.K, k = R.IW/1890*ESC_TXT, lw = Math.min(9,Math.max(3.2,a.w*0.18))*K;
+  const txt = (a.text||'').trim(), mx = (a.x0+a.x1)/2, my = (a.y0+a.y1)/2; let pill = null;
   if(txt){
     ctx.save(); ctx.font = `700 ${38*k}px "Segoe UI",Arial,Helvetica,sans-serif`;
     const pw = ctx.measureText(txt).width + 44*k, ph = 68*k; ctx.restore();
-    const m = 8*k, cx = Math.min(R.IW-m-pw/2, Math.max(m+pw/2,(a.x0+a.x1)/2)), cy = Math.min(R.IH-m-ph/2, Math.max(m+ph/2,(a.y0+a.y1)/2));
+    const m = 8*k, cx = Math.min(R.IW-m-pw/2, Math.max(m+pw/2,mx+(a.ox||0))), cy = Math.min(R.IH-m-ph/2, Math.max(m+ph/2,my+(a.oy||0)));
     pill = {x:cx-pw/2, y:cy-ph/2, w:pw, h:ph, cx, cy, txt, k};
   }
-  return {lw, sx:a.x0, sy:a.y0, hw:lw, pill};
+  return {lw, sx:a.x0, sy:a.y0, hw:lw, pill, mx, my};
 }
 function drawRegua(ctx,a){
   const G = regMed(ctx,a), lw = G.lw, dx = a.x1-a.x0, dy = a.y1-a.y0, L = Math.hypot(dx,dy)||1, nx = -dy/L, ny = dx/L;
@@ -571,6 +573,10 @@ function drawRegua(ctx,a){
   ctx.beginPath(); for(const [x,y] of [[a.x0,a.y0],[a.x1,a.y1]]){ ctx.moveTo(x-nx*h,y-ny*h); ctx.lineTo(x+nx*h,y+ny*h); } ctx.stroke();
   const p = G.pill;
   if(p){
+    if(Math.hypot(p.cx-G.mx,p.cy-G.my) > p.h*0.5){                    // balão fora da linha: um fio fino o liga ao meio da régua (por baixo do balão)
+      ctx.lineWidth = Math.max(2*R.K,lw*0.5); ctx.beginPath(); ctx.moveTo(G.mx,G.my); ctx.lineTo(p.cx,p.cy); ctx.stroke();
+      ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(G.mx,G.my,lw*1.1,0,Math.PI*2); ctx.fill();
+    }
     ctx.font = `700 ${38*p.k}px "Segoe UI",Arial,Helvetica,sans-serif`; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
     ctx.fillStyle = 'rgba(255,255,255,.96)'; ctx.strokeStyle = '#000'; ctx.lineWidth = 2.5*p.k;
     roundRect(ctx,p.x,p.y,p.w,p.h,22*p.k); ctx.fill(); ctx.stroke();
@@ -601,7 +607,7 @@ function setaAlvo(x,y,touch){
   const l = setasVis(), tol = (touch?20:12)/f;
   for(let i=l.length-1;i>=0;i--){
     const a = l[i], G = setaMed(R.actx,a), p = G.pill;
-    if(p && x>=p.x && x<=p.x+p.w && y>=p.y && y<=p.y+p.h) return {a, mode:'move'};
+    if(p && x>=p.x && x<=p.x+p.w && y>=p.y && y<=p.y+p.h) return {a, mode:a.ruler ? 'pill' : 'move'};      // régua: arrastar o balão só muda a posição do texto
     const vx = a.x1-G.sx, vy = a.y1-G.sy, t = Math.max(0,Math.min(1,((x-G.sx)*vx+(y-G.sy)*vy)/(vx*vx+vy*vy||1)));
     if(Math.hypot(x-(G.sx+vx*t),y-(G.sy+vy*t)) <= Math.max(G.hw,tol)) return {a, mode:'move'};
   }
@@ -623,6 +629,7 @@ function drawSel(){
   }
   ctx.restore();
 }
+const snap = a => { const o = {x0:a.x0,y0:a.y0,x1:a.x1,y1:a.y1}; if(a.ruler){ o.ox = a.ox||0; o.oy = a.oy||0; } return o; };   // posição guardada para mover/desfazer
 const SETA_MIN = 22;                                   // arrasto mínimo (px da imagem de referência) para valer como seta; menos que isso é um toque
 function setaStart(e){
   const w = g('em-world'); if(!w) return;
@@ -631,7 +638,7 @@ function setaStart(e){
   const alvo = setaAlvo(p[0],p[1],touch);
   if(alvo){                                            // tocou numa seta: seleciona e prepara mover / ajustar (se não arrastar, é um toque: edita o texto)
     const a = alvo.a; R.sel = a; drawSel();
-    R.drag = {mode:alvo.mode, a, p0:p, s0:{x0:a.x0,y0:a.y0,x1:a.x1,y1:a.y1}, moved:false};
+    R.drag = {mode:alvo.mode, a, p0:p, s0:snap(a), moved:false};
     return;
   }
   const had = !!R.sel; R.sel = null; drawSel();
@@ -658,6 +665,11 @@ function dragMove(e){
   const dx = p[0]-d.p0[0], dy = p[1]-d.p0[1];
   if(!d.moved){ if(Math.hypot(dx,dy)*f < 4) return; d.moved = true; fecharTxt(); }
   const cl = (v,lo,hi)=>Math.max(lo,Math.min(hi,v)), s = d.s0;
+  if(d.mode==='pill'){                                                           // régua: muda só o balão (deslocamento em relação ao meio da linha)
+    a.ox = s.ox+dx; a.oy = s.oy+dy; const G = regMed(R.actx,a);
+    if(G.pill){ a.ox = G.pill.cx-G.mx; a.oy = G.pill.cy-G.my; }                  // já dentro dos limites da imagem
+    redrawSetas(); drawSel(); return;
+  }
   if(d.mode==='move'){
     const mx = cl(dx,-Math.min(s.x0,s.x1),R.IW-Math.max(s.x0,s.x1)), my = cl(dy,-Math.min(s.y0,s.y1),R.IH-Math.max(s.y0,s.y1));
     a.x0 = s.x0+mx; a.y0 = s.y0+my; a.x1 = s.x1+mx; a.y1 = s.y1+my;
@@ -672,8 +684,8 @@ function dragEnd(){
   const d = R.drag; R.drag = null; if(!d) return;
   const a = d.a;
   if(!d.moved){ abrirTxt(a); return; }                                          // toque na seta: editar o texto / apagar
-  ['x0','y0','x1','y1'].forEach(k=>{ a[k] = +a[k].toFixed(1); });
-  lista().push({mv:true, ref:a, from:d.s0, to:{x0:a.x0,y0:a.y0,x1:a.x1,y1:a.y1}}); st().redo[R.view] = []; sync();
+  ['x0','y0','x1','y1','ox','oy'].forEach(k=>{ if(a[k]!=null) a[k] = +a[k].toFixed(1); });
+  lista().push({mv:true, ref:a, from:d.s0, to:snap(a)}); st().redo[R.view] = []; sync();
 }
 function apagarSeta(){
   const a = R.sel; if(!a || !setasVis().includes(a)) return;
