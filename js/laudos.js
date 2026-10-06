@@ -2510,16 +2510,34 @@ function lauItemPanel(m, it){
   }
   return h + `<button type="button" class="lau-reset" onclick="lauItemReset('${k}')">${svgIcon(P.reset,14,{sw:2})} Voltar ao normal</button>`;
 }
+/* tela larga (≥ 1200px): o item aberto aparece numa coluna do meio, entre os achados e o laudo */
+function lauLado(){ return typeof matchMedia==='function' && matchMedia('(min-width:1200px)').matches; }
+let _lauMid=null;
 function lauCard(key, title, sum, body){
-  const L=state.lau, open=L.open===key;
-  return `<div class="lau-it ${open?'open':''}">
+  const L=state.lau, open=L.open===key, lado=lauLado();
+  if(open && lado) _lauMid={key, title, body:body()};
+  return `<div class="lau-it ${open?'open':''}" data-card="${key}">
       <div class="lau-ih" onclick="lauToggle('${key}')">
         <div class="lau-in"><div class="lau-il">${title}</div>${sum}</div>
         <button type="button" class="lau-alt">${open?'Fechar':'Alterar'}</button>
       </div>
-      ${open?`<div class="lau-ib">${body()}</div>`:''}
+      ${open&&!lado?`<div class="lau-ib">${body()}</div>`:''}
     </div>`;
 }
+function lauMidHTML(){
+  const c=_lauMid; if(!c) return '';
+  return `<div class="lau-mid-h"><div class="lau-il">${c.title}</div><button type="button" class="lau-alt" onclick="lauToggle('${c.key}')">Fechar</button></div><div class="lau-ib">${c.body}</div>`;
+}
+/* desenha a coluna do meio (e liga/desliga a 3ª coluna do grid) depois de lauLeftHTML() */
+function lauMidSync(){
+  const mid=document.getElementById('lau-mid'); if(!mid) return;
+  const h=lauMidHTML(); const sp=mid.closest('.lau-split');
+  const ant=mid.dataset.key||'';
+  mid.innerHTML = h ? translateHTML(h) : ''; mid.hidden=!h; mid.dataset.key=_lauMid?_lauMid.key:'';
+  if(sp) sp.classList.toggle('has-mid', !!h);
+  if(h && ant!==mid.dataset.key) mid.scrollTop=0;
+}
+if(typeof matchMedia==='function'){ matchMedia('(min-width:1200px)').addEventListener('change', ()=>{ if(document.getElementById('lau-left')) lauRenderLeft(); }); }
 function lauLeftHTML(){
   const L=lauCur(); const m=lauModelo(L.model);
   const tit=lauTitulo(m);
@@ -2583,7 +2601,7 @@ function lauAteroSet(g){
 }
 function lauRenderLeft(){
   const el=document.getElementById('lau-left'); if(!el) return;
-  el.innerHTML = translateHTML(lauLeftHTML());
+  _lauMid=null; el.innerHTML = translateHTML(lauLeftHTML()); lauMidSync();
 }
 
 function lauToolbarHTML(){
@@ -2614,7 +2632,7 @@ function lauToolbarHTML(){
 function laudoEditHTML(){
   const L=lauCur();
   if(!L) return `<div class="calc-list-wrap"><div class="empty"><div class="msg">Escolha um modelo de laudo.</div></div></div>`;
-  setTimeout(lauMountEditor, 0);
+  setTimeout(()=>{ lauMountEditor(); lauMidSync(); }, 0);
   return `<div class="lau-wrap tab-${L.tab}">
     <div class="lau-beta"><b>Em desenvolvimento · fase de testes.</b> Confira sempre o texto antes de usar. Campos em <mark class="lau-ph">amarelo</mark> ainda não foram preenchidos. Sugestões e erros: Configurações → Críticas e Sugestões.</div>
     ${lauFavsEdHTML(L.model)}
@@ -2623,7 +2641,8 @@ function laudoEditHTML(){
       <button type="button" class="${L.tab==='txt'?'on':''}" onclick="lauTab('txt')">Laudo</button>
     </div>
     <div class="lau-split">
-      <div class="lau-pane lau-l"><div id="lau-voz">${typeof vozHTML==='function'?vozHTML():''}</div><div id="lau-left">${lauLeftHTML()}</div></div>
+      <div class="lau-pane lau-l"><div id="lau-voz">${typeof vozHTML==='function'?vozHTML():''}</div><div id="lau-left">${(_lauMid=null, lauLeftHTML())}</div></div>
+      <div class="lau-pane lau-m" id="lau-mid" hidden></div>
       <div class="lau-pane lau-r">
         ${lauToolbarHTML()}
         <div id="lau-ed" class="lau-ed" contenteditable="true" spellcheck="true" lang="pt-BR" oninput="lauSaveEd()"></div>
