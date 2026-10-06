@@ -63,6 +63,7 @@
       <button id="btnClear">Limpar</button>
       <button id="btnCopy">Copiar</button>
       <button id="btnTxt">Baixar .txt</button>
+      <button id="btnTeach" title="Selecione no texto o trecho que saiu errado e clique aqui">✏️ Ensinar correção</button>
       <span class="status"><span id="dot" class="dot"></span><span id="statusTxt">Parado</span></span>
     </div>
     <div class="row">
@@ -112,6 +113,15 @@
       <textarea id="customVocab" placeholder="ex.: Klug, colangiorressonância, BI-RADS, Gadovist"></textarea>
       <div class="row" style="margin-top:8px"><button id="btnSaveVocab">Salvar vocabulário</button></div>
     </details>
+    <details style="margin-top:12px">
+      <summary>Correções de palavras (errado = certo)</summary>
+      <p class="hint">Uma regra por linha. Também dá para ensinar direto no texto: selecione o trecho que saiu errado e clique em “Ensinar correção”. As regras ficam salvas neste navegador.</p>
+      <textarea id="customFixes" placeholder="ex.: para hospital = parasseptal"></textarea>
+      <div class="row" style="margin-top:8px">
+        <button id="btnSaveFixes">Salvar correções</button>
+        <button id="btnCopyFixes">Copiar regras</button>
+      </div>
+    </details>
   </div>
 
   <div class="alert">
@@ -124,6 +134,7 @@
   "use strict";
 
   /* ========= Vocabulário ========= */
+  //@@PURE-START
 
   // Palavras comuns do português necessárias para frases (nunca filtradas)
   const COMMON = `a o as os um uma uns umas de do da dos das em no na nos nas por para com sem sob sobre entre até ao aos à às
@@ -146,7 +157,7 @@
   hiperdenso hipodenso isodenso hiperecogênico hipoecogênico anecoico anecogênico isoecogênico heterogêneo homogêneo
   hiperintenso hipointenso isointenso sinal t1 t2 flair dwc difusão restrição
   nódulo massa lesão cisto cístico sólido calcificação calcificado microcalcificações espessamento derrame efusão
-  atelectasia consolidação infiltrado opacidade vidro-fosco enfisema pneumotórax pneumonia bronquiectasias fibrose
+  atelectasia consolidação infiltrado opacidade vidro fosco enfisema pneumotórax pneumonia bronquiectasias fibrose
   pulmão pulmonar pulmões pleura pleural mediastino mediastinal hilo hilar traqueia brônquio brônquios diafragma
   coração cardíaco cardiomegalia pericárdio aorta aórtico coronárias coronariana artéria artérias veia veias vascular
   fígado hepático hepatomegalia esteatose hepatite cirrose vesícula biliar colecistite colelitíase litíase cálculo cálculos
@@ -175,12 +186,24 @@
   suv sul hounsfield hu cm3 ml
   axial coronal sagital oblíquo reformatação série sequência sequências corte cortes
   recomenda-se sugere-se correlação clínica correlacionar controle seguimento complementação investigação
+  centrolobular parasseptal paraseptal panlobular panacinar acinar enfisematoso enfisematosa bolha bolhas bolhoso bolhosa
+  bronquiolite bronquiolectasias bronquiectasia faveolamento reticulado reticulação reticular micronódulos micronodular micronódulo
+  perilinfático perilinfáticos peribroncovascular peribrônquico subpleural subpleurais subsólido subsólidos septal interlobular intralobular
+  mosaico aprisionamento aéreo brotamento traqueomalácia broncomalácia pneumomediastino pneumopatia pneumonite
+  hepatoesplenomegalia esplenomegalia nefrolitíase nefrolitíase pielonefrite hidroureter hidronefrótico urolitíase
+  hiatal diafragmática eventração hepatopatia colecistectomia nefrectomia histerectomia prostatectomia mastectomia
+  linfadenomegalia adenomegalia calcificações microcalcificação macrocalcificação espiculados lobulados
+  osteófitos osteofitose espondiloartrose uncoartrose facetária facetas artrose osteoartrose condromalácia
+  mielopatia radiculopatia recesso foraminal foraminais neuroforames neuroforame
+  paranasal etmoidal esfenoidal maxilar frontal pansinusopatia rinossinusite
+  tromboembolismo trombose tromboembólico embolia pulmonar tromboembolia
+  aterosclerose aterosclerótica aterosclerótico ateromatose ateromatosa estenose oclusão ectasiante
   `;
 
   const MEDICAL_FIXES = [ // correções comuns de erros do reconhecedor
     [/\bressonancia\b/gi, "ressonância"],
     [/\btomografia computadorizada\b/gi, "tomografia computadorizada"],
-    [/\bpet scan\b/gi, "PET-CT"],
+    [/\bpet scan\b|\bpet\s*-?\s*ct\b/gi, "PET-CT"],
     [/\bbi hrads\b|\bbirads\b|\bbi rads\b/gi, "BI-RADS"],
     [/\braio x\b|\braios x\b/gi, "raio-X"],
     [/\bt um\b/gi, "T1"],
@@ -204,13 +227,145 @@
   const wordsOf = s => s.split(/\s+/).map(x => x.trim()).filter(Boolean);
 
   let vocabSet = new Set();
+  let termDisplay = new Map();      // forma normalizada -> grafia correta (com acentos)
+  let fuzzyTerms = [];              // termos candidatos à correção por semelhança de som
+  let userFixes = [];               // regras "errado = certo"
+
+  const DEFAULT_FIXES = `
+centro lobular = centrolobular
+centro obular = centrolobular
+centro bular = centrolobular
+para septal = parasseptal
+para sceptal = parasseptal
+para ceptal = parasseptal
+para séptal = parasseptal
+paraseptal = parasseptal
+pan lobular = panlobular
+pan acinar = panacinar
+peri linfático = perilinfático
+peri brônquico = peribrônquico
+sub pleural = subpleural
+sub sólido = subsólido
+`;
+
+  const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  function parseFixLines(txt) {
+    const out = [];
+    String(txt || "").split(/\n+/).forEach(l => {
+      const m = l.split(/\s*(?:=>|=)\s*/);
+      if (m.length === 2 && m[0].trim() && m[1].trim()) out.push([m[0].trim(), m[1].trim()]);
+    });
+    return out;
+  }
+  function buildFixes() {
+    let custom = "";
+    try { custom = localStorage.getItem("klug_voz_fixes") || ""; } catch (e) {}
+    const all = parseFixLines(DEFAULT_FIXES).concat(parseFixLines(custom));
+    userFixes = all.sort((a, b) => b[0].length - a[0].length).map(([from, to]) => ({
+      re: new RegExp("(?<![\\p{L}\\p{N}])" + from.split(/[\s-]+/).map(reEsc).join("[\\s-]+") + "(?![\\p{L}\\p{N}])", "giu"),
+      to
+    }));
+  }
+
+  // correções que dependem do contexto (erros típicos de reconhecimento)
+  const CONTEXT_FIXES = [
+    // "enfisema centrolobular e para hospital" -> "... e parasseptal"
+    [/(?<![\p{L}])(enfisema[^.;\n]{0,50}?[\p{L}])\s+(?:e\s+)?para\s*-?\s*(?:hospital|ospital|septal|s[eé]ptal|sceptal|ceptal)(?![\p{L}])/giu, "$1 e parasseptal"],
+  ];
+
   function buildVocab() {
     vocabSet = new Set();
-    wordsOf(COMMON + " " + MEDICAL).forEach(w => vocabSet.add(norm(w)));
+    termDisplay = new Map();
+    wordsOf(COMMON).forEach(w => vocabSet.add(norm(w)));
+    const addTerm = w => {
+      const n = norm(w);
+      vocabSet.add(n);
+      if (!termDisplay.has(n)) termDisplay.set(n, w);
+    };
+    wordsOf(MEDICAL).forEach(addTerm);
     try {
       const custom = localStorage.getItem("klug_custom_vocab") || "";
-      custom.split(/[\n,;]+/).forEach(t => wordsOf(t).forEach(w => vocabSet.add(norm(w))));
+      custom.split(/[\n,;]+/).forEach(t => wordsOf(t).forEach(addTerm));
     } catch (e) {}
+    fuzzyTerms = [];
+    termDisplay.forEach((disp, n) => {
+      const plain = n.replace(/-/g, "");
+      if (plain.length >= 7) fuzzyTerms.push({ disp, key: phon(plain), len: plain.length });
+    });
+    buildFixes();
+  }
+
+  // forma "fonética" simplificada do português, para comparar sons parecidos
+  function phon(w) {
+    return norm(w).replace(/[^a-z0-9]/g, "")
+      .replace(/ph/g, "f").replace(/ch/g, "x").replace(/qu/g, "k")
+      .replace(/sc(?=[ei])/g, "s").replace(/c(?=[ei])/g, "s")
+      .replace(/[ck]/g, "k").replace(/h/g, "").replace(/z/g, "s").replace(/w/g, "v").replace(/y/g, "i")
+      .replace(/(.)\1+/g, "$1");
+  }
+  function lev(a, b) {
+    const m = a.length, n = b.length;
+    if (!m) return n; if (!n) return m;
+    let prev = Array.from({ length: n + 1 }, (_, j) => j);
+    for (let i = 1; i <= m; i++) {
+      const cur = [i];
+      for (let j = 1; j <= n; j++) {
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      }
+      prev = cur;
+    }
+    return prev[n];
+  }
+  function bestTerm(joined) {
+    const key = phon(joined), L = joined.length;
+    const thr = L >= 10 ? 0.84 : 0.88;
+    let best = null, bestSim = 0;
+    for (const t of fuzzyTerms) {
+      if (Math.abs(t.len - L) > 3) continue;
+      const sim = 1 - lev(key, t.key) / Math.max(key.length, t.key.length);
+      if (sim >= thr && sim > bestSim) { best = t; bestSim = sim; }
+    }
+    return best;
+  }
+
+  // junta/corrige palavras que o reconhecedor separou ou trocou por semelhança de som
+  function fuzzyFix(text) {
+    const parts = text.split(/(\s+)/);
+    const idx = [];
+    parts.forEach((p, i) => { if (p && !/^\s+$/.test(p)) idx.push(i); });
+    const strip = t => t.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "");
+    const out = [];
+    let k = 0;
+    while (k < idx.length) {
+      let replaced = false;
+      for (let n = Math.min(3, idx.length - k); n >= 1 && !replaced; n--) {
+        const toks = idx.slice(k, k + n).map(i => parts[i]);
+        // não junta palavras separadas por pontuação
+        if (n > 1 && toks.slice(0, -1).some(t => /[.,;:!?)]$/.test(t))) continue;
+        // não engole conectivos curtos ("e", "de", "em"…) nas pontas do trecho
+        const shortWord = t => { const c = norm(strip(t)); return c.length <= 3 && vocabSet.has(c); };
+        if (n > 1 && (shortWord(toks[0]) || shortWord(toks[n - 1]))) continue;
+        const cores = toks.map(strip);
+        if (cores.some(c => !c || /\d/.test(c))) continue;
+        const joined = cores.join("").replace(/-/g, "");
+        const nj = norm(joined);
+        if (n === 1 && (vocabSet.has(norm(cores[0])) || vocabSet.has(nj))) continue;
+        let term = null;
+        if (vocabSet.has(nj) && nj.length >= 8 && n > 1) term = { disp: termDisplay.get(nj) || joined };
+        else if (joined.length >= (n > 1 ? 8 : 7)) term = bestTerm(joined);
+        if (!term) continue;
+        const lead = (toks[0].match(/^[^\p{L}\p{N}]*/u) || [""])[0];
+        const trail = (toks[n - 1].match(/[^\p{L}\p{N}]*$/u) || [""])[0];
+        let disp = term.disp;
+        if (/^\p{Lu}/u.test(cores[0])) disp = disp.charAt(0).toUpperCase() + disp.slice(1);
+        out.push(lead + disp + trail);
+        k += n;
+        replaced = true;
+      }
+      if (!replaced) { out.push(parts[idx[k]]); k++; }
+    }
+    // reconstrói com espaços simples entre as palavras
+    return out.join(" ");
   }
 
   // Considera palavra "ok" se: está no vocabulário, é número/unidade, ou tem raiz/sufixo médico
@@ -235,10 +390,17 @@
 
   function applyFixes(text, usePunct) {
     let t = text;
+    userFixes.forEach(({ re, to }) => {
+      t = t.replace(re, m => (/^\p{Lu}/u.test(m) ? to.charAt(0).toUpperCase() + to.slice(1) : to));
+    });
+    CONTEXT_FIXES.forEach(([re, to]) => t = t.replace(re, to));
+    t = fuzzyFix(t);
     MEDICAL_FIXES.forEach(([re, to]) => t = t.replace(re, to));
     if (usePunct) PUNCT.forEach(([re, to]) => t = t.replace(re, to));
     return t;
   }
+
+  //@@PURE-END
 
   /* ========= Elementos ========= */
   const $ = id => document.getElementById(id);
@@ -266,6 +428,36 @@
   $("strict").addEventListener("input", e => {
     $("strictVal").textContent = ["Baixo", "Médio", "Alto"][+e.target.value];
   });
+  try { $("customFixes").value = localStorage.getItem("klug_voz_fixes") || ""; } catch (e) {}
+  $("btnSaveFixes").onclick = () => {
+    try { localStorage.setItem("klug_voz_fixes", $("customFixes").value); } catch (e) {}
+    buildFixes();
+    alert("Correções salvas.");
+  };
+  $("btnCopyFixes").onclick = async () => {
+    try { await navigator.clipboard.writeText($("customFixes").value); alert("Regras copiadas."); }
+    catch (e) { $("customFixes").select(); document.execCommand("copy"); }
+  };
+  $("btnTeach").onclick = () => {
+    const sel = window.getSelection();
+    const errado = sel && sel.toString().trim();
+    if (!errado || !sel.rangeCount || !out.contains(sel.getRangeAt(0).commonAncestorContainer)) {
+      alert("Primeiro selecione, no texto ditado, o trecho que saiu errado.");
+      return;
+    }
+    const certo = prompt("Como esse trecho deveria estar escrito?", errado);
+    if (!certo || !certo.trim() || certo.trim() === errado) return;
+    const r = sel.getRangeAt(0);
+    r.deleteContents();
+    r.insertNode(document.createTextNode(certo.trim()));
+    finalText = out.innerText.replace(/\n$/, "");
+    let cur = "";
+    try { cur = localStorage.getItem("klug_voz_fixes") || ""; } catch (e) {}
+    cur = (cur ? cur.replace(/\s+$/, "") + "\n" : "") + errado.replace(/\s*=\s*/g, " ") + " = " + certo.trim();
+    try { localStorage.setItem("klug_voz_fixes", cur); } catch (e) {}
+    $("customFixes").value = cur;
+    buildFixes();
+  };
   $("btnSaveVocab").onclick = () => {
     try { localStorage.setItem("klug_custom_vocab", $("customVocab").value); } catch (e) {}
     buildVocab();
@@ -331,6 +523,11 @@
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.maxAlternatives = 3;
+    try { // se o navegador suportar, pede ao reconhecedor que priorize os termos médicos
+      if (typeof SpeechRecognitionPhrase !== "undefined" && "phrases" in recognition) {
+        recognition.phrases = fuzzyTerms.slice(0, 400).map(t => new SpeechRecognitionPhrase(t.disp, 5.0));
+      }
+    } catch (e) {}
 
     recognition.onresult = ev => {
       interimText = "";
@@ -340,7 +537,7 @@
           // escolhe a alternativa com mais termos reconhecidos no contexto
           let best = res[0].transcript, bestScore = -1;
           for (let a = 0; a < res.length; a++) {
-            const tr = res[a].transcript;
+            const tr = applyFixes(res[a].transcript.trim(), false);
             const score = wordsOf(tr).filter(w => isInContext(w, 1)).length + res[a].confidence;
             if (score > bestScore) { bestScore = score; best = tr; }
           }
