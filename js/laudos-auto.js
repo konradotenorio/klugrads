@@ -156,7 +156,7 @@ const LAU_AUTO_TXT = [
    cond:(v,A)=> A.residMin && v >= A.residMin,
    conc:v=>`Resíduo pós-miccional ${lauResidGrau(v)} (estimado em ${LAU_N(v)} mL).`,
    concRep:[/^Resíduo pós-miccional estimado em/, v=>`Resíduo pós-miccional ${lauResidGrau(v)}, estimado em`]},
-  {id:'porta', item:/^veia porta$/, campo:/calibre de$/,
+  {id:'porta', item:/^veia porta( \(tronco|$)/, campo:/calibre de$/,
    cond:(v,A)=> A.portaMax && v > A.portaMax,
    txt:[[/com calibre de/, 'com calibre aumentado, de']],
    conc:v=>`Veia porta com calibre aumentado (${LAU_LEN(v)}).`},

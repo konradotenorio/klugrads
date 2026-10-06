@@ -4279,7 +4279,7 @@ const LAU_US_MASKS = [
 {
 "k": "veia-porta-tronco-e-ramos-intrahepaticos",
 "label": "Veia porta (tronco e ramos intrahepáticos)",
-"text": "pérvia, de calibre normal, apresentando fluxo hepatopetal com velocidades no tronco em torno de 20 XX cm/s.",
+"text": "pérvia, com calibre de XXX cm, apresentando fluxo hepatopetal com velocidades no tronco em torno de XXX cm/s.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -8019,7 +8019,7 @@ const LAU_US_MASKS = [
 {
 "k": "veia-porta-tronco-e-ramos-intrahepaticos",
 "label": "Veia porta (tronco e ramos intrahepáticos)",
-"text": "pérvia, de calibre normal, apresentando fluxo hepatopetal com velocidades no tronco em torno de XXX cm/s.",
+"text": "pérvia, com calibre de XXX cm, apresentando fluxo hepatopetal com velocidades no tronco em torno de XXX cm/s.",
 "dash": true,
 "opts": [],
 "grp": ""

@@ -1834,6 +1834,8 @@ function lauItemHTML(m, it){
     if(c && c.parcial){ const fica = c.parcial==='direito' ? 'esquerdo' : 'direito';
       const seg = txt.replace(/\.$/,'').split(/;\s*/).find(x=>new RegExp('^lobo '+fica).test(x.trim()));
       if(seg) txt = seg.trim().replace(/^lobo (direito|esquerdo):/, 'lobo $1 (remanescente):') + '.'; } }
+  // Doppler: calibre da veia porta não medido → "de calibre normal"
+  if(it.generic && /^veia porta \(tronco/i.test(lauItemLabel(m,it)||'')) txt = txt.replace(/com calibre de <mark class="lau-ph">XXX<\/mark> cm/, 'de calibre normal');
   // útero: corpo/colo não medidos saem do texto
   if(it.generic) txt = txt.replace(/ ?Corpo uterino de <mark class="lau-ph">XXX<\/mark> cm e colo uterino de <mark class="lau-ph">XXX<\/mark> cm \(relação corpo\/colo de <mark class="lau-ph">XXX<\/mark>\)\./, '');
   // nervos: área seccional não medida sai do texto
