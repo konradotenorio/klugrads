@@ -1267,6 +1267,7 @@ function lauFraseText(id, bag, html){
     else if(lauMulti(f)) t += lauLocs(f,id,bag,html).slice(1).map((l,j)=>`${html?'<br>':'\n'}Formação semelhante ${j+2}: ${l}.`).join('');
     else if(!f.tn) t += ' ' + lauFill(LAU_QTPL, bag['q'+id], html);
   }
+  if(f.o==='epididimo') t = t.replace('na corpo do epidídimo','no corpo do epidídimo');
   if(f.contra){ const tk=lauTpl(f.t).lines.flat().find(x=>x.t==='c'); const v=tk&&((bag['f'+id]||[])[tk.i]||tk.def);
     if(v==='direito'||v==='esquerdo') t += ' ' + f.contra.replace('{X}', v==='direito'?'esquerdo':'direito'); }
   if(f.vaz) t = lauTiraVazio(t, f.vaz);
@@ -1763,7 +1764,7 @@ function lauItemHTML(m, it){
   const les = (r.les||[]).map(x=>esc(x)).concat(lesF.map(id=>lauFraseText(id, s.__v, true)));
   if(les.length) txt = lauExceto(txt, les);
   // testículos: alteração difusa (microlitíase, orquite, ausência de fluxo) descrita no próprio testículo afetado
-  const tUsados = (r.txt==null && !subs.length) ? lauTestRefaz(s) : null;
+  const tUsados = (r.txt==null && !subs.length) ? (lauTestRefaz(s) || lauEpiRefaz(s)) : null;
   if(tUsados) txt = tUsados.txt;
   const adds = (s.__f||[]).filter(id=>{ const f=lauFI(id); return f && f.m==='add' && !f.les && !(tUsados && tUsados.ids.indexOf(id)>=0); }).map(id=>lauFraseText(id, s.__v, true));
   if(adds.length && !subs.length && r.txt==null){
@@ -2278,6 +2279,27 @@ function lauTestRefaz(s){
   const txt = igual ? `tópicos, ${dsc(desc.D)}, bilateralmente. Testículo direito ${mm[1]}; testículo esquerdo ${mm[2]}.${resto}`
     : `tópicos. Testículo direito ${dsc(desc.D)}, ${mm[1]}. Testículo esquerdo ${dsc(desc.E)}, ${mm[2]}.${resto}`;
   return {txt, ids};
+}
+/* Epidídimos: cisto descrito no epidídimo do lado (o outro segue normal) */
+function lauEpiRefaz(s){
+  const L=lauCur(); if(!L) return null;
+  const m=lauModelo(L.model); if(!m) return null;
+  const it=m.items.find(x=>state.lau.v[x.k]===s); if(!it) return null;
+  const mm=(lauItemNormal(m,it)||'').match(/^com dimensões normais e ecotextura característica(.*)\.$/); if(!mm) return null;
+  const suf=mm[1]||'', lado={direito:[], esquerdo:[]}, ids=[];
+  for(const id of (s.__f||[])){
+    const f=lauFI(id); if(!f || f.o!=='epididimo' || f.n!=='Cisto de epidídimo') continue;
+    if(lauQtd(f,s.__v,id)==='n') return null;
+    const t=lauFraseText(id, s.__v, true), x=t.match(/^Cisto (n[ao] \S+) do epidídimo (direito|esquerdo)(.*)\.$/);
+    if(!x) return null;
+    lado[x[2]].push(`com cisto ${x[1]}${x[3]}`); ids.push(id);
+  }
+  if(!ids.length) return null;
+  const frase = (L2)=> lado[L2].length
+    ? `Epidídimo ${L2} com dimensões normais${suf}, ${lado[L2].join('; ')}.`
+    : `Epidídimo ${L2} com dimensões normais e ecotextura característica${suf}.`;
+  const t2 = frase('direito')+' '+frase('esquerdo');
+  return {txt: t2.charAt(0).toLowerCase()+t2.slice(1), ids};
 }
 function lauFraseAfter(k){
   lauRenderLeft();
