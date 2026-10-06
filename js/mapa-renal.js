@@ -363,7 +363,7 @@ function svg(){
     o += `<text x="${W-246}" y="${ly+2}" ${F} font-size="20" font-weight="800" fill="${tc}">R.E.N.A.L. ${sc.tot}${sc.suf}</text>`;
     o += `<text x="${W-246}" y="${ly+19}" ${F} font-size="11.5" font-weight="700" fill="${C.txt}">${sc.comp} · R${sc.R} E${sc.E} N${sc.N} L${sc.L}</text>`;
   }
-  o += `<text x="${W-12}" y="${H-8}" ${F} font-size="10" font-weight="600" fill="rgba(31,38,48,.82)" text-anchor="end">${MARCA}</text>`;
+  o += `<text x="20" y="${H-8}" ${F} font-size="10" font-weight="600" fill="rgba(31,38,48,.82)">${MARCA}</text>`;
   return o + '</svg>';
 }
 

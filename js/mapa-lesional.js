@@ -44,12 +44,13 @@ const MSL_CORES = [
 ];
 /* MARCA PADRÃO de TODOS os mapas do Mapa Setorial Lesional (próstata, pelve, fístula, rim…).
    Um mapa novo deve chamar mslMarca() ao desenhar a base (e usar MSL_MARCA no texto), para a
-   frase, o tamanho e a posição ficarem iguais em todos. Cada mapa escolhe só a cor e o canto
-   conforme o fundo da sua imagem (preto em fundo claro, branco em fundo escuro). */
+   frase, o tamanho e a posição ficarem iguais em todos. POSIÇÃO PADRÃO: canto inferior ESQUERDO.
+   Cada mapa escolhe só a cor conforme o fundo da sua imagem (preto/escuro em fundo claro, branco
+   em fundo escuro). */
 const MSL_MARCA = 'Imagem ilustrada e editada em KlugRads';
 function mslMarca(ctx, W, H, o){
   o = o || {};
-  const dir = o.canto!=='esq', fs = Math.max(9,Math.round(W*0.0105)), m = W*0.014;
+  const dir = o.canto==='dir', fs = Math.max(9,Math.round(W*0.0105)), m = W*0.014;
   ctx.save();
   ctx.font = `600 ${fs}px "Segoe UI",Arial,Helvetica,sans-serif`; ctx.textBaseline = 'alphabetic'; ctx.textAlign = dir ? 'right' : 'left';
   if(o.sombra){ ctx.shadowColor = 'rgba(0,0,0,.65)'; ctx.shadowBlur = fs*0.28; ctx.shadowOffsetY = 1; }
@@ -375,8 +376,8 @@ function mslDrawBase(){
   const ctx=MSL.bctx; if(!ctx||!MSL.img) return;
   const s=mslState(), o=MSL_ORGAOS[s.org], N=MSL.N;
   ctx.clearRect(0,0,N,N); ctx.imageSmoothingQuality='high'; ctx.drawImage(MSL.img,0,0,N,N);
-  // marca padrão (próstata: preto, canto inferior direito)
-  mslMarca(ctx, N, N, {cor:'#000000', canto:'dir'});
+  // marca padrão (próstata: preto, canto inferior esquerdo)
+  mslMarca(ctx, N, N, {cor:'#000000', canto:'esq'});
   // legenda na imagem: "Legenda:" e uma linha "(cor) - Lesão N" para cada lesão pintada
   const rows=MSL_CORES.filter(c=>MSL.used[c.id-1]);
   if(!s.legend || !rows.length) return;
