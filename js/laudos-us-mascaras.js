@@ -7942,6 +7942,176 @@ const LAU_US_MASKS = [
 ],
 "trailer": [],
 "flags": []
+},
+{
+"id": "us-doppler-abdome-total",
+"metodo": "us",
+"nome": "Doppler: Abdome Total",
+"grupo": "Vascular",
+"titulo": [
+"ULTRASSONOGRAFIA DO ABDOME TOTAL COM DOPPLER"
+],
+"items": [
+{
+"k": "figado",
+"label": "Fígado",
+"text": "com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vesicula-biliar",
+"label": "Vesícula biliar",
+"text": "tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares-intra-e-extra-hepaticas",
+"label": "Vias biliares intra e extra-hepáticas",
+"text": "sem dilatações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "com dimensões, contornos e ecogenicidade normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "com dimensões normais, homogêneo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, com espessura e ecogenicidade parenquimatosas preservadas, sem hidronefrose ou cálculos detectáveis ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-hepatica",
+"label": "Artéria hepática",
+"text": "pérvia, com fluxo bifásico de boa amplitude e índice de resistividade (IR) de XXX.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veia-porta-tronco-e-ramos-intrahepaticos",
+"label": "Veia porta (tronco e ramos intrahepáticos)",
+"text": "pérvia, de calibre normal, apresentando fluxo hepatopetal com velocidades no tronco em torno de XXX cm/s.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veias-esplenica-e-mesenterica-superior",
+"label": "Veias esplênica e mesentérica superior",
+"text": "pérvias, de calibre normal, com fluxo de sentido preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veias-hepaticas",
+"label": "Veias hepáticas",
+"text": "pérvias, de calibres preservados e distribuição habitual, apresentando fluxo multifásico hepatofugal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veia-cava-inferior",
+"label": "Veia cava inferior",
+"text": "pérvia.",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vesicula-biliar"
+},
+{
+"t": "item",
+"k": "vias-biliares-intra-e-extra-hepaticas"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "line",
+"text": "Ao estudo Doppler:"
+},
+{
+"t": "item",
+"k": "arteria-hepatica"
+},
+{
+"t": "item",
+"k": "veia-porta-tronco-e-ramos-intrahepaticos"
+},
+{
+"t": "item",
+"k": "veias-esplenica-e-mesenterica-superior"
+},
+{
+"t": "item",
+"k": "veias-hepaticas"
+},
+{
+"t": "item",
+"k": "veia-cava-inferior"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem alterações significativas.",
+"dash": true
+}
+],
+"trailer": [],
+"flags": []
 }
 ];
 const LAU_MMG_MASKS = [
