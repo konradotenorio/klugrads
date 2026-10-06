@@ -1312,9 +1312,9 @@ const LAU_ALVOS = {
                  musc:[['glúteo médio','glúteo médio'],['glúteo mínimo','glúteo mínimo'],['iliopsoas','iliopsoas'],['adutor longo','adutor longo'],['retofemoral','retofemoral']]},
   'us-tornozelo':{lig:[['fibulotalar anterior','fibulotalar anterior'],['fibulocalcâneo','fibulocalcâneo'],['tibiofibular anterior','tibiofibular anterior'],['deltoide','deltoide']],
                  // compartimentos: tendinopatia, tenossinovite ou tendinopatia com tenossinovite (t3)
-                 tend:[['calcâneo','do calcâneo'],['tibial anterior','do tibial anterior',{t3:1, ts:1}],['extensor longo do hálux','do extensor longo do hálux',{t3:1, ts:1}],['extensor longo dos dedos','do extensor longo dos dedos',{t3:1, ts:1}],
-                       ['tibial posterior','do tibial posterior',{t3:1, ts:1}],['flexor longo dos dedos','do flexor longo dos dedos',{t3:1, ts:1}],['flexor longo do hálux','do flexor longo do hálux',{t3:1, ts:1}],
-                       ['fibular longo','do fibular longo',{t3:1, ts:1}],['fibular curto','do fibular curto',{t3:1, ts:1}]], musc:[]},
+                 tend:[['calcâneo','do calcâneo',{locs:1, nb:1}],['tibial anterior','do tibial anterior',{t3:1, ts:1, al:['compartimento anterior']}],['extensor longo do hálux','do extensor longo do hálux',{t3:1, ts:1, al:['compartimento anterior']}],['extensor longo dos dedos','do extensor longo dos dedos',{t3:1, ts:1, al:['compartimento anterior']}],
+                       ['tibial posterior','do tibial posterior',{t3:1, ts:1, al:['compartimento medial']}],['flexor longo dos dedos','do flexor longo dos dedos',{t3:1, ts:1, al:['compartimento medial']}],['flexor longo do hálux','do flexor longo do hálux',{t3:1, ts:1, al:['compartimento medial']}],
+                       ['fibular longo','do fibular longo',{t3:1, ts:1, al:['compartimento lateral']}],['fibular curto','do fibular curto',{t3:1, ts:1, al:['compartimento lateral']}]], musc:[]},
   'us-pe':      {tend:[['tibial posterior','do tibial posterior'],['fibulares','dos fibulares'],['flexores','flexores'],['extensores','extensores']], musc:[['abdutor do hálux','abdutor do hálux'],['flexor curto dos dedos','flexor curto dos dedos'],['quadrado plantar','quadrado plantar']]},
   'us-braco':   {tend:[], musc:[['bíceps braquial','bíceps braquial'],['braquial','braquial'],['tríceps braquial','tríceps braquial'],['deltoide','deltoide'],['coracobraquial','coracobraquial']]},
   'us-antebraco':{tend:[], musc:[['flexor radial do carpo','flexor radial do carpo'],['flexores superficiais dos dedos','flexores superficiais dos dedos'],['extensor comum dos dedos','extensor comum dos dedos'],['braquiorradial','braquiorradial'],['pronador redondo','pronador redondo']]},
@@ -1324,6 +1324,9 @@ const LAU_ALVOS = {
 };
 const LAU_TEND_TIPOS = [['tend','Tendinopatia'],['parcial','Rotura parcial'],['completa','Rotura completa'],['calc','Tendinopatia calcárea']];
 const LAU_FACES = ['intrassubstancial','da face articular','da face bursal'];
+/* tendão calcâneo: localização da alteração */
+const LAU_TEND_LOCS = [['ins','Insercional','em sua porção insercional','insercional'],['corpo','Corpo (porção média)','em seu corpo (porção média)','da porção média'],['prox','Proximal','em sua porção proximal','proximal']];
+const lauTendLoc = t => LAU_TEND_LOCS.find(o=>o[0]===(t||{}).loc);
 const LAU_MUSC_TIPOS = [['est','Estiramento (grau I)'],['parcial','Rotura parcial (grau II)'],['completa','Rotura completa (grau III)'],['hemat','Hematoma'],['atrof','Atrofia / lipossubstituição']];
 function lauAlvos(kind){ const L=state.lau; const a=LAU_ALVOS[L&&L.model]||{}; return (kind==='tend'?a.tend:kind==='lig'?a.lig:a.musc)||[]; }
 const LAU_LIG_TIPOS = [['est','Estiramento'],['parcial','Rotura parcial'],['completa','Rotura completa']];
@@ -1352,6 +1355,11 @@ function lauTendTpl(f, t){
 /* frase de um alvo; sujeito = "tendão do supraespinal" (ou vazio quando o rótulo já diz qual é) */
 function lauTendFrase(f, a, t, vals, html, sujeito){
   t=t||{}; const tpl=lauTendTpl(f,t); const med = tpl ? lauFill(tpl, vals, html) : '';
+  const LC = lauTendLoc(t);
+  if(LC && t.tipo && f.kind==='tend'){   // localização logo após a alteração (tendão calcâneo)
+    const r0 = lauTendFrase(f, a, Object.assign({}, t, {loc:null}), vals, html, sujeito);
+    return r0.replace(/(espessados? e hipoecogênicos?|rotura parcial (?:intrassubstancial|da face articular|da face bursal)|rotura completa|tendinopatia calcárea)/, '$1 '+LC[2]);
+  }
   const S = sujeito ? sujeito+' ' : '';
   const tipo=t.tipo;
   if(f.kind==='tend'){
@@ -1409,7 +1417,8 @@ function lauTendConc(f, id, bag){
     const t=det[a.key]||{}; const tipo=t.tipo;
     if(!tipo && !t.bainha) return null;
     if(f.kind==='tend'){
-      const de = /^(do|da|dos|das) /.test(a.prep) ? a.prep : 'do tendão '+a.prep;
+      const LC = lauTendLoc(t);
+      const de = (LC && tipo ? LC[3]+' ' : '') + (/^(do|da|dos|das) /.test(a.prep) ? a.prep : 'do tendão '+a.prep);
       const b = t.bainha && tipo ? ', com distensão líquida da bainha tendínea' : '';
       if(a.x && (a.x.tn || a.x.ts)){ const bt = t.bainha ? (tipo?', com tenossinovite':'') : ''; if(!tipo) return {g:'tenos', pre:'Tenossinovite', de, suf:'.'};
         if(tipo==='tend') return {g:'tend-tn'+bt, pre:'Tendinopatia', de, suf:`, sem rotura${bt}.`}; }
@@ -1683,6 +1692,7 @@ function lauDescHTML(k, id, f, d){
       const t=det[a.key]||{}; const tpl=lauTendTpl(f,t);
       return `<div class="lau-tbox"><div class="lau-tbox-h">${esc(a.nome)}</div>
         <div class="lau-chips">${a.x&&a.x.t3 ? [['tend',0,'Tendinopatia'],['',1,'Tenossinovite'],['tend',1,'Tendinopatia com tenossinovite']].map(([ti,bn,txt])=>`<button type="button" class="ti-ftog ${(t.tipo||'')===ti&&!!t.bainha===!!bn&&(ti||bn)?'on':''}" onclick="lauDet3('${k}','${id}','${a.key}','${ti}',${bn})">${txt}</button>`).join('') : T.filter(o=>!(a.x&&a.x.tipos) || a.x.tipos.indexOf(o[0])>=0).map(o=>dchip(a.key,'tipo',o[0],o[1],t.tipo===o[0])).join('')}${f.kind==='tend'&&!(a.x&&(a.x.t3||a.x.nb))?dchip(a.key,'bainha',1,a.x&&(a.x.tn||a.x.ts)?'Tenossinovite':'Distensão líquida da bainha',!!t.bainha):''}</div>
+        ${a.x&&a.x.locs?`<div class="lau-rl" style="margin-top:6px">Localização</div><div class="lau-chips">${LAU_TEND_LOCS.map(o=>dchip(a.key,'loc',o[0],o[1],t.loc===o[0])).join('')}</div>`:''}
         ${f.kind==='tend'&&t.tipo==='parcial'?`<div class="lau-rl" style="margin-top:6px">Face</div><div class="lau-chips">${LAU_FACES.map((o,oi)=>dchip(a.key,'face',oi,o.replace('da face ','face '),(t.face||0)===oi)).join('')}</div>`:''}
         ${tpl?`<div class="lau-rl" style="margin-top:6px">Medidas</div>${lauInlineForm(k,'f'+id+'_'+a.key,tpl,bag['f'+id+'_'+a.key])}`:''}
       </div>`;

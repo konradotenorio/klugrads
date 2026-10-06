@@ -934,13 +934,13 @@ ULTRASSONOGRAFIA DO TORNOZELO XX
 Nome do Paciente: 
 Data de Nascimento: 
 Data do Exame: 
-- Compartimento anterior (tendões tibial anterior, extensor longo do hálux e extensor longo dos dedos): com espessura, contornos e ecotextura normais.
-- Compartimento medial (tendões tibial posterior, flexor longo dos dedos e flexor longo do hálux): com espessura, contornos e ecotextura normais.
-- Compartimento lateral (tendões fibular longo e fibular curto): com espessura, contornos e ecotextura normais.
+- Compartimento anterior: com espessura, contornos e ecotextura normais.
+- Compartimento medial: com espessura, contornos e ecotextura normais.
+- Compartimento lateral: com espessura, contornos e ecotextura normais.
 - Tendão calcâneo: de espessura e ecogenicidade preservadas.
 - Bursa retrocalcaneana: sem distensão líquida.
 - Ligamentos fibulotalar anterior, fibulocalcâneo, tibiofibular anterior e deltoide: preservados.
-- Fáscia plantar: com espessura, contornos e textura normais.
+- Fáscia plantar: com espessura de XXX cm junto à inserção calcânea, contornos e textura normais.
 - Derrame articular tibiotársico: não há.
  
 Conclusão:

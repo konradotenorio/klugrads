@@ -4111,24 +4111,24 @@ const LAU_US_MASKS = [
 ],
 "items": [
 {
-"k": "compartimento-anterior-tendoes-tibial-an",
-"label": "Compartimento anterior (tendões tibial anterior, extensor longo do hálux e extensor longo dos dedos)",
+"k": "compartimento-anterior",
+"label": "Compartimento anterior",
 "text": "com espessura, contornos e ecotextura normais.",
 "dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "compartimento-medial-tendoes-tibial-post",
-"label": "Compartimento medial (tendões tibial posterior, flexor longo dos dedos e flexor longo do hálux)",
+"k": "compartimento-medial",
+"label": "Compartimento medial",
 "text": "com espessura, contornos e ecotextura normais.",
 "dash": true,
 "opts": [],
 "grp": ""
 },
 {
-"k": "compartimento-lateral-tendoes-fibular-lo",
-"label": "Compartimento lateral (tendões fibular longo e fibular curto)",
+"k": "compartimento-lateral",
+"label": "Compartimento lateral",
 "text": "com espessura, contornos e ecotextura normais.",
 "dash": true,
 "opts": [],
@@ -4161,7 +4161,7 @@ const LAU_US_MASKS = [
 {
 "k": "fascia-plantar",
 "label": "Fáscia plantar",
-"text": "com espessura, contornos e textura normais.",
+"text": "com espessura de XXX cm junto à inserção calcânea, contornos e textura normais.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -4186,15 +4186,15 @@ const LAU_US_MASKS = [
 "seq": [
 {
 "t": "item",
-"k": "compartimento-anterior-tendoes-tibial-an"
+"k": "compartimento-anterior"
 },
 {
 "t": "item",
-"k": "compartimento-medial-tendoes-tibial-post"
+"k": "compartimento-medial"
 },
 {
 "t": "item",
-"k": "compartimento-lateral-tendoes-fibular-lo"
+"k": "compartimento-lateral"
 },
 {
 "t": "item",

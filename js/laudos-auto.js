@@ -19,7 +19,7 @@
 
 const LAU_AUTO_PADRAO = {on:true, rimMin:9, rimMax:13, bacoMax:13, prostMax:30, concLink:true,
   testMin:9, tireoMin:4, tireoMax:25, ovMax:10.4, ovMaxMeno:5.4, uteroMax:120, endoMenac:1.5, endoMeno:0.5,
-  residMin:30, portaMax:1.3, colMax:7, aortaEct:2.5, aortaAn:3, nervMed:10, nervUln:9, irHepMin:0.55, irHepMax:0.8};
+  residMin:30, portaMax:1.3, colMax:7, aortaEct:2.5, aortaAn:3, nervMed:10, nervUln:9, irHepMin:0.55, irHepMax:0.8, fascMax:0.4};
 /* limites: padrão global (Configurações) + ajustes feitos só neste laudo (state.lau.auto) */
 function lauAutoCfgG(){ const c=lauCfgAll(); return Object.assign({}, LAU_AUTO_PADRAO, c.auto||{}); }
 function lauAutoLocal(){ const L=state.lau; if(!L) return {lim:{}, off:{}, fase:'menac'}; if(!L.auto) L.auto={lim:{}, off:{}, fase:'menac'}; return L.auto; }
@@ -145,6 +145,11 @@ const LAU_AUTO_TXT = [
    conc:v=>{ const A=lauAutoCfg(); return A.irHepMin && v < A.irHepMin
      ? `Artéria hepática com índice de resistividade reduzido (IR de ${LAU_N(v)}).`
      : `Artéria hepática com índice de resistividade aumentado (IR de ${LAU_N(v)}).`; }},
+  /* fáscia plantar: espessura normal até 0,4 cm junto à inserção calcânea; acima = fasciite */
+  {id:'fascia', item:/^fascia plantar/, campo:/espessura de$/,
+   cond:(v,A)=> A.fascMax && v > A.fascMax,
+   txt:[[/com espessura de/, 'espessada e hipoecogênica, com espessura de'],[/, contornos e textura normais/, '']],
+   conc:v=>`Espessamento da fáscia plantar (${LAU_N(v)} cm), compatível com fasciite plantar.`},
   {id:'endoHet', item:/^endometrio/, escolha:'heterogêneo',
    conc:()=>'Endométrio heterogêneo.'},
   {id:'residuo', item:/^residuo/, campo:/estimado em$/,
@@ -294,6 +299,8 @@ function lauAutoCfgHTML(){
     ${sub('Nervos (musculoesquelético)')}
     ${num('nervMed','Nervo mediano espessado a partir de (área seccional)','mm²')}
     ${num('nervUln','Nervo ulnar espessado a partir de (área seccional)','mm²')}
+    ${sub('Fáscia plantar')}
+    ${num('fascMax','Fáscia plantar espessada acima de','cm')}
     ${sub('Doppler abdominal')}
     ${num('irHepMin','Artéria hepática: IR reduzido abaixo de','')}
     ${num('irHepMax','Artéria hepática: IR aumentado acima de','')}
@@ -315,6 +322,7 @@ const LAU_AUTO_LIMS = {
   nervMed:[['nervMed','Espessado a partir de','mm²']], nervUln:[['nervUln','Espessado a partir de','mm²']],
   porta:[['portaMax','Aumentada acima de','cm']],
   irHep:[['irHepMin','Reduzido abaixo de',''],['irHepMax','Aumentado acima de','']],
+  fascia:[['fascMax','Espessada acima de','cm']],
   rins:[['rimMin','Reduzido abaixo de','cm'],['rimMax','Aumentado acima de','cm']],
   baco:[['bacoMax','Aumentado acima de','cm']],
   vias:[['colMax','Colédoco dilatado acima de','mm']],

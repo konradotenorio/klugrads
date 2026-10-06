@@ -591,7 +591,7 @@ const LAU_FRASES = [
    t:'Dilatação aneurismática fusiforme XX sacular da artéria poplítea, com diâmetro máximo de XXX cm e extensão de XXX cm, sem XX com trombo mural.',
    c:'Aneurisma {0} da artéria poplítea.'},
   {o:'ligamento', n:'Estiramento / rotura', m:'sub', kind:'lig', t:'', c:''},
-  {o:'ligamento', n:'Calcificação (Pellegrini-Stieda)', m:'add',
+  {o:'ligamento', so:['us-joelho'], n:'Calcificação (Pellegrini-Stieda)', m:'add',
    t:'Calcificação junto à origem femoral do ligamento colateral medial.',
    c:'Calcificação de Pellegrini-Stieda.'},
   {o:'fascia', n:'Fascite plantar', m:'sub',
