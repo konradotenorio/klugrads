@@ -237,7 +237,6 @@ const LAU_ABD_ITEMS = [
      if(s.lama) conc.push('Lama biliar.');
      if(s.pol) conc.push(s.polQ==='n' ? 'Pólipos na vesícula biliar.' : 'Pólipo na vesícula biliar.');
      if(s.par && !s.ccA) conc.push('Espessamento parietal difuso da vesícula biliar.');
-     if(s.est==='hipo' && !s.ccA) conc.push('Vesícula biliar pouco distendida, com avaliação limitada.');
      return {txt:t, conc};
    }},
 
