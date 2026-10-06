@@ -1782,7 +1782,9 @@ function lauItemHTML(m, it){
   if(m.oct && typeof lauOctItemOculto==='function' && lauOctItemOculto(m,it)) return '';
   const L=state.lau, s=(m.oct && typeof lauOctShadow==='function') ? lauOctShadow(m,it) : L.v[it.k], r=lauBuild(m,it), g=lauGen();
   if(lauItemOculto(m,it)) return '';
-  const lblRaw = lauLblLado(m, lauItemLabel(m,it));
+  let lblRaw = lauLblLado(m, lauItemLabel(m,it));
+  // tireoidectomia total: não há mais parênquima glandular
+  if(/^Estudo Doppler colorido do parênquima glandular/.test(lblRaw||'')){ const c=lauTireoCx(m); if(c && c.total) lblRaw = lblRaw.replace(/ do parênquima glandular/,''); }
   const lbl = lblRaw ? lauFill(lblRaw, s.__v.l, true)+':' : '';
   let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : r.html ? r.txt : esc(r.txt).replace(/\n/g,'<br>');
   // item estruturado com linhas extras na máscara (ex.: prova de Boyden na vesícula): a alteração troca só a 1ª linha
