@@ -1264,7 +1264,7 @@ function lauFraseLines(list, bag, mode){
 
 /* ---------- Tendões / músculos (seleção por articulação) ---------- */
 const LAU_ALVOS = {
-  'us-ombro':   {tend:[['supraespinal','do supraespinal'],['infraespinal','do infraespinal'],['subescapular','do subescapular'],['redondo menor','do redondo menor'],['cabeça longa do bíceps','da cabeça longa do bíceps']],
+  'us-ombro':   {tend:[['supraespinal','do supraespinal',{nb:1}],['infraespinal','do infraespinal',{nb:1}],['subescapular','do subescapular',{nb:1}],['redondo menor','do redondo menor',{nb:1}],['cabeça longa do bíceps','da cabeça longa do bíceps']],
                  musc:[['supraespinal','supraespinal'],['infraespinal','infraespinal'],['subescapular','subescapular'],['redondo menor','redondo menor'],['deltoide','deltoide']]},
   'us-cotovelo':{lig:[['colateral ulnar','colateral ulnar'],['colateral radial','colateral radial']], tend:[['comum dos extensores','comum dos extensores'],['comum dos flexores','comum dos flexores'],['tríceps braquial','do tríceps braquial'],['bíceps distal','do bíceps distal']],
                  musc:[['bíceps braquial','bíceps braquial'],['braquial','braquial'],['tríceps braquial','tríceps braquial'],['braquiorradial','braquiorradial']]},
@@ -1654,7 +1654,7 @@ function lauDescHTML(k, id, f, d){
     h += lauAlvoList(f.kind, d).map(a=>{
       const t=det[a.key]||{}; const tpl=lauTendTpl(f,t);
       return `<div class="lau-tbox"><div class="lau-tbox-h">${esc(a.nome)}</div>
-        <div class="lau-chips">${a.x&&a.x.t3 ? [['tend',0,'Tendinopatia'],['',1,'Tenossinovite'],['tend',1,'Tendinopatia com tenossinovite']].map(([ti,bn,txt])=>`<button type="button" class="ti-ftog ${(t.tipo||'')===ti&&!!t.bainha===!!bn&&(ti||bn)?'on':''}" onclick="lauDet3('${k}','${id}','${a.key}','${ti}',${bn})">${txt}</button>`).join('') : T.filter(o=>!(a.x&&a.x.tipos) || a.x.tipos.indexOf(o[0])>=0).map(o=>dchip(a.key,'tipo',o[0],o[1],t.tipo===o[0])).join('')}${f.kind==='tend'&&!(a.x&&a.x.t3)?dchip(a.key,'bainha',1,a.x&&(a.x.tn||a.x.ts)?'Tenossinovite':'Distensão líquida da bainha',!!t.bainha):''}</div>
+        <div class="lau-chips">${a.x&&a.x.t3 ? [['tend',0,'Tendinopatia'],['',1,'Tenossinovite'],['tend',1,'Tendinopatia com tenossinovite']].map(([ti,bn,txt])=>`<button type="button" class="ti-ftog ${(t.tipo||'')===ti&&!!t.bainha===!!bn&&(ti||bn)?'on':''}" onclick="lauDet3('${k}','${id}','${a.key}','${ti}',${bn})">${txt}</button>`).join('') : T.filter(o=>!(a.x&&a.x.tipos) || a.x.tipos.indexOf(o[0])>=0).map(o=>dchip(a.key,'tipo',o[0],o[1],t.tipo===o[0])).join('')}${f.kind==='tend'&&!(a.x&&(a.x.t3||a.x.nb))?dchip(a.key,'bainha',1,a.x&&(a.x.tn||a.x.ts)?'Tenossinovite':'Distensão líquida da bainha',!!t.bainha):''}</div>
         ${f.kind==='tend'&&t.tipo==='parcial'?`<div class="lau-rl" style="margin-top:6px">Face</div><div class="lau-chips">${LAU_FACES.map((o,oi)=>dchip(a.key,'face',oi,o.replace('da face ','face '),(t.face||0)===oi)).join('')}</div>`:''}
         ${tpl?`<div class="lau-rl" style="margin-top:6px">Medidas</div>${lauInlineForm(k,'f'+id+'_'+a.key,tpl,bag['f'+id+'_'+a.key])}`:''}
       </div>`;
