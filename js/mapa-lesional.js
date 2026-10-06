@@ -49,6 +49,7 @@ const MSL_ZMAX = 8;          // zoom máximo
 const MSL_IC = {
   pen:'<path d="M16.5 3.5l4 4L8 20l-5 1 1-5z"/><path d="M14 6l4 4"/>',
   eraser:'<path d="M20 20H9.5L4 14.5a2 2 0 0 1 0-2.8l7.7-7.7a2 2 0 0 1 2.8 0l5.5 5.5a2 2 0 0 1 0 2.8L13 20"/><path d="M8.5 9.5l6 6"/>',
+  arrow:'<path d="M5 19L19 5"/><path d="M9 5h10v10"/>',
   undo:'<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>',
   redo:'<path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/>',
   zin:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/>',

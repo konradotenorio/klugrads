@@ -5,7 +5,8 @@
    O médico escolhe o corte (axial, sagital ou coronal), posiciona útero e ovários
    e marca os achados por cima da imagem, com o mesmo estilo de pintura do mapa da
    próstata: pincel, borracha, desfazer, zoom, legenda pequena dentro da imagem e
-   exportação (copiar / baixar JPEG).
+   exportação (copiar / baixar JPEG). Aqui há também a SETA: arrasta-se do texto até o
+   achado (a ponta fica onde se solta) e a caixa de texto é opcional.
 
    Achados (3 cores): ENDOMETRIOSE (preto, pincel espiculado/irregular),
    ENDOMETRIOMA (vinho) e SANGUE (vermelho).
@@ -39,6 +40,7 @@ const LES = [
 const MARCA = 'Imagem ilustrada e editada em KlugRads';
 const ALPHA = 0.72, ZMAX = 8;
 const REFW = 1103;                      // largura (px) das imagens originais; as atuais são 2× maiores: pincel e cursor escalam com R.K
+const SETA = {fill:'#FFD21F', line:'#1B1B1B'};   // seta amarela com contorno escuro: aparece sobre qualquer região do desenho
 
 /* ---- estado (em memória) ---- */
 function st(){
@@ -50,7 +52,7 @@ function st(){
 /* runtime (não vai para o state): canvases, imagem, gesto em curso */
 const R = {view:null, IW:0, IH:0, K:1, fw:0, fh:0, k:1, tx:0, ty:0, W:0, H:0, img:null, ready:false,
            ptrs:new Map(), stroke:null, pan:null, pinch:null, used:[false,false,false], usedKey:'', scan:null,
-           tok:0, bctx:null, pctx:null, rect:null, wired:false};
+           tok:0, bctx:null, pctx:null, actx:null, rect:null, wired:false, arrow:null, edit:null};
 const g = id => document.getElementById(id);
 
 /* ======================= tela ======================= */
@@ -81,9 +83,10 @@ function html(){
     <div class="msl-ed${s.full?' full':''}" id="em-ed">
       <div class="msl-bar">
         <div class="msl-row">
-          ${tb('em-b-brush','pen','Pincel',s.tool==='brush'?' on':'')}${tb('em-b-erase','eraser','Borracha',s.tool==='erase'?' on':'')}
-          <label class="msl-size" title="Espessura do pincel"><span>Espessura</span><input type="range" id="em-w" min="4" max="70" step="1" value="${s.w}"></label>
+          ${tb('em-b-brush','pen','Pincel',s.tool==='brush'?' on':'')}${tb('em-b-erase','eraser','Borracha',s.tool==='erase'?' on':'')}${tb('em-b-arrow','arrow','Seta',s.tool==='arrow'?' on':'')}
+          <label class="msl-size" title="Espessura do pincel e tamanho da seta"><span>Espessura</span><input type="range" id="em-w" min="4" max="70" step="1" value="${s.w}"></label>
         </div>
+        <div class="msl-row em-hint" id="em-hint"${s.tool==='arrow'?'':' style="display:none"'}>Seta: arraste do local do texto até o achado; a ponta fica onde você soltar. Em seguida escreva um texto ou deixe em branco. Para editar o texto de uma seta, toque nela.</div>
         <div class="msl-row">
           ${tb('em-b-undo','undo','Desfazer')}${tb('em-b-redo','redo','Refazer')}${tb('em-b-clear','eraser','Limpar tudo')}
           ${tb('em-b-leg','list','Legenda',s.legend?' on':'')}
@@ -94,7 +97,7 @@ function html(){
         </div>
       </div>
       <div class="msl-stage em-stage" id="em-stage">
-        <div class="msl-world" id="em-world"><canvas id="em-base"></canvas><canvas id="em-paint"></canvas></div>
+        <div class="msl-world" id="em-world"><canvas id="em-base"></canvas><canvas id="em-paint"></canvas><canvas id="em-arrows"></canvas></div>
         <div class="msl-cur" id="em-cur"></div>
         <div class="msl-msg" id="em-msg">Carregando o mapa…</div>
       </div>
@@ -112,7 +115,7 @@ function html(){
 /* ======================= inicialização (após cada render) ======================= */
 function init(){
   const root = g('em-root'); if(!root) return;
-  R.view = null; R.ready = false; R.ptrs.clear(); R.stroke = null; R.pan = null; R.pinch = null; R.usedKey = ''; R.k = 1;
+  R.view = null; R.ready = false; R.ptrs.clear(); R.stroke = null; R.arrow = null; R.edit = null; R.pan = null; R.pinch = null; R.usedKey = ''; R.k = 1;
   root.addEventListener('click', onClick);
   g('em-w').addEventListener('input', e=>{ st().w = +e.target.value; });
   const stg = g('em-stage');
@@ -128,6 +131,7 @@ function init(){
     window.addEventListener('resize', ()=>{ if(ativo()) fit(); });
     window.addEventListener('keydown', e=>{
       if(!ativo()) return;
+      if(e.key==='Escape' && R.edit){ fecharTxt(); return; }
       if(e.key==='Escape' && st().full){ toggleFull(); return; }
       const t = e.target && e.target.tagName; if(t==='INPUT'||t==='TEXTAREA') return;
       if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='z'){ e.preventDefault(); e.shiftKey ? redo() : undo(); }
@@ -138,6 +142,7 @@ function init(){
 function ativo(){ return state.view==='mapaLesional' && mslState().org==='endometriose' && !!g('em-root'); }
 
 function onClick(e){
+  if(R.edit && !e.target.closest('#em-txt,#em-stage')) fecharTxt();          // o "click" que vem após o arrasto cai no palco: não fecha
   const d = e.target.closest('[data-em]');
   if(d && !d.disabled){
     const s = st();
@@ -149,6 +154,7 @@ function onClick(e){
   switch(b.id){
     case 'em-b-brush': s.tool='brush'; g('em-ctl').innerHTML=ctlHTML(); sync(); break;
     case 'em-b-erase': s.tool='erase'; g('em-ctl').innerHTML=ctlHTML(); sync(); break;
+    case 'em-b-arrow': s.tool='arrow'; g('em-ctl').innerHTML=ctlHTML(); sync(); break;
     case 'em-b-undo': undo(); break;
     case 'em-b-redo': redo(); break;
     case 'em-b-clear': limpar(); break;
@@ -177,8 +183,9 @@ async function carregar(){
   const corte = s.pos.corte;
   if(R.view!==corte){
     R.view = corte; R.IW = im.naturalWidth; R.IH = im.naturalHeight; R.K = R.IW/REFW;
-    for(const id of ['em-base','em-paint']){ g(id).width = R.IW; g(id).height = R.IH; }
-    R.bctx = g('em-base').getContext('2d'); R.pctx = g('em-paint').getContext('2d');
+    for(const id of ['em-base','em-paint','em-arrows']){ g(id).width = R.IW; g(id).height = R.IH; }
+    R.bctx = g('em-base').getContext('2d'); R.pctx = g('em-paint').getContext('2d'); R.actx = g('em-arrows').getContext('2d');
+    fecharTxt();
     g('em-paint').style.opacity = ALPHA;
     fit(); redrawAll(); R.usedKey = '';
   }
@@ -304,6 +311,7 @@ function onDown(e){
   if(R.ptrs.size>2) return;
   if(e.pointerType==='mouse' && (e.button===1||e.button===2)){ R.pan = {x:e.clientX,y:e.clientY,tx:R.tx,ty:R.ty}; stg.classList.add('grabbing'); return; }
   if(e.pointerType==='mouse' && e.button!==0) return;
+  if(st().tool==='arrow'){ setaStart(e); return; }
   strokeStart(e);
 }
 function onMove(e){
@@ -311,12 +319,14 @@ function onMove(e){
   cursor(e);
   if(R.pinch && R.ptrs.size>=2){ pinchMove(); return; }
   if(R.pan){ R.tx = R.pan.tx+(e.clientX-R.pan.x); R.ty = R.pan.ty+(e.clientY-R.pan.y); applyView(); return; }
+  if(R.arrow && R.ptrs.size===1){ setaMove(e); return; }
   if(R.stroke && R.ptrs.size===1){ const evs=(e.getCoalescedEvents&&e.getCoalescedEvents())||[e]; (evs.length?evs:[e]).forEach(strokeAdd); }
 }
 function onUp(e){
   R.ptrs.delete(e.pointerId);
   if(R.pinch && R.ptrs.size<2) R.pinch = null;
   if(R.pan){ R.pan = null; const stg=g('em-stage'); if(stg) stg.classList.remove('grabbing'); }
+  if(R.arrow) setaEnd();
   if(R.stroke) strokeEnd();
   if(e.pointerType!=='mouse'){ const c=g('em-cur'); if(c) c.style.display='none'; }
 }
@@ -333,7 +343,7 @@ function pinchMove(){
 }
 function cursor(e){
   const c = g('em-cur'), stg = g('em-stage'); if(!c||!stg) return;
-  if(e.pointerType==='touch'){ c.style.display='none'; return; }
+  if(e.pointerType==='touch' || st().tool==='arrow'){ c.style.display='none'; return; }
   const r = stg.getBoundingClientRect(), d = Math.max(4, st().w*R.K*R.fw*R.k/R.IW);
   c.style.display='block'; c.style.width = c.style.height = d+'px'; c.style.left = (e.clientX-r.left)+'px'; c.style.top = (e.clientY-r.top)+'px';
 }
@@ -386,7 +396,8 @@ function lista(){ return st().strokes[R.view] || (st().strokes[R.view]=[]); }
 function listaRedo(){ return st().redo[R.view] || (st().redo[R.view]=[]); }
 function redrawAll(){
   const ctx = R.pctx; if(!ctx) return; ctx.clearRect(0,0,R.IW,R.IH);
-  lista().forEach(s=>{ if(s.clear) ctx.clearRect(0,0,R.IW,R.IH); else drawStroke(ctx,s); });
+  lista().forEach(s=>{ if(s.clear) ctx.clearRect(0,0,R.IW,R.IH); else if(!s.arrow) drawStroke(ctx,s); });
+  redrawSetas();
 }
 function strokeStart(e){
   const s = st(), w = g('em-world'); if(!w) return;
@@ -410,25 +421,137 @@ function strokeEnd(){
   if(!espic(s) && m>=4){ const ctx=R.pctx; style(ctx,s); ctx.beginPath(); ctx.moveTo((q[m-4]+q[m-2])/2,(q[m-3]+q[m-1])/2); ctx.lineTo(q[m-2],q[m-1]); ctx.stroke(); ctx.restore(); }
   lista().push(s); st().redo[R.view] = []; refreshLegend(); sync();
 }
-function cancelStroke(){ if(!R.stroke) return; R.stroke = null; redrawAll(); }
+function cancelStroke(){
+  if(R.arrow){ R.arrow = null; redrawSetas(); }
+  if(!R.stroke) return; R.stroke = null; redrawAll();
+}
+
+/* ======================= setas =======================
+   A seta é um item da mesma lista dos traços (desfazer/refazer/limpar valem para ela) e é desenhada
+   numa camada própria (#em-arrows), por cima da pintura e com cor cheia: a borracha não a apaga.
+   Item: {arrow:true, x0,y0 (início = lado da caixa de texto), x1,y1 (ponta), w, text}. A caixa de texto
+   só aparece se houver texto; fica encostada no início da seta, do lado oposto ao da ponta. */
+function setaMed(ctx,a){
+  const K = R.K, k = R.IW/1890, sw = Math.max(3,a.w*0.4)*K, hl = sw*4.6, hw = sw*2.3;
+  let dx = a.x1-a.x0, dy = a.y1-a.y0; const L = Math.hypot(dx,dy)||1; dx /= L; dy /= L;
+  const txt = (a.text||'').trim(); let pill = null, sx = a.x0, sy = a.y0;
+  if(txt){
+    ctx.save(); ctx.font = `700 ${38*k}px "Segoe UI",Arial,Helvetica,sans-serif`;
+    const pw = ctx.measureText(txt).width + 44*k, ph = 68*k; ctx.restore();
+    const t = Math.min((pw/2)/Math.max(Math.abs(dx),1e-6), (ph/2)/Math.max(Math.abs(dy),1e-6)) - 3*k, m = 8*k;
+    const cx = Math.min(R.IW-m-pw/2, Math.max(m+pw/2, a.x0-dx*t)), cy = Math.min(R.IH-m-ph/2, Math.max(m+ph/2, a.y0-dy*t));
+    pill = {x:cx-pw/2, y:cy-ph/2, w:pw, h:ph, cx, cy, txt, k};
+    sx = cx; sy = cy;                                        // a haste sai do centro da caixa (que é desenhada por cima)
+  }
+  return {sw, hl, hw, sx, sy, pill};
+}
+function drawArrow(ctx,a){
+  const G = setaMed(ctx,a), hx = a.x1, hy = a.y1, o = Math.max(2.2*R.K, G.sw*0.22);
+  let ux = hx-G.sx, uy = hy-G.sy; const L = Math.hypot(ux,uy)||1; ux /= L; uy /= L;
+  const hl = Math.min(G.hl,L*0.75), hw = G.hw*hl/G.hl, bx = hx-ux*hl, by = hy-uy*hl, nx = -uy, ny = ux;
+  const head = ()=>{ ctx.beginPath(); ctx.moveTo(hx,hy); ctx.lineTo(bx+nx*hw,by+ny*hw); ctx.lineTo(bx-nx*hw,by-ny*hw); ctx.closePath(); };
+  const haste = lw=>{ ctx.beginPath(); ctx.moveTo(G.sx,G.sy); ctx.lineTo(bx+ux*hl*0.5,by+uy*hl*0.5); ctx.lineWidth = lw; ctx.stroke(); };
+  ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.strokeStyle = ctx.fillStyle = SETA.line; haste(G.sw+2*o); head(); ctx.lineWidth = 2*o; ctx.stroke();      // contorno
+  ctx.strokeStyle = ctx.fillStyle = SETA.fill; haste(G.sw); head(); ctx.fill();                                // miolo
+  const p = G.pill;
+  if(p){
+    ctx.font = `700 ${38*p.k}px "Segoe UI",Arial,Helvetica,sans-serif`; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.strokeStyle = 'rgba(30,36,46,.85)'; ctx.lineWidth = 2.5*p.k;
+    roundRect(ctx,p.x,p.y,p.w,p.h,16*p.k); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#1f2630'; ctx.fillText(p.txt,p.cx,p.cy+1*p.k);
+  }
+  ctx.restore();
+}
+/* setas visíveis: as que vieram depois do último "Limpar tudo" */
+function setasVis(){ const l = lista(); let i = l.length-1; while(i>=0 && !l[i].clear) i--; return l.slice(i+1).filter(s=>s.arrow); }
+function redrawSetas(prev){
+  const ctx = R.actx; if(!ctx) return; ctx.clearRect(0,0,R.IW,R.IH);
+  setasVis().forEach(a=>drawArrow(ctx,a)); if(prev) drawArrow(ctx,prev);
+}
+function setaHit(x,y){
+  const l = setasVis(), tol = 16*R.K;
+  for(let i=l.length-1;i>=0;i--){
+    const a = l[i], G = setaMed(R.actx,a), p = G.pill;
+    if(p && x>=p.x && x<=p.x+p.w && y>=p.y && y<=p.y+p.h) return a;
+    const vx = a.x1-G.sx, vy = a.y1-G.sy, t = Math.max(0,Math.min(1,((x-G.sx)*vx+(y-G.sy)*vy)/(vx*vx+vy*vy||1)));
+    if(Math.hypot(x-(G.sx+vx*t),y-(G.sy+vy*t)) <= Math.max(G.hw,tol)) return a;
+  }
+  return null;
+}
+const SETA_MIN = 22;                                   // arrasto mínimo (px da imagem de referência) para valer como seta; menos que isso é um toque
+function setaStart(e){
+  const w = g('em-world'); if(!w) return;
+  fecharTxt();
+  R.rect = w.getBoundingClientRect(); const p = ptr(e,R.rect);
+  R.arrow = {arrow:true, x0:p[0], y0:p[1], x1:p[0], y1:p[1], w:st().w, text:'', hit:setaHit(p[0],p[1])};
+}
+function setaMove(e){
+  const a = R.arrow; if(!a) return; const p = ptr(e,R.rect); a.x1 = p[0]; a.y1 = p[1];
+  redrawSetas(Math.hypot(a.x1-a.x0,a.y1-a.y0) >= SETA_MIN*R.K ? a : null);
+}
+function setaEnd(){
+  const a = R.arrow; R.arrow = null; if(!a) return;
+  if(Math.hypot(a.x1-a.x0,a.y1-a.y0) < SETA_MIN*R.K){        // toque: edita a seta tocada, ou ensina o gesto
+    redrawSetas();
+    if(a.hit) abrirTxt(a.hit); else klugToast('Arraste na imagem para desenhar a seta');
+    return;
+  }
+  delete a.hit; ['x0','y0','x1','y1'].forEach(k=>{ a[k] = +a[k].toFixed(1); });
+  lista().push(a); st().redo[R.view] = []; redrawSetas(); sync(); abrirTxt(a);
+}
+/* caixa de texto (opcional) da seta: aparece ao lado do início da seta; o texto vai para a imagem enquanto se digita */
+function fecharTxt(){ const d = g('em-txt'); if(d) d.remove(); R.edit = null; }
+function abrirTxt(a){
+  const stg = g('em-stage'); if(!stg) return;
+  fecharTxt(); R.edit = a;
+  const d = document.createElement('div'); d.className = 'em-txt'; d.id = 'em-txt';
+  d.innerHTML = '<input type="text" id="em-txt-in" maxlength="60" placeholder="Texto da seta (opcional)" autocomplete="off" enterkeyhint="done" aria-label="Texto da seta (opcional)"><button type="button" class="msl-btn on" id="em-txt-ok">OK</button>';
+  ['pointerdown','pointerup','pointermove','wheel','contextmenu'].forEach(ev=>d.addEventListener(ev,x=>x.stopPropagation()));
+  const inp = d.firstChild; inp.value = a.text || '';
+  inp.addEventListener('input',()=>{ a.text = inp.value; redrawSetas(); });
+  inp.addEventListener('keydown',x=>{ if(x.key==='Enter'){ x.preventDefault(); fecharTxt(); } });
+  d.lastChild.addEventListener('click',()=>fecharTxt());
+  stg.appendChild(d); posTxt(d,a);
+  inp.focus({preventScroll:true});
+}
+/* posiciona a caixa de digitação perto do início da seta, num lado que não cubra a seta nem a etiqueta;
+   se não houver espaço (palco pequeno), vai para a borda de cima ou de baixo, a mais distante da seta */
+function posTxt(d,a){
+  const f = R.fw/R.IW*R.k, X = x=>R.tx+x*f, Y = y=>R.ty+y*f, m = 6, w = d.offsetWidth, h = d.offsetHeight, p = setaMed(R.actx,a).pill;
+  const xs = [X(a.x0),X(a.x1)], ys = [Y(a.y0),Y(a.y1)];
+  if(p){ xs.push(X(p.x),X(p.x+p.w)); ys.push(Y(p.y),Y(p.y+p.h)); }
+  const bx0 = Math.min(...xs)-6, bx1 = Math.max(...xs)+6, by0 = Math.min(...ys)-6, by1 = Math.max(...ys)+6;
+  const left = Math.max(m,Math.min(R.W-w-m,X(a.x0)-24)), clampT = t=>Math.max(m,Math.min(R.H-h-m,t));
+  let top = null;
+  for(const t0 of [Y(a.y0)+18, Y(a.y0)-h-18, m, R.H-h-m]){
+    const t = clampT(t0);
+    if(!(left<bx1 && left+w>bx0 && t<by1 && t+h>by0)){ top = t; break; }
+  }
+  if(top===null) top = (ys[0]+ys[1])/2 > R.H/2 ? m : R.H-h-m;
+  d.style.left = left+'px'; d.style.top = top+'px';
+}
 
 /* ======================= ações ======================= */
 function sync(){
   const s = st();
   const set = (id,on)=>{ const b=g(id); if(b) b.classList.toggle('on',on); };
-  set('em-b-brush',s.tool==='brush'); set('em-b-erase',s.tool==='erase'); set('em-b-leg',s.legend);
+  set('em-b-brush',s.tool==='brush'); set('em-b-erase',s.tool==='erase'); set('em-b-arrow',s.tool==='arrow'); set('em-b-leg',s.legend);
+  const stg = g('em-stage'); if(stg) stg.classList.toggle('em-arrow',s.tool==='arrow');
+  const hint = g('em-hint'); if(hint) hint.style.display = s.tool==='arrow' ? '' : 'none';
   const dis = (id,d)=>{ const b=g(id); if(b) b.disabled=d; };
   dis('em-b-undo',!lista().length); dis('em-b-redo',!listaRedo().length); dis('em-b-clear',!lista().length);
 }
-function undo(){ const l=lista(); if(!l.length) return; listaRedo().push(l.pop()); redrawAll(); refreshLegend(); sync(); }
-function redo(){ const r=listaRedo(); if(!r.length) return; lista().push(r.pop()); redrawAll(); refreshLegend(); sync(); }
-function limpar(){ const l=lista(); if(!l.length) return; l.push({clear:true}); st().redo[R.view]=[]; redrawAll(); refreshLegend(); sync(); klugToast('Marcação apagada — use Desfazer para voltar'); }
+function undo(){ const l=lista(); if(!l.length) return; fecharTxt(); listaRedo().push(l.pop()); redrawAll(); refreshLegend(); sync(); }
+function redo(){ const r=listaRedo(); if(!r.length) return; fecharTxt(); lista().push(r.pop()); redrawAll(); refreshLegend(); sync(); }
+function limpar(){ const l=lista(); if(!l.length) return; fecharTxt(); l.push({clear:true}); st().redo[R.view]=[]; redrawAll(); refreshLegend(); sync(); klugToast('Marcação apagada — use Desfazer para voltar'); }
 
 /* ======================= exportação ======================= */
 function exportCanvas(){
   const c = document.createElement('canvas'); c.width = R.IW; c.height = R.IH; const x = c.getContext('2d');
   x.fillStyle = '#fff'; x.fillRect(0,0,R.IW,R.IH); x.imageSmoothingQuality = 'high';
-  x.drawImage(g('em-base'),0,0); x.globalAlpha = ALPHA; x.drawImage(g('em-paint'),0,0); x.globalAlpha = 1; return c;
+  x.drawImage(g('em-base'),0,0); x.globalAlpha = ALPHA; x.drawImage(g('em-paint'),0,0); x.globalAlpha = 1;
+  x.drawImage(g('em-arrows'),0,0); return c;
 }
 const blob = (tipo,q) => new Promise((ok,no)=>{ try{ exportCanvas().toBlob(b=>b?ok(b):no(new Error('canvas')),tipo,q); }catch(e){ no(e); } });
 function baixar(){
