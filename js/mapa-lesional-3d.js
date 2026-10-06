@@ -1,31 +1,42 @@
 /* =========================================================================
-   KlugRads — Mapa Setorial Lesional · EFEITO 3D NA PINTURA  (módulo de TESTE)
+   KlugRads — Mapa Setorial Lesional · EFEITO 3D NA PINTURA (padrão de todos os mapas)
    ---------------------------------------------------------------------------
-   Opcional e isolado: não muda os traços (desfazer, borracha, legenda e "lesões
-   usadas" continuam lendo a pintura plana). Ele só PINTA POR CIMA uma versão com
-   volume: a pintura vira um relevo (altura calculada a partir da forma do traço),
-   recebe luz (difusa + brilho) e sombra projetada no desenho.
+   Motor único, usado por TODOS os mapas (próstata, pelve/endometriose, fístula perianal,
+   rim). Não muda os traços (desfazer, borracha, legenda e "lesões usadas" continuam lendo
+   a pintura plana): ele só PINTA POR CIMA uma versão com volume.
 
    Como funciona
-   1. A camada de pintura (plana) é reduzida para 630 px e vira uma máscara.
-   2. Distância até a borda (EDT) -> altura: cada traço ganha um perfil arredondado,
-      qualquer que seja a espessura ("gel" e "tubo") ou só uma borda chanfrada ("relevo").
-   3. A altura gera normais; luz vinda de cima à esquerda -> camada de luz/sombra
-      (branco = realce, preto = sombra) que é aplicada SÓ onde há tinta (source-atop).
-   4. A sombra projetada sai do próprio canvas (shadowBlur) e o resultado fica num
-      canvas #msl-3d por cima do desenho. A exportação (copiar/baixar) usa esse canvas.
-   Durante o traço, o trecho em andamento aparece plano (#msl-live) e ganha volume
-   ao soltar o dedo/mouse.
+   1. As camadas planas de pintura do mapa são juntadas e reduzidas (630 px no maior lado).
+   2. Distância até a borda do traço (EDT) -> altura: cada traço ganha um perfil
+      arredondado, qualquer que seja a espessura ("gel" e "tubo"), ou só uma borda
+      chanfrada ("relevo").
+   3. A altura gera normais; luz de cima à esquerda -> camada de luz/sombra (branco =
+      realce, preto = sombra) aplicada SÓ onde há tinta (source-atop); sombra projetada
+      pelo próprio canvas (shadowBlur).
+   4. O resultado fica num canvas por cima do desenho e as camadas planas ficam ocultas.
+      A exportação (copiar/baixar) usa esse canvas.
+   Durante o traço: na PRÓSTATA o trecho em andamento aparece plano num canvas à parte;
+   nos demais mapas a pintura aparece plana enquanto se desenha e ganha volume ao soltar.
 
-   Para testar: o painel "Efeito 3D (teste)" aparece sozinho acima do editor da PRÓSTATA.
+   COMO LIGAR EM UM MAPA NOVO
+     a) ao criar os canvases:      msl3d.attach('chave', {world, layers:[canvasPintura,...]})
+     b) ao (re)desenhar a pintura: msl3d.update('chave')
+        (e no início/fim de cada traço: msl3d.liveStart('chave') / msl3d.liveEnd('chave'))
+     c) ao exportar:               if(!msl3d.draw('chave', ctx, W, H)) { ...desenho plano... }
+     d) painel de opções:          msl3d.painel(elementoDepoisDoQualOCardAparece)
+   O efeito vem LIGADO por padrão (o médico pode desligar; a escolha fica no aparelho).
    ========================================================================= */
 (function(){
 'use strict';
 if(window.msl3d) return;
 
-const S = {on:false, estilo:'gel', relevo:1, brilho:.8, sombra:.55, alfa:.85};
-const WL = 630;                                   // resolução do cálculo do relevo
-let cv3=null, live=null, low=null, lowCtx=null, lightCv=null, comp=null, realCtx=null, liveOn=false;
+const KEY = 'klug_msl3d';
+const S = {on:true, estilo:'gel', relevo:1, brilho:.8, sombra:.55, alfa:.85};
+try{ const o=JSON.parse(localStorage.getItem(KEY)||'null'); if(o&&typeof o==='object') Object.keys(S).forEach(k=>{ if(k in o) S[k]=o[k]; }); }catch(_){}
+const salvar = ()=>{ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(_){} };
+const OPTS = {aberto:false};                       // painel começa fechado (a página de teste abre)
+const WL = 630;                                    // resolução do cálculo do relevo (maior lado)
+const I = {};                                      // instâncias, uma por mapa
 const $ = id=>document.getElementById(id);
 
 /* ------------------------- utilidades numéricas ------------------------- */
@@ -75,7 +86,7 @@ function altura(mask,w,h){
   }
   return boxBlur(boxBlur(hg,w,h,1),w,h,1);
 }
-function camadaLuz(w,h,mask,hg,tint){
+function camadaLuz(w,h,mask,hg){
   const img=new ImageData(w,h), px=img.data;
   const L=[-.5,-.65,.62], ln=Math.hypot(L[0],L[1],L[2]); L[0]/=ln; L[1]/=ln; L[2]/=ln;
   let H=[L[0],L[1],L[2]+1]; const hn=Math.hypot(H[0],H[1],H[2]); H=[H[0]/hn,H[1]/hn,H[2]/hn];
@@ -94,58 +105,107 @@ function camadaLuz(w,h,mask,hg,tint){
   return img;
 }
 
-/* ------------------------- composição ------------------------- */
-function garantir(){
-  const w=$('msl-world'), p=$('msl-paint'); if(!w||!p||typeof MSL==='undefined'||!MSL.N) return false;
-  const N=MSL.N;
-  if(!cv3||cv3.parentNode!==w){
-    cv3=document.createElement('canvas'); cv3.id='msl-3d'; live=document.createElement('canvas'); live.id='msl-live';
-    w.appendChild(cv3); w.appendChild(live); realCtx=null; liveOn=false;
+/* ------------------------- instâncias (um mapa = uma chave) ------------------------- */
+function estiloCanvas(c){ Object.assign(c.style,{position:'absolute',left:'0',top:'0',width:'100%',height:'100%',pointerEvents:'none',visibility:'hidden'}); }
+function attach(key,o){
+  o = o||{}; const world=o.world, layers=(o.layers||[]).filter(Boolean);
+  if(!world||!layers.length||!layers[0].width) return null;
+  let it=I[key];
+  if(!it || it.world!==world || it.layers[0]!==layers[0]){
+    it = I[key] = {key,world,layers,hide:o.hide||'visibility',cv:document.createElement('canvas'),live:null,stk:null,comp:null,low:null,lowCtx:null,lightCv:null,realCtx:null,liveOn:false,overlay:!!o.overlay};
+    it.cv.className='m3d-cv'; estiloCanvas(it.cv);
+    (o.after||layers[layers.length-1]).insertAdjacentElement('afterend',it.cv);
+    if(it.overlay){ it.live=document.createElement('canvas'); it.live.className='m3d-live'; estiloCanvas(it.live); it.cv.insertAdjacentElement('afterend',it.live); }
   }
-  if(cv3.width!==N){ cv3.width=cv3.height=live.width=live.height=N; comp=null; }
-  cv3.style.opacity=S.alfa; live.style.opacity=S.alfa;
-  return true;
+  it.layers=layers; it.W=layers[0].width; it.H=layers[0].height;
+  if(it.hide==='opacity') layers.forEach(l=>{ if(l._m3o===undefined) l._m3o=l.style.opacity; });
+  if(it.cv.width!==it.W||it.cv.height!==it.H){ it.cv.width=it.W; it.cv.height=it.H; if(it.live){ it.live.width=it.W; it.live.height=it.H; } it.comp=it.stk=null; }
+  it.cv.style.opacity=S.alfa; if(it.live) it.live.style.opacity=S.alfa;
+  return it;
 }
-function mostrar(modo){
-  const p=$('msl-paint'); if(!p||!cv3) return;
-  const v=(el,on)=>{ el.style.visibility=on?'visible':'hidden'; };
-  v(p, modo!=='3d'); v(cv3, modo==='3d'); v(live, modo==='3d');
+function mostrar(it,modo){
+  const d3 = modo==='3d';
+  if(it.hide==='opacity') it.layers.forEach(l=>{ l.style.opacity = d3 ? '0' : (l._m3o||''); });      // (a camada recebe os eventos do mouse: não pode sumir de verdade)
+  else it.layers.forEach(l=>{ l.style.visibility = d3 ? 'hidden' : 'visible'; });
+  it.cv.style.visibility = d3 ? 'visible' : 'hidden';
+  if(it.live) it.live.style.visibility = d3 ? 'visible' : 'hidden';
 }
-function render(){
-  if(!garantir()) return;
-  if(!S.on){ fimLive(); mostrar('plano'); return; }
-  const N=MSL.N;
-  if(!low){ low=document.createElement('canvas'); lowCtx=low.getContext('2d',{willReadFrequently:true}); lightCv=document.createElement('canvas'); }
-  const Wl=WL, Hl=WL; low.width=Wl; low.height=Hl; lightCv.width=Wl; lightCv.height=Hl;
-  lowCtx.clearRect(0,0,Wl,Hl); lowCtx.imageSmoothingQuality='high'; lowCtx.drawImage(MSL.paint,0,0,Wl,Hl);
-  const data=lowCtx.getImageData(0,0,Wl,Hl).data, mask=new Uint8Array(Wl*Hl);
-  for(let i=0;i<mask.length;i++) mask[i]=data[i*4+3]>90?1:0;
-  const hg=altura(mask,Wl,Hl);
-  lightCv.getContext('2d').putImageData(camadaLuz(Wl,Hl,mask,hg),0,0);
-  if(!comp||comp.width!==N){ comp=document.createElement('canvas'); comp.width=comp.height=N; }
-  const c=comp.getContext('2d'); c.globalCompositeOperation='source-over'; c.clearRect(0,0,N,N);
-  c.drawImage(MSL.paint,0,0);                       // cor (plana) ...
-  c.globalCompositeOperation='source-atop'; c.imageSmoothingQuality='high'; c.drawImage(lightCv,0,0,N,N);   // ... + luz/sombra só onde há tinta
+function render(it){
+  const W=it.W, H=it.H, sc=WL/Math.max(W,H), lw=Math.max(8,Math.round(W*sc)), lh=Math.max(8,Math.round(H*sc));
+  if(!it.low){ it.low=document.createElement('canvas'); it.lowCtx=it.low.getContext('2d',{willReadFrequently:true}); it.lightCv=document.createElement('canvas'); }
+  if(!it.stk||it.stk.width!==W||it.stk.height!==H){ it.stk=document.createElement('canvas'); it.stk.width=W; it.stk.height=H; it.comp=document.createElement('canvas'); it.comp.width=W; it.comp.height=H; }
+  const sx=it.stk.getContext('2d'); sx.globalCompositeOperation='source-over'; sx.clearRect(0,0,W,H);
+  it.layers.forEach(l=>sx.drawImage(l,0,0));                             // junta as camadas planas (cor)
+  it.low.width=lw; it.low.height=lh; it.lightCv.width=lw; it.lightCv.height=lh;
+  it.lowCtx.clearRect(0,0,lw,lh); it.lowCtx.imageSmoothingQuality='high'; it.lowCtx.drawImage(it.stk,0,0,lw,lh);
+  const data=it.lowCtx.getImageData(0,0,lw,lh).data, mask=new Uint8Array(lw*lh);
+  let any=false; for(let i=0;i<mask.length;i++){ const m=data[i*4+3]>90?1:0; mask[i]=m; if(m) any=true; }
+  const x=it.cv.getContext('2d'); x.clearRect(0,0,W,H);
+  if(!any) return;
+  const hg=altura(mask,lw,lh);
+  it.lightCv.getContext('2d').putImageData(camadaLuz(lw,lh,mask,hg),0,0);
+  const c=it.comp.getContext('2d'); c.globalCompositeOperation='source-over'; c.clearRect(0,0,W,H);
+  c.drawImage(it.stk,0,0);                                               // cor plana ...
+  c.globalCompositeOperation='source-atop'; c.imageSmoothingQuality='high'; c.drawImage(it.lightCv,0,0,W,H);   // ... + luz/sombra só onde há tinta
   c.globalCompositeOperation='source-over';
-  const x=cv3.getContext('2d'); x.clearRect(0,0,N,N);
-  x.save(); x.shadowColor=`rgba(0,0,0,${(.6*S.sombra*(S.estilo==='tubo'?1.4:1)).toFixed(3)})`; x.shadowBlur=N*.008*(.6+S.sombra); x.shadowOffsetX=N*.0035*S.relevo; x.shadowOffsetY=N*.006*S.relevo;
-  x.drawImage(comp,0,0); x.restore();
-  fimLive(); mostrar('3d');
+  const k=W/1890;                                                         // sombra proporcional ao tamanho da imagem
+  x.save(); x.shadowColor=`rgba(0,0,0,${(.6*S.sombra*(S.estilo==='tubo'?1.4:1)).toFixed(3)})`; x.shadowBlur=1890*k*.008*(.6+S.sombra);
+  x.shadowOffsetX=1890*k*.0035*S.relevo; x.shadowOffsetY=1890*k*.006*S.relevo; x.drawImage(it.comp,0,0); x.restore();
+}
+function fimLive(it){ if(it.live&&it.live.width) it.live.getContext('2d').clearRect(0,0,it.live.width,it.live.height); }
+function update(key){
+  const it=I[key]; if(!it||!it.cv.isConnected) return;
+  fimLive(it);
+  if(!S.on){ mostrar(it,'plano'); return; }
+  render(it); mostrar(it,'3d');
+}
+function renderAll(){ Object.keys(I).forEach(k=>{ if(I[k].cv.isConnected) update(k); }); }
+
+/* trecho em andamento (mapas sem canvas "live": mostra a pintura plana enquanto desenha) */
+function liveStart(key){ const it=I[key]; if(!it||!it.cv.isConnected||!S.on||it.overlay) return; mostrar(it,'plano'); }
+function liveEnd(key){ const it=I[key]; if(it&&!it.overlay) update(key); }
+
+/* exportação: desenha o 3D (se ligado) no contexto de saída; devolve false se o mapa deve usar o desenho plano */
+function draw(key,ctx,W,H){
+  const it=I[key]; if(!S.on||!it||!it.cv.isConnected||!it.cv.width) return false;
+  update(key);
+  ctx.save(); ctx.globalAlpha=S.alfa; ctx.drawImage(it.cv,0,0,W,H); ctx.restore(); return true;
 }
 
-/* trecho em andamento: aparece plano num canvas à parte (resposta imediata) */
-function iniciaLive(){
-  if(!S.on||!garantir()||liveOn) return;
-  if(mslState().tool==='erase'){ mostrar('plano'); return; }       // borracha: mostra a pintura plana enquanto apaga
-  realCtx=MSL.pctx; MSL.pctx=live.getContext('2d'); liveOn=true;
+/* ------------------------- painel de opções ------------------------- */
+function painel(depoisDe){
+  if(!depoisDe||($('msl3d-panel')&&$('msl3d-panel').isConnected)) return;
+  const sl=(id,rot,min,max,step,val)=>`<label class="m3-sl"><span>${rot}</span><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"><output id="${id}-v">${val}</output></label>`;
+  const bt=(k,t)=>`<button type="button" class="msl-btn m3-st${S.estilo===k?' on':''}" data-m3="${k}">${t}</button>`;
+  const d=document.createElement('div'); d.id='msl3d-panel'; d.className='ti-card'; d.style.marginTop='12px';
+  d.innerHTML=`<details${OPTS.aberto?' open':''}><summary class="m3-sum">Efeito 3D na pintura · <b id="m3-sum">${S.on?'ligado':'desligado'}</b></summary>
+    <div class="msl-row" style="margin:10px 0 8px"><button type="button" class="msl-btn${S.on?' on':''}" id="m3-on" aria-pressed="${S.on}">${S.on?'3D ligado':'3D desligado (plano)'}</button>
+      ${bt('gel','Gel brilhante')}${bt('relevo','Relevo')}${bt('tubo','Tubo')}</div>
+    <div class="m3-grid">${sl('m3-relevo','Volume',.3,2,.05,S.relevo)}${sl('m3-brilho','Brilho',0,1.5,.05,S.brilho)}${sl('m3-sombra','Sombra',0,1,.05,S.sombra)}${sl('m3-alfa','Opacidade',.5,1,.02,S.alfa)}</div>
+    <div class="lt" style="font-size:11.5px;color:var(--dim);margin-top:6px">O efeito é só visual e vale também para a imagem exportada. Ao soltar o traço, a pintura ganha volume.</div></details>`;
+  depoisDe.insertAdjacentElement('afterend',d);
+  const sync=()=>{ $('m3-on').textContent=S.on?'3D ligado':'3D desligado (plano)'; $('m3-on').classList.toggle('on',S.on); $('m3-on').setAttribute('aria-pressed',String(S.on)); $('m3-sum').textContent=S.on?'ligado':'desligado';
+    d.querySelectorAll('.m3-st').forEach(b=>b.classList.toggle('on',b.dataset.m3===S.estilo)); };
+  $('m3-on').onclick=()=>{ S.on=!S.on; salvar(); sync(); renderAll(); };
+  d.querySelectorAll('.m3-st').forEach(b=>b.onclick=()=>{ S.estilo=b.dataset.m3; S.on=true; salvar(); sync(); renderAll(); });
+  [['m3-relevo','relevo'],['m3-brilho','brilho'],['m3-sombra','sombra'],['m3-alfa','alfa']].forEach(([id,k])=>{
+    const el=$(id), out=$(id+'-v');
+    el.oninput=()=>{ S[k]=+el.value; out.textContent=el.value; salvar();
+      Object.keys(I).forEach(n=>{ I[n].cv.style.opacity=S.alfa; if(I[n].live) I[n].live.style.opacity=S.alfa; });
+      if(S.on){ clearTimeout(el._t); el._t=setTimeout(renderAll,60); } };
+  });
 }
-function fimLive(){
-  if(liveOn && realCtx){ MSL.pctx=realCtx; }
-  liveOn=false; realCtx=null;
-  if(live&&live.width) live.getContext('2d').clearRect(0,0,live.width,live.height);
-}
+(function css(){
+  if($('msl3d-css')) return; const s=document.createElement('style'); s.id='msl3d-css';
+  s.textContent='.m3-sum{cursor:pointer;font-size:13px;font-weight:700}.m3-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px 14px}.m3-sl{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:650;color:var(--dim)}.m3-sl input{flex:1;min-width:60px;accent-color:var(--accent)}.m3-sl output{min-width:28px;text-align:right;font-variant-numeric:tabular-nums}';
+  document.head.appendChild(s);
+})();
 
-/* ------------------------- encaixe nas funções do mapa ------------------------- */
+window.msl3d = {S, OPTS, attach, update, renderAll, liveStart, liveEnd, draw, painel, set(o){ Object.assign(S,o||{}); salvar(); renderAll(); }};
+
+/* ========================= PRÓSTATA (motor próprio do mapa quadrado) =========================
+   Encaixa por fora, nas funções globais de mapa-lesional.js. Aqui há o canvas "live":
+   o trecho em andamento aparece plano e a pintura já feita continua com volume. */
 function enc(nome,antes,depois){
   const orig=window[nome]; if(typeof orig!=='function'||orig._m3d) return;
   const f=function(){ if(antes) try{ antes.apply(this,arguments); }catch(e){ console.error(e); }
@@ -154,48 +214,29 @@ function enc(nome,antes,depois){
     return r; };
   f._m3d=1; window[nome]=f;
 }
-enc('mslStrokeStart', iniciaLive);
+const P = ()=>I.msl;
+function pIniciaLive(){
+  const it=P(); if(!it||!S.on||it.liveOn||!it.cv.isConnected) return;
+  if(mslState().tool==='erase'){ mostrar(it,'plano'); return; }          // borracha: mostra a pintura plana enquanto apaga
+  it.realCtx=MSL.pctx; MSL.pctx=it.live.getContext('2d'); it.liveOn=true;
+}
+function pFimLive(){ const it=P(); if(!it) return; if(it.liveOn&&it.realCtx) MSL.pctx=it.realCtx; it.liveOn=false; it.realCtx=null; fimLive(it); }
+enc('mslStrokeStart', pIniciaLive);
 enc('mslStrokeEnd',
-  function(){ if(liveOn && realCtx && MSL.stroke){ const real=realCtx; real.drawImage(live,0,0); MSL.pctx=real; liveOn=false; realCtx=null; } else if(liveOn){ MSL.pctx=realCtx||MSL.pctx; liveOn=false; realCtx=null; } },
-  function(){ render(); });
-enc('mslRedrawAll', function(){ fimLive(); }, function(){ if(S.on) render(); });
+  function(){ const it=P(); if(it&&it.liveOn&&it.realCtx){ const real=it.realCtx; if(MSL.stroke) real.drawImage(it.live,0,0); MSL.pctx=real; it.liveOn=false; it.realCtx=null; } },
+  function(){ update('msl'); });
+enc('mslRedrawAll', pFimLive, function(){ if(P()&&P().cv.isConnected) update('msl'); });
 const exportOrig=window.mslExportCanvas;
 window.mslExportCanvas=function(maxSide){
-  if(!S.on||!cv3||typeof MSL==='undefined'||!MSL.base) return exportOrig.apply(this,arguments);
+  const it=P(); if(!S.on||!it||!it.cv.isConnected||typeof MSL==='undefined'||!MSL.base) return exportOrig.apply(this,arguments);
   const N=MSL.N, sc=Math.min(1,(maxSide||N)/N), W=Math.round(N*sc), c=document.createElement('canvas'); c.width=c.height=W;
   const x=c.getContext('2d'); x.fillStyle='#fff'; x.fillRect(0,0,W,W); x.imageSmoothingQuality='high';
-  x.drawImage(MSL.base,0,0,W,W); x.globalAlpha=S.alfa; x.drawImage(cv3,0,0,W,W); x.globalAlpha=1; return c;
+  x.drawImage(MSL.base,0,0,W,W); draw('msl',x,W,W); return c;
 };
-
-/* ------------------------- painel de teste ------------------------- */
-function painel(){
-  const wrap=document.querySelector('.msl-wrap'), ed=$('msl-ed'); if(!wrap||!ed||$('msl3d-panel')) return;
-  const sl=(id,rot,min,max,step,val)=>`<label class="m3-sl"><span>${rot}</span><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}"><output id="${id}-v">${val}</output></label>`;
-  const bt=(k,t)=>`<button type="button" class="msl-btn m3-st${S.estilo===k?' on':''}" data-m3="${k}">${t}</button>`;
-  const d=document.createElement('div'); d.id='msl3d-panel'; d.className='ti-card';
-  d.innerHTML=`<div class="tfg-sec-lbl">Efeito 3D na pintura (teste)</div>
-    <div class="msl-row" style="margin-bottom:8px"><button type="button" class="msl-btn${S.on?' on':''}" id="m3-on" aria-pressed="${S.on}">${S.on?'3D ligado':'3D desligado (plano)'}</button>
-      ${bt('gel','Gel brilhante')}${bt('relevo','Relevo')}${bt('tubo','Tubo')}</div>
-    <div class="m3-grid">${sl('m3-relevo','Volume',.3,2,.05,S.relevo)}${sl('m3-brilho','Brilho',0,1.5,.05,S.brilho)}${sl('m3-sombra','Sombra',0,1,.05,S.sombra)}${sl('m3-alfa','Opacidade',.5,1,.02,S.alfa)}</div>
-    <div class="lt" style="font-size:11.5px;color:var(--dim);margin-top:6px">Pinte com o pincel e compare ligando e desligando. Ao exportar, a imagem sai com o efeito ligado.</div>`;
-  wrap.insertBefore(d,ed);
-  const sync=()=>{ $('m3-on').textContent=S.on?'3D ligado':'3D desligado (plano)'; $('m3-on').classList.toggle('on',S.on); $('m3-on').setAttribute('aria-pressed',String(S.on));
-    d.querySelectorAll('.m3-st').forEach(b=>b.classList.toggle('on',b.dataset.m3===S.estilo)); };
-  $('m3-on').onclick=()=>{ S.on=!S.on; sync(); render(); };
-  d.querySelectorAll('.m3-st').forEach(b=>b.onclick=()=>{ S.estilo=b.dataset.m3; S.on=true; sync(); render(); });
-  [['m3-relevo','relevo'],['m3-brilho','brilho'],['m3-sombra','sombra'],['m3-alfa','alfa']].forEach(([id,k])=>{
-    const el=$(id), out=$(id+'-v'); el.oninput=()=>{ S[k]=+el.value; out.textContent=el.value; if(S.on){ clearTimeout(el._t); el._t=setTimeout(render,60); } };
-  });
-}
-(function css(){
-  if($('msl3d-css')) return; const s=document.createElement('style'); s.id='msl3d-css';
-  s.textContent='.m3-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px 14px}.m3-sl{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:650;color:var(--dim)}.m3-sl input{flex:1;min-width:60px;accent-color:var(--accent)}.m3-sl output{min-width:28px;text-align:right;font-variant-numeric:tabular-nums}';
-  document.head.appendChild(s);
-})();
 enc('mslInit', null, function(){
-  const oc=(typeof MSL_ORGAOS!=='undefined')&&MSL_ORGAOS[mslState().org]; if(oc&&oc.custom) return;     // só o mapa da PRÓSTATA
-  cv3=null; live=null; garantir(); painel(); if(S.on) render();
+  const oc=(typeof MSL_ORGAOS!=='undefined')&&MSL_ORGAOS[mslState().org]; if(oc&&oc.custom) return;     // os outros mapas ligam o 3D por conta própria
+  if(!$('msl-ed')||typeof MSL==='undefined'||!MSL.N) return;
+  attach('msl',{world:$('msl-world'), layers:[$('msl-paint')], overlay:true});
+  painel($('msl-ed')); update('msl');
 });
-
-window.msl3d = {S, render, set(o){ Object.assign(S,o||{}); render(); }};
 })();

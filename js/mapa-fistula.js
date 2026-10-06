@@ -189,6 +189,7 @@ async function carregar(){
     R.actx = g('fp-arrows').getContext('2d'); R.sctx = g('fp-sel').getContext('2d');
     fecharTxt(); R.sel = null; R.drag = null;
     g('fp-pa').style.opacity = ALPHA; g('fp-pt').style.opacity = ALPHA;
+    if(window.msl3d){ msl3d.attach('fp',{world:g('fp-world'), layers:[g('fp-pa'),g('fp-pt')]}); msl3d.painel(g('fp-ed')); }   // efeito 3D (padrão)
     fit(); redrawAll(); R.usedKey = '';
   }
   R.ready = true; const m = g('fp-msg'); if(m) m.style.display = 'none';
@@ -388,6 +389,7 @@ function redrawAll(){
   if(!R.ca) return; R.ca.clearRect(0,0,R.IW,R.IH); R.ct.clearRect(0,0,R.IW,R.IH);
   lista().forEach(s=>{ if(s.clear){ R.ca.clearRect(0,0,R.IW,R.IH); R.ct.clearRect(0,0,R.IW,R.IH); } else if(!s.arrow && !s.mv && !s.del) drawStroke(s); });
   contorno(); redrawSetas(); drawSel();
+  if(window.msl3d) msl3d.update('fp');
 }
 /* caixa (px da imagem) que pode conter abscesso: só os traços de abscesso depois do último "Limpar tudo", com folga para o contorno */
 function caixaAbscesso(){
@@ -417,6 +419,7 @@ function contorno(){
 function agendaContorno(){ if(R.raf) return; R.raf = requestAnimationFrame(()=>{ R.raf = 0; contorno(); }); }   // durante o traço: no máximo uma vez por quadro
 function strokeStart(e){
   const s = st(), w = g('fp-world'); if(!w) return;
+  if(window.msl3d) msl3d.liveStart('fp');
   R.rect = w.getBoundingClientRect(); const p = ptr(e,R.rect);
   R.stroke = {c:s.cor, w:tam(s), e:s.tool==='erase', pts:[+p[0].toFixed(1),+p[1].toFixed(1)]};
   drawStroke(R.stroke); if(R.stroke.e || R.stroke.c===2) agendaContorno();
@@ -441,6 +444,7 @@ function strokeEnd(){
   lista().push(s); st().redo[R.view] = [];
   if(s.e || s.c===2) contorno();
   refreshLegend(); sync();
+  if(window.msl3d) msl3d.liveEnd('fp');
 }
 function cancelStroke(){
   if(R.arrow){ R.arrow = null; redrawSetas(); }
@@ -641,7 +645,7 @@ function exportCanvas(){
   const c = document.createElement('canvas'); c.width = R.IW; c.height = R.IH; const x = c.getContext('2d');
   x.fillStyle = '#fff'; x.fillRect(0,0,R.IW,R.IH); x.imageSmoothingQuality = 'high';
   x.drawImage(g('fp-base'),0,0); x.drawImage(g('fp-po'),0,0);
-  x.globalAlpha = ALPHA; x.drawImage(g('fp-pa'),0,0); x.drawImage(g('fp-pt'),0,0); x.globalAlpha = 1;
+  if(!(window.msl3d && msl3d.draw('fp',x,R.IW,R.IH))){ x.globalAlpha = ALPHA; x.drawImage(g('fp-pa'),0,0); x.drawImage(g('fp-pt'),0,0); x.globalAlpha = 1; }
   x.drawImage(g('fp-arrows'),0,0); return c;
 }
 const blob = (tipo,q) => new Promise((ok,no)=>{ try{ exportCanvas().toBlob(b=>b?ok(b):no(new Error('canvas')),tipo,q); }catch(e){ no(e); } });

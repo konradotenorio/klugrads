@@ -201,6 +201,7 @@ async function carregar(){
     R.tint = null;
     fecharTxt(); R.sel = null; R.drag = null;
     g('em-endo').style.opacity = ALPHA; g('em-paint').style.opacity = ALPHA;
+    if(window.msl3d){ msl3d.attach('em',{world:g('em-world'), layers:[g('em-endo'),g('em-paint')]}); msl3d.painel(g('em-ed')); }   // efeito 3D (padrão)
     fit(); redrawAll(); R.usedKey = '';
   }
   R.ready = true; const m = g('em-msg'); if(m) m.style.display = 'none';
@@ -461,9 +462,11 @@ function redrawAll(){
   const ctx = R.pctx; if(!ctx) return; ctx.clearRect(0,0,R.IW,R.IH); R.wctx.clearRect(0,0,R.IW,R.IH);
   lista().forEach(s=>{ if(s.clear){ ctx.clearRect(0,0,R.IW,R.IH); R.wctx.clearRect(0,0,R.IW,R.IH); } else if(!s.arrow && !s.mv && !s.del) drawStrokeAll(s,false); });
   rebuildEndo(); redrawSetas(); drawSel();
+  if(window.msl3d) msl3d.update('em');
 }
 function strokeStart(e){
   const s = st(), w = g('em-world'); if(!w) return;
+  if(window.msl3d) msl3d.liveStart('em');
   R.rect = w.getBoundingClientRect(); const p = ptr(e,R.rect);
   R.stroke = {c:s.cor, w:s.w, e:s.tool==='erase', pts:[+p[0].toFixed(1),+p[1].toFixed(1)], seed:((Math.random()*2147483646)|0)+1, _i:0, _n:0, _d:0};
   drawStrokeAll(R.stroke,true);
@@ -488,6 +491,7 @@ function strokeEnd(){
   lista().push(s); st().redo[R.view] = [];
   if(vinho(s) || s.e) rebuildEndo();                    // contorno exato (e sem sobras do contorno onde o vinho foi apagado)
   refreshLegend(); sync();
+  if(window.msl3d) msl3d.liveEnd('em');
 }
 function cancelStroke(){
   if(R.arrow){ R.arrow = null; redrawSetas(); }
@@ -686,7 +690,8 @@ function limpar(){ const l=lista(); if(!l.length) return; fecharTxt(); l.push({c
 function exportCanvas(){
   const c = document.createElement('canvas'); c.width = R.IW; c.height = R.IH; const x = c.getContext('2d');
   x.fillStyle = '#fff'; x.fillRect(0,0,R.IW,R.IH); x.imageSmoothingQuality = 'high';
-  x.drawImage(g('em-base'),0,0); x.globalAlpha = ALPHA; x.drawImage(g('em-endo'),0,0); x.drawImage(g('em-paint'),0,0); x.globalAlpha = 1;
+  x.drawImage(g('em-base'),0,0);
+  if(!(window.msl3d && msl3d.draw('em',x,R.IW,R.IH))){ x.globalAlpha = ALPHA; x.drawImage(g('em-endo'),0,0); x.drawImage(g('em-paint'),0,0); x.globalAlpha = 1; }
   x.drawImage(g('em-arrows'),0,0); return c;
 }
 const blob = (tipo,q) => new Promise((ok,no)=>{ try{ exportCanvas().toBlob(b=>b?ok(b):no(new Error('canvas')),tipo,q); }catch(e){ no(e); } });
