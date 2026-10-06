@@ -1746,7 +1746,19 @@ function lauOptLines(it, s, html){
 }
 
 /* ---------- geração do HTML do laudo ---------- */
+/* tireoide: tireoidectomia total / parcial marcada no item "Tireoide" */
+function lauTireoCx(m){
+  const L=state.lau; if(!L) return null;
+  const it=m.items.find(x=>/^tireoide$/i.test(lauNorm(lauItemLabel(m,x)||''))); if(!it) return null;
+  const s=L.v[it.k]; let r=null;
+  (s&&s.__f||[]).forEach(id=>{ const f=lauFI(id); if(!f || f.o!=='tireoide') return;
+    if(f.n==='Tireoidectomia total') r={total:true};
+    else if(f.n==='Tireoidectomia parcial' && !(r&&r.total)){ const tk=lauTpl(f.t).lines.flat().find(x=>x.t==='c'); const v=tk&&((s.__v['f'+id]||[])[tk.i]||tk.def); r={parcial:v||null}; } });
+  return r;
+}
 function lauItemOculto(m, it){
+  // tireoidectomia total: a linha "Volumes estimados" sai do laudo
+  if(/^volumes estimados/i.test(lauItemLabel(m,it)||'')){ const c=lauTireoCx(m); if(c && c.total) return true; }
   // obstétricos com Doppler: bexiga, útero e colo só entram no laudo quando alterados; US tórax: pericárdio idem
   if((/^us-obstetrico-(doppler|gemelar-com-doppler)$/.test(m.id) && /^(bexiga|utero|colo-uterino)$/.test(it.k)) || (m.id==='us-torax' && it.k==='pericardio')){
     const s=state.lau.v[it.k];
@@ -1815,6 +1827,11 @@ function lauItemHTML(m, it){
   // "medindo XXX x XXX x XXX cm, com volume estimado em 30 mL": sem as medidas, fica só o volume digitado
   if(it.generic) txt = txt.replace(/medindo <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> (?:cm|mm), com (volume estimado em )(?!<mark)/, '$1');
   if(it.generic) txt = txt.replace(/medindo <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> (?:cm|mm) \((volume estimado em )(?!<mark)([^)]*)\)/g, 'com $1$2');
+  // tireoidectomia parcial: só o volume do lobo remanescente
+  if(it.generic && /^volumes estimados/i.test(lauItemLabel(m,it)||'')){ const c=lauTireoCx(m);
+    if(c && c.parcial){ const fica = c.parcial==='direito' ? 'esquerdo' : 'direito';
+      const seg = txt.replace(/\.$/,'').split(/;\s*/).find(x=>new RegExp('^lobo '+fica).test(x.trim()));
+      if(seg) txt = seg.trim().replace(/^lobo (direito|esquerdo):/, 'lobo $1 (remanescente):') + '.'; } }
   // útero: corpo/colo não medidos saem do texto
   if(it.generic) txt = txt.replace(/ ?Corpo uterino de <mark class="lau-ph">XXX<\/mark> cm e colo uterino de <mark class="lau-ph">XXX<\/mark> cm \(relação corpo\/colo de <mark class="lau-ph">XXX<\/mark>\)\./, '');
   // nervos: área seccional não medida sai do texto
