@@ -181,7 +181,7 @@ function calcAdrenalTcHTML(){
       <img src="/img/adrenal-incidentaloma-esr2025.webp" width="891" height="502"
            alt="Infográfico ESR (Seow et al., Insights into Imaging 2025): categorias 1 a 3 do incidentaloma adrenal pela atenuação na TC sem contraste (< 10, 10–20 e > 20 UH) e pelo tamanho (1–4 cm e > 4 cm)"
            style="display:block;width:100%;height:auto;margin-top:8px;border-radius:10px">
-      <div class="ti-legend-row" style="margin-top:6px"><span class="lt">Fonte: Seow JH, Stella DL, Welman CJ, Somasundaram AJ, Gerstenmaier JF. Insights Imaging 2025;16:136 (licença CC BY 4.0).</span></div>
+      <div class="ti-legend-row" style="margin-top:6px"><span class="lt">Toque na imagem para ampliar. Fonte: Seow JH, Stella DL, Welman CJ, Somasundaram AJ, Gerstenmaier JF. Insights Imaging 2025;16:136 (licença CC BY 4.0).</span></div>
     </div>
     <div class="ti-card">
       <div class="tfg-sec-lbl">Referências</div>

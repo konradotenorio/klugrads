@@ -173,11 +173,9 @@ function calcCclsHTML(){
     </div>
     <div class="ti-card">
       <div class="tfg-sec-lbl">Algoritmo ccLS v2.0</div>
-      <a href="/img/ccls-v2.webp" target="_blank" rel="noopener" aria-label="Abrir o algoritmo ccLS v2.0 em tamanho maior">
-        <img src="/img/ccls-v2.webp" width="1122" height="757"
-             alt="Algoritmo ccLS v2.0: fluxograma por sinal em T2 (hiper, iso, hipointenso), realce corticomedular (intenso, moderado, discreto), gordura microscópica, SEI, ADER e DWI, com as regras de desempate"
-             style="display:block;width:100%;height:auto;margin-top:8px;border-radius:10px;background:#fff">
-      </a>
+      <img src="/img/ccls-v2.webp" width="1122" height="757"
+           alt="Algoritmo ccLS v2.0: fluxograma por sinal em T2 (hiper, iso, hipointenso), realce corticomedular (intenso, moderado, discreto), gordura microscópica, SEI, ADER e DWI, com as regras de desempate"
+           style="display:block;width:100%;height:auto;margin-top:8px;border-radius:10px;background:#fff">
       <div class="ti-legend-row" style="margin-top:6px"><span class="lt">Toque na imagem para ampliar. Fonte: Pedrosa I, Cadeddu JA. Radiology 2022;302(2):256–269 (algoritmo ccLS v2.0).</span></div>
     </div>
     <div class="ti-card">
