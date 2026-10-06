@@ -1,0 +1,137 @@
+[
+ {
+  "id": "pediatria-quadril-graf",
+  "group": "Pediatria",
+  "region": "Quadril Infantil",
+  "name": "Quadril Infantil — Método de Graf",
+  "abbr": "GRAF",
+  "iconKey": "organ",
+  "tables": [
+   {
+    "title": "Classificação de Graf",
+    "rows": [
+     [
+      "Tipo",
+      "Ângulo α",
+      "Ângulo β",
+      "Idade",
+      "Descrição",
+      "Conduta habitual"
+     ],
+     [
+      "Ia",
+      "≥ 60°",
+      "≤ 55°",
+      "Qualquer",
+      "Quadril maduro; promontório ósseo angulado, teto cartilaginoso estreito",
+      "Nenhuma"
+     ],
+     [
+      "Ib",
+      "≥ 60°",
+      "> 55°",
+      "Qualquer",
+      "Quadril maduro; promontório ósseo levemente arredondado, teto cartilaginoso mais largo",
+      "Nenhuma"
+     ],
+     [
+      "IIa+",
+      "50–59°",
+      "—",
+      "0–12 semanas",
+      "Imaturo fisiológico, adequado para a idade (α ≥ 55° a partir de 6 semanas)",
+      "Controle ultrassonográfico"
+     ],
+     [
+      "IIa−",
+      "50–54°",
+      "—",
+      "6–12 semanas",
+      "Imaturo com déficit de maturação para a idade",
+      "Avaliação ortopédica / tratamento"
+     ],
+     [
+      "IIb",
+      "50–59°",
+      "—",
+      "> 12 semanas",
+      "Atraso de ossificação (displasia)",
+      "Tratamento"
+     ],
+     [
+      "IIc",
+      "43–49°",
+      "≤ 77°",
+      "Qualquer",
+      "Quadril crítico; teto ósseo deficiente, cabeça ainda centrada",
+      "Tratamento"
+     ],
+     [
+      "D",
+      "43–49°",
+      "> 77°",
+      "Qualquer",
+      "Quadril descentrado; teto cartilaginoso deslocado",
+      "Tratamento"
+     ],
+     [
+      "III",
+      "< 43°",
+      "—",
+      "Qualquer",
+      "Luxado; teto cartilaginoso deslocado cranialmente (IIIa hipoecogênico / IIIb ecogênico)",
+      "Tratamento"
+     ],
+     [
+      "IV",
+      "< 43°",
+      "—",
+      "Qualquer",
+      "Luxado; teto cartilaginoso deslocado caudalmente, entre a cabeça e o ilíaco",
+      "Tratamento"
+     ]
+    ]
+   },
+   {
+    "title": "Plano padrão e checklist",
+    "rows": [
+     [
+      "Item",
+      "O que verificar"
+     ],
+     [
+      "Plano coronal padrão",
+      "Borda inferior do osso ilíaco no fundo do acetábulo, plano médio do teto acetabular (ilíaco reto) e lábio acetabular visíveis"
+     ],
+     [
+      "Ângulo α",
+      "Entre a linha de base (ilíaco) e a linha do teto ósseo (borda inferior do ilíaco → promontório ósseo)"
+     ],
+     [
+      "Ângulo β",
+      "Entre a linha de base e a linha do teto cartilaginoso (promontório ósseo → centro do lábio)"
+     ],
+     [
+      "Técnica",
+      "Transdutor linear (5–7,5 MHz ou mais), criança em decúbito lateral em suporte, quadril em leve flexão e rotação interna"
+     ]
+    ]
+   }
+  ],
+  "footnotes": [
+   "O tipo é definido pelo ângulo α; o ângulo β separa Ia de Ib e IIc de D. Os tipos III e IV são descritos pela posição do teto cartilaginoso.",
+   "A conduta indicada é orientativa; a decisão terapêutica é ortopédica.",
+   "Nos laudos do KlugRads (US Quadril Infantil — Graf), o tipo é sugerido automaticamente pelos ângulos α e β e pela idade em semanas."
+  ],
+  "exam": {
+   "prep": "Desnecessário",
+   "position": "Decúbito lateral, em suporte, com o quadril em leve flexão (≈ 20–30°) e rotação interna.",
+   "technique": "Transdutor linear, corte coronal padrão de Graf. Medir α e β em pelo menos duas imagens no plano padrão; examinar os dois quadris."
+  },
+  "refs": [
+   "Graf R. The diagnosis of congenital hip-joint dislocation by the ultrasonic Combound treatment. Arch Orthop Trauma Surg. 1980;97(2):117–133.",
+   "Graf R. Classification of hip joint dysplasia by means of sonography. Arch Orthop Trauma Surg. 1984;102(4):248–255.",
+   "Graf R. Hip Sonography: Diagnosis and Management of Infant Hip Dysplasia. 2nd ed. Berlin: Springer; 2006."
+  ]
+ }
+]

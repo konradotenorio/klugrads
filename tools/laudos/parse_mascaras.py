@@ -146,7 +146,7 @@ for md in models:
         if not it['label'] or labs[it['label']]<2: it['grp'] = ''
     nome = md.get('nome') or (idx_names[md['n']-1] if md['n']-1 < len(idx_names) else md['raw'][0])
     # US musculoesquelético: item "Pele e tecido subcutâneo" (edema, celulite…) quando a máscara não tem
-    if md['metodo']=='us' and md['grupo']=='Musculoesquelético' and items and not any(re.match(r'(?i)^(pele|tecido subcut)', it['label'] or '') for it in items):
+    if md['metodo']=='us' and md['grupo']=='Musculoesquelético' and 'sem-pele' not in flags and items and not any(re.match(r'(?i)^(pele|tecido subcut)', it['label'] or '') for it in items):
         dash = sum(1 for it in items if it['dash']) >= len(items)/2
         items.append({'k':'pele-e-tecido-subcutaneo', 'label':'Pele e tecido subcutâneo', 'text':'de espessura e ecogenicidade preservadas.', 'dash':dash, 'opts':[], 'grp':''})
         while seq and seq[-1]['t']=='blank': seq.pop()

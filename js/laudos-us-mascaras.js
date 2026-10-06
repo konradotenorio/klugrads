@@ -8112,6 +8112,78 @@ const LAU_US_MASKS = [
 ],
 "trailer": [],
 "flags": []
+},
+{
+"id": "us-quadril-infantil-graf",
+"metodo": "us",
+"nome": "Quadril Infantil (Graf)",
+"grupo": "Musculoesquelético",
+"titulo": [
+"ULTRASSONOGRAFIA DOS QUADRIS (MÉTODO DE GRAF)"
+],
+"items": [
+{
+"k": "exame-realizado-com-transdutor",
+"label": "",
+"text": "Exame realizado com transdutor linear, com a criança em decúbito lateral, no plano coronal padrão de Graf (borda inferior do osso ilíaco, plano médio do teto acetabular e lábio acetabular). Idade: XXX semanas.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "quadril-direito",
+"label": "Quadril direito",
+"text": "teto ósseo e teto cartilaginoso de aspecto habitual, com a cabeça femoral centrada no acetábulo. Ângulo alfa de XXX° e ângulo beta de XXX°.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "quadril-esquerdo",
+"label": "Quadril esquerdo",
+"text": "teto ósseo e teto cartilaginoso de aspecto habitual, com a cabeça femoral centrada no acetábulo. Ângulo alfa de XXX° e ângulo beta de XXX°.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "manobras-dinamicas",
+"label": "Manobras dinâmicas",
+"text": "sem sinais de instabilidade.",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "exame-realizado-com-transdutor"
+},
+{
+"t": "item",
+"k": "quadril-direito"
+},
+{
+"t": "item",
+"k": "quadril-esquerdo"
+},
+{
+"t": "item",
+"k": "manobras-dinamicas"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Quadris de aspecto maduro (Graf tipo I) bilateralmente.",
+"dash": true
+}
+],
+"trailer": [],
+"flags": [
+"sem-pele"
+]
 }
 ];
 const LAU_MMG_MASKS = [

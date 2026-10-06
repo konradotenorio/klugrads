@@ -218,6 +218,7 @@ function lauAutoConcs(m){
     out.push(...lauObsBcfConc(m));
   }
   if(lauCarAtivo(m)) out.push(...lauCarConc(m));
+  out.push(...lauGrafConc(m));
   { const R=lauRetos(m); if(R && R.dia) out.push(`Diástase da musculatura reto-abdominal${R.loc?' '+R.loc:''} (${R.txt}).`); }
   const keep=[];
   // obstétricos 2º/3º tri: peso (AIG/PIG/GIG) e Doppler; só quando há o que dizer além do texto padrão
@@ -232,6 +233,61 @@ function lauAutoConcs(m){
       else out.push(r.conc(v, lbl));
     }); });
   return {out, reps, keep};
+}
+
+/* ---- Quadril infantil (método de Graf): tipo pelo ângulo α, β e idade (semanas) ----
+   Ia α≥60 β≤55 · Ib α≥60 β>55 · IIa+ 50–59 (<6 sem, ou ≥55 entre 6–12 sem) · IIa− 50–54 entre 6–12 sem ·
+   IIb 50–59 >12 sem · IIc 43–49 β≤77 · D 43–49 β>77 · III/IV α<43 (teto cartilaginoso para cima/baixo) */
+const LAU_GRAF = {
+  Ia:{d:'quadril maduro', alt:false}, Ib:{d:'quadril maduro', alt:false},
+  'IIa':{d:'quadril fisiologicamente imaturo; sugere-se controle ultrassonográfico', alt:true},
+  'IIa+':{d:'quadril fisiologicamente imaturo, adequado para a idade; sugere-se controle ultrassonográfico', alt:true},
+  'IIa−':{d:'quadril imaturo com déficit de maturação para a idade; sugere-se avaliação ortopédica', alt:true},
+  IIb:{d:'atraso de ossificação (displasia); sugere-se avaliação ortopédica', alt:true},
+  IIc:{d:'quadril crítico (displasia); sugere-se avaliação ortopédica', alt:true},
+  D:{d:'quadril descentrado; sugere-se avaliação ortopédica', alt:true},
+  'III/IV':{d:'quadril luxado; sugere-se avaliação ortopédica', alt:true},
+};
+function lauGrafTipo(a, b, sem){
+  if(a==null) return null;
+  if(a>=60) return (b!=null && b>55) ? 'Ib' : 'Ia';
+  if(a>=50){
+    if(sem!=null && sem>12) return 'IIb';
+    if(sem!=null && sem>=6) return a>=55 ? 'IIa+' : 'IIa−';
+    return sem!=null ? 'IIa+' : 'IIa';
+  }
+  if(a>=43) return (b!=null && b>77) ? 'D' : 'IIc';
+  return 'III/IV';
+}
+function lauGraf(m){
+  if(!m || !/quadril-infantil-graf/.test(m.id) || !state.lau) return null;
+  const val = (it, j)=>{ const n=lauItemNormal(m,it); const T=lauTpl(n); const ps=T.lines.flat().filter(t=>t.t==='p'); if(!ps[j]) return null;
+    const r=lauVal(T, ((state.lau.v[it.k]||{}).__v||{}).n||[], ps[j].i); return r.ok ? lauF(r.v) : null; };
+  const itI=m.items.find(i=>/semanas/.test(lauItemNormal(m,i)||'') && !lauItemLabel(m,i));
+  const sem = itI ? val(itI,0) : null;
+  const lado = re=>{ const it=m.items.find(i=>re.test(lauItemLabel(m,i)||'')); if(!it) return null; const a=val(it,0), b=val(it,1); return {it, a, b, tipo:lauGrafTipo(a,b,sem)}; };
+  return {sem, D:lado(/^Quadril direito/), E:lado(/^Quadril esquerdo/)};
+}
+function lauGrafConc(m){
+  const G=lauGraf(m); if(!G) return [];
+  const D=G.D&&G.D.tipo, E=G.E&&G.E.tipo; if(!D && !E) return [];
+  const mad = t=>t==='Ia'||t==='Ib';
+  if(D && E && D===E) return [mad(D) ? `Quadris de aspecto maduro (Graf tipo ${D}) bilateralmente.` : `Quadris Graf tipo ${D} bilateralmente — ${LAU_GRAF[D].d.replace(/^quadril/,'quadris').replace('imaturo','imaturos').replace('descentrado','descentrados').replace('luxado','luxados').replace('crítico','críticos')}.`];
+  if(D && E && mad(D) && mad(E)) return [`Quadris de aspecto maduro (Graf tipo ${D} à direita e ${E} à esquerda).`];
+  return [D && `Quadril direito: Graf tipo ${D} — ${LAU_GRAF[D].d}.`, E && `Quadril esquerdo: Graf tipo ${E} — ${LAU_GRAF[E].d}.`].filter(Boolean);
+}
+/* descrição do teto conforme o tipo */
+function lauGrafTxt(m, it, txt){
+  const G=lauGraf(m); if(!G) return txt;
+  const L = G.D && G.D.it===it ? G.D : G.E && G.E.it===it ? G.E : null; if(!L || !L.tipo) return txt;
+  const DESC = {
+    'II':'teto ósseo deficiente, com promontório ósseo arredondado e teto cartilaginoso cobrindo a cabeça femoral, que se mantém centrada no acetábulo',
+    IIc:'teto ósseo deficiente, com promontório ósseo arredondado a plano e teto cartilaginoso ainda cobrindo a cabeça femoral, que se mantém centrada',
+    D:'teto ósseo deficiente, com promontório ósseo plano e teto cartilaginoso deslocado, com a cabeça femoral descentrada',
+    'III/IV':'teto ósseo pobre, com promontório ósseo plano e teto cartilaginoso deslocado, com a cabeça femoral luxada' };
+  const k = /^IIa|^IIb/.test(L.tipo) ? 'II' : L.tipo;
+  if(DESC[k]) txt = txt.replace('teto ósseo e teto cartilaginoso de aspecto habitual, com a cabeça femoral centrada no acetábulo', DESC[k]);
+  return txt.replace(/(ângulo beta de [^.]*?°|ângulo beta de <mark[^>]*>XXX<\/mark>°)\./, `$1. Classificação de Graf: tipo ${L.tipo}.`);
 }
 
 /* ---- campos da conclusão preenchidos com o mesmo campo do laudo ---- */

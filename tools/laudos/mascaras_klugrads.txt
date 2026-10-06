@@ -156,3 +156,19 @@ Conclusão:
 - Exame sem alterações significativas.
 
 -----
+
+D. MUSCULOESQUELÉTICO:
+
+6. Quadril Infantil (Graf)
+ULTRASSONOGRAFIA DOS QUADRIS (MÉTODO DE GRAF)
+[sem-pele]
+
+Exame realizado com transdutor linear, com a criança em decúbito lateral, no plano coronal padrão de Graf (borda inferior do osso ilíaco, plano médio do teto acetabular e lábio acetabular). Idade: XXX semanas.
+- Quadril direito: teto ósseo e teto cartilaginoso de aspecto habitual, com a cabeça femoral centrada no acetábulo. Ângulo alfa de XXX° e ângulo beta de XXX°.
+- Quadril esquerdo: teto ósseo e teto cartilaginoso de aspecto habitual, com a cabeça femoral centrada no acetábulo. Ângulo alfa de XXX° e ângulo beta de XXX°.
+- Manobras dinâmicas: sem sinais de instabilidade.
+
+Conclusão:
+- Quadris de aspecto maduro (Graf tipo I) bilateralmente.
+
+-----
