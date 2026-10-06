@@ -329,6 +329,7 @@ const LAU_ABD_ITEMS = [
      return [
        {t:'head', lbl:nome},
        {t:'radio', k:'est'+L, lbl:'Situação', opts:[['n','Normal'],['nef','Nefropatia'],['cx','Nefrectomia']]},
+       {t:'radio', k:'nefT'+L, lbl:'Nefropatia', opts:[['cr','Crônica'],['ag','Aguda']], show:s=>s['est'+L]==='nef', ind:1},
        {t:'radio', k:'dim'+L, lbl:'Dimensões', opts:[['n','Normais'],['red','Reduzidas'],['aum','Aumentadas']], show:ok},
        {t:'num', k:'comp'+L, lbl:'Comprimento (opcional)', unit:'cm', show:ok},
        {t:'num', k:'parq'+L, lbl:'Parênquima (opcional)', unit:'cm', show:ok},
@@ -350,6 +351,12 @@ const LAU_ABD_ITEMS = [
      ];
    }),
    build(s){
+     // nefropatia crônica: dimensões reduzidas automaticamente (mesmo sem medida)
+     s = Object.assign({}, s);
+     ['D','E'].forEach(L=>{ if(s['est'+L]==='nef' && s['nefT'+L]!=='ag' && s['dim'+L]==='n') s['dim'+L]='red'; });
+     const nefPar = L => s['nefT'+L]==='ag'
+       ? 'com ecogenicidade parenquimatosa aumentada'
+       : 'com redução da espessura parenquimatosa, ecogenicidade aumentada e diferenciação corticomedular reduzida';
      const lado = L=>{
        const alt = s['est'+L]!=='n' || s['dim'+L]!=='n' || s['calc'+L] || s['hid'+L] || s['cis'+L] || s['nod'+L];
        return {alt, med: lauHas(s['comp'+L]) || lauHas(s['parq'+L])};
@@ -375,8 +382,7 @@ const LAU_ABD_ITEMS = [
        if(s['est'+L]==='cx') return `${nome} não caracterizado (status pós-nefrectomia).`;
        const dim = {n:'normais',red:'reduzidas',aum:'aumentadas'}[s['dim'+L]];
        const med = medTxt(L);
-       const par = s['est'+L]==='nef'
-         ? 'com ecogenicidade parenquimatosa aumentada e diferenciação corticomedular reduzida'
+       const par = s['est'+L]==='nef' ? nefPar(L)
          : 'com espessura e ecogenicidade parenquimatosas preservadas';
        let t = `${nome} tópico, de dimensões ${dim}${med?` (${med})`:''}, ${par}.`;
        const sem=[];
@@ -402,14 +408,13 @@ const LAU_ABD_ITEMS = [
      /* descrição conjunta ("Rins tópicos, …") quando a base dos dois lados é igual
         (mesma situação e mesmas dimensões); frases separadas por lado só quando
         diferem (ex.: nefropatia unilateral, rim reduzido de um lado, nefrectomia) */
-     const juntos = s.estD!=='cx' && s.estE!=='cx' && s.estD===s.estE && s.dimD===s.dimE;
+     const juntos = s.estD!=='cx' && s.estE!=='cx' && s.estD===s.estE && s.dimD===s.dimE && (s.estD!=='nef' || (s.nefTD||'cr')===(s.nefTE||'cr'));
      const descJunto = ()=>{
        const dim = {n:'normais',red:'reduzidas',aum:'aumentadas'}[s.dimD];
        const m=[];
        if(D.med) m.push(`rim direito com ${medTxt('D')}`);
        if(E.med) m.push(`rim esquerdo com ${medTxt('E')}`);
-       const par = s.estD==='nef'
-         ? 'com ecogenicidade parenquimatosa aumentada e diferenciação corticomedular reduzida'
+       const par = s.estD==='nef' ? nefPar('D')
          : 'com espessura e ecogenicidade parenquimatosas preservadas';
        let t = `tópicos, de dimensões ${dim}${m.length?` (${m.join('; ')})`:''}, ${par}.`;
        const doRim = L => L==='D'?'do rim direito':'do rim esquerdo';
@@ -449,7 +454,9 @@ const LAU_ABD_ITEMS = [
      let x;
      if(s.estD==='cx') conc.push('Status pós-nefrectomia direita.');
      if(s.estE==='cx') conc.push('Status pós-nefrectomia esquerda.');
-     if((x=both(L=>s['est'+L]==='nef'))) conc.push(`Sinais de nefropatia parenquimatosa ${x}.`);
+     const tNef = L => s['nefT'+L]==='ag' ? 'aguda' : 'crônica';
+     if(s.estD==='nef' && s.estE==='nef' && tNef('D')===tNef('E')) conc.push(`Sinais de nefropatia parenquimatosa ${tNef('D')} bilateral.`);
+     else ['D','E'].forEach(L=>{ if(s['est'+L]==='nef') conc.push(`Sinais de nefropatia parenquimatosa ${tNef(L)} ${L==='D'?'à direita':'à esquerda'}.`); });
      if((x=both(L=>s['est'+L]!=='cx'&&s['calc'+L]))) conc.push(`Nefrolitíase ${x}.`);
      if(s.estD!=='cx' && s.estE!=='cx' && s.hidD && s.hidE && s.hidGD===s.hidGE) conc.push(`Hidronefrose ${s.hidGD} bilateral.`);
      else ['D','E'].forEach(L=>{ if(s['est'+L]!=='cx' && s['hid'+L]) conc.push(`Hidronefrose ${s['hidG'+L]} ${L==='D'?'à direita':'à esquerda'}.`); });
@@ -504,7 +511,8 @@ const LAU_ABD_ITEMS = [
    normal:'com calibre normal.',
    ctrls:[
      {t:'radio', k:'vis', lbl:'Avaliação', opts:[['c','Completa'],['p','Parcial (gases)'],['nv','Não caracterizada']]},
-     {t:'radio', k:'est', lbl:'Aspecto', opts:[['n','Normal'],['ate','Ateromatose'],['ect','Ectasia'],['an','Aneurisma']], show:s=>s.vis!=='nv'},
+     {t:'radio', k:'est', lbl:'Calibre', opts:[['n','Normal'],['ect','Ectasia'],['an','Aneurisma']], show:s=>s.vis!=='nv'},
+     {t:'check', k:'ate', lbl:'Ateromatose (placas parietais calcificadas)', show:s=>s.vis!=='nv'},
      {t:'num', k:'diam', lbl:'Diâmetro máximo', unit:'cm', show:s=>s.est==='ect'||s.est==='an'},
      {t:'select', k:'seg', lbl:'Segmento', opts:[['infrarrenal','Infrarrenal'],['justarrenal','Justarrenal'],['suprarrenal','Suprarrenal']], show:s=>s.est==='an'},
      {t:'num', k:'ext', lbl:'Extensão (opcional)', unit:'cm', show:s=>s.est==='an'},
@@ -530,9 +538,11 @@ const LAU_ABD_ITEMS = [
      {t:'dims', k:'colV', lbl:'Medidas', show:s=>s.col, ind:1},
      {t:'check', k:'lin', lbl:'Linfonodomegalia retroperitoneal'},
      {t:'num', k:'linD', lbl:'Maior (menor eixo)', unit:'cm', show:s=>s.lin, ind:1},
+     {t:'check', k:'aden', lbl:'Adenite mesentérica'},
+     {t:'num', k:'adenD', lbl:'Maior linfonodo (menor eixo)', unit:'cm', show:s=>s.aden, ind:1},
    ],
    build(s){
-     if(!s.liq && !s.col && !s.lin) return {txt:null, conc:[]};
+     if(!s.liq && !s.col && !s.lin && !s.aden) return {txt:null, conc:[]};
      const conc=[], p=[];
      if(s.liq){ p.push(`${s.liqG.charAt(0).toUpperCase()+s.liqG.slice(1)} quantidade de líquido livre ${s.liqL}.`);
        conc.push(`${s.liqG.charAt(0).toUpperCase()+s.liqG.slice(1)} quantidade de líquido livre na cavidade abdominal.`); }
@@ -544,6 +554,8 @@ const LAU_ABD_ITEMS = [
      }
      if(s.lin){ p.push(lauFrase(lauJoin(['linfonodos retroperitoneais aumentados, o maior', lauHas(s.linD)?`medindo ${lauN(s.linD)} cm no menor eixo`:''])));
        conc.push('Linfonodomegalia retroperitoneal.'); }
+     if(s.aden){ p.push(lauFrase(lauJoin(['linfonodos mesentéricos aumentados em número e dimensões na fossa ilíaca direita, com aumento da ecogenicidade da gordura adjacente, o maior', lauHas(s.adenD)?`medindo ${lauN(s.adenD)} cm no menor eixo`:''])));
+       conc.push('Achados sugestivos de adenite mesentérica.'); }
      return {txt:p.join(' '), conc};
    }},
 ];
@@ -551,14 +563,17 @@ const LAU_ABD_ITEMS = [
 /* Itens com achados estruturados, reaproveitados em qualquer máscara que
    tenha o mesmo órgão (o texto normal vem da própria máscara). */
 function lauAortaBuild(s){
-     if(s.est==='n' || !s.est) return {txt:null, conc:[]};
+     // calibre (normal / ectasia / aneurisma) e ateromatose podem ser marcados juntos
+     const ate = s.ate || s.est==='ate', est = s.est==='ate' ? 'n' : (s.est||'n');
+     if(est==='n' && !ate) return {txt:null, conc:[]};
      const d = lauHas(s.diam) ? `${lauN(s.diam)} cm` : '';
-
-     if(s.est==='ate') return {txt:'com calibre normal e placas parietais calcificadas.', conc:['Ateromatose aórtica.']};
-     if(s.est==='ect') return {txt:`com calibre aumentado${d?`, medindo ${d} de diâmetro máximo`:''}, sem configurar aneurisma.`, conc:[`Ectasia da aorta abdominal${d?` (${d})`:''}.`]};
-     let t = `com dilatação aneurismática fusiforme no segmento ${s.seg}${d?`, medindo ${d} de diâmetro máximo`:''}${lauHas(s.ext)?` e ${lauN(s.ext)} cm de extensão`:''}`;
-     t += s.tro ? ', com trombo mural.' : '.';
-     return {txt:t, conc:[`Aneurisma da aorta abdominal ${s.seg}${d?`, com ${d} de diâmetro máximo`:''}${s.tro?', com trombo mural':''}.`]};
+     const conc=[]; let t;
+     if(est==='n') t = 'com calibre normal';
+     else if(est==='ect'){ t = `com calibre aumentado${d?`, medindo ${d} de diâmetro máximo`:''}, sem configurar aneurisma`; conc.push(`Ectasia da aorta abdominal${d?` (${d})`:''}.`); }
+     else { t = `com dilatação aneurismática fusiforme no segmento ${s.seg}${d?`, medindo ${d} de diâmetro máximo`:''}${lauHas(s.ext)?` e ${lauN(s.ext)} cm de extensão`:''}${s.tro?', com trombo mural':''}`;
+       conc.push(`Aneurisma da aorta abdominal ${s.seg}${d?`, com ${d} de diâmetro máximo`:''}${s.tro?', com trombo mural':''}.`); }
+     if(ate){ t += est==='n' ? ' e placas parietais calcificadas' : '. Placas parietais calcificadas (ateromatose)'; conc.push('Ateromatose aórtica.'); }
+     return {txt:t+'.', conc};
 }
 const LAU_STRUCT = {};
 LAU_ABD_ITEMS.forEach(it=>LAU_STRUCT[it.k]=it);
@@ -1736,7 +1751,9 @@ function lauItemHTML(m, it){
     txt = lauNegStrip(txt, ws, true);
   }
   // vesícula com pólipo (frase): a parede não é "fina e regular"
-  if((s.__f||[]).some(id=>{ const f=lauFI(id); return f && f.o==='vesicula' && /^Pólipo/.test(f.n); })) txt = txt.replace(/com paredes finas e regulares e /,'com ').replace(/,? com paredes finas e regulares(?=[,.])/,'');
+  if((s.__f||[]).some(id=>{ const f=lauFI(id); return f && f.o==='vesicula' && /^(Pólipo|Colesterolose|Adenomiomatose)/.test(f.n); })) txt = txt.replace(/com paredes finas e regulares e /,'com ').replace(/,? com paredes finas e regulares(?=[,.])/,'');
+  if((s.__f||[]).some(id=>{ const f=lauFI(id); return f && f.o==='rins' && f.n==='Rim em ferradura'; }))
+    txt = txt.replace(/^tópicos,?/,'medianizados, fusionados pelos polos inferiores,').replace(/(Rim (?:direito|esquerdo)) tópico,/g,'$1 medianizado,');
   const ex = lauOptLines(it, s, true).concat(adds);
   if(!txt && ex.length){ txt = ex.shift(); }
   if(ex.length) txt += '<br>' + ex.join('<br>');
