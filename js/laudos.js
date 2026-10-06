@@ -1230,6 +1230,7 @@ function lauFraseText(id, bag, html){
   else if(f.kind==='tirads') t = lauTiradsText(f, bag['f'+id], bag['d'+id]||{}, html);
   else if(f.kind==='orads') t = lauOradsText(f, bag['f'+id], bag['d'+id]||{}, html);
   else if(f.kind==='hernia') t = lauHerniaText(f, bag['f'+id], bag['d'+id]||{}, html);
+  else if(f.kind==='nodpm') t = lauNodPmText(f, bag['f'+id], bag['d'+id]||{}, html);
   else if(f.kind==='birads') t = lauBiradsText(f, bag['f'+id], bag['d'+id]||{}, html);
   else t = lauFill(f.tn && lauQtd(f,bag,id)==='n' ? f.tn : f.t, bag['f'+id], html);
   if(f.mt){ const n=lauMtN(bag['d'+id]); for(let j=2;j<=n+1;j++) t += `${html?'<br>':'\n'}${f.mtn||'Nódulo'} ${j}: ${lauFill(f.mt, bag['f'+id+'_'+j], html)}.`; }
@@ -1252,6 +1253,7 @@ function lauFraseConc(id, bag, lbl){
   if(lauMgK(f)) return lauMgConc(f, id, bag, lbl, n);
   if(f.kind==='orads') return lauOradsConc(f, bag['f'+id], bag['d'+id]||{}, lbl);
   if(f.kind==='hernia') return lauHerniaConc(f, bag['d'+id]||{});
+  if(f.kind==='nodpm') return lauNodPmConc(f, bag['f'+id], bag['d'+id]||{});
   if(f.kind==='tirads') return lauTiradsConc(f, bag['f'+id], bag['d'+id]||{}, n, n ? [bag['f'+id]].concat(Array.from({length:lauQn(bag['d'+id])-1},(_,j)=>bag['f'+id+'_'+(j+2)])) : null);
   if(f.kind==='birads') return lauBiradsConc(f, bag['f'+id], bag['d'+id]||{}, lbl, n, n ? [bag['f'+id]].concat(Array.from({length:lauQn(bag['d'+id])-1},(_,j)=>bag['f'+id+'_'+(j+2)])) : null);
   return lauFraseConcHTML(n && f.cp ? Object.assign({}, f, {c:f.cp}) : f, bag['f'+id], lbl);
@@ -1512,6 +1514,31 @@ function lauHerniaText(f, vals, d, html){
   return html ? esc(t) : t;
 }
 function lauHerniaConc(f, d){ return esc(`Hérnia ${f.ht||''}${d.cont?' contendo '+LAU_HR_TXT.cont[d.cont]:''}.`.replace(/\s+\./,'.')); }
+/* ---------- nódulo de partes moles / tecido subcutâneo (kind 'nodpm') ---------- */
+const LAU_NP = {
+  forma:{l:'Formato', o:[['oval','Oval'],['redondo','Redondo'],['lobulado','Lobulado'],['irregular','Irregular']]},
+  margem:{l:'Margens', o:[['circunscritas','Circunscritas'],['mal definidas','Mal definidas'],['irregulares','Irregulares'],['infiltrativas','Infiltrativas']]},
+  textura:{l:'Ecotextura', o:[['homogênea','Homogênea'],['heterogênea','Heterogênea']]},
+  eco:{l:'Ecogenicidade', o:[['anecogênico','Anecogênico'],['hipoecogênico','Hipoecogênico'],['isoecogênico','Isoecogênico'],['hiperecogênico','Hiperecogênico'],['de ecogenicidade mista','Mista']]},
+};
+function lauNodPmText(f, vals, d, html){
+  const v=vals||[], loc=lauHas(v[0])?String(v[0]).trim():'', dims=lauDimsTxt([v[1],v[2],v[3]]), dist=lauHas(v[4])?lauN(String(v[4])):'';
+  const p=['Nódulo' + (d.eco?' '+d.eco:'') + (f.lugar?' '+f.lugar:'') + (loc?' em '+loc:'')];
+  if(d.forma) p.push('de formato ' + d.forma);
+  const mt=[d.margem?'margens '+d.margem:'', d.textura?'ecotextura '+d.textura:''].filter(Boolean);
+  if(mt.length) p.push('com ' + mt.join(' e '));
+  if(dims) p.push(dims);
+  if(dist) p.push(`distando ${dist} cm da pele`);
+  const t=p.join(', ') + '.';
+  return html ? esc(t) : t;
+}
+function lauNodPmConc(f, vals, d){
+  const v=vals||[], m=[v[1],v[2],v[3]].map(x=>lauF(x)).filter(x=>x!=null), mx=m.length?Math.max(...m):null;
+  return esc(`Nódulo${d.eco?' '+d.eco:''}${f.lugar?' '+f.lugar:''}${mx!=null?` (${lauN(String(mx))} cm)`:''}.`);
+}
+function lauNodPmDescHTML(d, chip){
+  return Object.keys(LAU_NP).map(key=>`<div class="lau-row"><div class="lau-rl">${esc(LAU_NP[key].l)}</div><div class="lau-chips">${LAU_NP[key].o.map(o=>chip(key,o[0],o[1],d[key]===o[0])).join('')}</div></div>`).join('');
+}
 function lauHerniaDescHTML(d, chip){
   return Object.keys(LAU_HR).map(key=>`<div class="lau-row"><div class="lau-rl">${esc(LAU_HR[key].l)}</div><div class="lau-chips">${LAU_HR[key].o.map(o=>chip(key,o[0],o[1],d[key]===o[0])).join('')}</div></div>`).join('');
 }
@@ -1625,6 +1652,7 @@ function lauDescHTML(k, id, f, d){
   }
   if(f.kind==='orads') return lauOradsDescHTML(k, id, f, d, chip);
   if(f.kind==='hernia') return lauHerniaDescHTML(d, chip);
+  if(f.kind==='nodpm') return lauNodPmDescHTML(d, chip);
   if(f.kind==='tirads'){
     const n=lauTrNod(d), ev=tiradsEval(n);
     let h = ['comp','echo','shape','margin'].map(key=>`<div class="lau-row"><div class="lau-rl">${esc(TIRADS_CATS[key].label)}</div><div class="lau-chips">${TIRADS_CATS[key].opts.map((o,oi)=>chip(key,oi,`${o[0]} (${o[1]})`,n[key]===oi)).join('')}</div></div>`).join('');
@@ -2265,7 +2293,7 @@ function lauFrasesPanel(k, org, list, bag, estrut){
     // 1º achado (descrição principal) logo após os descritores; depois os demais e o botão +
     const tplK = lauKindTE(f) ? '' : null;
     const principal = tplK!=null ? (tplK ? `<div class="lau-rl">Medidas</div>${lauInlineForm(k,'f'+id,tplK,bag['f'+id])}` : '') : lauHasPh(f.t)
-      ? (f.kind||multi ? `<div class="lau-rl">${multi?nome1+' 1 — localização e medidas':f.kind==='hernia'||f.kind==='orads'?'Medidas':lauMgK(f)?(f.medOpc?'Medidas (opcional)':'Medidas'):'Localização e medidas'}</div>` : '') + lauInlineForm(k,'f'+id,(f.tn && qtd==='n') ? f.tn : f.t,bag['f'+id])
+      ? (f.kind||multi ? `<div class="lau-rl">${multi?nome1+' 1 — localização e medidas':f.kind==='nodpm'?'Localização (opcional), dimensões e distância à pele':f.kind==='hernia'||f.kind==='orads'?'Medidas':lauMgK(f)?(f.medOpc?'Medidas (opcional)':'Medidas'):'Localização e medidas'}</div>` : '') + lauInlineForm(k,'f'+id,(f.tn && qtd==='n') ? f.tn : f.t,bag['f'+id])
       : `<div class="lau-inl dim">${esc(f.t)}</div>`;
     const extras = multi
       ? Array.from({length:lauQn(d)-1},(_,j)=>`<div class="lau-rl lau-rlx">${nome1} ${j+2} — localização e medidas <button type="button" class="lau-xs" onclick="lauQnDel('${k}','${id}',${j+2})" aria-label="Remover">×</button></div>${lauInlineForm(k,'f'+id+'_'+(j+2),lauLocTpl(f),bag['f'+id+'_'+(j+2)])}`).join('')

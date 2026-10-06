@@ -549,6 +549,11 @@ const LAU_FRASES = [
    t:'Tendão da cabeça longa do bíceps fora do sulco intertubercular (luxação medial).',
    c:'Luxação medial do tendão da cabeça longa do bíceps.'},
   /* pele e tecido subcutâneo (US musculoesquelético) */
+  /* nódulo com descritores (formato, margens, ecotextura, ecogenicidade, dimensões e distância à pele) */
+  {o:'pelesub', n:'Nódulo', m:'add', kind:'nodpm', lugar:'no tecido subcutâneo',
+   t:'em XXX, medindo XXX x XXX x XXX cm, distando XXX cm da pele', c:''},
+  {o:'partes', n:'Nódulo', m:'add', kind:'nodpm', nlb:/^pele e tecido subcutaneo/,
+   t:'em XXX, medindo XXX x XXX x XXX cm, distando XXX cm da pele', c:''},
   {o:'pelesub', n:'Edema', m:'sub',
    t:'com espessamento e aumento da ecogenicidade do tecido subcutâneo, com faixas líquidas de permeio, sem coleções.',
    c:'Edema do tecido subcutâneo.'},
