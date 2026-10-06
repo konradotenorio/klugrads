@@ -53,6 +53,7 @@ const LAU_FRASE_ORGAOS = [
   ['canalinguinal', /^canal inguinal/],
   ['partes', /formac|massas|^coleco|tecido|subcutane|^pele|^lesoes|^lesao/],
   ['pleura', /pleura|cupula|hemitorax/],
+  ['pericardio', /^pericardi/],
   ['mama', /^mama (direita|esquerda)/],
   ['ductos', /retroareolar|^ductos/],
   ['axila', /axila/],
@@ -527,6 +528,12 @@ const LAU_FRASES = [
    c:'Coleção com aspecto sugestivo de hematoma.'},
 
   /* ---------------- TÓRAX ---------------- */
+  {o:'pericardio', n:'Derrame pericárdico', m:'sub', vaz:[', com lâmina de até XXX cm'],
+   t:'com derrame pericárdico em pequena XX moderada XX grande quantidade, com lâmina de até XXX cm.',
+   c:'Derrame pericárdico em {0} quantidade.'},
+  {o:'pericardio', n:'Espessamento pericárdico', m:'sub',
+   t:'com espessamento pericárdico, sem derrame significativo.',
+   c:'Espessamento pericárdico.'},
   {o:'pleura', n:'Derrame pleural', m:'add',
    t:'Derrame pleural à direita XX esquerda, em pequena XX moderada XX grande quantidade, anecogênico.',
    c:'Derrame pleural à {0}.'},

@@ -534,7 +534,7 @@ Data do Exame:
 Exame realizado nas posições ortostática e em decúbito dorsal horizontal.
 - Cúpulas diafragmáticas: com mobilidade e excursão normais.
 - Espaços pleurais: ausência de derrames.
-- Pericárdico: sem acúmulo líquido significativo.
+- Pericárdio: sem acúmulo líquido significativo.
  
 Conclusão:
 - Exame sem achados significativos.

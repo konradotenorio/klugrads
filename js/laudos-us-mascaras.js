@@ -2238,8 +2238,8 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "pericardico",
-"label": "Pericárdico",
+"k": "pericardio",
+"label": "Pericárdio",
 "text": "sem acúmulo líquido significativo.",
 "dash": true,
 "opts": [],
@@ -2261,7 +2261,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "pericardico"
+"k": "pericardio"
 }
 ],
 "concTitulo": "Conclusão:",
