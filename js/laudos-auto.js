@@ -218,7 +218,7 @@ function lauAutoConcs(m){
     out.push(...lauObsBcfConc(m));
   }
   if(lauCarAtivo(m)) out.push(...lauCarConc(m));
-  { const R=lauRetos(m); if(R && R.dia) out.push(`Diástase da musculatura reto-abdominal (${R.txt}).`); }
+  { const R=lauRetos(m); if(R && R.dia) out.push(`Diástase da musculatura reto-abdominal${R.loc?' '+R.loc:''} (${R.txt}).`); }
   const keep=[];
   // obstétricos 2º/3º tri: peso (AIG/PIG/GIG) e Doppler; só quando há o que dizer além do texto padrão
   if(lauObsDopAtivo(m) && lauAutoCfg().on){
@@ -642,11 +642,12 @@ function lauRetos(m){
   const f=lauFI(id); const r=lauVal(lauTpl(f.t), (s.__v||{})['f'+id]||[], 0); if(!r.ok) return null;
   const v=lauF(r.v); if(v==null) return null;
   const cm = lauUnMM() ? v/10 : v;
-  return {it, cm, txt: lauN(r.v)+(lauUnMM()?' mm':' cm'), dia: cm>2.0};
+  const tc=lauTpl(f.t).lines.flat().find(x=>x.t==='c'); const rl=tc?lauVal(lauTpl(f.t), (s.__v||{})['f'+id]||[], tc.i):null;
+  return {it, cm, txt: lauN(r.v)+(lauUnMM()?' mm':' cm'), dia: cm>2.0, loc: rl&&rl.ok ? 'na região '+rl.v : ''};
 }
 function lauRetosTxt(m, it, txt){
   const R=lauRetos(m); if(!R || R.it.k!==it.k || !R.dia) return txt;
-  return txt.replace(/com arquitetura preservada; distância entre os músculos retos abdominais de [^.]+\./, `com diástase da musculatura reto-abdominal, com distância entre os músculos retos abdominais de ${R.txt}.`);
+  return txt.replace(/com arquitetura preservada; distância entre os músculos retos abdominais de [^.]+\./, `com diástase da musculatura reto-abdominal${R.loc?' '+R.loc:''}, com distância entre os músculos retos abdominais de ${R.txt}.`);
 }
 
 /* ---- tabelas da aba Referências: [[x, p50, p5, p95]] (fetal-ila, fetal-fce) ---- */

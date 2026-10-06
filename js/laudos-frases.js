@@ -628,14 +628,14 @@ const LAU_FRASES = [
    c:'Nódulo no {0} espaço intermetatarsal sugestivo de neuroma de Morton.'},
   /* parede abdominal: hérnias com descritores (colo, saco herniário, conteúdo) */
   {o:'hernia', so:['us-parede-abdominal'], n:'Hérnia supraumbilical', m:'add', kind:'hernia', ht:'supraumbilical',
-   t:'Colo: XXX x XXX cm. Saco herniário: XXX x XXX x XXX cm.', c:''},
+   t:'Colo: XXX x XXX cm. Saco herniário: XXX x XXX x XXX cm. Distância da cicatriz umbilical: XXX cm.', c:''},
   {o:'hernia', so:['us-parede-abdominal'], n:'Hérnia umbilical', m:'add', kind:'hernia', ht:'umbilical',
    t:'Colo: XXX x XXX cm. Saco herniário: XXX x XXX x XXX cm.', c:''},
   {o:'hernia', so:['us-parede-abdominal'], n:'Hérnia incisional', m:'add', kind:'hernia', ht:'incisional',
    t:'Colo: XXX x XXX cm. Saco herniário: XXX x XXX x XXX cm.', c:''},
   /* parede abdominal: planos musculares */
   {o:'musculo', so:['us-parede-abdominal'], n:'Distância inter-retos (diástase)', m:'sub', retos:1,
-   t:'com arquitetura preservada; distância entre os músculos retos abdominais de XXX cm.', c:''},
+   t:'com arquitetura preservada; distância entre os músculos retos abdominais de XXX cm, na região epigástrica XX mesogástrica XX hipogástrica.', c:''},
   {o:'musculo', so:['us-parede-abdominal'], n:'Lipossubstituição', m:'add',
    t:'Sinais de lipossubstituição dos planos musculares.', c:'Lipossubstituição dos planos musculares da parede abdominal.'},
   /* partes moles / parede abdominal: coleções */

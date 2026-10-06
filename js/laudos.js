@@ -1268,6 +1268,9 @@ function lauFraseText(id, bag, html){
     else if(!f.tn) t += ' ' + lauFill(LAU_QTPL, bag['q'+id], html);
   }
   if(f.o==='epididimo') t = t.replace('na corpo do epidídimo','no corpo do epidídimo');
+  // escolhas opcionais não marcadas saem do texto (diástase: região; hérnia: redutibilidade)
+  if(f.retos) t = t.replace(/,? na região (?:<mark class="lau-ph">)?epigástrica \/ mesogástrica \/ hipogástrica(?:<\/mark>)?/,'');
+  if(f.o==='hernia' && !f.kind) t = t.replace(/,? (?:<mark class="lau-ph">)?redutível \/ irredutível(?:<\/mark>)?/,'');
   if(f.contra){ const tk=lauTpl(f.t).lines.flat().find(x=>x.t==='c'); const v=tk&&((bag['f'+id]||[])[tk.i]||tk.def);
     if(v==='direito'||v==='esquerdo') t += ' ' + f.contra.replace('{X}', v==='direito'?'esquerdo':'direito'); }
   if(f.vaz) t = lauTiraVazio(t, f.vaz);
@@ -1547,6 +1550,7 @@ function lauHerniaText(f, vals, d, html){
   const v=vals||[];
   const colo=lauDimsTxt([v[0],v[1]]), saco=lauDimsTxt([v[2],v[3],v[4]]);
   const p=[`Hérnia ${f.ht||''}`.trim()];
+  if(f.ht==='supraumbilical' && lauHas(v[5])) p.push(`distando ${lauN(String(v[5]))} cm da cicatriz umbilical`);
   if(colo) p.push('com colo ' + colo);
   if(saco) p.push('saco herniário ' + saco);
   if(d.cont) p.push('contendo ' + LAU_HR_TXT.cont[d.cont]);
