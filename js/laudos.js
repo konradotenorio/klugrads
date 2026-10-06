@@ -2422,10 +2422,11 @@ function lauCtrlHTML(k, s, c){
   return '';
 }
 /* texto da máscara com os campos embutidos (para preencher) */
-function lauInlineForm(k, tplId, str, vals, seg){
+function lauInlineForm(k, tplId, str, vals, seg, topico){
   const tpl=lauTpl(str); vals=vals||[];
   const sj = JSON.stringify(str).replace(/"/g,'&quot;');
   // seg: mostra só o trecho n.º seg (trechos separados por ";"), ex.: lobo remanescente na tireoidectomia parcial
+  if(topico && tpl.lines.some(l=>l.some(t=>t.t==='p'))) return lauTopicoForm(k, tplId, str, vals, seg, topico);
   const noSeg = toks=>{ if(seg==null) return toks; let n=0; const out=[]; toks.forEach(tk=>{ if(n===seg) out.push(tk); if(/;$/.test(tk.t==='w'?tk.s:(tk.suf||''))) n++; }); if(out.length){ const l=out[out.length-1]; if(l.t==='w') out[out.length-1]={t:'w', s:l.s.replace(/;$/,'.')}; else out[out.length-1]=Object.assign({},l,{suf:(l.suf||'').replace(/;$/,'.')}); } return out; };
   return `<div class="lau-inl">${tpl.lines.map(toks=>noSeg(toks).map(tk=>{
     if(tk.t==='w') return esc(tk.s);
@@ -2434,6 +2435,59 @@ function lauInlineForm(k, tplId, str, vals, seg){
     const av=lauAutoVal(tpl, vals, tk.i);
     return esc(tk.pre)+`<input id="ph-${k}-${tplId}-${tk.i}" class="lau-ph-in" type="text" value="${esc(v)}" placeholder="${av!=null?esc(av):'…'}" oninput="lauPh('${k}','${tplId}',${tk.i},this.value,${sj})">`+esc(tk.suf);
   }).join(' ')).join('<br>')}</div>`;
+}
+/* Campos do texto padrão "por tópico": a frase da máscara em cima e, embaixo, uma linha por
+   estrutura (ex.: "Testículo direito  [ ] × [ ] × [ ] cm · Volume [ ] cm³"). */
+const LAU_TOP_UN = /^\(?(cm³|cm3|cm\/s|m\/s|cm²|cm|mm|ml|mL|%|g|kg|kPa|mmhg|mmHg|semanas|dias|bpm|minutos|min)[).,;:]*$/i;
+const LAU_TOP_STOP = /^(medindo|mede|medem|com|de|em|cerca|apresentando|estimad[oa]s?|calibre|e|aproximadamente|até|torno|foi|realizad[oa]|nota-se|no|na|do|da|ao|à|a|o|os|as|por|para|sem|é|são|mais|valor|velocidade|índice)$/i;
+function lauTopLbl(words, inicio){
+  const ws = words.join(' ').replace(/[()]/g,' ').replace(/^[-–•\s]+/,'').split(/\s+/).filter(Boolean);
+  // "RD = XXX" → "RD"
+  const eq = ws.join(' ').match(/([^\s(),;:=]+(?:\s[^\s(),;:=]+){0,2})\s*=\s*$/);
+  if(eq){ let e=eq[1].split(' ').filter(w=>!LAU_TOP_STOP.test(w)); const u=e.map((w,j)=>/^[A-ZÁÉÍÓÚ]/.test(w)?j:-1).filter(j=>j>=0).pop(); if(u!=null) e=e.slice(u); if(e.length) return e.join(' '); }
+  if(inicio){   // começo da frase: "Testículo direito medindo" → "Testículo direito"; "lobo direito:" também vale
+    const out=[]; let dp=false; for(const w of ws){ const c=w.replace(/[,:;.]+$/,''); if(LAU_TOP_STOP.test(c) || /^\d/.test(c)){ dp = dp || /^(medindo|mede|medem)$/i.test(c); break; } out.push(c); if(/[,:;]$/.test(w)){ dp=/:$/.test(w); break; } }
+    if(out.length && out.length<=5 && (/^[A-ZÁÉÍÓÚÂÊÔÃÕÇ]/.test(out[0]) || dp)) return out.join(' ');
+    if(!ws.length || !/^[A-ZÁÉÍÓÚÂÊÔÃÕÇ]/.test(ws[0])) return '';   // frase começa em minúscula: usa o rótulo do item
+  }
+  // senão: as últimas palavras antes do campo, sem preposições ("com espessura bilaminar de" → "espessura bilaminar")
+  let w2 = ws.map(w=>w.replace(/[,:;.]+$/,''));
+  while(w2.length && LAU_TOP_STOP.test(w2[w2.length-1])) w2.pop();
+  const cut = w2.map((w,j)=>/^(com|de|em|e|ao|à)$/i.test(w)?j:-1).filter(j=>j>=0).pop();
+  if(cut!=null) w2 = w2.slice(cut+1);
+  w2 = w2.slice(-3).filter(w=>!LAU_TOP_STOP.test(w) || w2.length>1);
+  const t = w2.join(' ');
+  return /volume/i.test(t) ? 'Volume' : t;
+}
+function lauTopicoForm(k, tplId, str, vals, seg, rotulo){
+  const tpl=lauTpl(str); const sj = JSON.stringify(str).replace(/"/g,'&quot;');
+  let toks=[].concat(...tpl.lines.map((l,j)=>j?[{t:'w',s:'\n'}].concat(l):l));
+  if(seg!=null){ let n=0; toks=toks.filter(tk=>{ const ok=n===seg; if(/;$/.test(tk.t==='w'?tk.s:(tk.suf||''))) n++; return ok; }); }
+  // trechos: termina em ".", ";" ou quebra de linha
+  const segs=[]; let cur=[];
+  toks.forEach(tk=>{ cur.push(tk); const fim = tk.t==='w' ? (tk.s==='\n' || /[.;]$/.test(tk.s)) : /[.;]$/.test(tk.suf||''); if(fim){ segs.push(cur); cur=[]; } });
+  if(cur.length) segs.push(cur);
+  const inp = tk=>{ const v=vals[tk.i]||'';
+    if(tk.t==='c') return `<select class="lau-ph-sel" onchange="lauPh('${k}','${tplId}',${tk.i},this.value,${sj})">${tk.def?'':`<option value="">${esc(tk.o.join(' / '))}</option>`}${tk.o.map(o=>`<option ${(v||tk.def)===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
+    const av=lauAutoVal(tpl, vals, tk.i);
+    return `<input id="ph-${k}-${tplId}-${tk.i}" class="lau-ph-in" type="text" inputmode="decimal" value="${esc(v)}" placeholder="${av!=null?esc(av):'…'}" oninput="lauPh('${k}','${tplId}',${tk.i},this.value,${sj})">`; };
+  const rows = segs.filter(sg=>sg.some(t=>t.t==='p')).map(sg=>{
+    let buf=[], lbl=null, parts=[], ultInp=false;
+    sg.forEach(tk=>{
+      if(tk.t==='w'){ if(tk.s==='\n') return; const c=tk.s.replace(/[;.,]+$/,'');
+        if(ultInp && LAU_TOP_UN.test(c)){ parts.push(`<span class="lau-top-u">${esc(c.replace(/[()]/g,''))}</span>`); return; }
+        buf.push(tk.s); ultInp=false; return; }
+      if(tk.pre) buf.push(tk.pre);
+      if(lbl==null){ lbl = lauTopLbl(buf, true); }
+      else { const cn = buf.join(' ').replace(/[(),]/g,' ').trim(); if(cn){ const t = /^x$/i.test(cn) ? '×' : lauTopLbl(buf, false); if(t) parts.push(`<span class="lau-top-c">${esc(t)}</span>`); } }
+      buf=[]; parts.push(inp(tk)); ultInp = tk.t==='p';
+      if(tk.suf){ const u=tk.suf.replace(/[;.,]+$/,''); if(LAU_TOP_UN.test(u)) parts.push(`<span class="lau-top-u">${esc(u.replace(/[()]/g,''))}</span>`); }
+    });
+    lbl = lbl || rotulo || '';
+    return `<div class="lau-top-r">${lbl?`<div class="lau-top-l">${esc(lbl.charAt(0).toUpperCase()+lbl.slice(1))}</div>`:''}<div class="lau-top-f">${parts.join('')}</div></div>`;
+  });
+  const frase = toks.map(tk=>tk.t==='w' ? (tk.s==='\n'?'<br>':esc(tk.s)) : esc(tk.pre||'')+'<span class="lau-top-x">'+(tk.t==='c'?esc(tk.o.join(' / ')):'___')+'</span>'+esc(tk.suf||'')).join(' ').replace(/ <br> /g,'<br>');
+  return `<div class="lau-inl dim lau-top-fr">${frase}</div><div class="lau-top">${rows.join('')}</div>`;
 }
 function lauOptsHTML(k, opts, flags, bag){
   if(!opts || !opts.length) return '';
@@ -2498,17 +2552,17 @@ function lauItemPanel(m, it){
   } else if(lauHasPh(normal) && !it.noNF){
     // tireoidectomia parcial: só os campos do lobo remanescente; total: sem campos de volume
     let seg=null; if(/^volumes estimados/i.test(lauItemLabel(m,it)||'')){ const c=lauTireoCx(m); if(c && c.parcial) seg = c.parcial==='direito' ? 1 : 0; }
-    h += `<div class="lau-rl">${it.generic?'Texto da máscara — preencha os campos':'Medidas do texto padrão'}${seg!=null?` (lobo ${seg?'esquerdo':'direito'} remanescente)`:''}</div>${lauInlineForm(k,'n',String(normal).replace(/^\n+/,''),s.__v.n,seg)}`;
+    h += `<div class="lau-rl">${it.generic?'Texto da máscara — preencha os campos':'Medidas do texto padrão'}${seg!=null?` (lobo ${seg?'esquerdo':'direito'} remanescente)`:''}</div>${lauInlineForm(k,'n',String(normal).replace(/^\n+/,''),s.__v.n,seg,(lbl?lauFill(lbl,s.__v.l):'').replace(/:$/,'')||' ')}`;
   }
   else if(it.generic) h += `<div class="lau-rl">Texto da máscara</div><div class="lau-inl dim">${esc(normal).replace(/\n/g,'<br>')}</div>`;
   if(!it.generic) h += it.ctrls.map(c=>lauCtrlHTML(k,s,c)).join('');
-  if(typeof lauAutoBoxHTML==='function') h += lauAutoBoxHTML(m, it);
   h += lauOptsHTML(k, it.opts, s.__o, s.__v);
   h += lauFrasesPanel(k, it.sk ? [it.sk] : lauFraseOrgao(lbl || String(normal).slice(0,60), m.metodo==='tc' && !m.oct ? 'tcg' : m.metodo), s.__f, s.__v, !!it.sk);
   if(it.generic && !m.oct){
     h += `<div class="lau-row"><div class="lau-rl">Substituir o texto por (alteração)</div><textarea class="lau-ta" rows="3" placeholder="Deixe em branco para manter o texto da máscara" oninput="lauSetQ('${k}','alt',this.value)">${esc(s.alt)}</textarea></div>`;
     h += `<div class="lau-row"><div class="lau-rl">Frase para a conclusão</div><input class="lau-txt" type="text" value="${esc(s.conc)}" placeholder="ex.: Tendinopatia do supraespinal." oninput="lauSetQ('${k}','conc',this.value)"></div>`;
   }
+  if(typeof lauAutoBoxHTML==='function') h += lauAutoBoxHTML(m, it);   // regra automática por último
   return h + `<button type="button" class="lau-reset" onclick="lauItemReset('${k}')">${svgIcon(P.reset,14,{sw:2})} Voltar ao normal</button>`;
 }
 /* tela larga (≥ 1200px): o item aberto aparece numa coluna do meio, entre os achados e o laudo */
