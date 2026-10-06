@@ -22,9 +22,9 @@
 const MSL_ORGAOS = {
   prostata: {
     id:'prostata', nome:'PRÓSTATA (PI-RADS)',
-    img:'/img/pi-rads-padrao-inicial.webp', size:1890,
+    img:'/img/mapa-setorial-prostata.webp', size:1890,   // a imagem é desenhada em 1890 px (o canvas fica do mesmo tamanho para qualquer arte)
     // retângulo da imagem (px) sem desenho, onde a legenda das cores é escrita
-    legenda:{x:868, y:1176, w:322},
+    legenda:{x:845, y:355, w:290},
     ref:{
       intro:'A ilustração acima é uma releitura do mapa setorial do PI-RADS v2.1.',
       lista:[
@@ -359,7 +359,7 @@ function mslToggleLegend(){
 function mslDrawBase(){
   const ctx=MSL.bctx; if(!ctx||!MSL.img) return;
   const s=mslState(), o=MSL_ORGAOS[s.org], N=MSL.N;
-  ctx.clearRect(0,0,N,N); ctx.drawImage(MSL.img,0,0,N,N);
+  ctx.clearRect(0,0,N,N); ctx.imageSmoothingQuality='high'; ctx.drawImage(MSL.img,0,0,N,N);
   // marca pequena, em preto, no canto inferior direito (a pelve tem a sua, em branco, no canto inferior esquerdo)
   { const fs=Math.max(9,Math.round(N*0.0105)), m=N*0.014;
     ctx.save(); ctx.font=`600 ${fs}px "Segoe UI",Arial,Helvetica,sans-serif`; ctx.textBaseline='alphabetic'; ctx.textAlign='right';
