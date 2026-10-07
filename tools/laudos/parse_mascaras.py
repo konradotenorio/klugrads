@@ -139,6 +139,13 @@ for md in models:
         if ' || ' in it['text']:
             alts = [x.strip() for x in it['text'].split(' || ')]
             it['text'] = alts[0]; it['alts'] = alts
+        # conclusão própria de cada variação / frase opcional: "texto => conclusão" ({n} = campo n do texto)
+        if it.get('alts') and any(' => ' in a for a in it['alts']):
+            it['altConc'] = [a.split(' => ',1)[1].strip() if ' => ' in a else None for a in it['alts']]
+            it['alts'] = [a.split(' => ',1)[0].strip() for a in it['alts']]; it['text'] = it['alts'][0]
+        if any(' => ' in o for o in it['opts']):
+            it['optConc'] = [o.split(' => ',1)[1].strip() if ' => ' in o else None for o in it['opts']]
+            it['opts'] = [o.split(' => ',1)[0].strip() for o in it['opts']]
     for it in items: it.pop('bloco', None)
     labs = {}
     for it in items: labs[it['label']] = labs.get(it['label'],0)+1

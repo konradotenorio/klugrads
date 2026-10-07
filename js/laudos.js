@@ -1101,7 +1101,7 @@ function lauBuildModel(mk){
   const items = mk.items.map(mi=>{
     const smap = mk.metodo==='mmg' ? LAU_STRUCT_LABELS_MMG : mk.metodo==='dmo' ? (typeof LAU_STRUCT_LABELS_DMO!=='undefined'?LAU_STRUCT_LABELS_DMO:{}) : mk.metodo==='tc' ? {} : LAU_STRUCT_LABELS;   // TC: itens de texto (os estruturados de US usam termos de US)
     const sk = smap[lauNorm(mi.label)] || null;
-    const base = { k:mi.k, label:mi.label, grp:mi.grp||'', dash:mi.dash, normal:mi.text, opts:mi.opts||[], alts:mi.alts||null };
+    const base = { k:mi.k, label:mi.label, grp:mi.grp||'', dash:mi.dash, normal:mi.text, opts:mi.opts||[], alts:mi.alts||null, altConc:mi.altConc||null, optConc:mi.optConc||null };
     if(sk && !used[sk]){
       used[sk]=1;
       const d=LAU_STRUCT[sk];
@@ -1924,6 +1924,9 @@ function lauConcs(m){
   vis.forEach(it=>{
     (lauBuild(m,it).conc||[]).forEach(c=>push(esc(c)));
     const s=state.lau.v[it.k];
+    // conclusão própria da variação escolhida / das frases opcionais marcadas ("texto => conclusão" na máscara)
+    if(it.altConc && s.__alt>0 && it.altConc[s.__alt]) push(lauFraseConcHTML({t:it.alts[s.__alt], c:it.altConc[s.__alt]}, s.__v.n, ''));
+    if(it.optConc) it.optConc.forEach((c,i)=>{ if(c && s.__o[i]) push(lauFraseConcHTML({t:it.opts[i], c}, s.__v['o'+i], '')); });
     (s.__f||[]).forEach(id=>push(lauFraseConc(id, s.__v, lauLblLado(m, lauItemLabel(m,it)))));
   });
   (state.lau.xf||[]).forEach(id=>push(lauFraseConc(id, state.lau.xv, '')));
@@ -2596,7 +2599,7 @@ function lauItemPanel(m, it){
   else if(it.generic) h += `<div class="lau-rl">Texto da máscara</div><div class="lau-inl dim">${esc(normal).replace(/\n/g,'<br>')}</div>`;
   if(!it.generic) h += it.ctrls.map(c=>lauCtrlHTML(k,s,c)).join('');
   h += lauOptsHTML(k, it.opts, s.__o, s.__v);
-  h += lauFrasesPanel(k, it.sk ? [it.sk] : lauFraseOrgao(lbl || String(normal).slice(0,60), m.metodo==='tc' && !m.oct ? 'tcg' : m.metodo), s.__f, s.__v, !!it.sk);
+  if(!/^us-ecocardio/.test(m.id)) h += lauFrasesPanel(k, it.sk ? [it.sk] : lauFraseOrgao(lbl || String(normal).slice(0,60), m.metodo==='tc' && !m.oct ? 'tcg' : m.metodo), s.__f, s.__v, !!it.sk);
   if(it.generic && !m.oct){
     h += `<div class="lau-row"><div class="lau-rl">Substituir o texto por (alteração)</div><textarea class="lau-ta" rows="3" placeholder="Deixe em branco para manter o texto da máscara" oninput="lauSetQ('${k}','alt',this.value)">${esc(s.alt)}</textarea></div>`;
     h += `<div class="lau-row"><div class="lau-rl">Frase para a conclusão</div><input class="lau-txt" type="text" value="${esc(s.conc)}" placeholder="ex.: Tendinopatia do supraespinal." oninput="lauSetQ('${k}','conc',this.value)"></div>`;

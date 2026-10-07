@@ -8234,6 +8234,11 @@ const LAU_US_MASKS = [
 "Paciente em ritmo cardíaco regular (FC = XXX bpm).",
 "Paciente em ritmo cardíaco irregular (FC média = XXX bpm).",
 "Paciente em fibrilação atrial (FC média = XXX bpm)."
+],
+"altConc": [
+null,
+null,
+"Fibrilação atrial."
 ]
 },
 {
@@ -8250,6 +8255,15 @@ const LAU_US_MASKS = [
 "Cavidades cardíacas com dimensões normais (volume indexado do átrio esquerdo estimado em XXX mL/m²).",
 "Átrio esquerdo com volume aumentado em grau leve XX moderado XX importante (volume indexado estimado em XXX mL/m²). Demais cavidades cardíacas com dimensões normais.",
 "Aumento do ventrículo_esquerdo XX ventrículo_direito XX átrio_direito de grau leve XX moderado XX importante. Demais cavidades cardíacas com dimensões normais."
+],
+"altConc": [
+null,
+"Átrio esquerdo com volume aumentado em grau {0}.",
+"Aumento do {0} de grau {1}."
+],
+"optConc": [
+"Septo interatrial redundante, sem sinais de shunt.",
+"Cabos de marca-passo em câmaras cardíacas direitas."
 ]
 },
 {
@@ -8267,6 +8281,16 @@ const LAU_US_MASKS = [
 "Índice de massa miocárdica e espessura relativa da parede aumentados, compatível com hipertrofia concêntrica do ventrículo esquerdo.",
 "Índice de massa miocárdica aumentado e espessura relativa da parede normal, compatível com hipertrofia excêntrica do ventrículo esquerdo.",
 "Aumento discreto XX leve XX moderado da espessura miocárdica, mais acentuado na porção basal do septo interventricular (espessura máxima de XXX mm)."
+],
+"altConc": [
+null,
+"Remodelamento concêntrico do ventrículo esquerdo.",
+"Hipertrofia concêntrica do ventrículo esquerdo.",
+"Hipertrofia excêntrica do ventrículo esquerdo.",
+"Aumento {0} da espessura miocárdica, mais acentuado na porção basal do septo interventricular."
+],
+"optConc": [
+"Septo interventricular sigmoide."
 ]
 },
 {
@@ -8284,6 +8308,16 @@ const LAU_US_MASKS = [
 "Disfunção sistólica global do ventrículo esquerdo de grau leve XX moderado XX importante, por hipocinesia difusa. Fração de ejeção estimada em XXX% pelo método de Simpson.",
 "Alteração da contratilidade segmentar do ventrículo esquerdo: XXX. Fração de ejeção estimada em XXX% pelo método de Simpson.",
 "Movimento anômalo do septo interventricular, com contratilidade preservada dos demais segmentos do ventrículo esquerdo. Fração de ejeção estimada em XXX% pelo método de Simpson."
+],
+"altConc": [
+null,
+"Disfunção sistólica global do ventrículo esquerdo de grau {0} (fração de ejeção de {1}%).",
+"Alteração da contratilidade segmentar do ventrículo esquerdo (fração de ejeção de {1}%).",
+"Movimento anômalo do septo interventricular."
+],
+"optConc": [
+null,
+"Dissincronia intraventricular."
 ]
 },
 {
@@ -8301,6 +8335,13 @@ const LAU_US_MASKS = [
 "Disfunção diastólica do ventrículo esquerdo de grau II, com pressão de átrio esquerdo elevada (e' de XXX cm/s e relação E/e' de XXX).",
 "Disfunção diastólica do ventrículo esquerdo de grau III (padrão restritivo), com relação E/e' de XXX.",
 "Sinais sugestivos de pressões de enchimento do ventrículo esquerdo elevadas (relação E/e' de XXX)."
+],
+"altConc": [
+null,
+"Disfunção diastólica do ventrículo esquerdo de grau I (alteração do relaxamento).",
+"Disfunção diastólica do ventrículo esquerdo de grau II, com sinais de elevação da pressão do átrio esquerdo.",
+"Disfunção diastólica do ventrículo esquerdo de grau III (padrão restritivo).",
+"Sinais sugestivos de pressões de enchimento do ventrículo esquerdo elevadas."
 ]
 },
 {
@@ -8313,6 +8354,10 @@ const LAU_US_MASKS = [
 "alts": [
 "Função sistólica do ventrículo direito preservada (TAPSE de XXX mm).",
 "Disfunção sistólica do ventrículo direito de grau leve XX moderado XX importante (TAPSE de XXX mm)."
+],
+"altConc": [
+null,
+"Disfunção sistólica do ventrículo direito de grau {0}."
 ]
 },
 {
@@ -8327,6 +8372,12 @@ const LAU_US_MASKS = [
 "Valva mitral com espessamento discreto, abertura e mobilidade preservadas. Refluxo mitral de grau leve XX moderado XX importante.",
 "Prolapso das cúspides da valva mitral para o interior do átrio esquerdo, com refluxo mitral telessistólico de grau discreto XX leve XX moderado XX importante.",
 "Fibrocalcificação do anel mitral e da base do folheto posterior, com abertura preservada. Refluxo mitral de grau mínimo XX leve XX moderado XX importante."
+],
+"altConc": [
+null,
+"Refluxo mitral de grau {0}.",
+"Prolapso da valva mitral, com refluxo mitral de grau {0}.",
+"Fibrocalcificação do anel mitral, com refluxo mitral de grau {0}."
 ]
 },
 {
@@ -8341,6 +8392,12 @@ const LAU_US_MASKS = [
 "Valva aórtica trivalvulada, com espessamento discreto e fibrocalcificação dos folhetos, abertura preservada.",
 "Valva aórtica com refluxo de grau leve XX moderado XX importante, sem gradiente transvalvar significativo.",
 "Prótese biológica de implante percutâneo (TAVI) em posição aórtica, normoposicionada e normoexpandida, com folhetos de espessura normal, abertura e mobilidade preservadas. Velocidade de pico de XXX m/s, gradiente médio de XXX mmHg e área valvar pela equação de continuidade de XXX cm²."
+],
+"altConc": [
+null,
+"Alterações degenerativas da valva aórtica.",
+"Refluxo aórtico de grau {0}.",
+"Prótese aórtica percutânea (TAVI) normoposicionada e normofuncionante."
 ]
 },
 {
@@ -8353,6 +8410,10 @@ const LAU_US_MASKS = [
 "alts": [
 "Valva tricúspide com cúspides finas, abertura e mobilidade preservadas. Ao Doppler, refluxo mínimo, sem gradiente transvalvar significativo.",
 "Refluxo tricúspide de grau leve XX moderado XX importante."
+],
+"altConc": [
+null,
+"Refluxo tricúspide de grau {0}."
 ]
 },
 {
@@ -8386,6 +8447,10 @@ const LAU_US_MASKS = [
 "alts": [
 "Aorta torácica com dimensões normais.",
 "Ectasia mínima XX leve XX moderada da aorta ascendente (XXX mm)."
+],
+"altConc": [
+null,
+"Ectasia {0} da aorta ascendente."
 ]
 },
 {
@@ -8398,6 +8463,10 @@ const LAU_US_MASKS = [
 "alts": [
 "Pericárdio sem sinais de derrame.",
 "Derrame pericárdico de pequeno XX moderado XX grande volume, sem sinais de restrição ao enchimento ventricular."
+],
+"altConc": [
+null,
+"Derrame pericárdico de {0} volume."
 ]
 },
 {
@@ -8411,6 +8480,11 @@ const LAU_US_MASKS = [
 "Veia cava inferior com dimensões normais e índice de colapsibilidade normal (variação respiratória superior a 50%).",
 "Veia cava inferior de pequeno calibre, colapsando à inspiração.",
 "Veia cava inferior dilatada, com variação respiratória inferior a 50%."
+],
+"altConc": [
+null,
+null,
+"Veia cava inferior dilatada, com redução da variação respiratória."
 ]
 }
 ],
