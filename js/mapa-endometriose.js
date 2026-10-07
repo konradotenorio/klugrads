@@ -6,7 +6,8 @@
    e marca os achados por cima da imagem, com o mesmo estilo de pintura do mapa da
    próstata: pincel, borracha, desfazer, zoom, legenda pequena dentro da imagem e
    exportação (copiar / baixar JPEG). Aqui há também a SETA: arrasta-se do texto até o
-   achado (a ponta fica onde se solta) e a caixa de texto é opcional.
+   achado (a ponta fica onde se solta) e a caixa de texto é opcional. Também há a RÉGUA: linha preta
+   tracejada (como o tracejado de uma medição) com um balão opcional para escrever a medida.
 
    Achados (3 cores): ENDOMETRIOSE (preto, pincel espiculado/irregular),
    ENDOMETRIOMA (vinho, sem contorno nem margem) e SANGUE (vermelho).
@@ -43,6 +44,8 @@ const SETA = {fill:'#FFD21F', line:'#1B1B1B'};   // seta amarela com contorno es
 /* contorno preto do ENDOMETRIOMA: REMOVIDO (ANEL_MM = 0). Com ANEL_MM > 0 volta a faixa por FORA do círculo vinho (espessura fixa, não depende da espessura do pincel).
    As imagens da pelve não têm escala em mm: adotei 1 mm = 3,78 px da imagem de referência (1103 px de largura), ou seja,
    a tela a 100% (≈96 dpi). Para outra calibração, basta mudar MM_PX (ou ANEL_MM). */
+const ESC_ORI = 0.75;                   // escala das etiquetas de lateralidade (anterior, posterior, direito, esquerdo)
+const ESC_TXT = 0.75;                   // escala da caixa de texto (balão) da seta e da régua
 const ANEL_MM = 0, MM_PX = 3.78;     // ANEL_MM = largura do contorno em mm; 0 = sem contorno
 
 /* ---- estado (em memória) ---- */
@@ -78,6 +81,13 @@ function ctlHTML(){
        + row('Ovário Esquerdo',`<div class="em-chips">${chips('ovE',OV)}</div>`)
        + row('LEGENDA',`<div class="msl-cores em-cores">${cores}</div>`);
 }
+const anota = () => { const t = st().tool; return t==='arrow' || t==='ruler'; };      // ferramentas de anotação (seta e régua): mesmo gesto e mesma seleção
+const DICA_MEXER = 'Toque numa {x} para mexer nela: arraste-a para mover, arraste as bolinhas para ajustar as pontas, toque de novo para editar o texto, ou use Apagar (ou a tecla Delete).';
+function dica(t){
+  return t==='ruler'
+    ? 'Régua: arraste de um ponto ao outro da medida (linha preta tracejada); depois escreva a medida (ex.: 12 mm), que aparece num balão no meio da linha. O texto é opcional. Toque numa régua para mexer nela: arraste a linha para mover, as bolinhas para ajustar as pontas e o balão para colocá-lo onde não atrapalhe a imagem (um fio fino o liga à ponta da régua mais próxima); toque de novo para editar o texto, ou use Apagar (ou a tecla Delete).'
+    : 'Seta: arraste do local do texto até o achado (a ponta fica onde soltar); o texto é opcional. '+DICA_MEXER.replace('{x}','seta');
+}
 function html(){
   const s = st();
   const tb = (id,ic,lbl,extra) => `<button type="button" class="msl-btn${extra||''}" id="${id}" title="${lbl}" aria-label="${lbl}">${mslIc(ic)}<span>${lbl}</span></button>`;
@@ -87,10 +97,10 @@ function html(){
     <div class="msl-ed${s.full?' full':''}" id="em-ed">
       <div class="msl-bar">
         <div class="msl-row">
-          ${tb('em-b-brush','pen','Pincel',s.tool==='brush'?' on':'')}${tb('em-b-erase','eraser','Borracha',s.tool==='erase'?' on':'')}${tb('em-b-arrow','arrow','Seta',s.tool==='arrow'?' on':'')}<button type="button" class="msl-btn" id="em-b-delarrow" title="Apagar a seta selecionada" aria-label="Apagar a seta selecionada" disabled${s.tool==='arrow'?'':' style="display:none"'}>${mslIc('trash')}<span>Apagar seta</span></button>
-          <label class="msl-size" title="Espessura do pincel e tamanho da seta"><span>Espessura</span><input type="range" id="em-w" min="4" max="70" step="1" value="${s.w}"></label>
+          ${tb('em-b-brush','pen','Pincel',s.tool==='brush'?' on':'')}${tb('em-b-erase','eraser','Borracha',s.tool==='erase'?' on':'')}${tb('em-b-arrow','arrow','Seta',s.tool==='arrow'?' on':'')}${tb('em-b-ruler','ruler','Régua',s.tool==='ruler'?' on':'')}<button type="button" class="msl-btn" id="em-b-delarrow" title="Apagar a seta ou a régua selecionada" aria-label="Apagar a seta ou a régua selecionada" disabled${anota()?'':' style="display:none"'}>${mslIc('trash')}<span>Apagar</span></button>
+          <label class="msl-size" title="Espessura do pincel e tamanho da seta e da régua"><span>Espessura</span><input type="range" id="em-w" min="4" max="70" step="1" value="${s.w}"></label>
         </div>
-        <div class="msl-row em-hint" id="em-hint"${s.tool==='arrow'?'':' style="display:none"'}>Seta: arraste do local do texto até o achado (a ponta fica onde soltar); o texto é opcional. Toque numa seta para mexer nela: arraste-a para mover, arraste as bolinhas para ajustar as pontas, toque de novo para editar o texto, ou use Apagar seta (ou a tecla Delete).</div>
+        <div class="msl-row em-hint" id="em-hint"${anota()?'':' style="display:none"'}>${dica(s.tool)}</div>
         <div class="msl-row">
           ${tb('em-b-undo','undo','Desfazer')}${tb('em-b-redo','redo','Refazer')}${tb('em-b-clear','eraser','Limpar tudo')}
           ${tb('em-b-leg','list','Legenda',s.legend?' on':'')}
@@ -136,10 +146,10 @@ function init(){
     window.addEventListener('keydown', e=>{
       if(!ativo()) return;
       if(e.key==='Escape' && R.edit){ fecharTxt(); return; }
-      if(e.key==='Escape' && R.sel && st().tool==='arrow'){ R.sel = null; drawSel(); return; }
+      if(e.key==='Escape' && R.sel && anota()){ R.sel = null; drawSel(); return; }
       if(e.key==='Escape' && st().full){ toggleFull(); return; }
       const t = e.target && e.target.tagName; if(t==='INPUT'||t==='TEXTAREA') return;
-      if((e.key==='Delete'||e.key==='Backspace') && R.sel && st().tool==='arrow'){ e.preventDefault(); apagarSeta(); return; }
+      if((e.key==='Delete'||e.key==='Backspace') && R.sel && anota()){ e.preventDefault(); apagarSeta(); return; }
       if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='z'){ e.preventDefault(); e.shiftKey ? redo() : undo(); }
     });
   }
@@ -149,7 +159,7 @@ function ativo(){ return state.view==='mapaLesional' && mslState().org==='endome
 
 function setTool(t){
   const s = st(); s.tool = t;
-  if(t!=='arrow'){ fecharTxt(); R.sel = null; }
+  if(t!=='arrow' && t!=='ruler'){ fecharTxt(); R.sel = null; }
   g('em-ctl').innerHTML = ctlHTML(); sync();
 }
 function onClick(e){
@@ -166,6 +176,7 @@ function onClick(e){
     case 'em-b-brush': setTool('brush'); break;
     case 'em-b-erase': setTool('erase'); break;
     case 'em-b-arrow': setTool('arrow'); break;
+    case 'em-b-ruler': setTool('ruler'); break;
     case 'em-b-delarrow': apagarSeta(); break;
     case 'em-b-undo': undo(); break;
     case 'em-b-redo': redo(); break;
@@ -238,20 +249,20 @@ function orientacao(ctx){
   ctx.fillStyle = 'rgba(18,22,30,.80)'; roundRect(ctx,tx,ty,tw,th,th/2); ctx.fill();
   ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(tit, R.IW/2, ty+th/2+1*k); ctx.textAlign = 'left';
   /* etiquetas das bordas: a seta aponta para fora da imagem (lado que o nome indica) */
-  const bh = 52*k, ar = 11*k;
+  const kb = k*ESC_ORI, bh = 52*kb, ar = 11*kb;                     // kb: escala das etiquetas de lateralidade (ESC_ORI = 0,75 → 25% menores)
   const badge = (txt,dir,cx,cy)=>{
-    ctx.font = F(700,27*k); const w = ctx.measureText(txt).width + 34*k + 2*ar + 12*k, x = cx-w/2, y = cy-bh/2;
-    ctx.fillStyle = 'rgba(255,255,255,.90)'; ctx.strokeStyle = 'rgba(60,60,70,.45)'; ctx.lineWidth = 2*k; roundRect(ctx,x,y,w,bh,bh/2); ctx.fill(); ctx.stroke();
-    const ax = x+17*k+ar, ay = cy;                                  // centro da seta (à esquerda do texto)
+    ctx.font = F(700,27*kb); const w = ctx.measureText(txt).width + 34*kb + 2*ar + 12*kb, x = cx-w/2, y = cy-bh/2;
+    ctx.fillStyle = 'rgba(255,255,255,.90)'; ctx.strokeStyle = 'rgba(60,60,70,.45)'; ctx.lineWidth = 2*kb; roundRect(ctx,x,y,w,bh,bh/2); ctx.fill(); ctx.stroke();
+    const ax = x+17*kb+ar, ay = cy;                                 // centro da seta (à esquerda do texto)
     const p = {up:[[0,-ar],[ar,ar*0.8],[-ar,ar*0.8]], down:[[0,ar],[ar,-ar*0.8],[-ar,-ar*0.8]],
                left:[[-ar,0],[ar*0.8,ar],[ar*0.8,-ar]], right:[[ar,0],[-ar*0.8,ar],[-ar*0.8,-ar]]}[dir];
     ctx.fillStyle = '#7A1F3D'; ctx.beginPath(); ctx.moveTo(ax+p[0][0],ay+p[0][1]); ctx.lineTo(ax+p[1][0],ay+p[1][1]); ctx.lineTo(ax+p[2][0],ay+p[2][1]); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#1f2630'; ctx.fillText(txt, ax+ar+12*k, cy+1*k);
+    ctx.fillStyle = '#1f2630'; ctx.fillText(txt, ax+ar+12*kb, cy+1*kb);
   };
   badge('ANTERIOR','up',R.IW/2,ty+th+14*k+bh/2);
   badge('POSTERIOR','down',R.IW/2,R.IH-m-bh/2);
-  ctx.font = F(700,27*k);
-  const bw = t => ctx.measureText(t).width + 34*k + 2*ar + 12*k;
+  ctx.font = F(700,27*kb);
+  const bw = t => ctx.measureText(t).width + 34*kb + 2*ar + 12*kb;
   badge('ESQUERDO','left',m+bw('ESQUERDO')/2,R.IH/2);
   badge('DIREITO','right',R.IW-m-bw('DIREITO')/2,R.IH/2);
   ctx.restore();
@@ -325,7 +336,7 @@ function onDown(e){
   if(R.ptrs.size>2) return;
   if(e.pointerType==='mouse' && (e.button===1||e.button===2)){ R.pan = {x:e.clientX,y:e.clientY,tx:R.tx,ty:R.ty}; stg.classList.add('grabbing'); return; }
   if(e.pointerType==='mouse' && e.button!==0) return;
-  if(st().tool==='arrow'){ setaStart(e); return; }
+  if(anota()){ setaStart(e); return; }
   strokeStart(e);
 }
 function onMove(e){
@@ -359,11 +370,11 @@ function pinchMove(){
 }
 function cursor(e){
   const c = g('em-cur'), stg = g('em-stage'); if(!c||!stg) return;
-  if(st().tool==='arrow' && e.pointerType==='mouse' && R.ready && !R.arrow && !R.drag && !R.pan){      // mouse sobre uma seta: mostra que dá para mexer
+  if(anota() && e.pointerType==='mouse' && R.ready && !R.arrow && !R.drag && !R.pan){      // mouse sobre uma seta: mostra que dá para mexer
     const w = g('em-world'), p = w ? ptr(e,w.getBoundingClientRect()) : null, h = p && setaAlvo(p[0],p[1],false);
-    stg.style.cursor = h ? (h.mode==='move' ? 'move' : 'grab') : '';
+    stg.style.cursor = h ? (h.mode==='move' || h.mode==='pill' ? 'move' : 'grab') : '';
   }
-  if(e.pointerType==='touch' || st().tool==='arrow'){ c.style.display='none'; return; }
+  if(e.pointerType==='touch' || anota()){ c.style.display='none'; return; }
   const s = st(), extra = (s.tool==='brush' && s.cor===2) ? 2*ANEL_MM*MM_PX : 0;     // o círculo do endometrioma inclui o contorno
   const r = stg.getBoundingClientRect(), d = Math.max(4, (s.w+extra)*R.K*R.fw*R.k/R.IW);
   c.style.display='block'; c.style.width = c.style.height = d+'px'; c.style.left = (e.clientX-r.left)+'px'; c.style.top = (e.clientY-r.top)+'px';
@@ -506,7 +517,8 @@ function cancelStroke(){
    Item: {arrow:true, x0,y0 (início = lado da caixa de texto), x1,y1 (ponta), w, text}. A caixa de texto
    só aparece se houver texto; fica encostada no início da seta, do lado oposto ao da ponta. */
 function setaMed(ctx,a){
-  const K = R.K, k = R.IW/1890, sw = Math.max(3,a.w*0.4)*K, hl = sw*4.6, hw = sw*2.3;
+  if(a.ruler) return regMed(ctx,a);
+  const K = R.K, k = R.IW/1890*ESC_TXT, sw = Math.max(3,a.w*0.4)*K, hl = sw*4.6, hw = sw*2.3;
   let dx = a.x1-a.x0, dy = a.y1-a.y0; const L = Math.hypot(dx,dy)||1; dx /= L; dy /= L;
   const txt = (a.text||'').trim(); let pill = null, sx = a.x0, sy = a.y0;
   if(txt){
@@ -520,6 +532,7 @@ function setaMed(ctx,a){
   return {sw, hl, hw, sx, sy, pill};
 }
 function drawArrow(ctx,a){
+  if(a.ruler){ drawRegua(ctx,a); return; }
   const G = setaMed(ctx,a), hx = a.x1, hy = a.y1, o = Math.max(2.2*R.K, G.sw*0.22);
   let ux = hx-G.sx, uy = hy-G.sy; const L = Math.hypot(ux,uy)||1; ux /= L; uy /= L;
   const hl = Math.min(G.hl,L*0.75), hw = G.hw*hl/G.hl, bx = hx-ux*hl, by = hy-uy*hl, nx = -uy, ny = ux;
@@ -534,6 +547,44 @@ function drawArrow(ctx,a){
     ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.strokeStyle = 'rgba(30,36,46,.85)'; ctx.lineWidth = 2.5*p.k;
     roundRect(ctx,p.x,p.y,p.w,p.h,16*p.k); ctx.fill(); ctx.stroke();
     ctx.fillStyle = '#1f2630'; ctx.fillText(p.txt,p.cx,p.cy+1*p.k);
+  }
+  ctx.restore();
+}
+/* ---- RÉGUA: item da mesma lista das setas ({arrow:true, ruler:true, x0,y0,x1,y1,w,text}), então seleção, mover, ajustar as pontas,
+   apagar, desfazer/refazer, limpar e exportação são os mesmos da seta. Desenho: linha preta TRACEJADA entre os dois pontos, com um
+   pequeno traço transversal em cada ponta (como numa medição) e, se houver texto, um balão no meio da linha com a medida. */
+function regMed(ctx,a){
+  const K = R.K, k = R.IW/1890*ESC_TXT, lw = (0.9+a.w*0.03)*K;          // espessura da régua (px de referência): fina por padrão (≈1,4 com o controle em 18) e só chega a ≈3 no máximo
+  const txt = (a.text||'').trim(), mx = (a.x0+a.x1)/2, my = (a.y0+a.y1)/2; let pill = null;
+  if(txt){
+    ctx.save(); ctx.font = `700 ${38*k}px "Segoe UI",Arial,Helvetica,sans-serif`;
+    const pw = ctx.measureText(txt).width + 44*k, ph = 68*k; ctx.restore();
+    const px = mx+(a.ox||0), py = my+(a.oy||0);                      // meio da linha + o deslocamento de quando o balão foi arrastado
+    const m = 8*k, cx = Math.min(R.IW-m-pw/2, Math.max(m+pw/2,px)), cy = Math.min(R.IH-m-ph/2, Math.max(m+ph/2,py));
+    pill = {x:cx-pw/2, y:cy-ph/2, w:pw, h:ph, cx, cy, txt, k};
+  }
+  return {lw, sx:a.x0, sy:a.y0, hw:lw, pill, mx, my};
+}
+function drawRegua(ctx,a){
+  const G = regMed(ctx,a), lw = G.lw, dx = a.x1-a.x0, dy = a.y1-a.y0, L = Math.hypot(dx,dy)||1, nx = -dy/L, ny = dx/L;
+  const dash = Math.max(lw*3.4,6.5*R.K), gap = Math.max(lw*2.4,4.5*R.K), n = Math.max(1,Math.round((L+gap)/(dash+gap))), sc = L/(n*dash+(n-1)*gap);   // n traços que cabem certinho: começa e termina em traço
+  ctx.save(); ctx.strokeStyle = '#000'; ctx.lineWidth = lw; ctx.lineCap = 'butt';
+  ctx.setLineDash([dash*sc,gap*sc]); ctx.beginPath(); ctx.moveTo(a.x0,a.y0); ctx.lineTo(a.x1,a.y1); ctx.stroke(); ctx.setLineDash([]);
+  const h = Math.max(lw*2.6,8*R.K);
+  ctx.beginPath(); for(const [x,y] of [[a.x0,a.y0],[a.x1,a.y1]]){ ctx.moveTo(x-nx*h,y-ny*h); ctx.lineTo(x+nx*h,y+ny*h); } ctx.stroke();
+  const p = G.pill;
+  if(p){
+    /* balão afastado da régua: um fio fino o liga à PONTA mais próxima (por baixo do balão); encostado na régua, não precisa de fio */
+    const dEnd = (x,y)=>Math.hypot(x-p.cx,y-p.cy), e = dEnd(a.x0,a.y0) <= dEnd(a.x1,a.y1) ? [a.x0,a.y0] : [a.x1,a.y1];
+    let dmin = 1e9; for(let i=0;i<=40;i++){ const x = a.x0+dx*i/40, y = a.y0+dy*i/40;       // distância da linha ao retângulo do balão
+      dmin = Math.min(dmin, Math.hypot(Math.max(p.x-x,0,x-(p.x+p.w)), Math.max(p.y-y,0,y-(p.y+p.h)))); }
+    if(dmin > 3*R.K){
+      ctx.lineWidth = Math.max(1*R.K,lw*0.8); ctx.beginPath(); ctx.moveTo(e[0],e[1]); ctx.lineTo(p.cx,p.cy); ctx.stroke();
+    }
+    ctx.font = `700 ${38*p.k}px "Segoe UI",Arial,Helvetica,sans-serif`; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(255,255,255,.96)'; ctx.strokeStyle = '#000'; ctx.lineWidth = 2.5*p.k;
+    roundRect(ctx,p.x,p.y,p.w,p.h,22*p.k); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#000'; ctx.fillText(p.txt,p.cx,p.cy+1*p.k);
   }
   ctx.restore();
 }
@@ -560,7 +611,7 @@ function setaAlvo(x,y,touch){
   const l = setasVis(), tol = (touch?20:12)/f;
   for(let i=l.length-1;i>=0;i--){
     const a = l[i], G = setaMed(R.actx,a), p = G.pill;
-    if(p && x>=p.x && x<=p.x+p.w && y>=p.y && y<=p.y+p.h) return {a, mode:'move'};
+    if(p && x>=p.x && x<=p.x+p.w && y>=p.y && y<=p.y+p.h) return {a, mode:a.ruler ? 'pill' : 'move'};      // régua: arrastar o balão só muda a posição do texto
     const vx = a.x1-G.sx, vy = a.y1-G.sy, t = Math.max(0,Math.min(1,((x-G.sx)*vx+(y-G.sy)*vy)/(vx*vx+vy*vy||1)));
     if(Math.hypot(x-(G.sx+vx*t),y-(G.sy+vy*t)) <= Math.max(G.hw,tol)) return {a, mode:'move'};
   }
@@ -571,8 +622,8 @@ function drawSel(){
   const ctx = R.sctx; if(!ctx) return;
   ctx.clearRect(0,0,R.IW,R.IH);
   if(R.sel && !setasVis().includes(R.sel)){ R.sel = null; }
-  const b = g('em-b-delarrow'); if(b){ b.style.display = st().tool==='arrow' ? '' : 'none'; b.disabled = !R.sel; }
-  const a = R.sel; if(!a || st().tool!=='arrow') return;
+  const b = g('em-b-delarrow'); if(b){ b.style.display = anota() ? '' : 'none'; b.disabled = !R.sel; }
+  const a = R.sel; if(!a || !anota()) return;
   const f = esc1()||1, r = 9/f, G = setaMed(R.actx,a), p = G.pill;
   ctx.save(); ctx.lineWidth = 2.5/f; ctx.strokeStyle = '#12a9c9';
   if(p){ ctx.setLineDash([8/f,6/f]); ctx.strokeRect(p.x-6/f,p.y-6/f,p.w+12/f,p.h+12/f); ctx.setLineDash([]); }
@@ -582,6 +633,7 @@ function drawSel(){
   }
   ctx.restore();
 }
+const snap = a => { const o = {x0:a.x0,y0:a.y0,x1:a.x1,y1:a.y1}; if(a.ruler){ o.ox = a.ox||0; o.oy = a.oy||0; } return o; };   // posição guardada para mover/desfazer
 const SETA_MIN = 22;                                   // arrasto mínimo (px da imagem de referência) para valer como seta; menos que isso é um toque
 function setaStart(e){
   const w = g('em-world'); if(!w) return;
@@ -590,11 +642,13 @@ function setaStart(e){
   const alvo = setaAlvo(p[0],p[1],touch);
   if(alvo){                                            // tocou numa seta: seleciona e prepara mover / ajustar (se não arrastar, é um toque: edita o texto)
     const a = alvo.a; R.sel = a; drawSel();
-    R.drag = {mode:alvo.mode, a, p0:p, s0:{x0:a.x0,y0:a.y0,x1:a.x1,y1:a.y1}, moved:false};
+    R.drag = {mode:alvo.mode, a, p0:p, s0:snap(a), moved:false};
+    if(alvo.mode==='pill'){ const G = regMed(R.actx,a); R.drag.c0 = {ox:G.pill.cx-G.mx, oy:G.pill.cy-G.my}; }      // posição atual do balão (em relação ao meio), de onde o arrasto parte
     return;
   }
   const had = !!R.sel; R.sel = null; drawSel();
   R.arrow = {arrow:true, x0:p[0], y0:p[1], x1:p[0], y1:p[1], w:st().w, text:'', had};
+  if(st().tool==='ruler') R.arrow.ruler = true;
 }
 function setaMove(e){
   const a = R.arrow; if(!a) return; const p = ptr(e,R.rect); a.x1 = p[0]; a.y1 = p[1];
@@ -604,7 +658,7 @@ function setaEnd(){
   const a = R.arrow; R.arrow = null; if(!a) return;
   if(Math.hypot(a.x1-a.x0,a.y1-a.y0) < SETA_MIN*R.K){        // toque em lugar vazio: tira a seleção, ou ensina o gesto
     redrawSetas();
-    if(!a.had) klugToast('Arraste na imagem para desenhar a seta');
+    if(!a.had) klugToast(a.ruler ? 'Arraste na imagem para desenhar a régua' : 'Arraste na imagem para desenhar a seta');
     return;
   }
   delete a.had; ['x0','y0','x1','y1'].forEach(k=>{ a[k] = +a[k].toFixed(1); });
@@ -616,6 +670,11 @@ function dragMove(e){
   const dx = p[0]-d.p0[0], dy = p[1]-d.p0[1];
   if(!d.moved){ if(Math.hypot(dx,dy)*f < 4) return; d.moved = true; fecharTxt(); }
   const cl = (v,lo,hi)=>Math.max(lo,Math.min(hi,v)), s = d.s0;
+  if(d.mode==='pill'){                                                           // régua: muda só o balão (deslocamento em relação ao meio da linha)
+    a.ox = d.c0.ox+dx; a.oy = d.c0.oy+dy; const G = regMed(R.actx,a);
+    if(G.pill){ a.ox = G.pill.cx-G.mx; a.oy = G.pill.cy-G.my; }                  // já dentro dos limites da imagem
+    redrawSetas(); drawSel(); return;
+  }
   if(d.mode==='move'){
     const mx = cl(dx,-Math.min(s.x0,s.x1),R.IW-Math.max(s.x0,s.x1)), my = cl(dy,-Math.min(s.y0,s.y1),R.IH-Math.max(s.y0,s.y1));
     a.x0 = s.x0+mx; a.y0 = s.y0+my; a.x1 = s.x1+mx; a.y1 = s.y1+my;
@@ -630,13 +689,13 @@ function dragEnd(){
   const d = R.drag; R.drag = null; if(!d) return;
   const a = d.a;
   if(!d.moved){ abrirTxt(a); return; }                                          // toque na seta: editar o texto / apagar
-  ['x0','y0','x1','y1'].forEach(k=>{ a[k] = +a[k].toFixed(1); });
-  lista().push({mv:true, ref:a, from:d.s0, to:{x0:a.x0,y0:a.y0,x1:a.x1,y1:a.y1}}); st().redo[R.view] = []; sync();
+  ['x0','y0','x1','y1','ox','oy'].forEach(k=>{ if(a[k]!=null) a[k] = +a[k].toFixed(1); });
+  lista().push({mv:true, ref:a, from:d.s0, to:snap(a)}); st().redo[R.view] = []; sync();
 }
 function apagarSeta(){
   const a = R.sel; if(!a || !setasVis().includes(a)) return;
   fecharTxt(); lista().push({del:true, ref:a}); st().redo[R.view] = []; R.sel = null;
-  redrawSetas(); drawSel(); sync(); klugToast('Seta apagada — use Desfazer para voltar');
+  redrawSetas(); drawSel(); sync(); klugToast((a.ruler?'Régua apagada':'Seta apagada')+' — use Desfazer para voltar');
 }
 /* caixa de texto (opcional) da seta: aparece ao lado do início da seta; o texto vai para a imagem enquanto se digita */
 function fecharTxt(){ const d = g('em-txt'); if(d) d.remove(); R.edit = null; }
@@ -644,9 +703,10 @@ function abrirTxt(a){
   const stg = g('em-stage'); if(!stg) return;
   fecharTxt(); R.edit = a;
   const d = document.createElement('div'); d.className = 'em-txt'; d.id = 'em-txt';
-  d.innerHTML = '<input type="text" id="em-txt-in" maxlength="60" placeholder="Texto da seta (opcional)" autocomplete="off" enterkeyhint="done" aria-label="Texto da seta (opcional)"><button type="button" class="msl-btn on" id="em-txt-ok">OK</button><button type="button" class="msl-btn" id="em-txt-del" title="Apagar esta seta" aria-label="Apagar esta seta">'+mslIc('trash')+'</button>';
+  const qual = a.ruler ? 'régua' : 'seta', ph = a.ruler ? 'Medida no balão (ex.: 12 mm)' : 'Texto da seta (opcional)';
+  d.innerHTML = '<input type="text" id="em-txt-in" maxlength="'+(a.ruler?32:60)+'" placeholder="'+ph+'" autocomplete="off" enterkeyhint="done" aria-label="'+ph+'"><button type="button" class="msl-btn on" id="em-txt-ok">OK</button><button type="button" class="msl-btn" id="em-txt-del" title="Apagar esta '+qual+'" aria-label="Apagar esta '+qual+'">'+mslIc('trash')+'</button>';
   ['pointerdown','pointerup','pointermove','wheel','contextmenu'].forEach(ev=>d.addEventListener(ev,x=>x.stopPropagation()));
-  const inp = d.firstChild; inp.value = a.text || '';
+  const inp = d.querySelector('input'); inp.value = a.text || '';
   inp.addEventListener('input',()=>{ a.text = inp.value; redrawSetas(); drawSel(); });
   inp.addEventListener('keydown',x=>{ if(x.key==='Enter'){ x.preventDefault(); fecharTxt(); } });
   d.querySelector('#em-txt-ok').addEventListener('click',()=>fecharTxt());
@@ -675,9 +735,9 @@ function posTxt(d,a){
 function sync(){
   const s = st();
   const set = (id,on)=>{ const b=g(id); if(b) b.classList.toggle('on',on); };
-  set('em-b-brush',s.tool==='brush'); set('em-b-erase',s.tool==='erase'); set('em-b-arrow',s.tool==='arrow'); set('em-b-leg',s.legend);
-  const stg = g('em-stage'); if(stg){ stg.classList.toggle('em-arrow',s.tool==='arrow'); if(s.tool!=='arrow') stg.style.cursor = ''; }
-  const hint = g('em-hint'); if(hint) hint.style.display = s.tool==='arrow' ? '' : 'none';
+  set('em-b-brush',s.tool==='brush'); set('em-b-erase',s.tool==='erase'); set('em-b-arrow',s.tool==='arrow'); set('em-b-ruler',s.tool==='ruler'); set('em-b-leg',s.legend);
+  const stg = g('em-stage'); if(stg){ stg.classList.toggle('em-arrow',anota()); if(!anota()) stg.style.cursor = ''; }
+  const hint = g('em-hint'); if(hint){ hint.style.display = anota() ? '' : 'none'; if(anota()) hint.textContent = dica(s.tool); }
   const dis = (id,d)=>{ const b=g(id); if(b) b.disabled=d; };
   dis('em-b-undo',!lista().length); dis('em-b-redo',!listaRedo().length); dis('em-b-clear',!lista().length);
   drawSel();
