@@ -1553,10 +1553,13 @@ const LAU_CHAMMAS = [null,
   ['IV','fluxo central maior que o periférico'],
   ['V','fluxo exclusivamente central']];
 function lauChamTxt(d){ const c=d&&LAU_CHAMMAS[d.cham]; return c ? `Ao Doppler, padrão vascular ${c[0]} de Chammas (${c[1]}).` : ''; }
+/* nódulo no istmo: só o lado em relação à linha média (sem terço/lobo) */
+const LAU_TR_TIST = 'no istmo, à_direita XX à_esquerda da linha média, medindo XXX x XXX x XXX cm';
+function lauFT(f, d){ return f && f.kind==='tirads' && d && d.ist ? LAU_TR_TIST : f.t; }
 const LAU_TR_FOCI = ['sem focos ecogênicos','com macrocalcificações','com calcificação periférica (em casca)','com focos ecogênicos puntiformes'];
 function lauTrNod(d){ return {comp:d.comp??null, echo:d.echo??null, shape:d.shape??null, margin:d.margin??null, foci:d.foci&&d.foci.length?d.foci:[0]}; }
-function lauMaxDim(f, vals){
-  const tpl=lauTpl(f.t); let mx=null;
+function lauMaxDim(f, vals, d){
+  const tpl=lauTpl(lauFT(f,d)); let mx=null;
   tpl.lines.flat().forEach(tk=>{ if(tk.t==='p'){ const v=lauF((vals||[])[tk.i]); if(v!=null && (mx==null||v>mx) && !tpl.auto[tk.i]) mx=v; } });
   return mx;
 }
@@ -1565,7 +1568,7 @@ function lauTiradsText(f, vals, d, html, locs){
   const n=lauTrNod(d), ev=tiradsEval(n);
   const w=(k)=>{ if(n[k]==null) return lauMk('___',html); const t = k==='echo' && d && d.echoT!=null && LAU_TR_ECHO[d.echoT] ? LAU_TR_ECHO[d.echoT][2] : LAU_TR_TXT[k][n[k]]; return html?esc(t):t; };
   const foci = n.foci.map(i=>LAU_TR_FOCI[i]).join(' e ').replace('sem focos ecogênicos e ','');
-  const loc = lauFill(f.t, vals, html);
+  const loc = lauFill(lauFT(f,d), vals, html);
   const cat = ev.complete || ev.auto ? `${ev.tr}` : lauMk('?',html);   // só a categoria
   if(locs){ const br=html?'<br>':'\n';
     return `Identificam-se ${locs.length} nódulos semelhantes: ${w('comp')}, ${w('echo')}, ${w('shape')}, ${w('margin')}, ${html?esc(foci):foci}.${lauChamTxt(d)?' '+(html?esc(lauChamTxt(d)):lauChamTxt(d)):''} ACR TI-RADS: ${cat}.`
@@ -1576,7 +1579,7 @@ function lauTiradsConc(f, vals, d, plural, all){
   const n=lauTrNod(d), ev=tiradsEval(n);
   const tpl=lauTpl(f.t); const lista=(plural&&all?all:[vals]);
   const lados=[...new Set(lista.map(v=>lauVal(tpl, v||[], 1)).filter(x=>x.ok).map(x=>x.v))];
-  const ladoTxt = lados.length>1 ? 'em ambos os lobos' : lados.length ? 'no lobo '+esc(lados[0]) : 'no lobo '+lauMk('direito / esquerdo',true);
+  const ladoTxt = (!plural && d && d.ist) ? 'no istmo' : lados.length>1 ? 'em ambos os lobos' : lados.length ? 'no lobo '+esc(lados[0]) : 'no lobo '+lauMk('direito / esquerdo',true);
   const nome = plural ? 'Nódulos tireoidianos' : 'Nódulo tireoidiano';
   const onde = plural ? '' : ' '+ladoTxt;   // vários semelhantes: só "Nódulos tireoidianos — ACR TI-RADS n"
   if(!(ev.complete||ev.auto)) return `${nome}${onde} — ACR TI-RADS ${lauMk('?',true)}.`;
@@ -1771,6 +1774,7 @@ function lauDescSet(k, id, key, v){
   if(key==='alvos'){ const a=(d.alvos||[]).slice(); const j=a.indexOf(v); j>=0?a.splice(j,1):a.push(v); d.alvos=a; }
   else if(key==='foci'){ let a=(d.foci||[0]).slice(); if(v===0) a=[0]; else { a=a.filter(x=>x!==0); const j=a.indexOf(v); j>=0?a.splice(j,1):a.push(v); if(!a.length) a=[0]; } d.foci=a; }
   else d[key] = d[key]===v ? null : v;
+  if(key==='ist'){ bag['f'+id]=[]; }   // lobo ⇄ istmo: os campos mudam de posição
   if(key==='echoT') d.echo = d.echoT==null ? null : LAU_TR_ECHO[d.echoT][1];   // TI-RADS: iso e hiper separados no texto, mesma pontuação
   lauRenderLeft();
   if(k==='__obs'){ lauPatchOpt('obs', lauObsHTML()); lauPatchConc(); lauSaveEd(); } else { lauPatch(k); lauUpdSum(k); }
@@ -1818,13 +1822,13 @@ function lauDescHTML(k, id, f, d){
   if(f.kind==='nodpm') return lauNodPmDescHTML(d, chip);
   if(f.kind==='tirads'){
     const n=lauTrNod(d), ev=tiradsEval(n);
-    let h = ['comp','echo','shape','margin'].map(key=>`<div class="lau-row"><div class="lau-rl">${esc(TIRADS_CATS[key].label)}</div><div class="lau-chips">${key==='echo'
+    let h = (lauQtd(f, lauPhBag(k), id)==='n' ? '' : `<div class="lau-row"><div class="lau-rl">Localização</div><div class="lau-chips"><button type="button" class="ti-ftog ${d.ist?'':'on'}" onclick="lauDescSet('${k}','${id}','ist',null)">Lobo</button><button type="button" class="ti-ftog ${d.ist?'on':''}" onclick="lauDescSet('${k}','${id}','ist',1)">Istmo</button></div></div>`) + ['comp','echo','shape','margin'].map(key=>`<div class="lau-row"><div class="lau-rl">${esc(TIRADS_CATS[key].label)}</div><div class="lau-chips">${key==='echo'
       ? LAU_TR_ECHO.map((o,oi)=>chip('echoT',oi,`${o[0]} (${o[1]})`, d.echoT!=null ? d.echoT===oi : (n.echo===o[1] && oi!==2))).join('')
       : TIRADS_CATS[key].opts.map((o,oi)=>chip(key,oi,`${o[0]} (${o[1]})`,n[key]===oi)).join('')}</div></div>`).join('');
     h += `<div class="lau-row"><div class="lau-rl">Focos ecogênicos</div><div class="lau-chips">${TIRADS_FOCI.map((o,oi)=>chip('foci',oi,`${o[2]} (${o[1]})`,n.foci.indexOf(oi)>=0)).join('')}</div></div>`;
     if(/doppler/.test((state.lau&&state.lau.model)||'')) h += `<div class="lau-row"><div class="lau-rl">Doppler — padrão vascular de Chammas (opcional)</div><div class="lau-chips">${LAU_CHAMMAS.map((c,ci)=>c?chip('cham',ci,`${c[0]} — ${c[1]}`,d.cham===ci):'').join('')}</div></div>`;
     const ok=ev.complete||ev.auto; const tc=TIRADS_TRC[ev.tr];
-    h += `<div class="lau-clres" style="${ok?`background:${tc.bg};border-color:${tc.c}`:''}">${ok?`<b style="color:${tc.c}">TR${ev.tr} · ${ev.pts} ponto${ev.pts===1?'':'s'}</b> — ${esc(tc.name)} · ${esc(tiradsRec(ev.tr, lauMaxDim(f, lauPhBag(k)['f'+id]), ev.auto).a)}`:'Marque composição, ecogenicidade, formato e margens (mesma pontuação da calculadora TI-RADS).'}</div>`;
+    h += `<div class="lau-clres" style="${ok?`background:${tc.bg};border-color:${tc.c}`:''}">${ok?`<b style="color:${tc.c}">TR${ev.tr} · ${ev.pts} ponto${ev.pts===1?'':'s'}</b> — ${esc(tc.name)} · ${esc(tiradsRec(ev.tr, lauMaxDim(f, lauPhBag(k)['f'+id], d), ev.auto).a)}`:'Marque composição, ecogenicidade, formato e margens (mesma pontuação da calculadora TI-RADS).'}</div>`;
     return h;
   }
   let h = Object.keys(LAU_BR).map(key=>`<div class="lau-row"><div class="lau-rl">${esc(LAU_BR[key].l)}</div><div class="lau-chips">${LAU_BR[key].o.map((o,oi)=>chip(key,oi,o,d[key]===oi)).join('')}</div></div>`).join('');
@@ -2697,7 +2701,7 @@ function lauFrasesPanel(k, org, list, bag, estrut){
     // 1º achado (descrição principal) logo após os descritores; depois os demais e o botão +
     const tplK = lauKindTE(f) ? '' : null;
     const principal = tplK!=null ? (tplK ? `<div class="lau-rl">Medidas</div>${lauInlineForm(k,'f'+id,tplK,bag['f'+id])}` : '') : lauHasPh(f.t)
-      ? (f.kind||multi ? `<div class="lau-rl">${multi?nome1+' 1 — localização e medidas':f.kind==='nodpm'?'Localização (opcional), dimensões e distância à pele':f.kind==='hernia'||f.kind==='orads'?'Medidas':lauMgK(f)?(f.medOpc?'Medidas (opcional)':'Medidas'):'Localização e medidas'}</div>` : '') + lauInlineForm(k,'f'+id,(f.tn && qtd==='n') ? f.tn : f.t,bag['f'+id])
+      ? (f.kind||multi ? `<div class="lau-rl">${multi?nome1+' 1 — localização e medidas':f.kind==='nodpm'?'Localização (opcional), dimensões e distância à pele':f.kind==='hernia'||f.kind==='orads'?'Medidas':lauMgK(f)?(f.medOpc?'Medidas (opcional)':'Medidas'):'Localização e medidas'}</div>` : '') + lauInlineForm(k,'f'+id,(f.tn && qtd==='n') ? f.tn : lauFT(f,d),bag['f'+id])
       : `<div class="lau-inl dim">${esc(f.t)}</div>`;
     const extras = multi
       ? Array.from({length:lauQn(d)-1},(_,j)=>`<div class="lau-rl lau-rlx">${nome1} ${j+2} — localização e medidas <button type="button" class="lau-xs" onclick="lauQnDel('${k}','${id}',${j+2})" aria-label="Remover">×</button></div>${lauInlineForm(k,'f'+id+'_'+(j+2),lauLocTpl(f),bag['f'+id+'_'+(j+2)])}`).join('')
