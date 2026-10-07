@@ -567,8 +567,15 @@ function renderSidebar(){
   const el = $('side'); if(!el) return;
   if(!state.termsAccepted || SIDEBAR_HIDDEN_VIEWS.indexOf(state.view)>=0){ el.style.display='none'; el.innerHTML=''; return; }
   el.style.display='';
-  el.innerHTML = translateHTML(sidebarHTML());
+  const mini = sideMini();
+  el.classList.toggle('mini', mini);
+  el.innerHTML = mini
+    ? `<button type="button" class="side-tg side-exp" onclick="sideToggle()" title="Mostrar o menu" aria-label="Mostrar o menu">›</button>`
+    : translateHTML(sidebarHTML()) + `<button type="button" class="side-tg" onclick="sideToggle()" title="Recolher o menu" aria-label="Recolher o menu">‹</button>`;
 }
+/* menu lateral recolhível (desktop): vira uma barrinha fina; a escolha fica neste aparelho */
+function sideMini(){ try{ return localStorage.getItem('klug_side_mini')==='1'; }catch(_){ return false; } }
+function sideToggle(){ try{ localStorage.setItem('klug_side_mini', sideMini()?'0':'1'); }catch(_){} renderSidebar(); }
 function openSpecialty(id){ state.view='refs'; state.specialty=id; state.query=''; state.openSpec=id; render(); }
 // Expande/recolhe os itens de uma especialidade na sidebar (accordion).
 function toggleSpec(id){ state.openSpec = (state.openSpec===id ? null : id); renderSidebar(); }
