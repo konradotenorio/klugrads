@@ -1237,10 +1237,24 @@ function lauNew(modelId){
   return state.lau;
 }
 function lauCur(){ return state.lau && lauModelo(state.lau.model) ? state.lau : null; }
+/* rins: medidas digitadas no texto da máscara (RD/RE e cortical) valem também quando há alteração marcada */
+function lauRinsMedMascara(m, it, s){
+  if(it.sk!=='rins') return s;
+  const vals=((s.__v||{}).n)||[]; if(!vals.some(lauHas)) return s;
+  const o=Object.assign({}, s);
+  lauTpl(lauItemNormal(m,it)).lines.forEach(line=>{ let ant='', cort=false;
+    line.forEach(tk=>{ if(tk.t!=='p'){ ant+=' '+(tk.s||''); if(/cortical/i.test(tk.s||'')) cort=true; return; }
+      const lado = /\bRD\b[^A-Z]*$/.test(ant) ? 'D' : /\bRE\b[^A-Z]*$/.test(ant) ? 'E' : null; ant='';
+      const v=vals[tk.i]; if(!lado || !lauHas(v)) return;
+      const k=(cort?'cort':'comp')+lado; if(!lauHas(o[k])) o[k]=v; }); });
+  return o;
+}
 function lauBuild(m, it){
   const s=state.lau.v[it.k];
   if(it.generic) return {txt: lauHas(s.alt)?s.alt.trim():null, conc: lauHas(s.conc)?[lauFrase(s.conc)]:[]};
-  const r = it.build(typeof lauAutoEstado==='function' ? lauAutoEstado(m, it, s) : s);   // regras automáticas pelas medidas
+  const st = typeof lauAutoEstado==='function' ? lauAutoEstado(m, it, s) : s;   // regras automáticas pelas medidas
+  let r = it.build(st);
+  if(r && r.txt!=null && it.sk==='rins'){ const st2=lauRinsMedMascara(m, it, st); if(st2!==st) r = it.build(st2); }   // com alteração: as medidas da máscara entram no texto
   if(!lauUnMM() || !r) return r;
   // preferência em mm: os itens estruturados (controles em cm) escrevem o comprimento em mm
   const cv = t => typeof t==='string' ? lauCmNumMm(t) : t;
