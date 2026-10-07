@@ -1521,6 +1521,14 @@ const LAU_TR_TXT = {
 };
 /* ecogenicidade no laudo: hiperecoico e isoecoico separados (no ACR valem o mesmo: 1 ponto) */
 const LAU_TR_ECHO = [['Anecoico',0,'anecoico'],['Hiperecoico',1,'hiperecoico'],['Isoecoico',1,'isoecoico'],['Hipoecoico',2,'hipoecoico'],['Muito hipoecoico',3,'acentuadamente hipoecoico']];
+/* padrão vascular ao Doppler (Chammas MC et al., Otolaryngol Head Neck Surg 2005;132(6):874-82) */
+const LAU_CHAMMAS = [null,
+  ['I','ausência de fluxo'],
+  ['II','fluxo exclusivamente periférico'],
+  ['III','fluxo periférico maior ou igual ao central'],
+  ['IV','fluxo central maior que o periférico'],
+  ['V','fluxo exclusivamente central']];
+function lauChamTxt(d){ const c=d&&LAU_CHAMMAS[d.cham]; return c ? `Ao Doppler, padrão vascular ${c[0]} de Chammas (${c[1]}).` : ''; }
 const LAU_TR_FOCI = ['sem focos ecogênicos','com macrocalcificações','com calcificação periférica (em casca)','com focos ecogênicos puntiformes'];
 function lauTrNod(d){ return {comp:d.comp??null, echo:d.echo??null, shape:d.shape??null, margin:d.margin??null, foci:d.foci&&d.foci.length?d.foci:[0]}; }
 function lauMaxDim(f, vals){
@@ -1536,9 +1544,9 @@ function lauTiradsText(f, vals, d, html, locs){
   const loc = lauFill(f.t, vals, html);
   const cat = ev.complete || ev.auto ? `${ev.tr}` : lauMk('?',html);   // só a categoria
   if(locs){ const br=html?'<br>':'\n';
-    return `Identificam-se ${locs.length} nódulos semelhantes: ${w('comp')}, ${w('echo')}, ${w('shape')}, ${w('margin')}, ${html?esc(foci):foci}. ACR TI-RADS: ${cat}.`
+    return `Identificam-se ${locs.length} nódulos semelhantes: ${w('comp')}, ${w('echo')}, ${w('shape')}, ${w('margin')}, ${html?esc(foci):foci}.${lauChamTxt(d)?' '+(html?esc(lauChamTxt(d)):lauChamTxt(d)):''} ACR TI-RADS: ${cat}.`
       + locs.map((l,j)=>`${br}Nódulo ${j+1}: ${l}.`).join(''); }
-  return `Nódulo ${w('comp')}, ${w('echo')}, ${w('shape')}, ${w('margin')}, ${html?esc(foci):foci}, ${loc}. ACR TI-RADS: ${cat}.`;
+  return `Nódulo ${w('comp')}, ${w('echo')}, ${w('shape')}, ${w('margin')}, ${html?esc(foci):foci}, ${loc}.${lauChamTxt(d)?' '+(html?esc(lauChamTxt(d)):lauChamTxt(d)):''} ACR TI-RADS: ${cat}.`;
 }
 function lauTiradsConc(f, vals, d, plural, all){
   const n=lauTrNod(d), ev=tiradsEval(n);
@@ -1548,7 +1556,8 @@ function lauTiradsConc(f, vals, d, plural, all){
   const nome = plural ? 'Nódulos tireoidianos' : 'Nódulo tireoidiano';
   const onde = plural ? '' : ' '+ladoTxt;   // vários semelhantes: só "Nódulos tireoidianos — ACR TI-RADS n"
   if(!(ev.complete||ev.auto)) return `${nome}${onde} — ACR TI-RADS ${lauMk('?',true)}.`;
-  return `${nome}${onde} — ACR TI-RADS ${ev.tr}.`;   // só a categoria, sem conduta
+  const ch = d && LAU_CHAMMAS[d.cham] ? `, padrão vascular ${LAU_CHAMMAS[d.cham][0]} de Chammas` : '';
+  return `${nome}${onde} — ACR TI-RADS ${ev.tr}${ch}.`;   // só a categoria (+ Chammas, se marcado), sem conduta
 }
 
 /* ---------- O-RADS US (mesma classificação da calculadora: oradsEval / oradsMgmt, js/calc-orads.js) ---------- */
@@ -1789,6 +1798,7 @@ function lauDescHTML(k, id, f, d){
       ? LAU_TR_ECHO.map((o,oi)=>chip('echoT',oi,`${o[0]} (${o[1]})`, d.echoT!=null ? d.echoT===oi : (n.echo===o[1] && oi!==2))).join('')
       : TIRADS_CATS[key].opts.map((o,oi)=>chip(key,oi,`${o[0]} (${o[1]})`,n[key]===oi)).join('')}</div></div>`).join('');
     h += `<div class="lau-row"><div class="lau-rl">Focos ecogênicos</div><div class="lau-chips">${TIRADS_FOCI.map((o,oi)=>chip('foci',oi,`${o[2]} (${o[1]})`,n.foci.indexOf(oi)>=0)).join('')}</div></div>`;
+    if(/doppler/.test((state.lau&&state.lau.model)||'')) h += `<div class="lau-row"><div class="lau-rl">Doppler — padrão vascular de Chammas (opcional)</div><div class="lau-chips">${LAU_CHAMMAS.map((c,ci)=>c?chip('cham',ci,`${c[0]} — ${c[1]}`,d.cham===ci):'').join('')}</div></div>`;
     const ok=ev.complete||ev.auto; const tc=TIRADS_TRC[ev.tr];
     h += `<div class="lau-clres" style="${ok?`background:${tc.bg};border-color:${tc.c}`:''}">${ok?`<b style="color:${tc.c}">TR${ev.tr} · ${ev.pts} ponto${ev.pts===1?'':'s'}</b> — ${esc(tc.name)} · ${esc(tiradsRec(ev.tr, lauMaxDim(f, lauPhBag(k)['f'+id]), ev.auto).a)}`:'Marque composição, ecogenicidade, formato e margens (mesma pontuação da calculadora TI-RADS).'}</div>`;
     return h;
