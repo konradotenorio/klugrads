@@ -680,6 +680,9 @@ LAU_STRUCT.cirurgia = {k:'cirurgia', label:'Cirurgias prévias', hideNormal:true
     {t:'check', k:'mamo', lbl:'Mamoplastia'},
     {t:'radio', k:'mamoT', lbl:'Tipo', opts:[['red','Redutora'],['aum','De aumento'],['out','Outra / não especificada']], show:s=>s.mamo, ind:1},
     {t:'radio', k:'mamoL', lbl:'Lado', opts:LAU_LADO, show:s=>s.mamo, ind:1},
+    {t:'check', k:'quad', lbl:'Quadrantectomia'},
+    {t:'radio', k:'quadL', lbl:'Mama', opts:[['d','Direita'],['e','Esquerda'],['bi','Bilateral']], show:s=>s.quad, ind:1},
+    {t:'select', k:'quadQ', lbl:'Quadrante (opcional)', opts:[['','—'],['quadrante superolateral','Superolateral'],['quadrante superomedial','Superomedial'],['quadrante inferolateral','Inferolateral'],['quadrante inferomedial','Inferomedial'],['região retroareolar','Retroareolar']], show:s=>s.quad, ind:1},
     {t:'check', k:'mast', lbl:'Mastectomia'},
     {t:'radio', k:'mastL', lbl:'Lado', opts:[['d','Direita'],['e','Esquerda'],['bi','Bilateral']], show:s=>s.mast, ind:1},
     {t:'radio', k:'rec', lbl:'Reconstrução', opts:[['nao','Não'],['sim','Sim']], show:s=>s.mast, ind:1},
@@ -690,12 +693,17 @@ LAU_STRUCT.cirurgia = {k:'cirurgia', label:'Cirurgias prévias', hideNormal:true
     {t:'radio', k:'implI', lbl:'Integridade', opts:[['ok','Íntegro'],['intra','Rotura intracapsular'],['extra','Rotura extracapsular']], show:s=>s.impl, ind:1},
   ],
   build(s){
-    if(!s.mamo && !s.mast && !s.impl) return {txt:null, conc:[]};
+    if(!s.mamo && !s.mast && !s.impl && !s.quad) return {txt:null, conc:[]};
     const p=[], conc=[];
     if(s.mamo){
       const tipo = {red:'redutora ', aum:'de aumento ', out:''}[s.mamoT];
       p.push(`sinais de mamoplastia ${tipo}${lauLadoTxt(s.mamoL)}.`);
       conc.push(`Status pós-mamoplastia ${tipo}${lauLadoTxt(s.mamoL)}.`.replace('  ',' '));
+    }
+    if(s.quad){
+      const ql = s.quadL==='bi' ? 'bilateral' : s.quadL==='e' ? 'na mama esquerda' : 'na mama direita';
+      p.push(`status pós-quadrantectomia ${ql}${lauHas(s.quadQ)&&s.quadL!=='bi'?` (${s.quadQ})`:''}.`);
+      conc.push(`Status pós-quadrantectomia ${s.quadL==='bi'?'bilateral':s.quadL==='e'?'à esquerda':'à direita'}.`);
     }
     if(s.mast){
       const lado = s.mastL==='bi' ? 'bilateral' : s.mastL==='d' ? 'direita' : 'esquerda';
@@ -1527,7 +1535,7 @@ function lauTiradsText(f, vals, d, html, locs){
   const loc = lauFill(f.t, vals, html);
   const cat = ev.complete || ev.auto ? `${ev.tr}` : lauMk('?',html);   // só a categoria
   if(locs){ const br=html?'<br>':'\n';
-    return `Identificam-se ${locs.length} nódulos com as mesmas características: ${w('comp')}, ${w('echo')}, ${w('shape')}, ${w('margin')}, ${html?esc(foci):foci}. ACR TI-RADS: ${cat}.`
+    return `Identificam-se ${locs.length} nódulos semelhantes: ${w('comp')}, ${w('echo')}, ${w('shape')}, ${w('margin')}, ${html?esc(foci):foci}. ACR TI-RADS: ${cat}.`
       + locs.map((l,j)=>`${br}Nódulo ${j+1}: ${l}.`).join(''); }
   return `Nódulo ${w('comp')}, ${w('echo')}, ${w('shape')}, ${w('margin')}, ${html?esc(foci):foci}, ${loc}. ACR TI-RADS: ${cat}.`;
 }
@@ -1536,9 +1544,10 @@ function lauTiradsConc(f, vals, d, plural, all){
   const tpl=lauTpl(f.t); const lista=(plural&&all?all:[vals]);
   const lados=[...new Set(lista.map(v=>lauVal(tpl, v||[], 1)).filter(x=>x.ok).map(x=>x.v))];
   const ladoTxt = lados.length>1 ? 'em ambos os lobos' : lados.length ? 'no lobo '+esc(lados[0]) : 'no lobo '+lauMk('direito / esquerdo',true);
-  const nome = plural ? 'Nódulos tireoidianos semelhantes' : 'Nódulo tireoidiano';
-  if(!(ev.complete||ev.auto)) return `${nome} ${ladoTxt} — ACR TI-RADS ${lauMk('?',true)}.`;
-  return `${nome} ${ladoTxt} — ACR TI-RADS ${ev.tr}.`;   // só a categoria, sem conduta
+  const nome = plural ? 'Nódulos tireoidianos' : 'Nódulo tireoidiano';
+  const onde = plural ? '' : ' '+ladoTxt;   // vários semelhantes: só "Nódulos tireoidianos — ACR TI-RADS n"
+  if(!(ev.complete||ev.auto)) return `${nome}${onde} — ACR TI-RADS ${lauMk('?',true)}.`;
+  return `${nome}${onde} — ACR TI-RADS ${ev.tr}.`;   // só a categoria, sem conduta
 }
 
 /* ---------- O-RADS US (mesma classificação da calculadora: oradsEval / oradsMgmt, js/calc-orads.js) ---------- */
@@ -1879,6 +1888,15 @@ function lauItemHTML(m, it){
   if((s.__f||[]).some(id=>{ const f=lauFI(id); return f && f.o==='vesicula' && /^(Pólipo|Colesterolose|Adenomiomatose)/.test(f.n); })) txt = txt.replace(/com paredes finas e regulares e /,'com ').replace(/,? com paredes finas e regulares(?=[,.])/,'');
   if((s.__f||[]).some(id=>{ const f=lauFI(id); return f && f.o==='rins' && f.n==='Rim em ferradura'; }))
     txt = txt.replace(/^tópicos,?/,'medianizados, fusionados pelos polos inferiores,').replace(/(Rim (?:direito|esquerdo)) tópico,/g,'$1 medianizado,');
+  // tireoide com nódulos/cistos: o parênquima deixa de ter "textura característica" sem ressalva
+  { const nods=(s.__f||[]).filter(id=>{ const f=lauFI(id); return f && f.o==='tireoide' && f.m==='add' && (f.x||[]).indexOf('lesões nodulares')>=0; });
+    if(nods.length && /Parênquima tireoideano com textura característica/.test(txt)){
+      const pl = nods.length>1 || nods.some(id=>{ const d=s.__v['d'+id]||{}; return d.qtd==='n' || d.qtd==='d'; });
+      const soCisto = nods.every(id=>lauFI(id).kind!=='tirads');
+      const nome = soCisto ? (pl?'cistos':'cisto') : (pl?'nódulos':'nódulo');
+      txt = txt.replace(/Parênquima tireoideano com textura característica[^.]*\./, lauGen().les==='exc'
+        ? `Parênquima tireoideano com textura característica, exceto ${pl?'pelos':'pelo'} ${nome} ${pl?'descritos':'descrito'} a seguir.`
+        : `Parênquima tireoideano heterogêneo devido ${pl?'aos':'ao'} ${nome} ${pl?'descritos':'descrito'} a seguir.`); } }
   const ex = lauOptLines(it, s, true).concat(adds);
   if(!txt && ex.length){ txt = ex.shift(); }
   if(ex.length) txt += '<br>' + ex.join('<br>');
@@ -1962,7 +1980,7 @@ function lauConcs(m){
   if(m.metodo==='mmg' || m.id==='us-mamas'){
     // mamografia (e US das mamas): achados sem categoria em cada linha, iguais nas duas mamas viram uma frase só,
     // e uma única categoria BI-RADS® no fim (a mais alta)
-    if(m.items.some(it=>it.sk==='mgcir' && !lauItemOutroLado(m,it) && (lauBuild(m,it).conc||[]).length)){
+    if(m.items.some(it=>(it.sk==='mgcir'||it.sk==='cirurgia') && !lauItemOutroLado(m,it) && (lauBuild(m,it).conc||[]).length)){
       cats.add('2');
     }
     // hierarquia ACR para a avaliação global: 1 < 2 < 3 < 6 < 0 < 4 < 5
