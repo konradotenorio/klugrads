@@ -391,7 +391,7 @@ const LAU_FRASES = [
    t:'tópica, com dimensões aumentadas (volume total de XXX cm³), contornos regulares e textura heterogênea.',
    c:'Bócio.'},
   {o:'tireoide', n:'Tireoidopatia difusa', m:'sub',
-   t:'tópica, com dimensões normais XX aumentadas XX reduzidas, textura difusamente heterogênea e vascularização aumentada XX preservada ao Doppler.',
+   t:'tópica, com dimensões normais XX aumentadas XX reduzidas, textura difusamente heterogênea, sem_formações_hipoecogênicas_de_permeio* XX com_formações_hipoecogênicas_de_permeio XX com_pseudonódulos_hipoecogênicos_de_permeio e vascularização aumentada XX preservada ao Doppler.',
    c:'Tireoidopatia difusa; correlacionar com função tireoidiana e anticorpos.'},
   {o:'tireoide', n:'Tireoidectomia total', m:'sub',
    t:'não caracterizada (status pós-tireoidectomia total).', c:'Status pós-tireoidectomia total.'},
