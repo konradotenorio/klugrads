@@ -345,9 +345,9 @@ const LAU_ABD_ITEMS = [
        {t:'radio', k:'est'+L, lbl:'Situação', opts:[['n','Normal'],['nef','Nefropatia'],['cx','Nefrectomia']]},
        {t:'radio', k:'nefT'+L, lbl:'Nefropatia', opts:[['cr','Crônica'],['ag','Aguda']], show:s=>s['est'+L]==='nef', ind:1},
        {t:'radio', k:'dim'+L, lbl:'Dimensões', opts:[['n','Normais'],['red','Reduzidas'],['aum','Aumentadas']], show:ok},
-       {t:'num', k:'comp'+L, lbl:'Comprimento (opcional)', unit:'cm', show:ok},
-       {t:'num', k:'parq'+L, lbl:'Parênquima (opcional)', unit:'cm', show:ok},
-       {t:'num', k:'cort'+L, lbl:'Cortical (opcional)', unit:'cm', show:ok},
+       {t:'num', k:'comp'+L, lbl:'Comprimento (opcional)', unit:'cm', show:s=>ok(s)&&!s.medMasc},
+       {t:'num', k:'parq'+L, lbl:'Parênquima (opcional)', unit:'cm', show:s=>ok(s)&&!s.medMasc},
+       {t:'num', k:'cort'+L, lbl:'Cortical (opcional)', unit:'cm', show:s=>ok(s)&&!s.medMasc},
        {t:'check', k:'calc'+L, lbl:'Cálculo(s)', show:ok},
        {t:'radio', k:'calcQ'+L, lbl:'Quantidade', opts:LAU_QTD, show:s=>ok(s)&&s['calc'+L], ind:1},
        {t:'num', k:'calcD'+L, lbl:'Medida (maior)', unit:'cm', show:s=>ok(s)&&s['calc'+L], ind:1},
@@ -1231,6 +1231,8 @@ function lauNew(modelId){
   if(/prostata/.test(modelId)) m.items.forEach(it=>{ if(it.sk==='bexiga'){ v[it.k].vol=true; v[it.k].volAuto=true; } });
   // máscara com item próprio de resíduo pós-miccional: o resíduo marcado na bexiga é escrito nesse item (sem repetir)
   if(lauResItem(m)) m.items.forEach(it=>{ if(it.sk==='bexiga') v[it.k].resExt=true; });
+  // rins com RD/RE (e cortical) no próprio texto da máscara: sem os campos opcionais repetidos de comprimento/parênquima/cortical
+  m.items.forEach(it=>{ if(it.sk==='rins' && /\bRD\s*=/.test(lauItemNormal(m,it)||'')) v[it.k].medMasc=true; });
   const g=lauGen();
   state.lau = {model:modelId, v, open:null, html:null, autoConc:true, tab:'opc',
     tec:{}, ind:'', obs:'', font:g.font, size:g.size, tit:{}, conc:{v:{}, o:[]}, xf:[], xv:{}};
@@ -2385,7 +2387,9 @@ function lauAltSet(k, i){
 function lauItemReset(k){
   const L=lauCur(); if(!L) return;
   const it=lauModelo(L.model).items.find(x=>x.k===k);
-  L.v[k]=lauDefaults(it); lauRenderLeft(); lauPatch(k);
+  const ant=L.v[k]||{}; L.v[k]=lauDefaults(it);
+  ['medMasc','resExt','volAuto'].forEach(f=>{ if(ant[f]) L.v[k][f]=ant[f]; }); if(ant.volAuto) L.v[k].vol=true;   // marcas da máscara ficam
+  lauRenderLeft(); lauPatch(k);
 }
 function lauSetAuto(on){ const L=lauCur(); if(!L) return; L.autoConc=on; lauRenderLeft(); if(on){ lauPatchConc(); lauSaveEd(); } }
 function lauSetTec(c){ const L=lauCur(); if(!L) return; L.tec[c]=!L.tec[c]; lauRenderLeft(); lauPatchOpt('tec', esc(lauTecTxt())); }
