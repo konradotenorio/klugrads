@@ -534,11 +534,11 @@ const LAU_FRASES = [
    t:'não caracterizado.', c:''},
 
   /* ---------------- PARTES MOLES ---------------- */
-  {o:'partes', q:1, cp:'Nódulos com aspecto sugestivo de lipomas.', n:'Lipoma', m:'add', medOpc:1, nso:['us-mamas'],
-   t:'Nódulo ovalado no subcutâneo, isoecogênico à gordura, com finas estrias, sem fluxo ao Doppler, medindo XXX x XXX x XXX cm.',
+  {o:'partes', q:1, cp:'Nódulos com aspecto sugestivo de lipomas.', n:'Lipoma', m:'add', medOpc:1, nso:['us-mamas'], vaz:[', distando XXX cm da pele'],
+   t:'Nódulo ovalado no subcutâneo, isoecogênico à gordura, com finas estrias, sem fluxo ao Doppler, medindo XXX x XXX x XXX cm, distando XXX cm da pele.',
    c:'Nódulo com aspecto sugestivo de lipoma.'},
-  {o:'partes', q:1, cp:'Nódulos com aspecto sugestivo de cistos epidérmicos.', n:'Cisto epidérmico', m:'add', medOpc:1, nso:['us-mamas'],
-   t:'Nódulo hipoecogênico bem definido na derme/subcutâneo, com reforço acústico posterior, medindo XXX x XXX x XXX cm.',
+  {o:'partes', q:1, cp:'Nódulos com aspecto sugestivo de cistos epidérmicos.', n:'Cisto epidérmico', m:'add', medOpc:1, nso:['us-mamas'], vaz:[', distando XXX cm da pele'],
+   t:'Nódulo hipoecogênico bem definido na derme/subcutâneo, com reforço acústico posterior, medindo XXX x XXX x XXX cm, distando XXX cm da pele.',
    c:'Nódulo com aspecto sugestivo de cisto epidérmico.'},
   /* mamas: lesões da pele / subcutâneo com mama, horário e categoria BI-RADS® (entram na categoria final) */
   {o:'partes', so:['us-mamas'], n:'Cisto epidérmico', m:'add', medOpc:1, br:'2',
@@ -673,7 +673,7 @@ const LAU_FRASES = [
   /* parede abdominal: planos musculares */
   {o:'musculo', so:['us-parede-abdominal'], n:'Distância inter-retos (diástase)', m:'sub', retos:1,
    t:'com arquitetura preservada; distância entre os músculos retos abdominais de XXX cm, na região epigástrica XX mesogástrica XX hipogástrica.', c:''},
-  {o:'musculo', so:['us-partes-moles'], q:1, n:'Lipoma intramuscular', m:'add', medOpc:1, vaz:[', em XXX'],
+  {o:'musculo', so:['us-partes-moles'], q:1, n:'Lipoma intramuscular', m:'add', medOpc:1, vaz:[', em XXX', ', distando XXX cm da pele'],
    cp:'Lesões com aspecto sugestivo de lipomas intramusculares.',
    t:'Formação ovalada, isoecogênica XX hiperecogênica ao tecido adiposo, homogênea, de limites bem definidos, sem fluxo ao Doppler, no interior do plano muscular, em XXX, medindo XXX x XXX x XXX cm, distando XXX cm da pele, com aspecto sugestivo de lipoma.',
    c:'Lesão no plano muscular com aspecto sugestivo de lipoma.'},

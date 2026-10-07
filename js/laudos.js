@@ -1859,6 +1859,8 @@ function lauDiuNoEndometrio(m){
   const s=state.lau.v[e.k]; return !!s && (s.__f||[]).some(id=>/^DIU /.test((LAU_FRASES[parseInt(id)]||{}).n||''));
 }
 function lauItemOculto(m, it){
+  // "Exame direcionado para a região XX." sem a região preenchida sai do laudo
+  if(it.generic && /^Exame direcionado para a região X{2,3}\.?$/.test(String(lauItemNormal(m,it)||'').trim())){ const s=state.lau.v[it.k]; const v=((s&&s.__v&&s.__v.n)||[]); if(!v.some(lauHas) && !lauHas(s&&s.alt)) return true; }
   // tireoidectomia total: a linha "Volumes estimados" sai do laudo
   if(/^volumes estimados/i.test(lauItemLabel(m,it)||'')){ const c=lauTireoCx(m); if(c && c.total) return true; }
   // DIU descrito no endométrio: a linha fixa "Dispositivo contraceptivo" da máscara sai do laudo
