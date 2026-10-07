@@ -499,6 +499,10 @@ const LAU_ABD_ITEMS = [
      {t:'num', k:'parD', lbl:'Espessura', unit:'mm', show:s=>s.rep!=='sonda'&&s.par, ind:1},
      {t:'check', k:'cal', lbl:'Cálculo', show:s=>s.rep!=='sonda'},
      {t:'num', k:'calD', lbl:'Medida', unit:'cm', show:s=>s.rep!=='sonda'&&s.cal, ind:1},
+     {t:'check', k:'div', lbl:'Divertículo vesical', show:s=>s.rep!=='sonda'},
+     {t:'select', k:'divL', lbl:'Parede', opts:[['','—'],['lateral direita','Lateral direita'],['lateral esquerda','Lateral esquerda'],['posterior','Posterior'],['anterior','Anterior'],['da cúpula','Cúpula']], show:s=>s.rep!=='sonda'&&s.div, ind:1},
+     {t:'dims', k:'divV', lbl:'Medidas (opcional)', show:s=>s.rep!=='sonda'&&s.div, ind:1},
+     {t:'num', k:'divC', lbl:'Colo (opcional)', unit:'cm', show:s=>s.rep!=='sonda'&&s.div, ind:1},
      {t:'check', k:'vol', lbl:'Volume pré-miccional', show:s=>s.rep==='n'},
      {t:'dims', k:'volV', lbl:'Medidas (L × AP × T)', show:s=>s.rep==='n'&&s.vol, ind:1},
      {t:'check', k:'res', lbl:'Resíduo pós-miccional', show:s=>s.rep==='n'},
@@ -508,7 +512,7 @@ const LAU_ABD_ITEMS = [
      if(s.rep==='sonda') return {txt:'vazia, com sonda vesical de demora em seu interior.', conc:[]};
      // laudos de próstata: "Volume pré-miccional" já vem marcado (volAuto) e só entra no texto quando calculado
      const volOn = s.vol && !(s.volAuto && lauVol(...(s.volV||[]))==null);
-     if(s.rep==='n' && !s.par && !s.cal && !volOn && !(s.res && !s.resExt)) return {txt:null, conc:[]};
+     if(s.rep==='n' && !s.par && !s.cal && !s.div && !volOn && !(s.res && !s.resExt)) return {txt:null, conc:[]};
      const conc=[];
      let t = s.rep==='pouca' ? 'com repleção parcial, limitando a avaliação de suas paredes. Conteúdo anecogênico.'
            : s.par ? 'com paredes difusamente espessadas e trabeculadas' + (lauHas(s.parD)?` (${lauN(s.parD)} mm)`:'') + ' e conteúdo anecogênico.'
@@ -516,12 +520,14 @@ const LAU_ABD_ITEMS = [
            : 'com paredes regulares e conteúdo anecogênico.';
      if(s.rep==='pouca' && s.par) t += ' ' + lauFrase('paredes aparentemente espessadas' + (lauHas(s.parD)?` (${lauN(s.parD)} mm)`:''));
      if(s.cal) t += ' ' + lauFrase(lauJoin(['imagem ecogênica móvel com sombra acústica posterior em seu interior, compatível com cálculo', lauMed(s.calD,'cm')]));
+     if(s.div) t += ' ' + lauFrase(lauJoin([`divertículo${lauHas(s.divL)?` na parede ${s.divL}`:''}`, lauDimsTxt(s.divV), lauHas(s.divC)?`com colo de ${lauN(s.divC)} cm`:'']));
      const v = s.vol ? lauVol(...(s.volV||[])) : null;
      const r = s.res ? lauVol(...(s.resV||[])) : null;
      if(volOn) t += v!=null ? ` Volume pré-miccional estimado em ${v} mL.` : ' Volume pré-miccional estimado em ___ mL.';
      if(s.res && !s.resExt) t += r!=null ? ` Resíduo pós-miccional estimado em ${r} mL.` : ' Resíduo pós-miccional estimado em ___ mL.';
      if(s.par) conc.push('Espessamento parietal vesical difuso.');
      if(s.cal) conc.push('Litíase vesical.');
+     if(s.div) conc.push('Divertículo vesical.');
      if(s.res && r!=null && !s.resExt) conc.push(`Resíduo pós-miccional de ${r} mL.`);
      return {txt:t, conc};
    }},
