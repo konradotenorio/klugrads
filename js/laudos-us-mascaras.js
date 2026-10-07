@@ -8195,9 +8195,17 @@ const LAU_US_MASKS = [
 ],
 "items": [
 {
+"k": "dados-do-paciente",
+"label": "Dados do paciente",
+"text": "\nPeso: XXX kg; altura: XXX cm; superfície corporal: XXX m².",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
 "k": "dimensoes",
 "label": "Dimensões",
-"text": "\nPeso: XXX kg; altura: XXX cm; superfície corpórea: XXX m².\nAorta (diâmetro da raiz): XXX mm.\nÁtrio esquerdo: XXX mm.\nDiâmetro diastólico do VE: XXX mm.\nDiâmetro sistólico do VE: XXX mm.\nSepto interventricular: XXX mm.\nParede posterior do VE: XXX mm.\nVentrículo direito (basal): XXX mm.\nFração de ejeção: XXX% (método de Teichholz* XX Simpson).\nÍndice de massa do VE: XXX g/m².\nEspessura relativa da parede: XXX.",
+"text": "\nAorta (diâmetro da raiz): XXX mm.\nÁtrio esquerdo: XXX mm.\nDiâmetro diastólico do VE: XXX mm.\nDiâmetro sistólico do VE: XXX mm.\nSepto interventricular: XXX mm.\nParede posterior do VE: XXX mm.\nVentrículo direito (basal): XXX mm.\nFração de ejeção: XXX% (método de Teichholz* XX Simpson).\nÍndice de massa do VE: XXX g/m².\nEspessura relativa da parede: XXX.",
 "dash": false,
 "opts": [],
 "grp": ""
@@ -8407,6 +8415,13 @@ const LAU_US_MASKS = [
 }
 ],
 "seq": [
+{
+"t": "item",
+"k": "dados-do-paciente"
+},
+{
+"t": "blank"
+},
 {
 "t": "item",
 "k": "dimensoes"

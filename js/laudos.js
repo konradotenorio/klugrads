@@ -1027,13 +1027,22 @@ function lauTplRaw(str){
       const k = /peso/.test(c)?'peso' : /altura/.test(c)?'alt' : /superf[ií]cie corp/.test(c)?'sc' : /di[aâ]metro diast[oó]lico/.test(c)?'dd' : /di[aâ]metro sist[oó]lico/.test(c)?'ds'
         : /septo interventricular/.test(c)?'siv' : /parede posterior/.test(c)?'pp' : /fra[cç][aã]o de eje[cç][aã]o/.test(c)?'fe' : /[ií]ndice de massa/.test(c)?'im' : /espessura relativa/.test(c)?'erp' : null;
       if(k && id[k]==null) id[k]=tk.i; });
+    if(id.sc!=null && id.peso!=null && id.alt!=null) auto[id.sc]={bsa:[id.peso,id.alt]};
     if(id.dd!=null){
       if(id.sc!=null && id.peso!=null && id.alt!=null) auto[id.sc]={bsa:[id.peso,id.alt]};
       if(id.fe!=null && id.ds!=null) auto[id.fe]={teich:[id.dd,id.ds]};
       if(id.erp!=null && id.pp!=null) auto[id.erp]={erp:[id.pp,id.dd]};
-      if(id.im!=null && id.siv!=null && id.pp!=null && id.sc!=null) auto[id.im]={lvmi:[id.dd,id.siv,id.pp,id.sc]};
+      if(id.im!=null && id.siv!=null && id.pp!=null) auto[id.im]={lvmi:[id.dd,id.siv,id.pp,id.sc]};   // sem SC aqui: busca no item "Dados do paciente"
     } }
   return {lines, n, auto};
+}
+/* ecocardiograma: superfície corporal digitada ou calculada no item "Dados do paciente" (para o índice de massa do VE) */
+function lauEcoSC(){
+  const L=state.lau, m=L&&lauModelo(L.model); if(!m) return null;
+  for(const it of m.items){ const n=lauItemNormal(m,it); if(!/superf[ií]cie corp/i.test(n||'')) continue;
+    const tpl=lauTpl(n), vals=((L.v[it.k]||{}).__v||{}).n||[]; const i=Object.keys(tpl.auto).map(Number).find(j=>tpl.auto[j].bsa); if(i==null) continue;
+    const r=lauVal(tpl, vals, i); return r.ok ? lauF(r.v) : null; }
+  return null;
 }
 function lauAutoVal(tpl, vals, i){
   const d=tpl.auto[i]; if(!d) return null;
@@ -1045,7 +1054,7 @@ function lauAutoVal(tpl, vals, i){
   if(d.bsa){ const w=lauF(vals[d.bsa[0]]), h=lauF(vals[d.bsa[1]]); if(!w || !h) return null; return fx(0.007184*Math.pow(w,0.425)*Math.pow(h,0.725),2); }
   if(d.teich){ const tv=x=>7/(2.4+x)*x*x*x; const dd=lauF(vals[d.teich[0]]), ds=lauF(vals[d.teich[1]]); if(!dd || !ds) return null; const a=tv(dd/10), b=tv(ds/10); return String(Math.round((a-b)/a*100)); }
   if(d.erp){ const pp=lauF(vals[d.erp[0]]), dd=lauF(vals[d.erp[1]]); if(!pp || !dd) return null; return fx(2*pp/dd,2); }
-  if(d.lvmi){ const [dd,siv,pp]=d.lvmi.slice(0,3).map(j=>lauF(vals[j])); let sc=lauF(vals[d.lvmi[3]]); if(sc==null){ const a=lauAutoVal(tpl, vals, d.lvmi[3]); sc=a==null?null:lauF(a); }
+  if(d.lvmi){ const [dd,siv,pp]=d.lvmi.slice(0,3).map(j=>lauF(vals[j])); let sc=null; if(d.lvmi[3]!=null){ sc=lauF(vals[d.lvmi[3]]); if(sc==null){ const a=lauAutoVal(tpl, vals, d.lvmi[3]); sc=a==null?null:lauF(a); } } else sc=lauEcoSC();
     if(!dd || !siv || !pp || !sc) return null; const c=x=>Math.pow(x/10,3); return String(Math.round((0.8*1.04*(c(dd+siv+pp)-c(dd))+0.6)/sc)); }
   if(d.mean){
     const v=d.mean.map(j=>lauF(vals[j])); if(v.some(x=>!x)) return null;
@@ -2081,7 +2090,7 @@ function lauPatch(k){
     const h=lauItemHTML(m,it); p.innerHTML = h; p.hidden = !h; if(h) lauFlash(p);
     if(typeof lauAutoStUpd==='function') lauAutoStUpd(m,it);
     const outros = m.oct || (typeof lauAutoAfetaOutros==='function' && lauAutoAfetaOutros(m,it))
-      || /^(tireoide|endometrio)$/.test(lauNorm(lauItemLabel(m,it)||''));   // tireoidectomia muda a linha dos volumes; DIU no endométrio oculta a linha do dispositivo
+      || /^(tireoide|endometrio|dados do paciente)$/.test(lauNorm(lauItemLabel(m,it)||''));   // tireoidectomia muda a linha dos volumes; DIU no endométrio oculta a linha do dispositivo
     if(outros) m.items.forEach(o=>{ if(o.k===k) return; const q=ed.querySelector(`[data-k="${o.k}"]`); if(!q) return; const hh=lauItemHTML(m,o); if(q.innerHTML!==hh){ q.innerHTML=hh; q.hidden=!hh; } });   // frases que ocultam itens do mesmo olho
   }
   lauPatchConc(); lauSaveEd();

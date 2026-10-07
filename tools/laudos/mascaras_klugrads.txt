@@ -180,8 +180,10 @@ G. VASCULAR:
 7. Ecocardio 2
 ECODOPPLERCARDIOGRAMA TRANSTORÁCICO
 
+Dados do paciente:
+  Peso: XXX kg; altura: XXX cm; superfície corporal: XXX m².
+
 Dimensões:
-  Peso: XXX kg; altura: XXX cm; superfície corpórea: XXX m².
   Aorta (diâmetro da raiz): XXX mm.
   Átrio esquerdo: XXX mm.
   Diâmetro diastólico do VE: XXX mm.
