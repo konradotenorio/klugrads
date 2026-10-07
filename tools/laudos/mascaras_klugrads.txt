@@ -172,3 +172,82 @@ Conclusão:
 - Quadris de aspecto maduro (Graf tipo I) bilateralmente.
 
 -----
+
+-----
+
+G. VASCULAR:
+
+7. Ecocardio 2
+ECODOPPLERCARDIOGRAMA TRANSTORÁCICO
+
+Dimensões:
+  Peso: XXX kg; altura: XXX cm; superfície corpórea: XXX m².
+  Aorta (diâmetro da raiz): XXX mm.
+  Átrio esquerdo: XXX mm.
+  Diâmetro diastólico do VE: XXX mm.
+  Diâmetro sistólico do VE: XXX mm.
+  Septo interventricular: XXX mm.
+  Parede posterior do VE: XXX mm.
+  Ventrículo direito (basal): XXX mm.
+  Fração de ejeção: XXX% (método de Teichholz* XX Simpson).
+  Índice de massa do VE: XXX g/m².
+  Espessura relativa da parede: XXX.
+
+CONDIÇÕES TÉCNICAS
+Exame realizado em boas condições técnicas, com janela acústica favorável. || Exame realizado em condições técnicas regulares, com janela acústica desfavorável. || Exame realizado à beira do leito, em condições técnicas limitadas.
+Paciente em ritmo cardíaco regular (FC = XXX bpm). || Paciente em ritmo cardíaco irregular (FC média = XXX bpm). || Paciente em fibrilação atrial (FC média = XXX bpm).
+
+CÂMARAS CARDÍACAS
+Cavidades cardíacas com dimensões normais (volume indexado do átrio esquerdo estimado em XXX mL/m²). || Átrio esquerdo com volume aumentado em grau leve XX moderado XX importante (volume indexado estimado em XXX mL/m²). Demais cavidades cardíacas com dimensões normais. || Aumento do ventrículo_esquerdo XX ventrículo_direito XX átrio_direito de grau leve XX moderado XX importante. Demais cavidades cardíacas com dimensões normais.
+XXX Septo interatrial redundante, sem sinais de shunt ao estudo transtorácico.
+XXX Cabos de marca-passo em câmaras cardíacas direitas, com aspecto habitual.
+
+ESPESSURA MIOCÁRDICA
+Índice de massa miocárdica e espessura relativa da parede normais. || Índice de massa miocárdica normal e espessura relativa da parede aumentada, compatível com remodelamento concêntrico do ventrículo esquerdo. || Índice de massa miocárdica e espessura relativa da parede aumentados, compatível com hipertrofia concêntrica do ventrículo esquerdo. || Índice de massa miocárdica aumentado e espessura relativa da parede normal, compatível com hipertrofia excêntrica do ventrículo esquerdo. || Aumento discreto XX leve XX moderado da espessura miocárdica, mais acentuado na porção basal do septo interventricular (espessura máxima de XXX mm).
+XXX Septo interventricular sigmoide, sem sinais de obstrução da via de saída do ventrículo esquerdo ao repouso (gradiente sistólico de pico de XXX mmHg).
+
+FUNÇÃO VENTRICULAR
+Desempenho contrátil global e segmentar do ventrículo esquerdo preservado. || Disfunção sistólica global do ventrículo esquerdo de grau leve XX moderado XX importante, por hipocinesia difusa. Fração de ejeção estimada em XXX% pelo método de Simpson. || Alteração da contratilidade segmentar do ventrículo esquerdo: XXX. Fração de ejeção estimada em XXX% pelo método de Simpson. || Movimento anômalo do septo interventricular, com contratilidade preservada dos demais segmentos do ventrículo esquerdo. Fração de ejeção estimada em XXX% pelo método de Simpson.
+XXX Fração de ejeção estimada em XXX% pelo método de Simpson.
+XXX Dissincronia intraventricular.
+Índices de função diastólica normais. || Disfunção diastólica do ventrículo esquerdo de grau I (alteração do relaxamento), com relação E/e' de XXX. || Disfunção diastólica do ventrículo esquerdo de grau II, com pressão de átrio esquerdo elevada (e' de XXX cm/s e relação E/e' de XXX). || Disfunção diastólica do ventrículo esquerdo de grau III (padrão restritivo), com relação E/e' de XXX. || Sinais sugestivos de pressões de enchimento do ventrículo esquerdo elevadas (relação E/e' de XXX).
+XXX Velocidade e' de XXX cm/s e relação E/e' de XXX.
+Função sistólica do ventrículo direito preservada (TAPSE de XXX mm). || Disfunção sistólica do ventrículo direito de grau leve XX moderado XX importante (TAPSE de XXX mm).
+
+VALVAS CARDÍACAS E FLUXOS TRANSVALVARES
+Valva mitral com cúspides finas, abertura e mobilidade preservadas. Ao Doppler, refluxo mínimo, sem gradiente transvalvar significativo. || Valva mitral com espessamento discreto, abertura e mobilidade preservadas. Refluxo mitral de grau leve XX moderado XX importante. || Prolapso das cúspides da valva mitral para o interior do átrio esquerdo, com refluxo mitral telessistólico de grau discreto XX leve XX moderado XX importante. || Fibrocalcificação do anel mitral e da base do folheto posterior, com abertura preservada. Refluxo mitral de grau mínimo XX leve XX moderado XX importante.
+Valva aórtica com válvulas finas, abertura e mobilidade preservadas. Ao Doppler, sem refluxo e sem gradiente transvalvar significativo. || Valva aórtica trivalvulada, com espessamento discreto e fibrocalcificação dos folhetos, abertura preservada. || Valva aórtica com refluxo de grau leve XX moderado XX importante, sem gradiente transvalvar significativo. || Prótese biológica de implante percutâneo (TAVI) em posição aórtica, normoposicionada e normoexpandida, com folhetos de espessura normal, abertura e mobilidade preservadas. Velocidade de pico de XXX m/s, gradiente médio de XXX mmHg e área valvar pela equação de continuidade de XXX cm².
+Valva tricúspide com cúspides finas, abertura e mobilidade preservadas. Ao Doppler, refluxo mínimo, sem gradiente transvalvar significativo. || Refluxo tricúspide de grau leve XX moderado XX importante.
+Valva pulmonar com morfologia e dinâmica normais. Fluxo transvalvar fisiológico ao Doppler.
+Pressão sistólica da artéria pulmonar, calculada pelo gradiente VD/AD, estimada em XXX mmHg (velocidade do refluxo tricúspide de XXX m/s). || Refluxo tricúspide mínimo, não sendo possível estimar a pressão sistólica da artéria pulmonar. || Não foi possível estimar a pressão sistólica da artéria pulmonar.
+
+AORTA
+Aorta torácica com dimensões normais. || Ectasia mínima XX leve XX moderada da aorta ascendente (XXX mm).
+
+PERICÁRDIO
+Pericárdio sem sinais de derrame. || Derrame pericárdico de pequeno XX moderado XX grande volume, sem sinais de restrição ao enchimento ventricular.
+
+VEIA CAVA INFERIOR
+Veia cava inferior com dimensões normais e índice de colapsibilidade normal (variação respiratória superior a 50%). || Veia cava inferior de pequeno calibre, colapsando à inspiração. || Veia cava inferior dilatada, com variação respiratória inferior a 50%.
+
+Conclusão:
+- Ecodopplercardiograma transtorácico dentro dos parâmetros normais.
+- Função ventricular preservada.
+XXX Função ventricular sistólica preservada.
+XXX Desempenho contrátil global e segmentar do ventrículo esquerdo preservado.
+XXX Átrio esquerdo com volume aumentado em grau leve XX moderado XX importante.
+XXX Remodelamento concêntrico do ventrículo esquerdo.
+XXX Hipertrofia concêntrica XX excêntrica do ventrículo esquerdo.
+XXX Septo interventricular sigmoide.
+XXX Disfunção sistólica global do ventrículo esquerdo de grau leve XX moderado XX importante.
+XXX Disfunção diastólica do ventrículo esquerdo de grau I XX II XX III.
+XXX Sinais sugestivos de pressões de enchimento do ventrículo esquerdo elevadas.
+XXX Refluxo mitral XX tricúspide XX aórtico de grau leve XX moderado XX importante.
+XXX Prolapso da valva mitral.
+XXX Alterações degenerativas das valvas mitral e aórtica.
+XXX Prótese aórtica percutânea (TAVI) normofuncionante.
+XXX Hipertensão pulmonar leve XX moderada XX importante.
+XXX Ectasia da aorta ascendente.
+XXX Derrame pericárdico de pequeno XX moderado XX grande volume.
+XXX Cabos de marca-passo em câmaras cardíacas direitas.
+XXX Septo interatrial redundante, sem sinais de shunt.

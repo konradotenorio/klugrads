@@ -1021,6 +1021,18 @@ function lauTplRaw(str){
       if(/total/i.test(ctx) && /^(cm³|cm3|ml|mL)/.test(nxt) && prev.length>1) auto[t[b].i]={sum:prev};
     }
   });
+  // ecocardiograma: superfície corpórea (DuBois), FE (Teichholz), índice de massa do VE (ASE) e espessura relativa da parede
+  { const fl=[].concat(...lines); const id={}; let ant=[];
+    fl.forEach(tk=>{ if(tk.t!=='p'){ ant.push(tk.s||''); return; } const c=ant.join(' ').toLowerCase(); ant=[];
+      const k = /peso/.test(c)?'peso' : /altura/.test(c)?'alt' : /superf[ií]cie corp/.test(c)?'sc' : /di[aâ]metro diast[oó]lico/.test(c)?'dd' : /di[aâ]metro sist[oó]lico/.test(c)?'ds'
+        : /septo interventricular/.test(c)?'siv' : /parede posterior/.test(c)?'pp' : /fra[cç][aã]o de eje[cç][aã]o/.test(c)?'fe' : /[ií]ndice de massa/.test(c)?'im' : /espessura relativa/.test(c)?'erp' : null;
+      if(k && id[k]==null) id[k]=tk.i; });
+    if(id.dd!=null){
+      if(id.sc!=null && id.peso!=null && id.alt!=null) auto[id.sc]={bsa:[id.peso,id.alt]};
+      if(id.fe!=null && id.ds!=null) auto[id.fe]={teich:[id.dd,id.ds]};
+      if(id.erp!=null && id.pp!=null) auto[id.erp]={erp:[id.pp,id.dd]};
+      if(id.im!=null && id.siv!=null && id.pp!=null && id.sc!=null) auto[id.im]={lvmi:[id.dd,id.siv,id.pp,id.sc]};
+    } }
   return {lines, n, auto};
 }
 function lauAutoVal(tpl, vals, i){
@@ -1028,6 +1040,13 @@ function lauAutoVal(tpl, vals, i){
   let r;
   if(d.rel){ const a=lauF(vals[d.rel[0]]), b=lauF(vals[d.rel[1]]); if(!a || !b) return null; return String(Math.round(a/b*10)/10).replace('.',','); }
   if(d.ej){ const a=lauF(vals[d.ej[0]]), b=lauF(vals[d.ej[1]]); if(!a || b==null) return null; return String(Math.round((a-b)/a*100)); }
+  // ecocardiograma (medidas em mm, peso em kg, altura em cm)
+  const fx=(n,dc)=>n.toFixed(dc).replace('.',',');
+  if(d.bsa){ const w=lauF(vals[d.bsa[0]]), h=lauF(vals[d.bsa[1]]); if(!w || !h) return null; return fx(0.007184*Math.pow(w,0.425)*Math.pow(h,0.725),2); }
+  if(d.teich){ const tv=x=>7/(2.4+x)*x*x*x; const dd=lauF(vals[d.teich[0]]), ds=lauF(vals[d.teich[1]]); if(!dd || !ds) return null; const a=tv(dd/10), b=tv(ds/10); return String(Math.round((a-b)/a*100)); }
+  if(d.erp){ const pp=lauF(vals[d.erp[0]]), dd=lauF(vals[d.erp[1]]); if(!pp || !dd) return null; return fx(2*pp/dd,2); }
+  if(d.lvmi){ const [dd,siv,pp]=d.lvmi.slice(0,3).map(j=>lauF(vals[j])); let sc=lauF(vals[d.lvmi[3]]); if(sc==null){ const a=lauAutoVal(tpl, vals, d.lvmi[3]); sc=a==null?null:lauF(a); }
+    if(!dd || !siv || !pp || !sc) return null; const c=x=>Math.pow(x/10,3); return String(Math.round((0.8*1.04*(c(dd+siv+pp)-c(dd))+0.6)/sc)); }
   if(d.mean){
     const v=d.mean.map(j=>lauF(vals[j])); if(v.some(x=>!x)) return null;
     return String(Math.round(v.reduce((a,b)=>a+b,0)/v.length*10)/10).replace('.',',');
@@ -2440,7 +2459,7 @@ function lauInlineForm(k, tplId, str, vals, seg, topico){
 }
 /* Campos do texto padrão "por tópico": a frase da máscara em cima e, embaixo, uma linha por
    estrutura (ex.: "Testículo direito  [ ] × [ ] × [ ] cm · Volume [ ] cm³"). */
-const LAU_TOP_UN = /^\(?(cm³|cm3|cm\/s|m\/s|cm²|cm|mm|ml|mL|%|g|kg|kPa|mmhg|mmHg|semanas|dias|bpm|minutos|min)[).,;:]*$/i;
+const LAU_TOP_UN = /^\(?(cm³|cm3|cm\/s|m\/s|g\/m²|mL\/m²|ml\/m²|m²|cm²|cm|mm|ml|mL|%|g|kg|kPa|mmhg|mmHg|semanas|dias|bpm|minutos|min)[).,;:]*$/i;
 const LAU_TOP_STOP = /^(medindo|mede|medem|com|de|em|cerca|apresentando|estimad[oa]s?|calibre|e|aproximadamente|até|torno|foi|realizad[oa]|nota-se|no|na|do|da|ao|à|a|o|os|as|por|para|sem|é|são|mais|valor|velocidade|índice)$/i;
 function lauTopLbl(words, inicio){
   const ws = words.join(' ').replace(/[()]/g,' ').replace(/^[-–•\s]+/,'').split(/\s+/).filter(Boolean);
@@ -2486,8 +2505,8 @@ function lauTopicoForm(k, tplId, str, vals, seg, rotulo){
       if(tk.pre) buf.push(tk.pre);
       if(lbl==null){
         // rótulo com dois-pontos no começo ("ACCD: VPS =") tem prioridade; o resto vira o nome do campo
-        const ws=buf.join(' ').split(/\s+/).filter(Boolean); const jc=ws.slice(0,4).findIndex(w=>/:$/.test(w));
-        if(jc>=0 && ws.slice(jc+1).length){ lbl=ws.slice(0,jc+1).join(' ').replace(/^[-–•]+\s*/,'').replace(/:$/,''); const t=lauTopLbl(ws.slice(jc+1), false); if(t) parts.push(`<span class="lau-top-c">${esc(t)}</span>`); }
+        const ws=buf.join(' ').split(/\s+/).filter(Boolean); const jc=ws.slice(0,8).findIndex(w=>/:$/.test(w));
+        if(jc>=0 && ws[0] && /^[-–•]?[A-ZÁÉÍÓÚÂÊÔÃÕÇ]/.test(ws[0])){ lbl=ws.slice(0,jc+1).join(' ').replace(/^[-–•]+\s*/,'').replace(/:$/,''); const t=lauTopLbl(ws.slice(jc+1), false); if(t) parts.push(`<span class="lau-top-c">${esc(t)}</span>`); }
         else lbl = lauTopLbl(buf, true);
       }
       else { const cn = buf.join(' ').replace(/[(),]/g,' ').trim(); if(cn){ const t = /^x$/i.test(cn) ? '×' : lauTopLbl(buf, false); if(t) parts.push(`<span class="lau-top-c">${esc(t)}</span>`); } }

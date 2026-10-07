@@ -8184,6 +8184,435 @@ const LAU_US_MASKS = [
 "flags": [
 "sem-pele"
 ]
+},
+{
+"id": "us-ecocardio-2",
+"metodo": "us",
+"nome": "Ecocardio 2",
+"grupo": "Vascular",
+"titulo": [
+"ECODOPPLERCARDIOGRAMA TRANSTORÁCICO"
+],
+"items": [
+{
+"k": "dimensoes",
+"label": "Dimensões",
+"text": "\nPeso: XXX kg; altura: XXX cm; superfície corpórea: XXX m².\nAorta (diâmetro da raiz): XXX mm.\nÁtrio esquerdo: XXX mm.\nDiâmetro diastólico do VE: XXX mm.\nDiâmetro sistólico do VE: XXX mm.\nSepto interventricular: XXX mm.\nParede posterior do VE: XXX mm.\nVentrículo direito (basal): XXX mm.\nFração de ejeção: XXX% (método de Teichholz* XX Simpson).\nÍndice de massa do VE: XXX g/m².\nEspessura relativa da parede: XXX.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "exame-realizado-em-boas-condic",
+"label": "",
+"text": "Exame realizado em boas condições técnicas, com janela acústica favorável.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Exame realizado em boas condições técnicas, com janela acústica favorável.",
+"Exame realizado em condições técnicas regulares, com janela acústica desfavorável.",
+"Exame realizado à beira do leito, em condições técnicas limitadas."
+]
+},
+{
+"k": "paciente-em-ritmo-cardiaco-reg",
+"label": "",
+"text": "Paciente em ritmo cardíaco regular (FC = XXX bpm).",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Paciente em ritmo cardíaco regular (FC = XXX bpm).",
+"Paciente em ritmo cardíaco irregular (FC média = XXX bpm).",
+"Paciente em fibrilação atrial (FC média = XXX bpm)."
+]
+},
+{
+"k": "cavidades-cardiacas-com-dimens",
+"label": "",
+"text": "Cavidades cardíacas com dimensões normais (volume indexado do átrio esquerdo estimado em XXX mL/m²).",
+"dash": false,
+"opts": [
+"Septo interatrial redundante, sem sinais de shunt ao estudo transtorácico.",
+"Cabos de marca-passo em câmaras cardíacas direitas, com aspecto habitual."
+],
+"grp": "",
+"alts": [
+"Cavidades cardíacas com dimensões normais (volume indexado do átrio esquerdo estimado em XXX mL/m²).",
+"Átrio esquerdo com volume aumentado em grau leve XX moderado XX importante (volume indexado estimado em XXX mL/m²). Demais cavidades cardíacas com dimensões normais.",
+"Aumento do ventrículo_esquerdo XX ventrículo_direito XX átrio_direito de grau leve XX moderado XX importante. Demais cavidades cardíacas com dimensões normais."
+]
+},
+{
+"k": "indice-de-massa-miocardica-e-e",
+"label": "",
+"text": "Índice de massa miocárdica e espessura relativa da parede normais.",
+"dash": false,
+"opts": [
+"Septo interventricular sigmoide, sem sinais de obstrução da via de saída do ventrículo esquerdo ao repouso (gradiente sistólico de pico de XXX mmHg)."
+],
+"grp": "",
+"alts": [
+"Índice de massa miocárdica e espessura relativa da parede normais.",
+"Índice de massa miocárdica normal e espessura relativa da parede aumentada, compatível com remodelamento concêntrico do ventrículo esquerdo.",
+"Índice de massa miocárdica e espessura relativa da parede aumentados, compatível com hipertrofia concêntrica do ventrículo esquerdo.",
+"Índice de massa miocárdica aumentado e espessura relativa da parede normal, compatível com hipertrofia excêntrica do ventrículo esquerdo.",
+"Aumento discreto XX leve XX moderado da espessura miocárdica, mais acentuado na porção basal do septo interventricular (espessura máxima de XXX mm)."
+]
+},
+{
+"k": "desempenho-contratil-global-e",
+"label": "",
+"text": "Desempenho contrátil global e segmentar do ventrículo esquerdo preservado.",
+"dash": false,
+"opts": [
+"Fração de ejeção estimada em XXX% pelo método de Simpson.",
+"Dissincronia intraventricular."
+],
+"grp": "",
+"alts": [
+"Desempenho contrátil global e segmentar do ventrículo esquerdo preservado.",
+"Disfunção sistólica global do ventrículo esquerdo de grau leve XX moderado XX importante, por hipocinesia difusa. Fração de ejeção estimada em XXX% pelo método de Simpson.",
+"Alteração da contratilidade segmentar do ventrículo esquerdo: XXX. Fração de ejeção estimada em XXX% pelo método de Simpson.",
+"Movimento anômalo do septo interventricular, com contratilidade preservada dos demais segmentos do ventrículo esquerdo. Fração de ejeção estimada em XXX% pelo método de Simpson."
+]
+},
+{
+"k": "indices-de-funcao-diastolica-n",
+"label": "",
+"text": "Índices de função diastólica normais.",
+"dash": false,
+"opts": [
+"Velocidade e' de XXX cm/s e relação E/e' de XXX."
+],
+"grp": "",
+"alts": [
+"Índices de função diastólica normais.",
+"Disfunção diastólica do ventrículo esquerdo de grau I (alteração do relaxamento), com relação E/e' de XXX.",
+"Disfunção diastólica do ventrículo esquerdo de grau II, com pressão de átrio esquerdo elevada (e' de XXX cm/s e relação E/e' de XXX).",
+"Disfunção diastólica do ventrículo esquerdo de grau III (padrão restritivo), com relação E/e' de XXX.",
+"Sinais sugestivos de pressões de enchimento do ventrículo esquerdo elevadas (relação E/e' de XXX)."
+]
+},
+{
+"k": "funcao-sistolica-do-ventriculo",
+"label": "",
+"text": "Função sistólica do ventrículo direito preservada (TAPSE de XXX mm).",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Função sistólica do ventrículo direito preservada (TAPSE de XXX mm).",
+"Disfunção sistólica do ventrículo direito de grau leve XX moderado XX importante (TAPSE de XXX mm)."
+]
+},
+{
+"k": "valva-mitral-com-cuspides-fina",
+"label": "",
+"text": "Valva mitral com cúspides finas, abertura e mobilidade preservadas. Ao Doppler, refluxo mínimo, sem gradiente transvalvar significativo.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Valva mitral com cúspides finas, abertura e mobilidade preservadas. Ao Doppler, refluxo mínimo, sem gradiente transvalvar significativo.",
+"Valva mitral com espessamento discreto, abertura e mobilidade preservadas. Refluxo mitral de grau leve XX moderado XX importante.",
+"Prolapso das cúspides da valva mitral para o interior do átrio esquerdo, com refluxo mitral telessistólico de grau discreto XX leve XX moderado XX importante.",
+"Fibrocalcificação do anel mitral e da base do folheto posterior, com abertura preservada. Refluxo mitral de grau mínimo XX leve XX moderado XX importante."
+]
+},
+{
+"k": "valva-aortica-com-valvulas-fin",
+"label": "",
+"text": "Valva aórtica com válvulas finas, abertura e mobilidade preservadas. Ao Doppler, sem refluxo e sem gradiente transvalvar significativo.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Valva aórtica com válvulas finas, abertura e mobilidade preservadas. Ao Doppler, sem refluxo e sem gradiente transvalvar significativo.",
+"Valva aórtica trivalvulada, com espessamento discreto e fibrocalcificação dos folhetos, abertura preservada.",
+"Valva aórtica com refluxo de grau leve XX moderado XX importante, sem gradiente transvalvar significativo.",
+"Prótese biológica de implante percutâneo (TAVI) em posição aórtica, normoposicionada e normoexpandida, com folhetos de espessura normal, abertura e mobilidade preservadas. Velocidade de pico de XXX m/s, gradiente médio de XXX mmHg e área valvar pela equação de continuidade de XXX cm²."
+]
+},
+{
+"k": "valva-tricuspide-com-cuspides",
+"label": "",
+"text": "Valva tricúspide com cúspides finas, abertura e mobilidade preservadas. Ao Doppler, refluxo mínimo, sem gradiente transvalvar significativo.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Valva tricúspide com cúspides finas, abertura e mobilidade preservadas. Ao Doppler, refluxo mínimo, sem gradiente transvalvar significativo.",
+"Refluxo tricúspide de grau leve XX moderado XX importante."
+]
+},
+{
+"k": "valva-pulmonar-com-morfologia",
+"label": "",
+"text": "Valva pulmonar com morfologia e dinâmica normais. Fluxo transvalvar fisiológico ao Doppler.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pressao-sistolica-da-arteria-p",
+"label": "",
+"text": "Pressão sistólica da artéria pulmonar, calculada pelo gradiente VD/AD, estimada em XXX mmHg (velocidade do refluxo tricúspide de XXX m/s).",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Pressão sistólica da artéria pulmonar, calculada pelo gradiente VD/AD, estimada em XXX mmHg (velocidade do refluxo tricúspide de XXX m/s).",
+"Refluxo tricúspide mínimo, não sendo possível estimar a pressão sistólica da artéria pulmonar.",
+"Não foi possível estimar a pressão sistólica da artéria pulmonar."
+]
+},
+{
+"k": "aorta-toracica-com-dimensoes-n",
+"label": "",
+"text": "Aorta torácica com dimensões normais.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Aorta torácica com dimensões normais.",
+"Ectasia mínima XX leve XX moderada da aorta ascendente (XXX mm)."
+]
+},
+{
+"k": "pericardio-sem-sinais-de-derra",
+"label": "",
+"text": "Pericárdio sem sinais de derrame.",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Pericárdio sem sinais de derrame.",
+"Derrame pericárdico de pequeno XX moderado XX grande volume, sem sinais de restrição ao enchimento ventricular."
+]
+},
+{
+"k": "veia-cava-inferior-com-dimenso",
+"label": "",
+"text": "Veia cava inferior com dimensões normais e índice de colapsibilidade normal (variação respiratória superior a 50%).",
+"dash": false,
+"opts": [],
+"grp": "",
+"alts": [
+"Veia cava inferior com dimensões normais e índice de colapsibilidade normal (variação respiratória superior a 50%).",
+"Veia cava inferior de pequeno calibre, colapsando à inspiração.",
+"Veia cava inferior dilatada, com variação respiratória inferior a 50%."
+]
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "dimensoes"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "CONDIÇÕES TÉCNICAS"
+},
+{
+"t": "item",
+"k": "exame-realizado-em-boas-condic"
+},
+{
+"t": "item",
+"k": "paciente-em-ritmo-cardiaco-reg"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "CÂMARAS CARDÍACAS"
+},
+{
+"t": "item",
+"k": "cavidades-cardiacas-com-dimens"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "ESPESSURA MIOCÁRDICA"
+},
+{
+"t": "item",
+"k": "indice-de-massa-miocardica-e-e"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "FUNÇÃO VENTRICULAR"
+},
+{
+"t": "item",
+"k": "desempenho-contratil-global-e"
+},
+{
+"t": "item",
+"k": "indices-de-funcao-diastolica-n"
+},
+{
+"t": "item",
+"k": "funcao-sistolica-do-ventriculo"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "VALVAS CARDÍACAS E FLUXOS TRANSVALVARES"
+},
+{
+"t": "item",
+"k": "valva-mitral-com-cuspides-fina"
+},
+{
+"t": "item",
+"k": "valva-aortica-com-valvulas-fin"
+},
+{
+"t": "item",
+"k": "valva-tricuspide-com-cuspides"
+},
+{
+"t": "item",
+"k": "valva-pulmonar-com-morfologia"
+},
+{
+"t": "item",
+"k": "pressao-sistolica-da-arteria-p"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "AORTA"
+},
+{
+"t": "item",
+"k": "aorta-toracica-com-dimensoes-n"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "PERICÁRDIO"
+},
+{
+"t": "item",
+"k": "pericardio-sem-sinais-de-derra"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "VEIA CAVA INFERIOR"
+},
+{
+"t": "item",
+"k": "veia-cava-inferior-com-dimenso"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Ecodopplercardiograma transtorácico dentro dos parâmetros normais.",
+"dash": true
+},
+{
+"text": "Função ventricular preservada.",
+"dash": true
+},
+{
+"opt": true,
+"text": "Função ventricular sistólica preservada."
+},
+{
+"opt": true,
+"text": "Desempenho contrátil global e segmentar do ventrículo esquerdo preservado."
+},
+{
+"opt": true,
+"text": "Átrio esquerdo com volume aumentado em grau leve XX moderado XX importante."
+},
+{
+"opt": true,
+"text": "Remodelamento concêntrico do ventrículo esquerdo."
+},
+{
+"opt": true,
+"text": "Hipertrofia concêntrica XX excêntrica do ventrículo esquerdo."
+},
+{
+"opt": true,
+"text": "Septo interventricular sigmoide."
+},
+{
+"opt": true,
+"text": "Disfunção sistólica global do ventrículo esquerdo de grau leve XX moderado XX importante."
+},
+{
+"opt": true,
+"text": "Disfunção diastólica do ventrículo esquerdo de grau I XX II XX III."
+},
+{
+"opt": true,
+"text": "Sinais sugestivos de pressões de enchimento do ventrículo esquerdo elevadas."
+},
+{
+"opt": true,
+"text": "Refluxo mitral XX tricúspide XX aórtico de grau leve XX moderado XX importante."
+},
+{
+"opt": true,
+"text": "Prolapso da valva mitral."
+},
+{
+"opt": true,
+"text": "Alterações degenerativas das valvas mitral e aórtica."
+},
+{
+"opt": true,
+"text": "Prótese aórtica percutânea (TAVI) normofuncionante."
+},
+{
+"opt": true,
+"text": "Hipertensão pulmonar leve XX moderada XX importante."
+},
+{
+"opt": true,
+"text": "Ectasia da aorta ascendente."
+},
+{
+"opt": true,
+"text": "Derrame pericárdico de pequeno XX moderado XX grande volume."
+},
+{
+"opt": true,
+"text": "Cabos de marca-passo em câmaras cardíacas direitas."
+},
+{
+"opt": true,
+"text": "Septo interatrial redundante, sem sinais de shunt."
+}
+],
+"trailer": [],
+"flags": []
 }
 ];
 const LAU_MMG_MASKS = [
