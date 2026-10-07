@@ -989,7 +989,9 @@ function lauTplRaw(str){
           const ctx=t.slice(Math.max(a+5,b-4),b).map(x=>x.s||'').join(' ');
           const nxt=(t[b+1]&&t[b+1].s)||'';
           if(/dmsg|di[aâ]metro m[eé]dio/i.test(ctx)) auto[t[b].i]={mean:dims};   // DMSG = média das 3 medidas
-          else if(/volume|massa/i.test(ctx) || /^(cm³|cm3|ml|mL)/.test(nxt)) auto[t[b].i]=dims;
+          else if(/volume|massa/i.test(ctx) || /^(cm³|cm3|ml|mL)/.test(nxt)){ auto[t[b].i]=dims;
+            // istmo da tireoide: volume opcional (não impede a soma do volume glandular total)
+            if(/istmo/i.test(t.slice(Math.max(0,a-3),a).map(x=>x.s||'').join(' '))) dims.opt=true; }
           break;
         }
       }
@@ -1061,7 +1063,7 @@ function lauAutoVal(tpl, vals, i){
     return String(Math.round(v.reduce((a,b)=>a+b,0)/v.length*10)/10).replace('.',',');
   }
   if(d.sum){
-    const parts=d.sum.map(j=>{ const u=lauF(vals[j]); if(u!=null) return u; const a=lauAutoVal(tpl, vals, j); return a==null?null:lauF(a); });
+    const parts=d.sum.map(j=>{ const u=lauF(vals[j]); if(u!=null) return u; const a=lauAutoVal(tpl, vals, j); return a==null ? (tpl.auto[j]&&tpl.auto[j].opt ? 0 : null) : lauF(a); });
     if(parts.some(x=>x==null)) return null;
     r=parts.reduce((a,b)=>a+b,0);
   } else {
@@ -1874,6 +1876,9 @@ function lauItemHTML(m, it){
   // "medindo XXX x XXX x XXX cm, com volume estimado em 30 mL": sem as medidas, fica só o volume digitado
   if(it.generic) txt = txt.replace(/medindo <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> (?:cm|mm), com (volume estimado em )(?!<mark)/, '$1');
   if(it.generic) txt = txt.replace(/medindo <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> x <mark class="lau-ph">XXX<\/mark> (?:cm|mm) \((volume estimado em )(?!<mark)([^)]*)\)/g, 'com $1$2');
+  // istmo: sem as 3 medidas fica só a espessura ("istmo: 0,3 cm")
+  if(it.generic && /^volumes estimados/i.test(lauItemLabel(m,it)||'')){ const K='<mark class="lau-ph">XXX</mark>';
+    txt = txt.replace(new RegExp('(istmo: )([^;<]*?|'+K+') x '+K+' x '+K+' cm \\('+K+' cm³\\)'), '$1$2 cm'); }
   // tireoidectomia parcial: só o volume do lobo remanescente
   if(it.generic && /^volumes estimados/i.test(lauItemLabel(m,it)||'')){ const c=lauTireoCx(m);
     if(c && c.parcial){ const fica = c.parcial==='direito' ? 'esquerdo' : 'direito';

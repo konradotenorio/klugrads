@@ -604,7 +604,7 @@ Nome do Paciente:
 Data de Nascimento: 
 Data do Exame: 
 - Tireoide: tópica, com morfologia habitual, dimensões normais e contornos regulares. Parênquima tireoideano com textura característica, sem lesões nodulares sólidas ou císticas conspícuas.
-Volumes estimados: lobo direito: XXX x XXX x XXX cm (XXX cm³); lobo esquerdo: XXX x XXX x XXX cm (XXX cm³); istmo: XXX cm; volume glandular total: XXX cm³.
+Volumes estimados: lobo direito: XXX x XXX x XXX cm (XXX cm³); lobo esquerdo: XXX x XXX x XXX cm (XXX cm³); istmo: XXX x XXX x XXX cm (XXX cm³); volume glandular total: XXX cm³.
 - Glândulas parótidas e submandibulares: com morfologia, dimensões e ecotextura preservadas. Não há dilatação ductal ou calcificações.
 - Linfonodomegalias cervicais: não há.
 - Formações (massas) sólidas ou císticas: não caracterizadas.
@@ -623,7 +623,7 @@ Nome do Paciente:
 Data de Nascimento: 
 Data do Exame: 
 - Tireoide: tópica, com morfologia habitual, dimensões normais e contornos regulares. Parênquima tireoideano com textura característica, sem lesões nodulares sólidas ou císticas conspícuas.
-Volumes estimados: lobo direito: XXX x XXX x XXX cm (XXX cm³); lobo esquerdo: XXX x XXX x XXX cm (XXX cm³); istmo: XXX cm; volume glandular total: XXX cm³.
+Volumes estimados: lobo direito: XXX x XXX x XXX cm (XXX cm³); lobo esquerdo: XXX x XXX x XXX cm (XXX cm³); istmo: XXX x XXX x XXX cm (XXX cm³); volume glandular total: XXX cm³.
 - Linfonodomegalias cervicais regionais: não há.
 Conclusão:
 - Ultrassonografia da tireoide sem alterações significativas.
@@ -1101,7 +1101,7 @@ Nome do Paciente:
 Data de Nascimento: 
 Data do Exame: 
 - Tireoide: tópica, com morfologia habitual, dimensões normais e contornos regulares. Parênquima tireoideano com textura característica, sem lesões nodulares sólidas ou císticas conspícuas.
-Volumes estimados: lobo direito: XXX x XXX x XXX cm (XXX cm³); lobo esquerdo: XXX x XXX x XXX cm (XXX cm³); istmo: XXX cm; volume glandular total: XXX cm³.
+Volumes estimados: lobo direito: XXX x XXX x XXX cm (XXX cm³); lobo esquerdo: XXX x XXX x XXX cm (XXX cm³); istmo: XXX x XXX x XXX cm (XXX cm³); volume glandular total: XXX cm³.
 - Estudo Doppler colorido do parênquima glandular: vascularização característica.
 - Linfonodomegalias cervicais regionais: não há.
 Conclusão:
