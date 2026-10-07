@@ -1134,6 +1134,7 @@ function lauBuildModel(mk){
   if(mm){ lado={gen: mm[2]==='DA'?'f':'m', bil:false, ambos:/DO MEMBRO (INFERIOR|SUPERIOR)$|DA REGIÃO INGUINAL$/.test(mm[1])}; titulo = mk.titulo.slice(0,-1).concat(mm[1]).join('\n'); }   // ambos: membro também pode ser bilateral
   else if(/DOS MEMBROS (INFERIORES|SUPERIORES)/.test(titulo)) lado={gen:'m', bil:true};
   else if(mk.metodo==='mmg' && /BILATERAL/.test(titulo)) lado={gen:'f', bil:true, mg:true};
+  else if(/DAS AXILAS$/.test(titulo)) lado={gen:'f', bil:true, ax:true};
   const oct = (mk.flags||[]).indexOf('oct')>=0;
   if(oct) lado={gen:'m', bil:true, eye:true};
   return { id:mk.id, nome:mk.nome, grupo:mk.grupo, metodo:mk.metodo||'us', pronto:true, lado, oct, semRot: oct || mk.metodo==='dmo',
@@ -1915,6 +1916,8 @@ function lauItemHTML(m, it){
   // Doppler: calibre da veia porta não medido → "de calibre normal"
   if(it.generic && /^veia porta \(tronco/i.test(lauItemLabel(m,it)||'')) txt = txt.replace(/com calibre de <mark class="lau-ph">XXX<\/mark> cm/, 'de calibre normal');
   if(it.generic && typeof lauGrafTxt==='function') txt = lauGrafTxt(m, it, txt);
+  // axilas: medida do maior linfonodo não preenchida sai do texto
+  if(/^axila (direita|esquerda)/i.test(lauItemLabel(m,it)||'')){ const K='<mark class="lau-ph">XXX</mark>'; txt = txt.replace(', o maior medindo '+K+' x '+K+' cm',''); }
   // rins: espessura cortical não medida sai do texto (só um lado medido → só ele)
   if(/espessura cortical/.test(txt)){ const K='<mark class="lau-ph">XXX</mark>';
     txt = txt.replace(' (espessura cortical: RD = '+K+' cm; RE = '+K+' cm)','').replace(' (espessura cortical de '+K+' cm)','')
@@ -2035,6 +2038,7 @@ function lauConcHTML(m){
     const tail = norm.filter(x=>!x.ph && /^Restante/i.test(x.c.text)).map(x=>({html:esc(x.c.text), dash:x.c.dash}));
     lines = keep.concat(f.map(x=>({html:x.html,dash:true})), tail);
   }
+  if(m.lado && m.lado.ax && (L.lado==='d'||L.lado==='e')) lines = lines.map(x=>({html: x.html.replace('Ultrassonografia das axilas', `Ultrassonografia da axila ${L.lado==='d'?'direita':'esquerda'}`), dash:x.dash}));
   if(m.oct && !f.length && (L.lado==='d'||L.lado==='e')) lines = lines.map(x=>({html: x.html.replace('Exame dentro dos parâmetros de normalidade em ambos os olhos.', `Olho ${L.lado==='d'?'direito':'esquerdo'} dentro dos parâmetros de normalidade.`), dash:x.dash}));
   return lines.map(x=>`<div>${g.hifen&&x.dash&&!m.semRot?'- ':''}${x.html}</div>`).join('');
 }
@@ -2053,6 +2057,7 @@ function lauLadoTitulo(m, t, html){
   if(m.lado.bil){
     if(v!=='d' && v!=='e') return t;
     if(m.lado.mg) return t.replace(/BILATERAL/, `DA MAMA ${v==='d'?'DIREITA':'ESQUERDA'}`);
+    if(m.lado.ax) return t.replace(/DAS AXILAS/, `DA AXILA ${v==='d'?'DIREITA':'ESQUERDA'}`);
     return t.replace(/DOS MEMBROS (INFERIORES|SUPERIORES)/, (_,x)=>`DO MEMBRO ${x==='INFERIORES'?'INFERIOR':'SUPERIOR'} ${v==='d'?'DIREITO':'ESQUERDO'}`);
   }
   if(v==='b' && m.lado.ambos) return t.replace(/DO MEMBRO (INFERIOR|SUPERIOR)/, (_,x)=>`DOS MEMBROS ${x}ES`).replace(/DA REGIÃO INGUINAL/, 'DAS REGIÕES INGUINAIS');
@@ -2069,7 +2074,7 @@ function lauOutroLado(m, txt){
   const L=state.lau; if(!m.lado || !m.lado.bil || (L.lado!=='d' && L.lado!=='e')) return false;
   return L.lado==='d' ? /\besquerd[oa]s?\b/i.test(txt||'') : /\bdireit[oa]s?\b/i.test(txt||'');
 }
-function lauItemOutroLado(m, it){ return lauOutroLado(m, it.grp) || ((/^(direit|esquerd)[oa]$/i.test(it.label||'') || (m.lado&&m.lado.mg&&/^mama (direita|esquerda)$/i.test(it.label||''))) && lauOutroLado(m, it.label)); }
+function lauItemOutroLado(m, it){ return lauOutroLado(m, it.grp) || ((/^(direit|esquerd)[oa]$/i.test(it.label||'') || (m.lado&&(m.lado.mg||m.lado.ax)&&/^(mama|axila) (direita|esquerda)$/i.test(it.label||''))) && lauOutroLado(m, it.label)); }
 function lauSetLado(v){
   const L=lauCur(); if(!L) return; const m=lauModelo(L.model);
   L.lado = L.lado===v ? null : v;

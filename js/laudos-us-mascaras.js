@@ -8702,6 +8702,64 @@ null,
 ],
 "trailer": [],
 "flags": []
+},
+{
+"id": "us-axilas",
+"metodo": "us",
+"nome": "Axilas",
+"grupo": "Mama",
+"titulo": [
+"ULTRASSONOGRAFIA DAS AXILAS"
+],
+"items": [
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "axila-direita",
+"label": "Axila direita",
+"text": "linfonodos de aspecto habitual, com cortical fina e hilo adiposo preservado, o maior medindo XXX x XXX cm. Ausência de coleções ou massas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "axila-esquerda",
+"label": "Axila esquerda",
+"text": "linfonodos de aspecto habitual, com cortical fina e hilo adiposo preservado, o maior medindo XXX x XXX cm. Ausência de coleções ou massas.",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
+},
+{
+"t": "item",
+"k": "axila-direita"
+},
+{
+"t": "item",
+"k": "axila-esquerda"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Ultrassonografia das axilas sem alterações significativas.",
+"dash": true
+}
+],
+"trailer": [],
+"flags": []
 }
 ];
 const LAU_MMG_MASKS = [
