@@ -525,12 +525,19 @@ const LAU_FRASES = [
    t:'não caracterizado.', c:''},
 
   /* ---------------- PARTES MOLES ---------------- */
-  {o:'partes', q:1, cp:'Nódulos com aspecto sugestivo de lipomas.', n:'Lipoma', m:'add',
-   t:'Nódulo ovalado no subcutâneo, isoecogênico à gordura, com finas estrias, sem fluxo ao Doppler, medindo XXX x XXX cm.',
+  {o:'partes', q:1, cp:'Nódulos com aspecto sugestivo de lipomas.', n:'Lipoma', m:'add', medOpc:1, nso:['us-mamas'],
+   t:'Nódulo ovalado no subcutâneo, isoecogênico à gordura, com finas estrias, sem fluxo ao Doppler, medindo XXX x XXX x XXX cm.',
    c:'Nódulo com aspecto sugestivo de lipoma.'},
-  {o:'partes', q:1, cp:'Nódulos com aspecto sugestivo de cistos epidérmicos.', n:'Cisto epidérmico', m:'add',
-   t:'Nódulo hipoecogênico bem definido na derme/subcutâneo, com reforço acústico posterior, medindo XXX cm.',
+  {o:'partes', q:1, cp:'Nódulos com aspecto sugestivo de cistos epidérmicos.', n:'Cisto epidérmico', m:'add', medOpc:1, nso:['us-mamas'],
+   t:'Nódulo hipoecogênico bem definido na derme/subcutâneo, com reforço acústico posterior, medindo XXX x XXX x XXX cm.',
    c:'Nódulo com aspecto sugestivo de cisto epidérmico.'},
+  /* mamas: lesões da pele / subcutâneo com mama, horário e categoria BI-RADS® (entram na categoria final) */
+  {o:'partes', so:['us-mamas'], n:'Cisto epidérmico', m:'add', medOpc:1, br:'2',
+   t:'Nódulo hipoecogênico bem definido na derme/subcutâneo da mama direita XX esquerda, às XXX horas, com reforço acústico posterior, medindo XXX x XXX x XXX cm.',
+   c:'Nódulo com aspecto sugestivo de cisto epidérmico na mama {0} (BI-RADS® 2).'},
+  {o:'partes', so:['us-mamas'], n:'Lipoma', m:'add', medOpc:1, br:'2',
+   t:'Nódulo ovalado no subcutâneo da mama direita XX esquerda, às XXX horas, isoecogênico à gordura, com finas estrias, sem fluxo ao Doppler, medindo XXX x XXX x XXX cm.',
+   c:'Nódulo com aspecto sugestivo de lipoma na mama {0} (BI-RADS® 2).'},
   {o:'partes', n:'Coleção / abscesso', m:'add',
    t:'Coleção com conteúdo espesso e debris em XXX, medindo XXX x XXX x XXX cm (volume estimado em XXX cm³).',
    c:'Coleção em {0}.'},
