@@ -491,6 +491,8 @@ const LAU_FRASES = [
   {o:'endometrio', q:1, cp:'Imagens sugestivas de pólipos endometriais.', n:'Pólipo endometrial', m:'add',
    t:'Imagem ecogênica intracavitária com pedículo vascular ao Doppler, medindo XXX x XXX x XXX cm.', medOpc:1,
    c:'Imagem sugestiva de pólipo endometrial.'},
+  {o:'endometrio', n:'Lâmina líquida', m:'add', medOpc:1,
+   t:'Pequena lâmina líquida na cavidade endometrial, medindo XXX mm, achado que pode não ter significado clínico.', c:''},
   {o:'endometrio', n:'DIU normoposicionado', m:'add',
    t:'Dispositivo intrauterino (DIU) normoposicionado, centrado na cavidade endometrial. Distância do DIU à serosa uterina: XXX cm.',
    c:'DIU normoposicionado na cavidade uterina.'},
