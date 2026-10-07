@@ -508,7 +508,7 @@ const LAU_ABD_ITEMS = [
      if(s.rep==='sonda') return {txt:'vazia, com sonda vesical de demora em seu interior.', conc:[]};
      // laudos de próstata: "Volume pré-miccional" já vem marcado (volAuto) e só entra no texto quando calculado
      const volOn = s.vol && !(s.volAuto && lauVol(...(s.volV||[]))==null);
-     if(s.rep==='n' && !s.par && !s.cal && !volOn && !s.res) return {txt:null, conc:[]};
+     if(s.rep==='n' && !s.par && !s.cal && !volOn && !(s.res && !s.resExt)) return {txt:null, conc:[]};
      const conc=[];
      let t = s.rep==='pouca' ? 'com repleção parcial, limitando a avaliação de suas paredes. Conteúdo anecogênico.'
            : s.par ? 'com paredes difusamente espessadas e trabeculadas' + (lauHas(s.parD)?` (${lauN(s.parD)} mm)`:'') + ' e conteúdo anecogênico.'
@@ -519,10 +519,10 @@ const LAU_ABD_ITEMS = [
      const v = s.vol ? lauVol(...(s.volV||[])) : null;
      const r = s.res ? lauVol(...(s.resV||[])) : null;
      if(volOn) t += v!=null ? ` Volume pré-miccional estimado em ${v} mL.` : ' Volume pré-miccional estimado em ___ mL.';
-     if(s.res) t += r!=null ? ` Resíduo pós-miccional estimado em ${r} mL.` : ' Resíduo pós-miccional estimado em ___ mL.';
+     if(s.res && !s.resExt) t += r!=null ? ` Resíduo pós-miccional estimado em ${r} mL.` : ' Resíduo pós-miccional estimado em ___ mL.';
      if(s.par) conc.push('Espessamento parietal vesical difuso.');
      if(s.cal) conc.push('Litíase vesical.');
-     if(s.res && r!=null) conc.push(`Resíduo pós-miccional de ${r} mL.`);
+     if(s.res && r!=null && !s.resExt) conc.push(`Resíduo pós-miccional de ${r} mL.`);
      return {txt:t, conc};
    }},
 
@@ -1223,6 +1223,8 @@ function lauNew(modelId){
   m.items.forEach(it=>v[it.k]=lauDefaults(it));
   // próstata: medidas do volume vesical pré-miccional já abertas no item Bexiga
   if(/prostata/.test(modelId)) m.items.forEach(it=>{ if(it.sk==='bexiga'){ v[it.k].vol=true; v[it.k].volAuto=true; } });
+  // máscara com item próprio de resíduo pós-miccional: o resíduo marcado na bexiga é escrito nesse item (sem repetir)
+  if(lauResItem(m)) m.items.forEach(it=>{ if(it.sk==='bexiga') v[it.k].resExt=true; });
   const g=lauGen();
   state.lau = {model:modelId, v, open:null, html:null, autoConc:true, tab:'opc',
     tec:{}, ind:'', obs:'', font:g.font, size:g.size, tit:{}, conc:{v:{}, o:[]}, xf:[], xv:{}};
@@ -2287,12 +2289,30 @@ function lauSet(k, c, v){
   const L=lauCur(); if(!L) return;
   const s=L.v[k]; s[c] = (v==='__toggle') ? !s[c] : v;
   lauRenderLeft(); lauPatch(k);
+  if(c==='res' && s.resExt) lauResSync('bex');
+}
+/* resíduo pós-miccional: item próprio da máscara (próstata) ⇄ campo "Resíduo pós-miccional" da bexiga */
+function lauResItem(m){ return m && m.items.find(it=>/^res[ií]duo vesical p[oó]s-miccional/i.test(it.label||'')); }
+function lauResSync(de){
+  const L=lauCur(); if(!L) return; const m=lauModelo(L.model); const ri=lauResItem(m), bx=m&&m.items.find(it=>it.sk==='bexiga'); if(!ri||!bx) return;
+  const n=lauItemNormal(m,ri); const ps=lauTpl(n).lines.flat().filter(t=>t.t==='p'); if(ps.length<3) return;
+  const sb=L.v[bx.k], sr=L.v[ri.k]; sr.__v.n=sr.__v.n||[];
+  if(de==='bex'){
+    const d = sb.res ? (sb.resV||['','','']) : ['','',''];
+    [0,1,2].forEach(j=>{ sr.__v.n[ps[j].i]=d[j]||''; });
+    lauPatch(ri.k); lauUpdSum(ri.k);
+  } else {
+    const d=[0,1,2].map(j=>sr.__v.n[ps[j].i]||'');
+    sb.resV=d; sb.res = d.some(lauHas) || (ps[3] && lauHas(sr.__v.n[ps[3].i]));
+    lauPatch(bx.k); lauUpdSum(bx.k);
+  }
 }
 function lauSetQ(k, c, v, i){
   const L=lauCur(); if(!L) return;
   if(i!=null){ const a=(L.v[k][c]||['','','']).slice(); a[i]=v; L.v[k][c]=a; }
   else L.v[k][c]=v;
   lauPatch(k); lauUpdSum(k);
+  if(c==='resV' && L.v[k].resExt) lauResSync('bex');
 }
 /* campos das máscaras: k = item | '__tit' | '__conc'; tpl = 'n','l','o0',… */
 function lauPhBag(k){
@@ -2307,6 +2327,7 @@ function lauPh(k, tpl, i, v, str){
   });
   if(/^f\d/.test(tpl)){ const id=tpl.slice(1), f=lauFI(id), el=document.getElementById(`desc-${k}-${id}`);
     if(f && f.kind && el) el.innerHTML = translateHTML(lauDescHTML(k, id, f, bag['d'+id]||{})); }
+  if(tpl==='n' && L.v[k] && (()=>{ const m=lauModelo(L.model), ri=lauResItem(m); return ri && ri.k===k; })()) setTimeout(()=>lauResSync('item'),0);
   if(k==='__tit') lauPatchTit();
   else if(k==='__conc'){ lauPatchConc(); lauSaveEd();
     if(typeof lauObsDopAtivo==='function'){ const m=lauModelo(L.model); if(lauObsDopAtivo(m)) lauObsDopCalc(m); } }
