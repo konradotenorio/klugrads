@@ -512,7 +512,7 @@ const LAU_US_MASKS = [
 {
 "k": "rins",
 "label": "Rins",
-"text": "tópicos, de dimensões normais (RD = XX cm; RE = XX cm).\nEspessura e ecogenicidade parenquimatosas preservadas.\nAusência de hidronefrose ou cálculos detectáveis ao método.",
+"text": "tópicos, de dimensões normais (RD = XX cm; RE = XX cm).\nEspessura e ecogenicidade parenquimatosas preservadas (espessura cortical: RD = XXX cm; RE = XXX cm).\nAusência de hidronefrose ou cálculos detectáveis ao método.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -778,7 +778,7 @@ const LAU_US_MASKS = [
 {
 "k": "rins",
 "label": "Rins",
-"text": "tópicos, de dimensões normais (RD = XX cm; RE = XX cm).\nEspessura e ecogenicidade parenquimatosas preservadas.\nAusência de hidronefrose ou cálculos detectáveis ao método.",
+"text": "tópicos, de dimensões normais (RD = XX cm; RE = XX cm).\nEspessura e ecogenicidade parenquimatosas preservadas (espessura cortical: RD = XXX cm; RE = XXX cm).\nAusência de hidronefrose ou cálculos detectáveis ao método.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -4533,7 +4533,7 @@ const LAU_US_MASKS = [
 {
 "k": "rim-transplantado",
 "label": "Rim transplantado",
-"text": "na fossa ilíaca direita XX esquerda, com dimensões normais (XXX cm).\nEspessura e ecogenicidade parenquimatosas preservadas.\nAusência de hidronefrose ou cálculos detectáveis.",
+"text": "na fossa ilíaca direita XX esquerda, com dimensões normais (XXX cm).\nEspessura e ecogenicidade parenquimatosas preservadas (espessura cortical de XXX cm).\nAusência de hidronefrose ou cálculos detectáveis.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -5815,7 +5815,7 @@ const LAU_US_MASKS = [
 {
 "k": "rins",
 "label": "Rins",
-"text": "tópicos, de dimensões normais (RD = XX cm; RE = XX cm).\nEspessura e ecogenicidade parenquimatosas preservadas.\nAusência de hidronefrose ou cálculos detectáveis ao método.",
+"text": "tópicos, de dimensões normais (RD = XX cm; RE = XX cm).\nEspessura e ecogenicidade parenquimatosas preservadas (espessura cortical: RD = XXX cm; RE = XXX cm).\nAusência de hidronefrose ou cálculos detectáveis ao método.",
 "dash": true,
 "opts": [],
 "grp": ""

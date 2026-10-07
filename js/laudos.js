@@ -347,6 +347,7 @@ const LAU_ABD_ITEMS = [
        {t:'radio', k:'dim'+L, lbl:'Dimensões', opts:[['n','Normais'],['red','Reduzidas'],['aum','Aumentadas']], show:ok},
        {t:'num', k:'comp'+L, lbl:'Comprimento (opcional)', unit:'cm', show:ok},
        {t:'num', k:'parq'+L, lbl:'Parênquima (opcional)', unit:'cm', show:ok},
+       {t:'num', k:'cort'+L, lbl:'Cortical (opcional)', unit:'cm', show:ok},
        {t:'check', k:'calc'+L, lbl:'Cálculo(s)', show:ok},
        {t:'radio', k:'calcQ'+L, lbl:'Quantidade', opts:LAU_QTD, show:s=>ok(s)&&s['calc'+L], ind:1},
        {t:'num', k:'calcD'+L, lbl:'Medida (maior)', unit:'cm', show:s=>ok(s)&&s['calc'+L], ind:1},
@@ -374,7 +375,7 @@ const LAU_ABD_ITEMS = [
        : 'com redução da espessura parenquimatosa, ecogenicidade aumentada e diferenciação corticomedular reduzida';
      const lado = L=>{
        const alt = s['est'+L]!=='n' || s['dim'+L]!=='n' || s['calc'+L] || s['hid'+L] || s['cis'+L] || s['nod'+L];
-       return {alt, med: lauHas(s['comp'+L]) || lauHas(s['parq'+L])};
+       return {alt, med: lauHas(s['comp'+L]) || lauHas(s['parq'+L]) || lauHas(s['cort'+L])};
      };
      const D=lado('D'), E=lado('E');
      const nodTxt = (L, onde)=>{ if(s['est'+L]==='cx' || !s['nod'+L]) return '';
@@ -382,8 +383,8 @@ const LAU_ABD_ITEMS = [
        const loc = lauHas(s['nodL'+L]) ? `no ${s['nodL'+L]} ${onde?onde.replace(/^no /,'do '):''}`.trim() : (onde||'');
        return ' ' + lauFrase(lauJoin([`nódulo sólido${desc?' '+desc:''}`, loc, lauDimsTxt(s['nodV'+L])])); };
      const medTxt = L=>{
-       const c=s['comp'+L], p=s['parq'+L];
-       return [lauHas(c)?`${lauN(c)} cm de comprimento`:'', lauHas(p)?`parênquima de ${lauN(p)} cm`:''].filter(Boolean).join(' e ');
+       const c=s['comp'+L], p=s['parq'+L], k=s['cort'+L];
+       return lauJuntaE([lauHas(c)?`${lauN(c)} cm de comprimento`:'', lauHas(p)?`parênquima de ${lauN(p)} cm`:'', lauHas(k)?`cortical de ${lauN(k)} cm`:''].filter(Boolean));
      };
      if(!D.alt && !E.alt){
        if(!D.med && !E.med) return {txt:null, conc:[]};
@@ -1895,6 +1896,10 @@ function lauItemHTML(m, it){
   // Doppler: calibre da veia porta não medido → "de calibre normal"
   if(it.generic && /^veia porta \(tronco/i.test(lauItemLabel(m,it)||'')) txt = txt.replace(/com calibre de <mark class="lau-ph">XXX<\/mark> cm/, 'de calibre normal');
   if(it.generic && typeof lauGrafTxt==='function') txt = lauGrafTxt(m, it, txt);
+  // rins: espessura cortical não medida sai do texto (só um lado medido → só ele)
+  if(/espessura cortical/.test(txt)){ const K='<mark class="lau-ph">XXX</mark>';
+    txt = txt.replace(' (espessura cortical: RD = '+K+' cm; RE = '+K+' cm)','').replace(' (espessura cortical de '+K+' cm)','')
+             .replace(new RegExp('(espessura cortical: RD = [^;<]+ cm); RE = '+K+' cm'),'$1').replace('espessura cortical: RD = '+K+' cm; RE = ','espessura cortical: RE = '); }
   // útero: corpo/colo não medidos saem do texto
   if(it.generic) txt = txt.replace(/ ?Corpo uterino de <mark class="lau-ph">XXX<\/mark> cm e colo uterino de <mark class="lau-ph">XXX<\/mark> cm \(relação corpo\/colo de <mark class="lau-ph">XXX<\/mark>\)\./, '');
   // nervos: área seccional não medida sai do texto

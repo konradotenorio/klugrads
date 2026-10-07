@@ -172,7 +172,7 @@ Nome do Paciente:
 Data de Nascimento: 
 Data do Exame: 
 - Rins: tópicos, de dimensões normais (RD = XX cm; RE = XX cm).
-Espessura e ecogenicidade parenquimatosas preservadas.
+Espessura e ecogenicidade parenquimatosas preservadas (espessura cortical: RD = XXX cm; RE = XXX cm).
 Ausência de hidronefrose ou cálculos detectáveis ao método.
 - Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico.
  
@@ -234,7 +234,7 @@ Nome do Paciente:
 Data de Nascimento: 
 Data do Exame: 
 - Rins: tópicos, de dimensões normais (RD = XX cm; RE = XX cm).
-Espessura e ecogenicidade parenquimatosas preservadas.
+Espessura e ecogenicidade parenquimatosas preservadas (espessura cortical: RD = XXX cm; RE = XXX cm).
 Ausência de hidronefrose ou cálculos detectáveis ao método.
 - Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico.
 - Próstata: com forma habitual, medindo cerca de XX x XX x XX cm; massa estimada em XXX gramas.
@@ -1013,7 +1013,7 @@ Nome do Paciente:
 Data de Nascimento: 
 Data do Exame: 
 - Rim transplantado: na fossa ilíaca direita XX esquerda, com dimensões normais (XXX cm).
-Espessura e ecogenicidade parenquimatosas preservadas.
+Espessura e ecogenicidade parenquimatosas preservadas (espessura cortical de XXX cm).
 Ausência de hidronefrose ou cálculos detectáveis.
 - Peritôneo e retroperitôneo: não há coleções significativas junto ao enxerto.
 Ao estudo Doppler: 
@@ -1304,7 +1304,7 @@ Nome do Paciente:
 Data de Nascimento: 
 Data do Exame: 
 - Rins: tópicos, de dimensões normais (RD = XX cm; RE = XX cm).
-Espessura e ecogenicidade parenquimatosas preservadas.
+Espessura e ecogenicidade parenquimatosas preservadas (espessura cortical: RD = XXX cm; RE = XXX cm).
 Ausência de hidronefrose ou cálculos detectáveis ao método.
 - Artérias renais: pérvias, com padrão espectral e velocidades preservados nos segmentos acessíveis. 
 Velocidades de pico sistólico máximo: XXX cm/s à direita e XXX cm/s à esquerda.
