@@ -2082,6 +2082,25 @@ function lauSetLado(v){
   lauRenderLeft(); lauPatchTit();
   if(m.lado && m.lado.ambos){ const ed=lauEd(); if(ed) m.items.forEach(o=>{ const q=ed.querySelector(`[data-k="${o.k}"]`); if(!q) return; const h=lauItemHTML(m,o); if(q.innerHTML!==h){ q.innerHTML=h; q.hidden=!h; } }); lauSaveEd(); }
 }
+/* exame com versão "com Doppler": botão que troca a máscara mantendo o que já foi preenchido */
+const LAU_PAR_DOPPLER = {'us-tireoide':'us-doppler-tireoide'};
+function lauParDoppler(id){ if(LAU_PAR_DOPPLER[id]) return {sem:id, com:LAU_PAR_DOPPLER[id]}; const k=Object.keys(LAU_PAR_DOPPLER).find(x=>LAU_PAR_DOPPLER[x]===id); return k ? {sem:k, com:id} : null; }
+function lauDopplerHTML(m){
+  const p=lauParDoppler(m.id); if(!p || !lauModelo(p.sem) || !lauModelo(p.com)) return '';
+  const on = m.id===p.com;
+  return `<div class="lau-lado"><span>Doppler</span><button type="button" class="ti-ftog ${on?'':'on'}" onclick="lauTrocaDoppler(false)">Sem Doppler</button><button type="button" class="ti-ftog ${on?'on':''}" onclick="lauTrocaDoppler(true)">Com Doppler</button></div>`;
+}
+function lauTrocaDoppler(com){
+  const L=lauCur(); if(!L) return; const p=lauParDoppler(L.model); if(!p) return;
+  const novo = com ? p.com : p.sem; if(novo===L.model) return;
+  lauSaveEd();
+  const ant=L, N=lauNew(novo);
+  // o que já foi preenchido segue para a outra máscara (itens com a mesma chave)
+  Object.keys(N.v).forEach(k=>{ if(ant.v[k]) N.v[k]=JSON.parse(JSON.stringify(ant.v[k])); });
+  ['ind','obs','tec','xf','xv','autoConc','font','size','lado'].forEach(k=>{ if(ant[k]!==undefined) N[k]=JSON.parse(JSON.stringify(ant[k])); });
+  N.open = N.v[ant.open] ? ant.open : null;
+  state.laudoId=novo; render();
+}
 function lauLadoHTML(m){
   if(!m.lado) return '';
   const L=state.lau; const f=m.lado.gen==='f';
@@ -2693,7 +2712,7 @@ function lauLeftHTML(){
   const extraOn = L.ind||Object.values(L.tec).some(Boolean);
   const indChips = m.metodo==='mmg' ? `<div class="lau-chips" style="margin-top:6px">${LAU_IND_MMG.map(v=>`<button type="button" class="ti-ftog ${L.ind===v?'on':''}" onclick="lauSetIndChip(this.textContent)">${esc(v)}</button>`).join('')}</div>` : '';
   const dmoRefH = m.metodo==='dmo' ? `<div class="lau-lado"><span>Critério</span>${[['t','T-score (pós-menopausa / homem ≥ 50 anos)'],['z','Z-score (pré-menopausa / homem < 50 anos / criança)']].map(o=>`<button type="button" class="ti-ftog ${(L.dmoRef||'t')===o[0]?'on':''}" onclick="lauDmoRef('${o[0]}')">${o[1]}</button>`).join('')}</div>` : '';
-  let h = dmoRefH + lauLadoHTML(m) + lauAteroHTML(m) + (typeof lauIgHTML==='function' ? lauIgHTML(m) : '') + lauCard('__extra', 'Título, indicação e limitações',
+  let h = dmoRefH + lauDopplerHTML(m) + lauLadoHTML(m) + lauAteroHTML(m) + (typeof lauIgHTML==='function' ? lauIgHTML(m) : '') + lauCard('__extra', 'Título, indicação e limitações',
     `<div class="lau-sum ${extraOn?'alt':'ok'}">${extraOn?'Preenchido':'Opcional'}</div>`,
     ()=>`${lauHasPh(tit)?`<div class="lau-rl">Título</div>${tit.split('\n').map((t,i)=>lauHasPh(t)?lauInlineForm('__tit','t'+i,t,L.tit['t'+i]):'').join('')}`:''}
         <div class="lau-row"><div class="lau-rl">Indicação clínica</div><input class="lau-txt" type="text" value="${esc(L.ind)}" placeholder="${m.metodo==='mmg'?'ex.: rastreamento':'ex.: dor abdominal'}" oninput="lauSetInd(this.value)">${indChips}</div>
