@@ -8760,6 +8760,288 @@ null,
 ],
 "trailer": [],
 "flags": []
+},
+{
+"id": "us-doppler-abdome-total-e-pelvico",
+"metodo": "us",
+"nome": "Doppler: Abdome Total e Pélvico",
+"grupo": "Vascular",
+"titulo": [
+"ULTRASSONOGRAFIA DE ABDOME TOTAL E PÉLVICA COM DOPPLER"
+],
+"items": [
+{
+"k": "figado",
+"label": "Fígado",
+"text": "com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vesicula-biliar",
+"label": "Vesícula biliar",
+"text": "tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "vias-biliares-intra-e-extra-hepaticas",
+"label": "Vias biliares intra e extra-hepáticas",
+"text": "sem dilatações.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "pancreas",
+"label": "Pâncreas",
+"text": "com dimensões, contornos e ecogenicidade normais.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "baco",
+"label": "Baço",
+"text": "com dimensões normais, homogêneo.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "rins",
+"label": "Rins",
+"text": "tópicos, de dimensões normais, com espessura e ecogenicidade parenquimatosas preservadas, sem hidronefrose ou cálculos detectáveis ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "aorta-abdominal",
+"label": "Aorta abdominal",
+"text": "com calibre normal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "alcas-intestinais",
+"label": "Alças intestinais",
+"text": "sem distensão ou espessamento parietal detectáveis ao método.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "bexiga",
+"label": "Bexiga",
+"text": "com repleção satisfatória, paredes regulares e conteúdo anecogênico.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "utero",
+"label": "Útero",
+"text": "em anteversão XX retroversão, medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), de contornos regulares.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "miometrio",
+"label": "Miométrio",
+"text": "com ecotextura característica, sem nódulos conspícuos.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "endometrio",
+"label": "Endométrio",
+"text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XXX mm.",
+"dash": true,
+"opts": [],
+"grp": "",
+"alts": [
+"centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XXX mm.",
+"filiforme / não caracterizado."
+]
+},
+{
+"k": "ovario-direito",
+"label": "Ovário direito",
+"text": "medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), de aspecto habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "ovario-esquerdo",
+"label": "Ovário esquerdo",
+"text": "medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), de aspecto habitual.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "peritoneo-e-retroperitoneo",
+"label": "Peritôneo e retroperitôneo",
+"text": "ausência de líquido livre ou coleções detectáveis na cavidade abdominal e pélvica.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "arteria-hepatica",
+"label": "Artéria hepática",
+"text": "pérvia, com fluxo bifásico de boa amplitude e índice de resistividade (IR) de XXX.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veia-porta-tronco-e-ramos-intrahepaticos",
+"label": "Veia porta (tronco e ramos intrahepáticos)",
+"text": "pérvia, com calibre de XXX cm, apresentando fluxo hepatopetal com velocidades no tronco em torno de XXX cm/s.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veias-esplenica-e-mesenterica-superior",
+"label": "Veias esplênica e mesentérica superior",
+"text": "pérvias, de calibre normal, com fluxo de sentido preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veias-hepaticas",
+"label": "Veias hepáticas",
+"text": "pérvias, de calibres preservados e distribuição habitual, apresentando fluxo multifásico hepatofugal.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "veia-cava-inferior",
+"label": "Veia cava inferior",
+"text": "pérvia.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "utero-e-ovarios",
+"label": "Útero e ovários",
+"text": "vascularização habitual ao mapeamento com Doppler colorido.",
+"dash": true,
+"opts": [],
+"grp": ""
+}
+],
+"seq": [
+{
+"t": "item",
+"k": "figado"
+},
+{
+"t": "item",
+"k": "vesicula-biliar"
+},
+{
+"t": "item",
+"k": "vias-biliares-intra-e-extra-hepaticas"
+},
+{
+"t": "item",
+"k": "pancreas"
+},
+{
+"t": "item",
+"k": "baco"
+},
+{
+"t": "item",
+"k": "rins"
+},
+{
+"t": "item",
+"k": "aorta-abdominal"
+},
+{
+"t": "item",
+"k": "alcas-intestinais"
+},
+{
+"t": "item",
+"k": "bexiga"
+},
+{
+"t": "item",
+"k": "utero"
+},
+{
+"t": "item",
+"k": "miometrio"
+},
+{
+"t": "item",
+"k": "endometrio"
+},
+{
+"t": "item",
+"k": "ovario-direito"
+},
+{
+"t": "item",
+"k": "ovario-esquerdo"
+},
+{
+"t": "item",
+"k": "peritoneo-e-retroperitoneo"
+},
+{
+"t": "line",
+"text": "Ao estudo Doppler:"
+},
+{
+"t": "item",
+"k": "arteria-hepatica"
+},
+{
+"t": "item",
+"k": "veia-porta-tronco-e-ramos-intrahepaticos"
+},
+{
+"t": "item",
+"k": "veias-esplenica-e-mesenterica-superior"
+},
+{
+"t": "item",
+"k": "veias-hepaticas"
+},
+{
+"t": "item",
+"k": "veia-cava-inferior"
+},
+{
+"t": "item",
+"k": "utero-e-ovarios"
+}
+],
+"concTitulo": "Conclusão:",
+"conc": [
+{
+"text": "Exame sem alterações significativas.",
+"dash": true
+}
+],
+"trailer": [],
+"flags": []
 }
 ];
 const LAU_MMG_MASKS = [

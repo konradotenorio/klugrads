@@ -2095,7 +2095,7 @@ function lauSetLado(v){
 /* exame com versão "com Doppler": botão que troca a máscara mantendo o que já foi preenchido */
 const LAU_PAR_DOPPLER = {'us-tireoide':'us-doppler-tireoide', 'us-abdome-superior':'us-doppler-abdome-superior', 'us-abdome-total':'us-doppler-abdome-total',
   'us-bolsa-testicular':'us-doppler-bolsa-testicular', 'us-penis':'us-doppler-penis', 'us-transfontanela':'us-doppler-transfontanela',
-  'us-transvaginal':'us-doppler-transvaginal', 'us-obstetrico-2-e-3-trimestre':'us-obstetrico-doppler', 'us-obstetrico-gemelar':'us-obstetrico-gemelar-com-doppler'};
+  'us-transvaginal':'us-doppler-transvaginal', 'us-obstetrico-2-e-3-trimestre':'us-obstetrico-doppler', 'us-obstetrico-gemelar':'us-obstetrico-gemelar-com-doppler', 'us-abdome-total-e-pelvico':'us-doppler-abdome-total-e-pelvico'};
 function lauParDoppler(id){ if(LAU_PAR_DOPPLER[id]) return {sem:id, com:LAU_PAR_DOPPLER[id]}; const k=Object.keys(LAU_PAR_DOPPLER).find(x=>LAU_PAR_DOPPLER[x]===id); return k ? {sem:k, com:id} : null; }
 function lauDopplerHTML(m){
   const p=lauParDoppler(m.id); if(!p || !lauModelo(p.sem) || !lauModelo(p.com)) return '';

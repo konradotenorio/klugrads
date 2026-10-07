@@ -267,3 +267,36 @@ ULTRASSONOGRAFIA DAS AXILAS
 
 Conclusão:
 - Ultrassonografia das axilas sem alterações significativas.
+
+-----
+
+G. VASCULAR:
+
+9. Doppler: Abdome Total e Pélvico
+ULTRASSONOGRAFIA DE ABDOME TOTAL E PÉLVICA COM DOPPLER
+
+- Fígado: com dimensões normais, contornos regulares e bordas finas. Ecotextura parenquimatosa hepática homogênea.
+- Vesícula biliar: tópica, normodistendida, com paredes finas e regulares e conteúdo anecogênico, sem cálculos.
+- Vias biliares intra e extra-hepáticas: sem dilatações.
+- Pâncreas: com dimensões, contornos e ecogenicidade normais.
+- Baço: com dimensões normais, homogêneo.
+- Rins: tópicos, de dimensões normais, com espessura e ecogenicidade parenquimatosas preservadas, sem hidronefrose ou cálculos detectáveis ao método.
+- Aorta abdominal: com calibre normal.
+- Alças intestinais: sem distensão ou espessamento parietal detectáveis ao método.
+- Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico.
+- Útero: em anteversão XX retroversão, medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), de contornos regulares.
+- Miométrio: com ecotextura característica, sem nódulos conspícuos.
+- Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XXX mm. || filiforme / não caracterizado.
+- Ovário direito: medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), de aspecto habitual.
+- Ovário esquerdo: medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), de aspecto habitual.
+- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade abdominal e pélvica.
+Ao estudo Doppler:
+- Artéria hepática: pérvia, com fluxo bifásico de boa amplitude e índice de resistividade (IR) de XXX.
+- Veia porta (tronco e ramos intrahepáticos): pérvia, com calibre de XXX cm, apresentando fluxo hepatopetal com velocidades no tronco em torno de XXX cm/s.
+- Veias esplênica e mesentérica superior: pérvias, de calibre normal, com fluxo de sentido preservado.
+- Veias hepáticas: pérvias, de calibres preservados e distribuição habitual, apresentando fluxo multifásico hepatofugal.
+- Veia cava inferior: pérvia.
+- Útero e ovários: vascularização habitual ao mapeamento com Doppler colorido.
+
+Conclusão:
+- Exame sem alterações significativas.
