@@ -1781,7 +1781,7 @@ const LAU_US_MASKS = [
 "concTitulo": "Conclusão e comparação:",
 "conc": [
 {
-"text": "Ovários apresentando sinais de estimulação hormonal, com folículos medindo até X cm.",
+"text": "Ovários apresentando sinais de estimulação hormonal, com folículos medindo até XXX cm.",
 "dash": false
 },
 {

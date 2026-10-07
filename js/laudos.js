@@ -1958,6 +1958,10 @@ function lauItemHTML(m, it){
   if(it.generic && typeof lauGrafTxt==='function') txt = lauGrafTxt(m, it, txt);
   // axilas: medida do maior linfonodo não preenchida sai do texto
   if(/^axila (direita|esquerda)/i.test(lauItemLabel(m,it)||'')){ const K='<mark class="lau-ph">XXX</mark>'; txt = txt.replace(', o maior medindo '+K+' x '+K+' cm',''); }
+  // ovários: folículos não medidos saem do texto
+  { const K='<mark class="lau-ph">XXX</mark>', K2='<mark class="lau-ph">XX</mark>';
+    txt = txt.replace(', exibindo folículos de até '+K+' cm','')
+             .replace(new RegExp(', exibindo cerca de (?:'+K+'|'+K2+') folículos maiores, o dominante medindo (?:'+K+'|'+K2+') cm \\(diâmetro médio\\)'),''); }
   // rins: espessura cortical não medida sai do texto (só um lado medido → só ele)
   if(/espessura cortical/.test(txt)){ const K='<mark class="lau-ph">XXX</mark>';
     txt = txt.replace(' (espessura cortical: RD = '+K+' cm; RE = '+K+' cm)','').replace(' (espessura cortical de '+K+' cm)','')
@@ -2078,6 +2082,7 @@ function lauConcHTML(m){
     const tail = norm.filter(x=>!x.ph && /^Restante/i.test(x.c.text)).map(x=>({html:esc(x.c.text), dash:x.c.dash}));
     lines = keep.concat(f.map(x=>({html:x.html,dash:true})), tail);
   }
+  lines = lines.map(x=>({html: x.html.replace(/,? com folículos medindo até <mark class="lau-ph">X{2,3}<\/mark> cm/, ''), dash:x.dash}));   // folículos não medidos saem da conclusão
   if(m.lado && m.lado.ax && (L.lado==='d'||L.lado==='e')) lines = lines.map(x=>({html: x.html.replace('Ultrassonografia das axilas', `Ultrassonografia da axila ${L.lado==='d'?'direita':'esquerda'}`), dash:x.dash}));
   if(m.oct && !f.length && (L.lado==='d'||L.lado==='e')) lines = lines.map(x=>({html: x.html.replace('Exame dentro dos parâmetros de normalidade em ambos os olhos.', `Olho ${L.lado==='d'?'direito':'esquerdo'} dentro dos parâmetros de normalidade.`), dash:x.dash}));
   return lines.map(x=>`<div>${g.hifen&&x.dash&&!m.semRot?'- ':''}${x.html}</div>`).join('');
