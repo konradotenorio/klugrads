@@ -81,6 +81,7 @@ const LAU_ABD_ITEMS = [
      {t:'radio', k:'par', lbl:'Parênquima', opts:[['n','Homogêneo'],['est','Esteatose'],['hep','Hepatopatia crônica']]},
      {t:'radio', k:'grau', lbl:'Grau da esteatose', opts:[['1','Leve'],['2','Moderada'],['3','Acentuada']], show:s=>s.par==='est'},
      {t:'check', k:'cisto', lbl:'Cisto simples'},
+     {t:'check', k:'cistoSep', lbl:'Septado (finos septos de permeio)', show:s=>s.cisto, ind:1},
      {t:'radio', k:'cistoQ', lbl:'Quantidade', opts:LAU_QTD, show:s=>s.cisto, ind:1},
      {t:'dims', k:'cistoV', lbl:'Medidas (maior, opcional)', show:s=>s.cisto, ind:1},
      {t:'select', k:'cistoS', lbl:'Localização', opts:LAU_SEGS, show:s=>s.cisto, ind:1},
@@ -127,8 +128,9 @@ const LAU_ABD_ITEMS = [
      if(s.dim==='red' && s.par!=='hep') conc.push('Fígado de dimensões reduzidas.');
      const ext=[];
      if(s.cisto){ alt=true; const loc=lauSeg(s.cistoS), m=lauDimsTxt(s.cistoV)||lauMed(s.cistoD,'cm');
-       if(s.cistoQ==='n'){ ext.push(lauFrase(lauJoin([`imagens císticas simples (anecogênicas, de paredes finas, com reforço acústico posterior) esparsas pelo parênquima, a maior ${loc}`.trim(), m]))); conc.push('Cistos hepáticos simples.'); }
-       else { ext.push(lauFrase(lauJoin([`imagem cística simples (anecogênica, de paredes finas, com reforço acústico posterior) ${loc}`.trim(), m]))); conc.push('Cisto hepático simples.'); }
+       const sep=!!s.cistoSep;   // septado: deixa de ser "simples"
+       if(s.cistoQ==='n'){ ext.push(lauFrase(lauJoin([(sep?`imagens císticas anecogênicas, de paredes finas, com finos septos de permeio e reforço acústico posterior, esparsas pelo parênquima, a maior ${loc}`:`imagens císticas simples (anecogênicas, de paredes finas, com reforço acústico posterior) esparsas pelo parênquima, a maior ${loc}`).trim(), m]))); conc.push(sep?'Cistos hepáticos com finos septos de permeio.':'Cistos hepáticos simples.'); }
+       else { ext.push(lauFrase(lauJoin([(sep?`imagem cística anecogênica, de paredes finas, com finos septos de permeio e reforço acústico posterior ${loc}`:`imagem cística simples (anecogênica, de paredes finas, com reforço acústico posterior) ${loc}`).trim(), m]))); conc.push(sep?'Cisto hepático com finos septos de permeio.':'Cisto hepático simples.'); }
      }
      if(s.hem){ alt=true; const loc=lauSeg(s.hemS), m=lauDimsTxt(s.hemV)||lauMed(s.hemD,'cm');
        if(s.hemQ==='n'){ ext.push(lauFrase(lauJoin([`nódulos hiperecogênicos, homogêneos e bem delimitados, o maior ${loc}`.trim(), m]) + ', com aspecto sugestivo de hemangiomas')); conc.push('Nódulos hepáticos com aspecto ultrassonográfico sugestivo de hemangiomas.'); }
@@ -352,6 +354,7 @@ const LAU_ABD_ITEMS = [
        {t:'check', k:'hid'+L, lbl:'Hidronefrose', show:ok},
        {t:'radio', k:'hidG'+L, lbl:'Grau', opts:[['leve','Leve'],['moderada','Moderada'],['acentuada','Acentuada']], show:s=>ok(s)&&s['hid'+L], ind:1},
        {t:'check', k:'cis'+L, lbl:'Cisto(s) simples', show:ok},
+       {t:'check', k:'cisSep'+L, lbl:'Septado (finos septos de permeio)', show:s=>ok(s)&&s['cis'+L], ind:1},
        {t:'radio', k:'cisQ'+L, lbl:'Quantidade', opts:LAU_QTD, show:s=>ok(s)&&s['cis'+L], ind:1},
        {t:'num', k:'cisD'+L, lbl:'Medida (maior)', unit:'cm', show:s=>ok(s)&&s['cis'+L], ind:1},
        {t:'select', k:'cisL'+L, lbl:'Localização', opts:[['','—'],['terço superior','Terço superior'],['terço médio','Terço médio'],['terço inferior','Terço inferior']], show:s=>ok(s)&&s['cis'+L], ind:1},
@@ -407,9 +410,10 @@ const LAU_ABD_ITEMS = [
        } else sem.push('cálculos');
        if(s['cis'+L]){
          const loc = lauHas(s['cisL'+L]) ? `no ${s['cisL'+L]}` : '';
+         const cs = s['cisSep'+L] ? 'com finos septos de permeio' : 'simples';
          t += ' ' + lauFrase(s['cisQ'+L]==='n'
-           ? lauJoin([`cistos simples, o maior ${loc}`.trim(), lauMed(s['cisD'+L],'cm')])
-           : lauJoin([`cisto simples ${loc}`.trim(), lauMed(s['cisD'+L],'cm')]));
+           ? lauJoin([`cistos ${cs}, o maior ${loc}`.trim(), lauMed(s['cisD'+L],'cm')])
+           : lauJoin([`cisto ${cs} ${loc}`.trim(), lauMed(s['cisD'+L],'cm')]));
        }
        t += nodTxt(L, '');
        if(sem.length===2) t += ' Sem hidronefrose ou cálculos detectáveis ao método.';
@@ -448,10 +452,10 @@ const LAU_ABD_ITEMS = [
        // cistos
        ['D','E'].forEach(L=>{
          if(!s['cis'+L]) return;
-         const l = s['cisL'+L];
+         const l = s['cisL'+L], cs = s['cisSep'+L] ? 'com finos septos de permeio' : 'simples';
          t += ' ' + lauFrase(s['cisQ'+L]==='n'
-           ? lauJoin([lauHas(l) ? `cistos simples ${noRim(L)}, o maior no ${l}` : `cistos simples ${noRim(L)}, o maior`, lauMed(s['cisD'+L],'cm')])
-           : lauJoin([lauHas(l) ? `cisto simples no ${l} ${doRim(L)}` : `cisto simples ${noRim(L)}`, lauMed(s['cisD'+L],'cm')]));
+           ? lauJoin([lauHas(l) ? `cistos ${cs} ${noRim(L)}, o maior no ${l}` : `cistos ${cs} ${noRim(L)}, o maior`, lauMed(s['cisD'+L],'cm')])
+           : lauJoin([lauHas(l) ? `cisto ${cs} no ${l} ${doRim(L)}` : `cisto ${cs} ${noRim(L)}`, lauMed(s['cisD'+L],'cm')]));
        });
        ['D','E'].forEach(L=>{ t += nodTxt(L, L==='D'?'no rim direito':'no rim esquerdo'); });
        const semH = !s.hidD && !s.hidE, semC = !s.calcD && !s.calcE;
@@ -473,8 +477,11 @@ const LAU_ABD_ITEMS = [
      if(s.estD!=='cx' && s.estE!=='cx' && s.hidD && s.hidE && s.hidGD===s.hidGE) conc.push(`Hidronefrose ${s.hidGD} bilateral.`);
      else ['D','E'].forEach(L=>{ if(s['est'+L]!=='cx' && s['hid'+L]) conc.push(`Hidronefrose ${s['hidG'+L]} ${L==='D'?'à direita':'à esquerda'}.`); });
      const cD=s.estD!=='cx'&&s.cisD, cE=s.estE!=='cx'&&s.cisE;
-     if(cD&&cE) conc.push('Cistos renais simples bilaterais.');
-     else if(cD||cE){ const L=cD?'D':'E'; conc.push(`${s['cisQ'+L]==='n'?'Cistos renais simples':'Cisto renal simples'} ${cD?'à direita':'à esquerda'}.`); }
+     const cSep = L=>!!s['cisSep'+L];
+     if(cD&&cE&&!cSep('D')&&!cSep('E')) conc.push('Cistos renais simples bilaterais.');
+     else if(cD&&cE&&cSep('D')&&cSep('E')) conc.push('Cistos renais com finos septos de permeio bilaterais.');
+     else ['D','E'].forEach(L=>{ if(!(L==='D'?cD:cE)) return; const n=s['cisQ'+L]==='n';
+       conc.push(`${n?'Cistos renais':'Cisto renal'} ${cSep(L)?'com finos septos de permeio':(n?'simples':'simples')} ${L==='D'?'à direita':'à esquerda'}.`); });
      ['D','E'].forEach(L=>{ if(s['est'+L]==='cx' || !s['nod'+L]) return; const lado = L==='D'?'à direita':'à esquerda';
        conc.push(s['nodE'+L]==='hiperecogênico'
          ? `Nódulo renal hiperecogênico ${lado}, que pode corresponder a angiomiolipoma. Sugere-se complementação com TC ou RM para caracterização.`
@@ -1115,7 +1122,7 @@ function lauBuildModel(mk){
   let titulo = mk.titulo.join('\n'), lado=null;
   const ult = mk.titulo[mk.titulo.length-1]||'';
   const mm = ult.match(/^(.*\b(DO|DA)\b.*?)\s+X{2,3}$/);
-  if(mm){ lado={gen: mm[2]==='DA'?'f':'m', bil:false, ambos:/DO MEMBRO (INFERIOR|SUPERIOR)$/.test(mm[1])}; titulo = mk.titulo.slice(0,-1).concat(mm[1]).join('\n'); }   // ambos: membro também pode ser bilateral
+  if(mm){ lado={gen: mm[2]==='DA'?'f':'m', bil:false, ambos:/DO MEMBRO (INFERIOR|SUPERIOR)$|DA REGIÃO INGUINAL$/.test(mm[1])}; titulo = mk.titulo.slice(0,-1).concat(mm[1]).join('\n'); }   // ambos: membro também pode ser bilateral
   else if(/DOS MEMBROS (INFERIORES|SUPERIORES)/.test(titulo)) lado={gen:'m', bil:true};
   else if(mk.metodo==='mmg' && /BILATERAL/.test(titulo)) lado={gen:'f', bil:true, mg:true};
   const oct = (mk.flags||[]).indexOf('oct')>=0;
@@ -1832,6 +1839,7 @@ function lauItemHTML(m, it){
   let lblRaw = lauLblLado(m, lauItemLabel(m,it));
   // tireoidectomia total: não há mais parênquima glandular
   if(/^Estudo Doppler colorido do parênquima glandular/.test(lblRaw||'')){ const c=lauTireoCx(m); if(c && c.total) lblRaw = lblRaw.replace(/ do parênquima glandular/,''); }
+  if(lblRaw && m.lado && m.lado.ambos && state.lau.lado==='b') lblRaw = lauBilPlural(lblRaw);
   const lbl = lblRaw ? lauFill(lblRaw, s.__v.l, true)+':' : '';
   let txt = r.txt==null ? lauFill(lauItemNormal(m,it), s.__v.n, true) : r.html ? r.txt : esc(r.txt).replace(/\n/g,'<br>');
   // item estruturado com linhas extras na máscara (ex.: prova de Boyden na vesícula): a alteração troca só a 1ª linha
@@ -2013,7 +2021,7 @@ function lauTecTxt(){
 }
 /* membro bilateral (opção "Bilateral" nos exames de um membro): plural das veias/artérias */
 const LAU_BIL_PLURAL = [[/\bpoplítea, tibiais e fibular\b/g,'poplíteas, tibiais e fibulares'],[/\bsafenas magna e parva\b/g,'safenas magnas e parvas'],
-  [/\bVeias subclávia, axilar, braquial, radial, ulnar,/g,'Veias subclávias, axilares, braquiais, radiais, ulnares,'],[/\bcefálica\b/g,'cefálicas'],[/\bbasílica\b/g,'basílicas']];
+  [/\bVeias subclávia, axilar, braquial, radial, ulnar,/g,'Veias subclávias, axilares, braquiais, radiais, ulnares,'],[/\bcefálica\b/g,'cefálicas'],[/\bCanal inguinal\b/g,'Canais inguinais'],[/\bbasílica\b/g,'basílicas']];
 function lauBilPlural(t){ return LAU_BIL_PLURAL.reduce((x,[a,b])=>x.replace(a,b), t); }
 function lauLadoTitulo(m, t, html){
   const L=state.lau; if(!m.lado) return t;
@@ -2023,7 +2031,7 @@ function lauLadoTitulo(m, t, html){
     if(m.lado.mg) return t.replace(/BILATERAL/, `DA MAMA ${v==='d'?'DIREITA':'ESQUERDA'}`);
     return t.replace(/DOS MEMBROS (INFERIORES|SUPERIORES)/, (_,x)=>`DO MEMBRO ${x==='INFERIORES'?'INFERIOR':'SUPERIOR'} ${v==='d'?'DIREITO':'ESQUERDO'}`);
   }
-  if(v==='b' && m.lado.ambos) return t.replace(/DO MEMBRO (INFERIOR|SUPERIOR)/, (_,x)=>`DOS MEMBROS ${x}ES`);
+  if(v==='b' && m.lado.ambos) return t.replace(/DO MEMBRO (INFERIOR|SUPERIOR)/, (_,x)=>`DOS MEMBROS ${x}ES`).replace(/DA REGIÃO INGUINAL/, 'DAS REGIÕES INGUINAIS');
   const f=m.lado.gen==='f';
   const txt = v==='d' ? (f?'DIREITA':'DIREITO') : v==='e' ? (f?'ESQUERDA':'ESQUERDO') : null;
   return txt ? t+' '+txt : t + ' ' + (html?`<mark class="lau-ph">${f?'DIREITA / ESQUERDA':'DIREITO / ESQUERDO'}</mark>`:'XXX');
