@@ -687,7 +687,7 @@ const LAU_FRASES = [
   {o:'canalinguinal', n:'Hérnia inguinoescrotal', m:'sub', medOpc:1,
    t:'com hérnia inguinoescrotal à direita XX esquerda, com colo medindo XXX cm, contendo gordura XX intestino, que se insinua até a bolsa testicular.',
    c:'Hérnia inguinoescrotal à {0}.'},
-  {o:'hernia', n:'Hérnia inguinal', m:'sub',
+  {o:'hernia', n:'Hérnia inguinal', m:'sub', vaz:[', com colo de XXX cm'],
    t:'hérnia inguinal direta XX indireta à direita XX esquerda, com colo de XXX cm, contendo gordura XX intestino, redutível XX irredutível.',
    c:'Hérnia inguinal {0} à {1}.'},
 

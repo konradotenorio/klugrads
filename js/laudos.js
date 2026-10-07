@@ -1335,6 +1335,7 @@ function lauFraseText(id, bag, html){
   // escolhas opcionais não marcadas saem do texto (diástase: região; hérnia: redutibilidade)
   if(f.retos) t = t.replace(/,? na região (?:<mark class="lau-ph">)?epigástrica \/ mesogástrica \/ hipogástrica(?:<\/mark>)?/,'');
   if(f.o==='hernia' && !f.kind) t = t.replace(/,? (?:<mark class="lau-ph">)?redutível \/ irredutível(?:<\/mark>)?/,'');
+  if(f.o==='hernia' && !f.kind) t = t.replace(/ (?:<mark class="lau-ph">)?direta \/ indireta(?:<\/mark>)?/,'');   // tipo não marcado: só "hérnia inguinal"
   if(f.contra){ const tk=lauTpl(f.t).lines.flat().find(x=>x.t==='c'); const v=tk&&((bag['f'+id]||[])[tk.i]||tk.def);
     if(v==='direito'||v==='esquerdo') t += ' ' + f.contra.replace('{X}', v==='direito'?'esquerdo':'direito'); }
   if(f.vaz) t = lauTiraVazio(t, f.vaz);
