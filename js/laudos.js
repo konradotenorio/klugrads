@@ -2527,7 +2527,7 @@ function lauTopicoForm(k, tplId, str, vals, seg, rotulo){
     const av=lauAutoVal(tpl, vals, tk.i);
     return `<input id="ph-${k}-${tplId}-${tk.i}" class="lau-ph-in" type="text" inputmode="decimal" value="${esc(v)}" placeholder="${av!=null?esc(av):'…'}" oninput="lauPh('${k}','${tplId}',${tk.i},this.value,${sj})">`; };
   const rows = segs.filter(sg=>sg.some(t=>t.t==='p')).map(sg=>{
-    let buf=[], lbl=null, parts=[], ultInp=false;
+    let buf=[], lbl=null, parts=[], ultInp=false, conn=null;
     sg.forEach(tk=>{
       if(tk.t==='w'){ if(tk.s==='\n') return; const c=tk.s.replace(/[;.,]+$/,'');
         if(ultInp && LAU_TOP_UN.test(c)){ parts.push(`<span class="lau-top-u">${esc(c.replace(/[()]/g,''))}</span>`); return; }
@@ -2536,7 +2536,10 @@ function lauTopicoForm(k, tplId, str, vals, seg, rotulo){
       if(lbl==null){
         // rótulo com dois-pontos no começo ("ACCD: VPS =") tem prioridade; o resto vira o nome do campo
         const ws=buf.join(' ').split(/\s+/).filter(Boolean); const jc=ws.slice(0,8).findIndex(w=>/:$/.test(w));
-        if(jc>=0 && ws[0] && /^[-–•]?[A-ZÁÉÍÓÚÂÊÔÃÕÇ]/.test(ws[0])){ lbl=ws.slice(0,jc+1).join(' ').replace(/^[-–•]+\s*/,'').replace(/:$/,''); const t=lauTopLbl(ws.slice(jc+1), false); if(t) parts.push(`<span class="lau-top-c">${esc(t)}</span>`); }
+        const resto=ws.slice(jc+1).join(' ');
+        // frase longa terminando em "(espessura cortical: RD =" → rótulo "RD", campo "cortical" (junta na linha do RD)
+        if(jc>=3 && /^[^\s=]+ =$/.test(resto)){ lbl=resto.replace(/ =$/,''); conn=ws[jc].replace(/[:(]/g,''); }
+        else if(jc>=0 && ws[0] && /^[-–•]?[A-ZÁÉÍÓÚÂÊÔÃÕÇ]/.test(ws[0])){ lbl=ws.slice(0,jc+1).join(' ').replace(/^[-–•]+\s*/,'').replace(/:$/,''); const t=lauTopLbl(ws.slice(jc+1), false); if(t) parts.push(`<span class="lau-top-c">${esc(t)}</span>`); }
         else lbl = lauTopLbl(buf, true);
       }
       else { const cn = buf.join(' ').replace(/[(),]/g,' ').trim(); if(cn){ const t = /^x$/i.test(cn) ? '×' : lauTopLbl(buf, false); if(t) parts.push(`<span class="lau-top-c">${esc(t)}</span>`); } }
@@ -2544,10 +2547,17 @@ function lauTopicoForm(k, tplId, str, vals, seg, rotulo){
       if(tk.suf){ const u=tk.suf.replace(/[;.,]+$/,''); if(LAU_TOP_UN.test(u)) parts.push(`<span class="lau-top-u">${esc(u.replace(/[()]/g,''))}</span>`); }
     });
     lbl = lbl || rotulo || '';
-    return `<div class="lau-top-r">${lbl?`<div class="lau-top-l">${esc(lbl.charAt(0).toUpperCase()+lbl.slice(1))}</div>`:''}<div class="lau-top-f">${parts.join('')}</div></div>`;
+    return {lbl, parts, conn};
   });
+  // mesmo rótulo em duas linhas (ex.: "RD" comprimento e "RD" cortical): junta numa linha só
+  const fin=[]; let connAnt=null;
+  rows.forEach(r=>{ if(r.conn) connAnt=r.conn; else if(connAnt && /^R[DE]$/.test(r.lbl)) r.conn=connAnt;
+    const e = fin.find(x=>x.lbl && x.lbl.toLowerCase()===String(r.lbl).toLowerCase());
+    if(e && r.conn){ e.parts.push(`<span class="lau-top-c">${esc(r.conn)}</span>`, ...r.parts); return; }
+    fin.push(r); });
+  const rowsH = fin.map(r=>`<div class="lau-top-r">${r.lbl?`<div class="lau-top-l">${esc(r.lbl.charAt(0).toUpperCase()+r.lbl.slice(1))}</div>`:''}<div class="lau-top-f">${r.parts.join('')}</div></div>`);
   const frase = toks.map(tk=>tk.t==='w' ? (tk.s==='\n'?'<br>':esc(tk.s)) : esc(tk.pre||'')+'<span class="lau-top-x">'+(tk.t==='c'?esc(tk.o.join(' / ')):'___')+'</span>'+esc(tk.suf||'')).join(' ').replace(/ <br> /g,'<br>');
-  return `<div class="lau-inl dim lau-top-fr">${frase}</div><div class="lau-top">${rows.join('')}</div>`;
+  return `<div class="lau-inl dim lau-top-fr">${frase}</div><div class="lau-top">${rowsH.join('')}</div>`;
 }
 function lauOptsHTML(k, opts, flags, bag){
   if(!opts || !opts.length) return '';
