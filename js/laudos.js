@@ -623,7 +623,7 @@ function lauTvpVeia(k, label, nome, o){
   if(o.segs) ctrls.push({t:'radio', k:'seg', lbl:'Segmento', opts:[['','Todo']].concat(o.segs), show:s=>s.est!=='n', ind:1});
   else ctrls.push({t:'text', k:'seg', lbl:'Segmento acometido (opcional)', ph:'ex.: terço proximal', show:s=>s.est!=='n', ind:1});
   if(o.jun) ctrls.push({t:'num', k:'dist', lbl:`Distância da ${o.jun} (opcional)`, unit:'cm', show:s=>s.est!=='n', ind:1});
-  return {k, label, only:LAU_TVP_ONLY, ctrls, build(s){
+  return {k, label, only:LAU_TVP_ONLY, hideNormal:true, ctrls, build(s){
     if(!s.est || s.est==='n') return {txt:null, conc:[]};
     const qual = musc ? (s.qual||'gastrocnêmias') : '';
     const alvo = musc ? `das veias ${qual}` : nome;
@@ -660,7 +660,7 @@ const LAU_TVP_ITENS = [
   lauTvpVeia('tvpMusc', 'Veias gastrocnêmias e soleares', '', {pl:1, musc:1}),
   lauTvpVeia('tvpSM', 'Veia safena magna', 'da veia safena magna', {sup:1, segs:[['segmento da coxa','Coxa'],['segmento da perna','Perna']], jun:'junção safeno-femoral'}),
   lauTvpVeia('tvpSP', 'Veia safena parva', 'da veia safena parva', {sup:1, jun:'junção safeno-poplítea'}),
-  {k:'tvpPele', label:'Pele e tecido subcutâneo', only:LAU_TVP_ONLY, ctrls:[
+  {k:'tvpPele', label:'Pele e tecido subcutâneo', only:LAU_TVP_ONLY, hideNormal:true, ctrls:[
      {t:'radio', k:'est', lbl:'Subcutâneo', opts:[['n','Normal'],['ed','Edema'],['cel','Sinais inflamatórios (celulite)']]},
      {t:'select', k:'loc', lbl:'Localização', opts:[['da perna','Perna'],['da coxa','Coxa'],['do tornozelo e do pé','Tornozelo e pé'],['de todo o membro','Todo o membro']], show:s=>s.est!=='n', ind:1},
      {t:'check', k:'col', lbl:'Coleção'},
@@ -675,7 +675,7 @@ const LAU_TVP_ITENS = [
      if((!s.est||s.est==='n') && s.col) t.unshift('de espessura e ecogenicidade preservadas.');
      return {txt:t.join(' '), conc:c};
    }},
-  {k:'tvpFossa', label:'Fossa poplítea', only:LAU_TVP_ONLY, ctrls:[
+  {k:'tvpFossa', label:'Fossa poplítea', only:LAU_TVP_ONLY, hideNormal:true, ctrls:[
      {t:'check', k:'bak', lbl:'Cisto de Baker'},
      {t:'dims', k:'bakV', lbl:'Medidas', show:s=>s.bak, ind:1},
      {t:'check', k:'bakR', lbl:'Sinais de rotura', show:s=>s.bak, ind:1},
@@ -693,6 +693,19 @@ const LAU_TVP_ITENS = [
    }},
 ];
 LAU_TVP_ITENS.forEach(d=>{ LAU_STRUCT[d.k]=d; });
+/* texto corrido da máscara (como no laudo venoso anterior): com veias alteradas, vira "demais veias…" */
+const LAU_TVP_PROF = ['tvpFC','tvpFS','tvpFP','tvpPop','tvpTA','tvpTP','tvpFib','tvpMusc'];
+function lauTvpAlt(m, sks){ const L=state.lau; return sks.filter(sk=>{ const it=m.items.find(i=>i.sk===sk); const s=it&&L&&L.v&&L.v[it.k]; return s && s.est && s.est!=='n'; }); }
+function lauTvpTexto(m, it){
+  if(!LAU_TVP_ONLY.test(m.id||'') || !state.lau || state.lau.model!==m.id) return null;
+  if(/^veias-femorais/.test(it.k)){ const a=lauTvpAlt(m, LAU_TVP_PROF); if(!a.length) return null;
+    return a.length>=LAU_TVP_PROF.length ? '' : 'Demais veias do sistema venoso profundo pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses.'; }
+  if(/^crossas-das-veias-safenas/.test(it.k)){ const a=lauTvpAlt(m, ['tvpSM','tvpSP']); if(!a.length) return null;
+    return a.length===2 ? '' : `Crossa da veia safena ${a[0]==='tvpSM'?'parva':'magna'} pérvia, sem tromboses.`; }
+  if(/^ao-estudo-doppler/.test(it.k)){ const a=lauTvpAlt(m, LAU_TVP_PROF.concat(['tvpSM','tvpSP'])); if(!a.length) return null;
+    return 'Ao estudo Doppler, o padrão espectral e as velocidades estão preservados nos demais segmentos avaliados.'; }
+  return null;
+}
 const LAU_TVP_LABELS = {}; LAU_TVP_ITENS.forEach(d=>{ LAU_TVP_LABELS[lauNorm(d.label)]=d.k; });
 /* Elastografia hepática (2D-SWE): conclusão automática pela faixa do valor (SRU 2020)
    e alerta de qualidade quando IQR/mediana > 30% */
@@ -1229,7 +1242,7 @@ function lauBuildModel(mk){
   if(oct) lado={gen:'m', bil:true, eye:true};
   return { id:mk.id, nome:mk.nome, grupo:mk.grupo, metodo:mk.metodo||'us', pronto:true, lado, oct, semRot: oct || mk.metodo==='dmo',
     titulo, concTitulo: mk.concTitulo, concNormal: mk.conc.filter(c=>!c.opt),
-    concOpts: mk.conc.filter(c=>c.opt), trailer: mk.trailer, seq: mk.seq, items,
+    concOpts: mk.conc.filter(c=>c.opt), trailer: mk.trailer, seq: LAU_TVP_ONLY.test(mk.id||'') ? mk.seq.filter(x=>x.t!=='blank') : mk.seq, items,
     estruturado: items.filter(x=>x.sk).length>=2 };
 }
 const LAUDO_MODELOS = { us: (typeof LAU_US_MASKS!=='undefined' ? LAU_US_MASKS : []).map(lauBuildModel),
@@ -1285,6 +1298,7 @@ function lauItemNormal(m,it){
   // variação da máscara escolhida no painel (alternativas "a || b")
   const L=state.lau, sv = it.alts && L && L.model===m.id && L.v && L.v[it.k];
   if(sv && sv.__alt>0 && it.alts[sv.__alt]) return it.alts[sv.__alt];
+  const tv=lauTvpTexto(m,it); if(tv!=null) return tv;
   const u=(lauMcfgPeek(m.id).items||{})[it.k]||{}; const t=lauHas(u.normal)?u.normal:it.normal; return lauMgUni(m) ? lauMgUniTxt(t) : t; }
 /* usado dentro do build dos rins: texto normal já preenchido */
 function LAU_NORMAL(k){
@@ -1944,6 +1958,8 @@ function lauDiuNoEndometrio(m){
 function lauItemOculto(m, it){
   // "Exame direcionado para a região XX." sem a região preenchida sai do laudo
   if(it.generic && /^Exame direcionado para a região X{2,3}\.?$/.test(String(lauItemNormal(m,it)||'').trim())){ const s=state.lau.v[it.k]; const v=((s&&s.__v&&s.__v.n)||[]); if(!v.some(lauHas) && !lauHas(s&&s.alt)) return true; }
+  // TVP: todas as veias do trecho alteradas → o texto corrido sai
+  if(it.generic && lauTvpTexto(m,it)==='') return true;
   // tireoidectomia total: a linha "Volumes estimados" sai do laudo
   if(/^volumes estimados/i.test(lauItemLabel(m,it)||'')){ const c=lauTireoCx(m); if(c && c.total) return true; }
   // DIU descrito no endométrio: a linha fixa do dispositivo da máscara sai do laudo
@@ -2307,7 +2323,8 @@ function lauPatch(k){
     const h=lauItemHTML(m,it); p.innerHTML = h; p.hidden = !h; if(h) lauFlash(p);
     if(typeof lauAutoStUpd==='function') lauAutoStUpd(m,it);
     const outros = m.oct || (typeof lauAutoAfetaOutros==='function' && lauAutoAfetaOutros(m,it))
-      || /^(tireoide|endometrio|dados do paciente)$/.test(lauNorm(lauItemLabel(m,it)||''));   // tireoidectomia muda a linha dos volumes; DIU no endométrio oculta a linha do dispositivo
+      || /^(tireoide|endometrio|dados do paciente)$/.test(lauNorm(lauItemLabel(m,it)||''))
+      || (/^tvp/.test(it.sk||'') && LAU_TVP_ONLY.test(m.id||''));   // TVP: veia alterada muda o texto corrido ("demais veias…")   // tireoidectomia muda a linha dos volumes; DIU no endométrio oculta a linha do dispositivo
     if(outros) m.items.forEach(o=>{ if(o.k===k) return; const q=ed.querySelector(`[data-k="${o.k}"]`); if(!q) return; const hh=lauItemHTML(m,o); if(q.innerHTML!==hh){ q.innerHTML=hh; q.hidden=!hh; } });   // frases que ocultam itens do mesmo olho
   }
   lauPatchConc(); lauSaveEd();

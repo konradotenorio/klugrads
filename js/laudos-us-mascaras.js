@@ -9049,21 +9049,13 @@ null,
 "nome": "Doppler Venoso: TVP do Membro Inferior",
 "grupo": "Vascular",
 "titulo": [
-"ULTRASSONOGRAFIA COM DOPPLER VENOSO DO MEMBRO INFERIOR XX"
+"ULTRASSONOGRAFIA COM DOPPLER VENOSO PROFUNDO DO MEMBRO INFERIOR XX"
 ],
 "items": [
 {
-"k": "exame-realizado-em-modo-b-com",
-"label": "",
-"text": "Exame realizado em modo B com manobras de compressão, complementado pelo estudo com Doppler colorido e espectral.",
-"dash": false,
-"opts": [],
-"grp": ""
-},
-{
 "k": "veia-femoral-comum",
 "label": "Veia femoral comum",
-"text": "pérvia, de calibre normal, totalmente compressível, com fluxo espontâneo e fásico com a respiração.",
+"text": "pérvia, de calibre normal, totalmente compressível.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -9071,7 +9063,7 @@ null,
 {
 "k": "veia-femoral-superficial",
 "label": "Veia femoral (superficial)",
-"text": "pérvia, de calibre normal, totalmente compressível em toda a extensão da coxa, com fluxo preservado.",
+"text": "pérvia, de calibre normal, totalmente compressível.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -9079,7 +9071,7 @@ null,
 {
 "k": "veia-femoral-profunda",
 "label": "Veia femoral profunda",
-"text": "pérvia e totalmente compressível no segmento proximal, com fluxo preservado.",
+"text": "pérvia e totalmente compressível.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -9087,7 +9079,7 @@ null,
 {
 "k": "veia-poplitea",
 "label": "Veia poplítea",
-"text": "pérvia, de calibre normal, totalmente compressível, com fluxo preservado.",
+"text": "pérvia, de calibre normal, totalmente compressível.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -9095,7 +9087,7 @@ null,
 {
 "k": "veias-tibiais-anteriores",
 "label": "Veias tibiais anteriores",
-"text": "pérvias e totalmente compressíveis, com fluxo preservado.",
+"text": "pérvias e totalmente compressíveis.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -9103,7 +9095,7 @@ null,
 {
 "k": "veias-tibiais-posteriores",
 "label": "Veias tibiais posteriores",
-"text": "pérvias e totalmente compressíveis, com fluxo preservado.",
+"text": "pérvias e totalmente compressíveis.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -9111,7 +9103,7 @@ null,
 {
 "k": "veias-fibulares",
 "label": "Veias fibulares",
-"text": "pérvias e totalmente compressíveis, com fluxo preservado.",
+"text": "pérvias e totalmente compressíveis.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -9125,9 +9117,17 @@ null,
 "grp": ""
 },
 {
+"k": "veias-femorais-poplitea-tibi",
+"label": "",
+"text": "Veias femorais, poplítea, tibiais e fibular pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
 "k": "veia-safena-magna",
 "label": "Veia safena magna",
-"text": "pérvia e compressível, sem trombos, com junção safeno-femoral sem alterações.",
+"text": "pérvia e compressível, sem trombos.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -9135,8 +9135,24 @@ null,
 {
 "k": "veia-safena-parva",
 "label": "Veia safena parva",
-"text": "pérvia e compressível, sem trombos, com junção safeno-poplítea sem alterações.",
+"text": "pérvia e compressível, sem trombos.",
 "dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "crossas-das-veias-safenas-magn",
+"label": "",
+"text": "Crossas das veias safenas magna e parva pérvias, sem tromboses.",
+"dash": false,
+"opts": [],
+"grp": ""
+},
+{
+"k": "ao-estudo-doppler-o-padrao-es",
+"label": "",
+"text": "Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.",
+"dash": false,
 "opts": [],
 "grp": ""
 },
@@ -9158,17 +9174,6 @@ null,
 }
 ],
 "seq": [
-{
-"t": "item",
-"k": "exame-realizado-em-modo-b-com"
-},
-{
-"t": "blank"
-},
-{
-"t": "line",
-"text": "SISTEMA VENOSO PROFUNDO"
-},
 {
 "t": "item",
 "k": "veia-femoral-comum"
@@ -9205,8 +9210,11 @@ null,
 "t": "blank"
 },
 {
-"t": "line",
-"text": "SISTEMA VENOSO SUPERFICIAL"
+"t": "item",
+"k": "veias-femorais-poplitea-tibi"
+},
+{
+"t": "blank"
 },
 {
 "t": "item",
@@ -9220,8 +9228,15 @@ null,
 "t": "blank"
 },
 {
-"t": "line",
-"text": "OUTROS ACHADOS"
+"t": "item",
+"k": "crossas-das-veias-safenas-magn"
+},
+{
+"t": "item",
+"k": "ao-estudo-doppler-o-padrao-es"
+},
+{
+"t": "blank"
 },
 {
 "t": "item",
@@ -9235,7 +9250,7 @@ null,
 "concTitulo": "Conclusão:",
 "conc": [
 {
-"text": "Ausência de sinais de trombose venosa profunda ou superficial no membro inferior examinado.",
+"text": "Exame negativo para trombose venosa profunda.",
 "dash": true
 }
 ],

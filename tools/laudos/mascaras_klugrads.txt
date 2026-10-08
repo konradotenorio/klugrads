@@ -306,27 +306,27 @@ Conclusão:
 G. VASCULAR:
 
 10. Doppler Venoso: TVP do Membro Inferior
-ULTRASSONOGRAFIA COM DOPPLER VENOSO DO MEMBRO INFERIOR XX
+ULTRASSONOGRAFIA COM DOPPLER VENOSO PROFUNDO DO MEMBRO INFERIOR XX
 
-Exame realizado em modo B com manobras de compressão, complementado pelo estudo com Doppler colorido e espectral.
-
-SISTEMA VENOSO PROFUNDO
-- Veia femoral comum: pérvia, de calibre normal, totalmente compressível, com fluxo espontâneo e fásico com a respiração.
-- Veia femoral (superficial): pérvia, de calibre normal, totalmente compressível em toda a extensão da coxa, com fluxo preservado.
-- Veia femoral profunda: pérvia e totalmente compressível no segmento proximal, com fluxo preservado.
-- Veia poplítea: pérvia, de calibre normal, totalmente compressível, com fluxo preservado.
-- Veias tibiais anteriores: pérvias e totalmente compressíveis, com fluxo preservado.
-- Veias tibiais posteriores: pérvias e totalmente compressíveis, com fluxo preservado.
-- Veias fibulares: pérvias e totalmente compressíveis, com fluxo preservado.
+- Veia femoral comum: pérvia, de calibre normal, totalmente compressível.
+- Veia femoral (superficial): pérvia, de calibre normal, totalmente compressível.
+- Veia femoral profunda: pérvia e totalmente compressível.
+- Veia poplítea: pérvia, de calibre normal, totalmente compressível.
+- Veias tibiais anteriores: pérvias e totalmente compressíveis.
+- Veias tibiais posteriores: pérvias e totalmente compressíveis.
+- Veias fibulares: pérvias e totalmente compressíveis.
 - Veias gastrocnêmias e soleares: pérvias e compressíveis.
 
-SISTEMA VENOSO SUPERFICIAL
-- Veia safena magna: pérvia e compressível, sem trombos, com junção safeno-femoral sem alterações.
-- Veia safena parva: pérvia e compressível, sem trombos, com junção safeno-poplítea sem alterações.
+Veias femorais, poplítea, tibiais e fibular pérvias, com calibres normais e parede e compressibilidade preservadas, sem tromboses.
 
-OUTROS ACHADOS
+- Veia safena magna: pérvia e compressível, sem trombos.
+- Veia safena parva: pérvia e compressível, sem trombos.
+
+Crossas das veias safenas magna e parva pérvias, sem tromboses.
+Ao estudo Doppler, o padrão espectral e as velocidades estão preservados.
+
 - Pele e tecido subcutâneo: de espessura e ecogenicidade preservadas.
 - Fossa poplítea: sem formações císticas; artéria poplítea de calibre normal.
 
 Conclusão:
-- Ausência de sinais de trombose venosa profunda ou superficial no membro inferior examinado.
+- Exame negativo para trombose venosa profunda.
