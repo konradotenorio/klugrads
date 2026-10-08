@@ -4101,7 +4101,7 @@ const LAU_US_MASKS = [
 {
 "k": "compartimento-anterior",
 "label": "Compartimento anterior",
-"text": "com espessura, contornos e ecotextura normais.",
+"text": "tendões tibial anterior, extensor longo do hálux e extensor longo dos dedos com espessura, contornos e ecotextura normais.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -4109,7 +4109,7 @@ const LAU_US_MASKS = [
 {
 "k": "compartimento-medial",
 "label": "Compartimento medial",
-"text": "com espessura, contornos e ecotextura normais.",
+"text": "tendões tibial posterior, flexor longo dos dedos e flexor longo do hálux com espessura, contornos e ecotextura normais.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -4117,7 +4117,7 @@ const LAU_US_MASKS = [
 {
 "k": "compartimento-lateral",
 "label": "Compartimento lateral",
-"text": "com espessura, contornos e ecotextura normais.",
+"text": "tendões fibular longo e fibular curto com espessura, contornos e ecotextura normais.",
 "dash": true,
 "opts": [],
 "grp": ""
