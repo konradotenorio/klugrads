@@ -393,9 +393,9 @@ const LAU_FRASES = [
   /* ---------------- TIREOIDE ---------------- */
   {o:'tireoide', q:1, n:'Nódulo (TI-RADS)', m:'add', kind:'tirads', x:['lesões nodulares','císticas'],
    t:'no terço superior XX médio XX inferior do lobo direito XX esquerdo, medindo XXX x XXX x XXX cm'},
-  {o:'tireoide', q:1, cp:'Cistos tireoidianos.', x:['lesões nodulares','císticas'], n:'Cisto', m:'add',
-   t:'Cisto anecogênico no lobo direito XX esquerdo, medindo XXX cm.',
-   c:'Cisto tireoidiano.'},
+  {o:'tireoide', q:1, cp:'Cistos tireoidianos — ACR TI-RADS 1.', x:['lesões nodulares','císticas'], n:'Cisto', m:'add',
+   t:'Cisto anecogênico no terço superior XX médio XX inferior do lobo direito XX esquerdo, medindo XXX cm. ACR TI-RADS: 1.',
+   c:'Cisto tireoidiano no lobo {1} — ACR TI-RADS 1.'},
   {o:'tireoide', n:'Bócio', m:'sub',
    t:'tópica, com dimensões aumentadas (volume total de XXX cm³), contornos regulares e textura heterogênea.',
    c:'Bócio.'},
