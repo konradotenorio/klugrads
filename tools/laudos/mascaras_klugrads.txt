@@ -311,19 +311,22 @@ ULTRASSONOGRAFIA COM DOPPLER VENOSO DO MEMBRO INFERIOR XX
 Exame realizado em modo B com manobras de compressão, complementado pelo estudo com Doppler colorido e espectral.
 
 SISTEMA VENOSO PROFUNDO
-- Veia femoral comum: pérvia, de calibre normal, totalmente compressível, com fluxo espontâneo e fásico com a respiração. || com calibre aumentado, incompressível, preenchida por material hipoecogênico, sem fluxo ao Doppler, compatível com trombose aguda oclusiva. => Trombose venosa profunda aguda oclusiva da veia femoral comum. || parcialmente compressível, com trombo hipoecogênico não oclusivo e fluxo residual ao Doppler, compatível com trombose aguda não oclusiva. => Trombose venosa profunda aguda não oclusiva da veia femoral comum. || com paredes espessadas e trombo ecogênico aderido, com recanalização parcial ao Doppler, compatível com trombose crônica. => Sinais de trombose venosa profunda crônica, com recanalização parcial, da veia femoral comum.
-- Veia femoral profunda (segmento proximal): pérvia e totalmente compressível, com fluxo preservado. || incompressível, preenchida por material hipoecogênico, sem fluxo ao Doppler, compatível com trombose aguda. => Trombose venosa profunda aguda da veia femoral profunda. || com paredes espessadas e trombo ecogênico aderido, com recanalização parcial, compatível com trombose crônica. => Sinais de trombose venosa profunda crônica da veia femoral profunda.
-- Veia femoral: pérvia, de calibre normal, totalmente compressível em toda a extensão da coxa, com fluxo preservado. || com calibre aumentado, incompressível, preenchida por material hipoecogênico, sem fluxo ao Doppler, compatível com trombose aguda oclusiva. => Trombose venosa profunda aguda oclusiva da veia femoral. || parcialmente compressível, com trombo hipoecogênico não oclusivo e fluxo residual ao Doppler, compatível com trombose aguda não oclusiva. => Trombose venosa profunda aguda não oclusiva da veia femoral. || com paredes espessadas e trombo ecogênico aderido, com recanalização parcial ao Doppler, compatível com trombose crônica. => Sinais de trombose venosa profunda crônica, com recanalização parcial, da veia femoral.
-- Veia poplítea: pérvia, de calibre normal, totalmente compressível, com fluxo preservado. || com calibre aumentado, incompressível, preenchida por material hipoecogênico, sem fluxo ao Doppler, compatível com trombose aguda oclusiva. => Trombose venosa profunda aguda oclusiva da veia poplítea. || parcialmente compressível, com trombo hipoecogênico não oclusivo e fluxo residual ao Doppler, compatível com trombose aguda não oclusiva. => Trombose venosa profunda aguda não oclusiva da veia poplítea. || com paredes espessadas e trombo ecogênico aderido, com recanalização parcial ao Doppler, compatível com trombose crônica. => Sinais de trombose venosa profunda crônica, com recanalização parcial, da veia poplítea.
-- Veias tibiais posteriores: pérvias e totalmente compressíveis, com fluxo preservado. || incompressíveis, preenchidas por material hipoecogênico, sem fluxo ao Doppler, compatível com trombose aguda. => Trombose venosa profunda aguda das veias tibiais posteriores. || com paredes espessadas e trombo ecogênico aderido, com recanalização parcial, compatível com trombose crônica. => Sinais de trombose venosa profunda crônica das veias tibiais posteriores.
-- Veias fibulares: pérvias e totalmente compressíveis, com fluxo preservado. || incompressíveis, preenchidas por material hipoecogênico, sem fluxo ao Doppler, compatível com trombose aguda. => Trombose venosa profunda aguda das veias fibulares. || com paredes espessadas e trombo ecogênico aderido, com recanalização parcial, compatível com trombose crônica. => Sinais de trombose venosa profunda crônica das veias fibulares.
-- Veias musculares da panturrilha (gastrocnêmias e soleares): pérvias e compressíveis. || trombos hipoecogênicos nas veias gastrocnêmias XX soleares, que se apresentam incompressíveis, compatível com trombose aguda. => Trombose de veias musculares ({0}) da panturrilha.
+- Veia femoral comum: pérvia, de calibre normal, totalmente compressível, com fluxo espontâneo e fásico com a respiração.
+- Veia femoral (superficial): pérvia, de calibre normal, totalmente compressível em toda a extensão da coxa, com fluxo preservado.
+- Veia femoral profunda: pérvia e totalmente compressível no segmento proximal, com fluxo preservado.
+- Veia poplítea: pérvia, de calibre normal, totalmente compressível, com fluxo preservado.
+- Veias tibiais anteriores: pérvias e totalmente compressíveis, com fluxo preservado.
+- Veias tibiais posteriores: pérvias e totalmente compressíveis, com fluxo preservado.
+- Veias fibulares: pérvias e totalmente compressíveis, com fluxo preservado.
+- Veias gastrocnêmias e soleares: pérvias e compressíveis.
 
 SISTEMA VENOSO SUPERFICIAL
-- Junção safeno-femoral e veia safena magna: pérvias e compressíveis, sem trombos. || trombo intraluminal na veia safena magna, no segmento da coxa XX da perna, com veia incompressível, distando XXX cm da junção safeno-femoral, com sinais inflamatórios no subcutâneo adjacente. => Tromboflebite da veia safena magna, distando {1} cm da junção safeno-femoral.
-- Junção safeno-poplítea e veia safena parva: pérvias e compressíveis, sem trombos. || trombo intraluminal na veia safena parva, com veia incompressível, distando XXX cm da junção safeno-poplítea, com sinais inflamatórios no subcutâneo adjacente. => Tromboflebite da veia safena parva, distando {0} cm da junção safeno-poplítea.
-XXX Cisto poplíteo (de Baker), medindo XXX x XXX x XXX cm, sem sinais de rotura. => Cisto poplíteo (de Baker).
-XXX Edema do tecido celular subcutâneo da perna. => Edema do tecido celular subcutâneo da perna.
+- Veia safena magna: pérvia e compressível, sem trombos, com junção safeno-femoral sem alterações.
+- Veia safena parva: pérvia e compressível, sem trombos, com junção safeno-poplítea sem alterações.
+
+OUTROS ACHADOS
+- Pele e tecido subcutâneo: de espessura e ecogenicidade preservadas.
+- Fossa poplítea: sem formações císticas; artéria poplítea de calibre normal.
 
 Conclusão:
 - Ausência de sinais de trombose venosa profunda ou superficial no membro inferior examinado.

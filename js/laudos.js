@@ -608,6 +608,92 @@ const LAU_STRUCT_LABELS = {
   'peritoneo e retroperitoneo':'peritoneo', 'peritoneo / retroperitoneo':'peritoneo', 'peritonio e retroperitonio':'peritoneo', 'peritonio / retroperitonio':'peritoneo',
   'cirurgias previas':'cirurgia', 'alcas intestinais':'alcas', 'elastografia hepatica':'elasto',
 };
+/* Doppler venoso TVP do membro inferior: um item por veia (Normal / TVP aguda / TVP crônica),
+   pele e subcutâneo e fossa poplítea. "only": só nesse modelo (os rótulos repetem em outras máscaras) */
+const LAU_TVP_ONLY = /tvp/;
+function lauTvpVeia(k, label, nome, o){
+  o = o||{}; const pl=!!o.pl, sup=!!o.sup, musc=!!o.musc;
+  const P=(a,b)=>pl?b:a;
+  const ctrls=[
+    {t:'radio', k:'est', lbl:'Situação', opts:[['n','Normal'],['ag', sup?'Trombose aguda':'TVP aguda'],['cr', sup?'Trombose crônica':'TVP crônica']]},
+    {t:'radio', k:'oc', lbl:'Trombo', opts:[['oc','Oclusivo'],['no','Não oclusivo']], show:s=>s.est==='ag', ind:1},
+    {t:'radio', k:'rec', lbl:'Aspecto', opts:[['parc','Recanalização parcial'],['occ','Oclusão crônica (sem fluxo)']], show:s=>s.est==='cr', ind:1},
+  ];
+  if(musc) ctrls.splice(1,0,{t:'radio', k:'qual', lbl:'Veias', opts:[['gastrocnêmias','Gastrocnêmias'],['soleares','Soleares'],['gastrocnêmias e soleares','Ambas']], show:s=>s.est!=='n', ind:1});
+  if(o.segs) ctrls.push({t:'radio', k:'seg', lbl:'Segmento', opts:[['','Todo']].concat(o.segs), show:s=>s.est!=='n', ind:1});
+  else ctrls.push({t:'text', k:'seg', lbl:'Segmento acometido (opcional)', ph:'ex.: terço proximal', show:s=>s.est!=='n', ind:1});
+  if(o.jun) ctrls.push({t:'num', k:'dist', lbl:`Distância da ${o.jun} (opcional)`, unit:'cm', show:s=>s.est!=='n', ind:1});
+  return {k, label, only:LAU_TVP_ONLY, ctrls, build(s){
+    if(!s.est || s.est==='n') return {txt:null, conc:[]};
+    const qual = musc ? (s.qual||'gastrocnêmias') : '';
+    const alvo = musc ? `das veias ${qual}` : nome;
+    const seg = lauHas(s.seg) ? `no ${String(s.seg).replace(/^(no|na|em)\s+/,'')}` : '';
+    const dist = o.jun && lauHas(s.dist) ? `, distando ${lauN(s.dist)} cm da ${o.jun}` : '';
+    let t, c;
+    const pre = musc ? `veias ${qual} ` : '';
+    if(s.est==='ag'){
+      const ocl = s.oc!=='no';
+      t = ocl ? `${pre}com ${P('calibre aumentado','calibres aumentados')}, ${P('incompressível','incompressíveis')}, ${P('preenchida','preenchidas')} por trombo hipoecogênico${seg?' '+seg:''}, sem fluxo ao Doppler${dist}`
+              : `${pre}${P('parcialmente compressível','parcialmente compressíveis')}, com trombo hipoecogênico não oclusivo${seg?' '+seg:''} e fluxo residual ao Doppler${dist}`;
+      t += sup ? ', compatível com trombose venosa superficial aguda (tromboflebite).' : `, compatível com trombose venosa ${musc?'':'profunda '}aguda${ocl?' oclusiva':' não oclusiva'}.`;
+      c = sup ? `Trombose venosa superficial aguda (tromboflebite) ${nome}${dist}.`
+        : musc ? `Trombose aguda de veias musculares da panturrilha (${qual}).`
+        : `Trombose venosa profunda aguda ${ocl?'oclusiva':'não oclusiva'} ${nome}.`;
+    } else {
+      const occ = s.rec==='occ';
+      t = occ ? `${pre}de ${P('calibre reduzido','calibres reduzidos')}, com paredes espessadas e conteúdo ecogênico${seg?' '+seg:''}, sem fluxo ao Doppler${dist}, compatível com oclusão venosa crônica (sequela de trombose).`
+              : `${pre}com paredes espessadas e trombo ecogênico aderido${seg?' '+seg:''}, com recanalização parcial ao Doppler${dist}, compatível com trombose venosa crônica.`;
+      c = occ ? `Oclusão venosa crônica ${alvo} (sequela de trombose).`
+              : `Sinais de trombose venosa ${sup||musc?'':'profunda '}crônica, com recanalização parcial, ${alvo}.`;
+    }
+    return {txt:t, conc:[c]};
+  }};
+}
+const LAU_TVP_ITENS = [
+  lauTvpVeia('tvpFC', 'Veia femoral comum', 'da veia femoral comum'),
+  lauTvpVeia('tvpFS', 'Veia femoral (superficial)', 'da veia femoral', {segs:[['terço proximal','Terço proximal'],['terço médio','Terço médio'],['terço distal','Terço distal']]}),
+  lauTvpVeia('tvpFP', 'Veia femoral profunda', 'da veia femoral profunda'),
+  lauTvpVeia('tvpPop', 'Veia poplítea', 'da veia poplítea'),
+  lauTvpVeia('tvpTA', 'Veias tibiais anteriores', 'das veias tibiais anteriores', {pl:1}),
+  lauTvpVeia('tvpTP', 'Veias tibiais posteriores', 'das veias tibiais posteriores', {pl:1}),
+  lauTvpVeia('tvpFib', 'Veias fibulares', 'das veias fibulares', {pl:1}),
+  lauTvpVeia('tvpMusc', 'Veias gastrocnêmias e soleares', '', {pl:1, musc:1}),
+  lauTvpVeia('tvpSM', 'Veia safena magna', 'da veia safena magna', {sup:1, segs:[['segmento da coxa','Coxa'],['segmento da perna','Perna']], jun:'junção safeno-femoral'}),
+  lauTvpVeia('tvpSP', 'Veia safena parva', 'da veia safena parva', {sup:1, jun:'junção safeno-poplítea'}),
+  {k:'tvpPele', label:'Pele e tecido subcutâneo', only:LAU_TVP_ONLY, ctrls:[
+     {t:'radio', k:'est', lbl:'Subcutâneo', opts:[['n','Normal'],['ed','Edema'],['cel','Sinais inflamatórios (celulite)']]},
+     {t:'select', k:'loc', lbl:'Localização', opts:[['da perna','Perna'],['da coxa','Coxa'],['do tornozelo e do pé','Tornozelo e pé'],['de todo o membro','Todo o membro']], show:s=>s.est!=='n', ind:1},
+     {t:'check', k:'col', lbl:'Coleção'},
+     {t:'dims', k:'colV', lbl:'Medidas', show:s=>s.col, ind:1},
+     {t:'text', k:'colL', lbl:'Localização', ph:'ex.: face medial da perna', show:s=>s.col, ind:1},
+   ], build(s){
+     if((!s.est||s.est==='n') && !s.col) return {txt:null, conc:[]};
+     const loc=s.loc||'da perna', t=[], c=[];
+     if(s.est==='ed'){ t.push(`espessamento e edema do tecido celular subcutâneo ${loc}.`); c.push(`Edema do tecido celular subcutâneo ${loc}.`); }
+     if(s.est==='cel'){ t.push(`espessamento e aumento da ecogenicidade do tecido celular subcutâneo ${loc}, com edema de permeio e aumento da vascularização ao Doppler, sugestivo de processo inflamatório/infeccioso (celulite).`); c.push(`Alterações inflamatórias do tecido celular subcutâneo ${loc}, sugestivas de celulite.`); }
+     if(s.col){ const lc=lauHas(s.colL)?` na ${s.colL.replace(/^(na|no|em)\s+/,'')}`:''; t.push(lauFrase(lauJoin([`coleção no tecido celular subcutâneo${lc}`, lauDimsTxt(s.colV)]))); c.push(`Coleção no tecido celular subcutâneo${lc}.`); }
+     if((!s.est||s.est==='n') && s.col) t.unshift('de espessura e ecogenicidade preservadas.');
+     return {txt:t.join(' '), conc:c};
+   }},
+  {k:'tvpFossa', label:'Fossa poplítea', only:LAU_TVP_ONLY, ctrls:[
+     {t:'check', k:'bak', lbl:'Cisto de Baker'},
+     {t:'dims', k:'bakV', lbl:'Medidas', show:s=>s.bak, ind:1},
+     {t:'check', k:'bakR', lbl:'Sinais de rotura', show:s=>s.bak, ind:1},
+     {t:'check', k:'aneu', lbl:'Aneurisma da artéria poplítea'},
+     {t:'num', k:'aneuD', lbl:'Diâmetro máximo', unit:'cm', show:s=>s.aneu, ind:1},
+     {t:'num', k:'aneuE', lbl:'Extensão (opcional)', unit:'cm', show:s=>s.aneu, ind:1},
+     {t:'check', k:'aneuT', lbl:'Trombo mural', show:s=>s.aneu, ind:1},
+   ], build(s){
+     if(!s.bak && !s.aneu) return {txt:null, conc:[]};
+     const t=[], c=[];
+     if(s.bak){ t.push(lauFrase(lauJoin([`cisto poplíteo (de Baker)`, lauDimsTxt(s.bakV)])).replace(/\.$/,'') + (s.bakR ? ', com sinais de rotura e extravasamento de líquido para a panturrilha.' : ', sem sinais de rotura.')); c.push(s.bakR ? 'Cisto poplíteo (de Baker) com sinais de rotura.' : 'Cisto poplíteo (de Baker).'); }
+     if(s.aneu){ const d=lauHas(s.aneuD)?`, com diâmetro máximo de ${lauN(s.aneuD)} cm`:'', e=lauHas(s.aneuE)?` e extensão de ${lauN(s.aneuE)} cm`:'';
+       t.push(`Dilatação aneurismática da artéria poplítea${d}${e}${s.aneuT?', com trombo mural':''}.`); c.push(`Aneurisma da artéria poplítea${s.aneuT?', com trombo mural':''}.`); }
+     const tx=t.join(' '); return {txt:tx.charAt(0).toLowerCase()+tx.slice(1), conc:c};
+   }},
+];
+LAU_TVP_ITENS.forEach(d=>{ LAU_STRUCT[d.k]=d; });
+const LAU_TVP_LABELS = {}; LAU_TVP_ITENS.forEach(d=>{ LAU_TVP_LABELS[lauNorm(d.label)]=d.k; });
 /* Elastografia hepática (2D-SWE): conclusão automática pela faixa do valor (SRU 2020)
    e alerta de qualidade quando IQR/mediana > 30% */
 LAU_STRUCT.elasto = {k:'elasto', label:'Elastografia hepática', noNF:true,
@@ -1122,7 +1208,7 @@ function lauBuildModel(mk){
   const used={};
   const items = mk.items.map(mi=>{
     const smap = mk.metodo==='mmg' ? LAU_STRUCT_LABELS_MMG : mk.metodo==='dmo' ? (typeof LAU_STRUCT_LABELS_DMO!=='undefined'?LAU_STRUCT_LABELS_DMO:{}) : mk.metodo==='tc' ? {} : LAU_STRUCT_LABELS;   // TC: itens de texto (os estruturados de US usam termos de US)
-    const sk = smap[lauNorm(mi.label)] || null;
+    const sk = (LAU_TVP_ONLY.test(mk.id||'') && LAU_TVP_LABELS[lauNorm(mi.label)]) || smap[lauNorm(mi.label)] || null;
     const base = { k:mi.k, label:mi.label, grp:mi.grp||'', dash:mi.dash, normal:mi.text, opts:mi.opts||[], alts:mi.alts||null, altConc:mi.altConc||null, optConc:mi.optConc||null };
     if(sk && !used[sk]){
       used[sk]=1;

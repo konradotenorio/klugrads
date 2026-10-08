@@ -9066,57 +9066,23 @@ null,
 "text": "pérvia, de calibre normal, totalmente compressível, com fluxo espontâneo e fásico com a respiração.",
 "dash": true,
 "opts": [],
-"grp": "",
-"alts": [
-"pérvia, de calibre normal, totalmente compressível, com fluxo espontâneo e fásico com a respiração.",
-"com calibre aumentado, incompressível, preenchida por material hipoecogênico, sem fluxo ao Doppler, compatível com trombose aguda oclusiva.",
-"parcialmente compressível, com trombo hipoecogênico não oclusivo e fluxo residual ao Doppler, compatível com trombose aguda não oclusiva.",
-"com paredes espessadas e trombo ecogênico aderido, com recanalização parcial ao Doppler, compatível com trombose crônica."
-],
-"altConc": [
-null,
-"Trombose venosa profunda aguda oclusiva da veia femoral comum.",
-"Trombose venosa profunda aguda não oclusiva da veia femoral comum.",
-"Sinais de trombose venosa profunda crônica, com recanalização parcial, da veia femoral comum."
-]
+"grp": ""
 },
 {
-"k": "veia-femoral-profunda-segmento-proximal",
-"label": "Veia femoral profunda (segmento proximal)",
-"text": "pérvia e totalmente compressível, com fluxo preservado.",
-"dash": true,
-"opts": [],
-"grp": "",
-"alts": [
-"pérvia e totalmente compressível, com fluxo preservado.",
-"incompressível, preenchida por material hipoecogênico, sem fluxo ao Doppler, compatível com trombose aguda.",
-"com paredes espessadas e trombo ecogênico aderido, com recanalização parcial, compatível com trombose crônica."
-],
-"altConc": [
-null,
-"Trombose venosa profunda aguda da veia femoral profunda.",
-"Sinais de trombose venosa profunda crônica da veia femoral profunda."
-]
-},
-{
-"k": "veia-femoral",
-"label": "Veia femoral",
+"k": "veia-femoral-superficial",
+"label": "Veia femoral (superficial)",
 "text": "pérvia, de calibre normal, totalmente compressível em toda a extensão da coxa, com fluxo preservado.",
 "dash": true,
 "opts": [],
-"grp": "",
-"alts": [
-"pérvia, de calibre normal, totalmente compressível em toda a extensão da coxa, com fluxo preservado.",
-"com calibre aumentado, incompressível, preenchida por material hipoecogênico, sem fluxo ao Doppler, compatível com trombose aguda oclusiva.",
-"parcialmente compressível, com trombo hipoecogênico não oclusivo e fluxo residual ao Doppler, compatível com trombose aguda não oclusiva.",
-"com paredes espessadas e trombo ecogênico aderido, com recanalização parcial ao Doppler, compatível com trombose crônica."
-],
-"altConc": [
-null,
-"Trombose venosa profunda aguda oclusiva da veia femoral.",
-"Trombose venosa profunda aguda não oclusiva da veia femoral.",
-"Sinais de trombose venosa profunda crônica, com recanalização parcial, da veia femoral."
-]
+"grp": ""
+},
+{
+"k": "veia-femoral-profunda",
+"label": "Veia femoral profunda",
+"text": "pérvia e totalmente compressível no segmento proximal, com fluxo preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
 },
 {
 "k": "veia-poplitea",
@@ -9124,19 +9090,15 @@ null,
 "text": "pérvia, de calibre normal, totalmente compressível, com fluxo preservado.",
 "dash": true,
 "opts": [],
-"grp": "",
-"alts": [
-"pérvia, de calibre normal, totalmente compressível, com fluxo preservado.",
-"com calibre aumentado, incompressível, preenchida por material hipoecogênico, sem fluxo ao Doppler, compatível com trombose aguda oclusiva.",
-"parcialmente compressível, com trombo hipoecogênico não oclusivo e fluxo residual ao Doppler, compatível com trombose aguda não oclusiva.",
-"com paredes espessadas e trombo ecogênico aderido, com recanalização parcial ao Doppler, compatível com trombose crônica."
-],
-"altConc": [
-null,
-"Trombose venosa profunda aguda oclusiva da veia poplítea.",
-"Trombose venosa profunda aguda não oclusiva da veia poplítea.",
-"Sinais de trombose venosa profunda crônica, com recanalização parcial, da veia poplítea."
-]
+"grp": ""
+},
+{
+"k": "veias-tibiais-anteriores",
+"label": "Veias tibiais anteriores",
+"text": "pérvias e totalmente compressíveis, com fluxo preservado.",
+"dash": true,
+"opts": [],
+"grp": ""
 },
 {
 "k": "veias-tibiais-posteriores",
@@ -9144,17 +9106,7 @@ null,
 "text": "pérvias e totalmente compressíveis, com fluxo preservado.",
 "dash": true,
 "opts": [],
-"grp": "",
-"alts": [
-"pérvias e totalmente compressíveis, com fluxo preservado.",
-"incompressíveis, preenchidas por material hipoecogênico, sem fluxo ao Doppler, compatível com trombose aguda.",
-"com paredes espessadas e trombo ecogênico aderido, com recanalização parcial, compatível com trombose crônica."
-],
-"altConc": [
-null,
-"Trombose venosa profunda aguda das veias tibiais posteriores.",
-"Sinais de trombose venosa profunda crônica das veias tibiais posteriores."
-]
+"grp": ""
 },
 {
 "k": "veias-fibulares",
@@ -9162,72 +9114,47 @@ null,
 "text": "pérvias e totalmente compressíveis, com fluxo preservado.",
 "dash": true,
 "opts": [],
-"grp": "",
-"alts": [
-"pérvias e totalmente compressíveis, com fluxo preservado.",
-"incompressíveis, preenchidas por material hipoecogênico, sem fluxo ao Doppler, compatível com trombose aguda.",
-"com paredes espessadas e trombo ecogênico aderido, com recanalização parcial, compatível com trombose crônica."
-],
-"altConc": [
-null,
-"Trombose venosa profunda aguda das veias fibulares.",
-"Sinais de trombose venosa profunda crônica das veias fibulares."
-]
+"grp": ""
 },
 {
-"k": "veias-musculares-da-panturrilha-gastrocn",
-"label": "Veias musculares da panturrilha (gastrocnêmias e soleares)",
+"k": "veias-gastrocnemias-e-soleares",
+"label": "Veias gastrocnêmias e soleares",
 "text": "pérvias e compressíveis.",
 "dash": true,
 "opts": [],
-"grp": "",
-"alts": [
-"pérvias e compressíveis.",
-"trombos hipoecogênicos nas veias gastrocnêmias XX soleares, que se apresentam incompressíveis, compatível com trombose aguda."
-],
-"altConc": [
-null,
-"Trombose de veias musculares ({0}) da panturrilha."
-]
+"grp": ""
 },
 {
-"k": "juncao-safeno-femoral-e-veia-safena-magn",
-"label": "Junção safeno-femoral e veia safena magna",
-"text": "pérvias e compressíveis, sem trombos.",
+"k": "veia-safena-magna",
+"label": "Veia safena magna",
+"text": "pérvia e compressível, sem trombos, com junção safeno-femoral sem alterações.",
 "dash": true,
 "opts": [],
-"grp": "",
-"alts": [
-"pérvias e compressíveis, sem trombos.",
-"trombo intraluminal na veia safena magna, no segmento da coxa XX da perna, com veia incompressível, distando XXX cm da junção safeno-femoral, com sinais inflamatórios no subcutâneo adjacente."
-],
-"altConc": [
-null,
-"Tromboflebite da veia safena magna, distando {1} cm da junção safeno-femoral."
-]
+"grp": ""
 },
 {
-"k": "juncao-safeno-poplitea-e-veia-safena-par",
-"label": "Junção safeno-poplítea e veia safena parva",
-"text": "pérvias e compressíveis, sem trombos.",
+"k": "veia-safena-parva",
+"label": "Veia safena parva",
+"text": "pérvia e compressível, sem trombos, com junção safeno-poplítea sem alterações.",
 "dash": true,
-"opts": [
-"Cisto poplíteo (de Baker), medindo XXX x XXX x XXX cm, sem sinais de rotura.",
-"Edema do tecido celular subcutâneo da perna."
-],
-"grp": "",
-"alts": [
-"pérvias e compressíveis, sem trombos.",
-"trombo intraluminal na veia safena parva, com veia incompressível, distando XXX cm da junção safeno-poplítea, com sinais inflamatórios no subcutâneo adjacente."
-],
-"altConc": [
-null,
-"Tromboflebite da veia safena parva, distando {0} cm da junção safeno-poplítea."
-],
-"optConc": [
-"Cisto poplíteo (de Baker).",
-"Edema do tecido celular subcutâneo da perna."
-]
+"opts": [],
+"grp": ""
+},
+{
+"k": "pele-e-tecido-subcutaneo",
+"label": "Pele e tecido subcutâneo",
+"text": "de espessura e ecogenicidade preservadas.",
+"dash": true,
+"opts": [],
+"grp": ""
+},
+{
+"k": "fossa-poplitea",
+"label": "Fossa poplítea",
+"text": "sem formações císticas; artéria poplítea de calibre normal.",
+"dash": true,
+"opts": [],
+"grp": ""
 }
 ],
 "seq": [
@@ -9248,15 +9175,19 @@ null,
 },
 {
 "t": "item",
-"k": "veia-femoral-profunda-segmento-proximal"
+"k": "veia-femoral-superficial"
 },
 {
 "t": "item",
-"k": "veia-femoral"
+"k": "veia-femoral-profunda"
 },
 {
 "t": "item",
 "k": "veia-poplitea"
+},
+{
+"t": "item",
+"k": "veias-tibiais-anteriores"
 },
 {
 "t": "item",
@@ -9268,7 +9199,7 @@ null,
 },
 {
 "t": "item",
-"k": "veias-musculares-da-panturrilha-gastrocn"
+"k": "veias-gastrocnemias-e-soleares"
 },
 {
 "t": "blank"
@@ -9279,11 +9210,26 @@ null,
 },
 {
 "t": "item",
-"k": "juncao-safeno-femoral-e-veia-safena-magn"
+"k": "veia-safena-magna"
 },
 {
 "t": "item",
-"k": "juncao-safeno-poplitea-e-veia-safena-par"
+"k": "veia-safena-parva"
+},
+{
+"t": "blank"
+},
+{
+"t": "line",
+"text": "OUTROS ACHADOS"
+},
+{
+"t": "item",
+"k": "pele-e-tecido-subcutaneo"
+},
+{
+"t": "item",
+"k": "fossa-poplitea"
 }
 ],
 "concTitulo": "Conclusão:",

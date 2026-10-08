@@ -465,10 +465,10 @@ const LAU_FRASES = [
    c:'Achados compatíveis com torção do testículo {0}. Avaliação urológica imediata.'},
 
   /* ---------------- ÚTERO / ENDOMÉTRIO / OVÁRIOS ---------------- */
-  {o:'utero', nm:/^miometrio/, q:1, cp:'Útero miomatoso.', x:['nódulos'], n:'Mioma', m:'add',
+  {o:'utero', nm:/^miometrio/, q:1, cp:'Útero miomatoso.', x:['nódulos'], n:'Mioma', m:'add', medOpc:1,
    t:'Nódulo miometrial hipoecogênico XX heterogêneo XX isoecogênico, intramural XX subseroso XX submucoso XX intramural/submucoso XX intramural/subseroso XX transmural XX pediculado, na parede corporal_anterior XX corporal_posterior XX lateral_direita XX lateral_esquerda XX fúndica, medindo XXX x XXX x XXX cm.',
    c:'Mioma uterino.'},
-  {o:'utero', nm:/^miometrio/, x:['nódulos'], n:'Miomas (vários)', m:'add',
+  {o:'utero', nm:/^miometrio/, x:['nódulos'], n:'Miomas (vários)', m:'add', medOpc:1,
    mt:'hipoecogênico XX heterogêneo XX isoecogênico, intramural XX subseroso XX submucoso XX intramural/submucoso XX intramural/subseroso XX transmural XX pediculado, na parede corporal_anterior XX corporal_posterior XX lateral_direita XX lateral_esquerda XX fúndica, medindo XXX x XXX x XXX cm', mtn:'Nódulo', mtb:'adicionar outro mioma',
    t:'Múltiplos nódulos miometriais, o maior intramural XX subseroso XX submucoso XX intramural/submucoso XX intramural/subseroso XX transmural XX pediculado na parede corporal_anterior XX corporal_posterior XX lateral_direita XX lateral_esquerda XX fúndica, medindo XXX x XXX x XXX cm.',
    c:'Útero miomatoso.'},
@@ -481,10 +481,10 @@ const LAU_FRASES = [
    t:'Falha miometrial em forma de nicho na cicatriz de cesárea, com miométrio residual de XXX cm.',
    c:'Nicho na cicatriz de cesárea (istmocele).'},
   /* miométrio (laudos com item próprio): o mioma reescreve a frase do miométrio */
-  {o:'miometrio', n:'Mioma', m:'sub',
+  {o:'miometrio', n:'Mioma', m:'sub', medOpc:1,
    t:'com ecotextura heterogênea, notando-se nódulo hipoecogênico XX heterogêneo XX isoecogênico, intramural XX subseroso XX submucoso XX intramural/submucoso XX intramural/subseroso XX transmural XX pediculado, na parede corporal_anterior XX corporal_posterior XX lateral_direita XX lateral_esquerda XX fúndica, medindo XXX x XXX x XXX cm.',
    c:'Mioma uterino.'},
-  {o:'miometrio', n:'Miomas (vários)', m:'sub',
+  {o:'miometrio', n:'Miomas (vários)', m:'sub', medOpc:1,
    mt:'hipoecogênico XX heterogêneo XX isoecogênico, intramural XX subseroso XX submucoso XX intramural/submucoso XX intramural/subseroso XX transmural XX pediculado, na parede corporal_anterior XX corporal_posterior XX lateral_direita XX lateral_esquerda XX fúndica, medindo XXX x XXX x XXX cm', mtn:'Nódulo', mtb:'adicionar outro mioma',
    t:'com ecotextura heterogênea, notando-se múltiplos nódulos miometriais, o maior intramural XX subseroso XX submucoso XX intramural/submucoso XX intramural/subseroso XX transmural XX pediculado na parede corporal_anterior XX corporal_posterior XX lateral_direita XX lateral_esquerda XX fúndica, medindo XXX x XXX x XXX cm.',
    c:'Útero miomatoso.'},
