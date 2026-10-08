@@ -696,6 +696,8 @@ LAU_TVP_ITENS.forEach(d=>{ LAU_STRUCT[d.k]=d; });
 /* texto corrido da máscara (como no laudo venoso anterior): com veias alteradas, vira "demais veias…" */
 const LAU_TVP_PROF = ['tvpFC','tvpFS','tvpFP','tvpPop','tvpTA','tvpTP','tvpFib','tvpMusc'];
 function lauTvpAlt(m, sks){ const L=state.lau; return sks.filter(sk=>{ const it=m.items.find(i=>i.sk===sk); const s=it&&L&&L.v&&L.v[it.k]; return s && s.est && s.est!=='n'; }); }
+/* TVP: o texto corrido é automático, não aparece na lista de itens */
+function lauTvpFixo(m, it){ return LAU_TVP_ONLY.test(m.id||'') && it.generic && /^(veias-femorais|crossas-das-veias-safenas|ao-estudo-doppler)/.test(it.k); }
 function lauTvpTexto(m, it){
   if(!LAU_TVP_ONLY.test(m.id||'') || !state.lau || state.lau.model!==m.id) return null;
   if(/^veias-femorais/.test(it.k)){ const a=lauTvpAlt(m, LAU_TVP_PROF); if(!a.length) return null;
@@ -2909,7 +2911,7 @@ function lauLeftHTML(){
     ()=>`${lauHasPh(tit)?`<div class="lau-rl">Título</div>${tit.split('\n').map((t,i)=>lauHasPh(t)?lauInlineForm('__tit','t'+i,t,L.tit['t'+i]):'').join('')}`:''}
         <div class="lau-row"><div class="lau-rl">Indicação clínica</div><input class="lau-txt" type="text" value="${esc(L.ind)}" placeholder="${m.metodo==='mmg'?'ex.: rastreamento':'ex.: dor abdominal'}" oninput="lauSetInd(this.value)">${indChips}</div>
         ${lauTecOpts().map(o=>`<label class="lau-chk"><input type="checkbox" ${L.tec[o[0]]?'checked':''} onchange="lauSetTec('${o[0]}')"><span>Limitação: ${esc(o[1])}</span></label>`).join('')}`);
-  h += m.items.filter(it=> m.oct ? lauOctOlho(it)==='d' : !lauItemOutroLado(m,it)).map(it=>{
+  h += m.items.filter(it=> (m.oct ? lauOctOlho(it)==='d' : !lauItemOutroLado(m,it)) && !lauTvpFixo(m,it)).map(it=>{
     const sum=lauSum(m,it);
     const nm = lauItemLabel(m,it) ? lauFill(lauItemLabel(m,it), L.v[it.k].__v.l) : lauFill(lauItemNormal(m,it), L.v[it.k].__v.n).slice(0,48)+'…';
     const title = esc(nm.replace(/:$/,'')) + (it.grp&&!m.oct?` <span class="lau-grp">${esc(it.grp)}</span>`:'');
