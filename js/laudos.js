@@ -1581,8 +1581,7 @@ function lauTiradsConc(f, vals, d, plural, all){
   const nome = plural ? 'Nódulos tireoidianos' : 'Nódulo tireoidiano';
   const onde = plural ? '' : ' '+ladoTxt;   // vários semelhantes: só "Nódulos tireoidianos — ACR TI-RADS n"
   if(!(ev.complete||ev.auto)) return `${nome}${onde} — ACR TI-RADS ${lauMk('?',true)}.`;
-  const ch = d && LAU_CHAMMAS[d.cham] ? `, padrão vascular ${LAU_CHAMMAS[d.cham][0]} de Chammas` : '';
-  return `${nome}${onde} — ACR TI-RADS ${ev.tr}${ch}.`;   // só a categoria (+ Chammas, se marcado), sem conduta
+  return `${nome}${onde} — ACR TI-RADS ${ev.tr}.`;   // só a categoria, sem conduta (Chammas fica só na descrição)
 }
 
 /* ---------- O-RADS US (mesma classificação da calculadora: oradsEval / oradsMgmt, js/calc-orads.js) ---------- */
@@ -2002,6 +2001,7 @@ function lauConcs(m){
     }
     if(h && !seen[h]){ seen[h]=1; out.push({html:h}); }
   };
+  let trSlot=-1; const trList=[];
   const vis = m.items.filter(it=>!lauItemOutroLado(m,it));   // exame unilateral: ignora o outro lado
   vis.forEach(it=>{
     (lauBuild(m,it).conc||[]).forEach(c=>push(esc(c)));
@@ -2009,8 +2009,30 @@ function lauConcs(m){
     // conclusão própria da variação escolhida / das frases opcionais marcadas ("texto => conclusão" na máscara)
     if(it.altConc && s.__alt>0 && it.altConc[s.__alt]) push(lauFraseConcHTML({t:it.alts[s.__alt], c:it.altConc[s.__alt]}, s.__v.n, ''));
     if(it.optConc) it.optConc.forEach((c,i)=>{ if(c && s.__o[i]) push(lauFraseConcHTML({t:it.opts[i], c}, s.__v['o'+i], '')); });
-    (s.__f||[]).forEach(id=>push(lauFraseConc(id, s.__v, lauLblLado(m, lauItemLabel(m,it)))));
+    (s.__f||[]).forEach(id=>{
+      const f=lauFI(id);
+      if(f && f.kind==='tirads'){ if(trSlot<0){ trSlot=out.length; out.push({tr:1}); } trList.push({id, bag:s.__v, lbl:lauLblLado(m, lauItemLabel(m,it))}); return; }
+      push(lauFraseConc(id, s.__v, lauLblLado(m, lauItemLabel(m,it))));
+    });
   });
+  // vários nódulos tireoidianos: uma linha só, com a categoria ACR TI-RADS do maior
+  if(trSlot>=0){
+    const info = trList.map(x=>{ const f=lauFI(x.id), d=x.bag['d'+x.id]||{}, pl=lauQtd(f,x.bag,x.id)==='n';
+      const vs = pl ? [x.bag['f'+x.id]].concat(Array.from({length:lauQn(d)-1},(_,j)=>x.bag['f'+x.id+'_'+(j+2)])) : [x.bag['f'+x.id]];
+      const dims = vs.map(v=>lauMaxDim(f, v, d)).filter(v=>v!=null);
+      const ev=tiradsEval(lauTrNod(d));
+      return {x, n: pl ? lauQn(d) : 1, dim: dims.length ? Math.max(...dims) : null, tr: (ev.complete||ev.auto) ? ev.tr : null}; });
+    const tot = info.reduce((a,b)=>a+b.n, 0);
+    let h;
+    if(tot<2) h = lauFraseConc(trList[0].id, trList[0].bag, trList[0].lbl);
+    else {
+      const med = info.filter(i=>i.dim!=null);
+      const alvo = med.length ? med.reduce((a,b)=>b.dim>a.dim?b:a) : info.filter(i=>i.tr!=null).reduce((a,b)=>(a==null||b.tr>a.tr)?b:a, null);
+      const tr = alvo && alvo.tr!=null ? esc(String(alvo.tr)) : lauMk('?',true);
+      h = `Nódulos tireoidianos, o maior classificado como ACR TI-RADS ${tr}.`;
+    }
+    out[trSlot] = {html:h}; seen[h]=1;
+  }
   (state.lau.xf||[]).forEach(id=>push(lauFraseConc(id, state.lau.xv, '')));
   out.forEach(o=>{ if(o.grupo){ const g=grupos[o.grupo]; const pl=g.des.length>1;
     const alvo = g.lig ? `${pl?'dos ligamentos':'do ligamento'} ${lauJuntaE(g.des)}` : g.musc ? `${g.hemat?(pl?'nos músculos':'no músculo'):(pl?'dos músculos':'do músculo')} ${lauJuntaE(g.des)}` : lauJuntaE(g.des);
