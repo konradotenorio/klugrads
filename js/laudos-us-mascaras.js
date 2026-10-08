@@ -1606,9 +1606,9 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "dispositivo-contraceptivo",
-"label": "Dispositivo contraceptivo",
-"text": "centrado na cavidade endometrial. Distância DIU-serosa fúndica: XXX ; distância DIU-fundo da cavidade: XXX cm.",
+"k": "dispositivo-intrauterino-diu",
+"label": "Dispositivo intrauterino (DIU)",
+"text": "normoposicionado, com extremidade distal acima do orifício interno do colo. Distância DIU-serosa fúndica: XXX cm; distância DIU-fundo da cavidade: XXX cm.",
 "dash": true,
 "opts": [],
 "grp": ""
@@ -1657,7 +1657,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "dispositivo-contraceptivo"
+"k": "dispositivo-intrauterino-diu"
 },
 {
 "t": "item",
@@ -1675,7 +1675,7 @@ const LAU_US_MASKS = [
 "concTitulo": "Conclusão:",
 "conc": [
 {
-"text": "DIU normoposicionado na cavidade uterina.",
+"text": "DIU normoposicionado.",
 "dash": true
 }
 ],
@@ -1972,7 +1972,7 @@ const LAU_US_MASKS = [
 "text": "centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.",
 "dash": true,
 "opts": [
-"Dispositivo contraceptivo: centrado na cavidade endometrial. Distância DIU-serosa fúndica: XXX ; distância DIU-fundo da cavidade: XXX cm."
+"Dispositivo intrauterino (DIU): normoposicionado, com extremidade distal acima do orifício interno do colo. Distância DIU-serosa fúndica: XXX cm; distância DIU-fundo da cavidade: XXX cm."
 ],
 "grp": ""
 },

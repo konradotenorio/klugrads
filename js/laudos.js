@@ -1863,8 +1863,8 @@ function lauItemOculto(m, it){
   if(it.generic && /^Exame direcionado para a região X{2,3}\.?$/.test(String(lauItemNormal(m,it)||'').trim())){ const s=state.lau.v[it.k]; const v=((s&&s.__v&&s.__v.n)||[]); if(!v.some(lauHas) && !lauHas(s&&s.alt)) return true; }
   // tireoidectomia total: a linha "Volumes estimados" sai do laudo
   if(/^volumes estimados/i.test(lauItemLabel(m,it)||'')){ const c=lauTireoCx(m); if(c && c.total) return true; }
-  // DIU descrito no endométrio: a linha fixa "Dispositivo contraceptivo" da máscara sai do laudo
-  if(/^dispositivo contraceptivo/i.test(lauItemLabel(m,it)||'') && lauDiuNoEndometrio(m)) return true;
+  // DIU descrito no endométrio: a linha fixa do dispositivo da máscara sai do laudo
+  if(/^dispositivo (contraceptivo|intrauterino)/i.test(lauItemLabel(m,it)||'') && lauDiuNoEndometrio(m)) return true;
   // obstétricos com Doppler: bexiga, útero e colo só entram no laudo quando alterados; US tórax: pericárdio idem
   if((/^us-obstetrico-(doppler|gemelar-com-doppler)$/.test(m.id) && /^(bexiga|utero|colo-uterino)$/.test(it.k)) || (m.id==='us-torax' && it.k==='pericardio')){
     const s=state.lau.v[it.k];

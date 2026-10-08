@@ -387,12 +387,12 @@ Data do Exame:
 - Útero: em anteversoflexão* XX retroversão XX medioversão, medindo XX x XX x XX cm (volume estimado em XXX cm³), de contornos regulares.
 - Miométrio: com ecotextura característica, sem nódulos conspícuos.
 - Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.
-- Dispositivo contraceptivo: centrado na cavidade endometrial. Distância DIU-serosa fúndica: XXX ; distância DIU-fundo da cavidade: XXX cm.
+- Dispositivo intrauterino (DIU): normoposicionado, com extremidade distal acima do orifício interno do colo. Distância DIU-serosa fúndica: XXX cm; distância DIU-fundo da cavidade: XXX cm.
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 - Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 - Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
 Conclusão:
- - DIU normoposicionado na cavidade uterina.
+ - DIU normoposicionado.
 Liberado por: 
 CRM: 
 
@@ -469,7 +469,7 @@ Data do Exame:
 XXX Nódulo miometrial hipoecogênico na parede corporal anterior X posterior X no fundo uterino, medindo cerca de XXX cm, comumente representando leiomioma. 
 XXX Assimetria das paredes uterinas com indefinição da interface endométrio / miométrio, sem XX com diminutos cistos subendometriais. Tais achados podem estar relacionados à adenomiose. A critério clínico, uma RM da pelve poderá trazer informações adicionais.
 - Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.
-XXX - Dispositivo contraceptivo: centrado na cavidade endometrial. Distância DIU-serosa fúndica: XXX ; distância DIU-fundo da cavidade: XXX cm.
+XXX - Dispositivo intrauterino (DIU): normoposicionado, com extremidade distal acima do orifício interno do colo. Distância DIU-serosa fúndica: XXX cm; distância DIU-fundo da cavidade: XXX cm.
 - Colo uterino: forma normal e canal endocervical sem alterações ecográficas. 
 XXX Sinais de histerotomia (cicatriz cesárea) ístmica anterior sem particularidades XXX com pequena istmocele.
 XXX Discretas estrias hipoecogênicas na serosa anterior do útero e no espaço vésico uterino, provavelmente de natureza fibrocicatricial.
