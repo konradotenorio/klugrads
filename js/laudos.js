@@ -2107,8 +2107,10 @@ function lauConcs(m){
   };
   let trSlot=-1; const trList=[];
   const vis = m.items.filter(it=>!lauItemOutroLado(m,it));   // exame unilateral: ignora o outro lado
+  const tvpM = LAU_TVP_ONLY.test(m.id||''); let tvpSlot=-1; const tvpC=[];
   vis.forEach(it=>{
-    (lauBuild(m,it).conc||[]).forEach(c=>push(esc(c)));
+    if(tvpM && LAU_TVP_PROF.indexOf(it.sk)>=0){ const cc=lauBuild(m,it).conc||[]; if(cc.length){ if(tvpSlot<0){ tvpSlot=out.length; out.push({tvp:1}); } tvpC.push({c:cc, est:state.lau.v[it.k].est}); } }
+    else (lauBuild(m,it).conc||[]).forEach(c=>push(esc(c)));
     const s=state.lau.v[it.k];
     // conclusão própria da variação escolhida / das frases opcionais marcadas ("texto => conclusão" na máscara)
     if(it.altConc && s.__alt>0 && it.altConc[s.__alt]) push(lauFraseConcHTML({t:it.alts[s.__alt], c:it.altConc[s.__alt]}, s.__v.n, ''));
@@ -2119,6 +2121,18 @@ function lauConcs(m){
       push(lauFraseConc(id, s.__v, lauLblLado(m, lauItemLabel(m,it))));
     });
   });
+  // TVP: mais de uma veia profunda com trombose → uma frase só na conclusão
+  if(tvpSlot>=0){
+    let h;
+    if(tvpC.length===1) h = esc(tvpC[0].c[0]);
+    else {
+      const ests=[...new Set(tvpC.map(x=>x.est))];
+      const fase = ests.length===1 ? (ests[0]==='ag'?' aguda':' crônica') : '';
+      const ld = state.lau.lado==='d' ? ' direito' : state.lau.lado==='e' ? ' esquerdo' : '';
+      h = `Trombose venosa profunda${fase} do membro inferior${ld}.`;
+    }
+    out[tvpSlot]={html:h}; seen[h]=1;
+  }
   // vários nódulos tireoidianos: uma linha só, com a categoria ACR TI-RADS do maior
   if(trSlot>=0){
     const info = trList.map(x=>{ const f=lauFI(x.id), d=x.bag['d'+x.id]||{}, pl=lauQtd(f,x.bag,x.id)==='n';
