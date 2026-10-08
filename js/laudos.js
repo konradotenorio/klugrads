@@ -345,9 +345,7 @@ const LAU_ABD_ITEMS = [
        {t:'radio', k:'est'+L, lbl:'Situação', opts:[['n','Normal'],['nef','Nefropatia'],['cx','Nefrectomia']]},
        {t:'radio', k:'nefT'+L, lbl:'Nefropatia', opts:[['cr','Crônica'],['ag','Aguda']], show:s=>s['est'+L]==='nef', ind:1},
        {t:'radio', k:'dim'+L, lbl:'Dimensões', opts:[['n','Normais'],['red','Reduzidas'],['aum','Aumentadas']], show:ok},
-       {t:'num', k:'comp'+L, lbl:'Comprimento (opcional)', unit:'cm', show:s=>ok(s)&&!s.medMasc},
-       {t:'num', k:'parq'+L, lbl:'Parênquima (opcional)', unit:'cm', show:s=>ok(s)&&!s.medMasc},
-       {t:'num', k:'cort'+L, lbl:'Cortical (opcional)', unit:'cm', show:s=>ok(s)&&!s.medMasc},
+       {t:'nums', lbl:'Medidas (opcional)', f:[['comp'+L,'Comprimento'],['parq'+L,'Parênquima']], unit:'cm', show:s=>ok(s)&&!s.medMasc},
        {t:'check', k:'calc'+L, lbl:'Cálculo(s)', show:ok},
        {t:'radio', k:'calcQ'+L, lbl:'Quantidade', opts:LAU_QTD, show:s=>ok(s)&&s['calc'+L], ind:1},
        {t:'num', k:'calcD'+L, lbl:'Medida (maior)', unit:'cm', show:s=>ok(s)&&s['calc'+L], ind:1},
@@ -2578,6 +2576,7 @@ function lauCtrlHTML(k, s, c){
   if(c.t==='radio') return `<div class="lau-row${ind}"><div class="lau-rl">${esc(c.lbl)}</div><div class="lau-chips">${c.opts.map(o=>`<button type="button" class="ti-ftog ${s[c.k]===o[0]?'on':''}" onclick="lauSet('${k}','${c.k}','${esc(o[0])}')">${esc(o[1])}</button>`).join('')}</div></div>`;
   if(c.t==='select') return `<div class="lau-row${ind}"><div class="lau-rl">${esc(c.lbl)}</div><select class="lau-sel" onchange="lauSet('${k}','${c.k}',this.value)">${c.opts.map(o=>`<option value="${esc(o[0])}" ${s[c.k]===o[0]?'selected':''}>${esc(o[1])}</option>`).join('')}</select></div>`;
   if(c.t==='num') return `<div class="lau-row${ind}"><div class="lau-rl">${esc(c.lbl)}</div><div class="lau-num"><input type="text" inputmode="decimal" value="${esc(s[c.k])}" oninput="lauSetQ('${k}','${c.k}',this.value)"><span>${esc(c.unit||'')}</span></div></div>`;
+  if(c.t==='nums') return `<div class="lau-row${ind}"><div class="lau-rl">${esc(c.lbl)}</div><div class="lau-nums">${c.f.map(([fk,fl])=>`<label class="lau-num"><span>${esc(fl)}</span><input type="text" inputmode="decimal" value="${esc(s[fk])}" oninput="lauSetQ('${k}','${fk}',this.value)"><span>${esc(c.unit||'')}</span></label>`).join('')}</div></div>`;
   if(c.t==='text') return `<div class="lau-row${ind}"><div class="lau-rl">${esc(c.lbl)}</div><input class="lau-txt" type="text" placeholder="${esc(c.ph||'')}" value="${esc(s[c.k])}" oninput="lauSetQ('${k}','${c.k}',this.value)"></div>`;
   if(c.t==='dims'){ const v=s[c.k]||['','',''];
     return `<div class="lau-row${ind}"><div class="lau-rl">${esc(c.lbl)}</div><div class="lau-dims">${[0,1,2].map(i=>`<input type="text" inputmode="decimal" value="${esc(v[i])}" oninput="lauSetQ('${k}','${c.k}',this.value,${i})">`).join('<i>×</i>')}<span>cm</span></div></div>`; }
