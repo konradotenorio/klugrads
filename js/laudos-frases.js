@@ -36,7 +36,7 @@ const LAU_FRASE_ORGAOS = [
   ['prostata', /^prostata/],
   ['aorta', /^aorta/],
   ['iliaca', /^aorta, arterias iliacas|^arterias iliacas/],
-  ['peritoneo', /^peritoneo/],
+  ['peritoneo', /^periton[ei]o/],
   ['tireoide', /^tireoide|^lobo (direito|esquerdo)|^istmo/],
   ['linfonodos', /linfonod/],
   ['salivares', /parotida|submandibular|glandulas? salivar/],

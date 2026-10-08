@@ -126,7 +126,7 @@ ULTRASSONOGRAFIA DE ABDOME TOTAL E PÉLVICA
 - Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XXX mm. || filiforme / não caracterizado.
 - Ovário direito: medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), de aspecto habitual.
 - Ovário esquerdo: medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), de aspecto habitual.
-- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade abdominal e pélvica.
+- Peritônio e retroperitônio: ausência de líquido livre ou coleções detectáveis na cavidade abdominal e pélvica.
 
 Conclusão:
 - Exame sem alterações significativas.
@@ -289,7 +289,7 @@ ULTRASSONOGRAFIA DE ABDOME TOTAL E PÉLVICA COM DOPPLER
 - Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XXX mm. || filiforme / não caracterizado.
 - Ovário direito: medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), de aspecto habitual.
 - Ovário esquerdo: medindo XXX x XXX x XXX cm (volume estimado em XXX cm³), de aspecto habitual.
-- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade abdominal e pélvica.
+- Peritônio e retroperitônio: ausência de líquido livre ou coleções detectáveis na cavidade abdominal e pélvica.
 Ao estudo Doppler:
 - Artéria hepática: pérvia, com fluxo bifásico de boa amplitude e índice de resistividade (IR) de XXX.
 - Veia porta (tronco e ramos intrahepáticos): pérvia, com calibre de XXX cm, apresentando fluxo hepatopetal com velocidades no tronco em torno de XXX cm/s.

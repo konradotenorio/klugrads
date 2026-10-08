@@ -553,7 +553,7 @@ const LAU_ABD_ITEMS = [
    }},
 
   /* ---------------- PERITÔNEO / RETROPERITÔNIO ---------------- */
-  {k:'peritoneo', label:'Peritôneo / retroperitôneo',
+  {k:'peritoneo', label:'Peritônio / retroperitônio',
    normal:'Ausência de líquido livre ou coleções detectáveis.',
    ctrls:[
      {t:'check', k:'liq', lbl:'Líquido livre'},
@@ -607,7 +607,7 @@ const LAU_STRUCT_LABELS = {
   'figado':'figado', 'veias porta e hepaticas':'porta', 'vesicula biliar':'vesicula',
   'vias biliares intra e extra-hepaticas':'vias', 'pancreas':'pancreas', 'baco':'baco',
   'rins':'rins', 'bexiga':'bexiga', 'aorta abdominal':'aorta',
-  'peritoneo e retroperitoneo':'peritoneo', 'peritoneo / retroperitoneo':'peritoneo',
+  'peritoneo e retroperitoneo':'peritoneo', 'peritoneo / retroperitoneo':'peritoneo', 'peritonio e retroperitonio':'peritoneo', 'peritonio / retroperitonio':'peritoneo',
   'cirurgias previas':'cirurgia', 'alcas intestinais':'alcas', 'elastografia hepatica':'elasto',
 };
 /* Elastografia hepática (2D-SWE): conclusão automática pela faixa do valor (SRU 2020)

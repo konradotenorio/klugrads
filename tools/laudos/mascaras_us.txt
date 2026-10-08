@@ -127,7 +127,7 @@ Data do Exame:
 - Baço: com dimensões normais, homogêneo.
 - Rins: tópicos, de dimensões normais, com espessura e ecogenicidade parenquimatosas preservadas, sem hidronefrose ou cálculos detectáveis ao método.
 - Aorta abdominal: com calibre normal.
-- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis.
+- Peritônio e retroperitônio: ausência de líquido livre ou coleções detectáveis.
 - Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico.
 - Alças intestinais: sem distensão ou espessamento parietal detectáveis ao método.
 Conclusão:
@@ -264,7 +264,7 @@ Data do Exame:
 - Baço: com dimensões normais, homogêneo.
 - Rins: tópicos, de dimensões normais, com espessura e ecogenicidade parenquimatosas preservadas, sem hidronefrose ou cálculos detectáveis ao método.
 - Aorta abdominal: com calibre normal.
-- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis.
+- Peritônio e retroperitônio: ausência de líquido livre ou coleções detectáveis.
 - Bexiga: com repleção satisfatória, paredes regulares e conteúdo anecogênico.
 - Alças intestinais: sem distensão ou espessamento parietal detectáveis ao método.
 - Próstata: com forma habitual, medindo cerca de XX x XX x XX cm; massa estimada em XXX gramas.
@@ -349,7 +349,7 @@ Exame realizado pela via suprapúbica.
 - Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm. || filiforme / não caracterizado.
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo folículos de até XXX cm.
 - Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo folículos de até XXX cm.
-- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
+- Peritônio e retroperitônio: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
 Conclusão:
 - Útero e ovários sem alterações significativas para a faixa etária. 
 XXX - Não há sinais ultrassonográficos de estimulação hormonal.
@@ -370,7 +370,7 @@ Data do Exame:
 - Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 - Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
-- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
+- Peritônio e retroperitônio: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
 Conclusão:
 - Exame sem alterações significativas.
 Liberado por: 
@@ -390,7 +390,7 @@ Data do Exame:
 - Dispositivo intrauterino (DIU): normoposicionado, com extremidade distal acima do orifício interno do colo. Distância DIU-serosa fúndica: XXX cm; distância DIU-fundo da cavidade: XXX cm.
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 - Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
-- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
+- Peritônio e retroperitônio: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
 Conclusão:
  - DIU normoposicionado.
 Liberado por: 
@@ -411,7 +411,7 @@ Exame realizado no dia XX do ciclo, pelas vias suprapúbica e transvaginal.
 - Endométrio: centrado e homogêneo* XX heterogêneo, com espessura bilaminar de XX mm.
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo cerca de XX folículos maiores, o dominante medindo XX cm (diâmetro médio).
 - Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), exibindo cerca de XX folículos maiores, o dominante medindo XX cm (diâmetro médio).
-- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
+- Peritônio e retroperitônio: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
 Conclusão e comparação:
 Ovários apresentando sinais de estimulação hormonal, com folículos medindo até XXX cm.
 Comparativamente à ultrassonografia prévia recente de XXX, houve XXX.
@@ -475,7 +475,7 @@ XXX Sinais de histerotomia (cicatriz cesárea) ístmica anterior sem particulari
 XXX Discretas estrias hipoecogênicas na serosa anterior do útero e no espaço vésico uterino, provavelmente de natureza fibrocicatricial.
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 - Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
-- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
+- Peritônio e retroperitônio: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
 Não há sinais de endometriose profunda no septo retovaginal, fórnice vaginal ou nas regiões retrocervical, paracervical, recesso vésico-uterino e alças intestinais avaliadas. 
 Não há sinais de endometriose profunda no ceco. 
 XXX Tecido hipoecogênico irregular na região retrocervical / retrocorporal uterina (acometendo o tórus uterino) e com extensão para:
@@ -997,7 +997,7 @@ XXX Sinais de shunt esplenorrenal.
 XXX Aumentado e homogêneo.
 - Linfonodos: não se observam linfonodomegalias.
 XXX Linfonodos proeminentes no hilo hepático e no espaço portocava.
-- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis.
+- Peritônio e retroperitônio: ausência de líquido livre ou coleções detectáveis.
 - Demais achados: pâncreas, adrenais e rins sem particularidades.
  
 Conclusão:
@@ -1015,7 +1015,7 @@ Data do Exame:
 - Rim transplantado: na fossa ilíaca direita XX esquerda, com dimensões normais (XXX cm).
 Espessura e ecogenicidade parenquimatosas preservadas (espessura cortical de XXX cm).
 Ausência de hidronefrose ou cálculos detectáveis.
-- Peritôneo e retroperitôneo: não há coleções significativas junto ao enxerto.
+- Peritônio e retroperitônio: não há coleções significativas junto ao enxerto.
 Ao estudo Doppler: 
 - Anastomose arterial: prévia, com velocidades sistólicas dentro dos limites da normalidade.
 - Artérias intrarrenais: com índices de resistência (IR) variando entre 0,X e 0,X.
@@ -1125,7 +1125,7 @@ Data do Exame:
 - Ovário direito: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 - Ovário esquerdo: medindo XX x XX x XX cm (volume estimado em XXX cm³), de ecotextura preservada.
 Ao estudo Doppler colorido, não foram observados focos de vascularização anômala nos ovários. 
-- Peritôneo e retroperitôneo: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
+- Peritônio e retroperitônio: ausência de líquido livre ou coleções detectáveis na cavidade pélvica.
   
 Conclusão:
 - Ultrassonografia pélvica transvaginal com Doppler sem alterações significativas.

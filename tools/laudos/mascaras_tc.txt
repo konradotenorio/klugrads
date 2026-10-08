@@ -940,7 +940,7 @@ Análise:
 - Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
 - Adrenais: sem nódulos.
 - Alças intestinais: alças do intestino delgado e grosso incluídas no estudo sem particularidades.
-- Peritôneo e retroperitôneo: não há linfonodomegalias ou líquido livre.
+- Peritônio e retroperitônio: não há linfonodomegalias ou líquido livre.
 - Vasos: aorta, veia cava inferior e veia porta de calibre e morfologia habitual.
 - Partes moles e estruturas ósseas: sem alterações significativas.
 
@@ -965,7 +965,7 @@ Análise:
 - Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
 - Adrenais: sem nódulos.
 - Alças intestinais: alças do intestino delgado e grosso incluídas no estudo sem particularidades ao método.
-- Peritôneo e retroperitôneo: ausência de linfonodomegalias ou líquido livre.
+- Peritônio e retroperitônio: ausência de linfonodomegalias ou líquido livre.
 - Vasos: aorta, veia cava inferior e veia porta de calibre e morfologia habitual.
 - Partes moles e estruturas ósseas: sem alterações significativas.
 
@@ -992,7 +992,7 @@ DEMAIS ACHADOS:
 - Baço: normal.
 - Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
 - Alças intestinais: alças do intestino delgado e grosso incluídas no estudo sem particularidades ao método.
-- Peritôneo e retroperitôneo: ausência de linfonodomegalias ou líquido livre.
+- Peritônio e retroperitônio: ausência de linfonodomegalias ou líquido livre.
 - Vasos: aorta, veia cava inferior e veia porta de calibre e morfologia habitual.
 - Partes moles e estruturas ósseas: sem alterações significativas.
 
@@ -1193,7 +1193,7 @@ Demais achados:
 - Pâncreas, baço e adrenais: sem alterações.
 - Rins: tópicos e de dimensões normais, sem cálculos ou hidronefrose.
 - Alças intestinais: alças do intestino delgado e grosso sem particularidades ao método.
-- Peritôneo e retroperitôneo: não há linfonodomegalias ou líquido livre.
+- Peritônio e retroperitônio: não há linfonodomegalias ou líquido livre.
 - Vasos: aorta, veia cava inferior e veia porta de calibre e morfologia habitual.
 - Bexiga: com conteúdo homogêneo.
 - Demais estruturas pélvicas: sem particularidades ao método.
@@ -1266,7 +1266,7 @@ DEMAIS ACHADOS:
 - Rins: dimensões normais e espessura do parênquima preservada. Não há cálculos ou hidronefrose.
 - Adrenais: sem nódulos.
 - Alças intestinais: alças do intestino delgado e grosso sem particularidades ao método.
-- Peritôneo e retroperitôneo: ausência de linfonodomegalias.
+- Peritônio e retroperitônio: ausência de linfonodomegalias.
 - Vasos: aorta e veia cava inferior de calibre e morfologia habitual.
 - Bexiga: sem particularidades ao método.
 - Demais estruturas pélvicas: sem particularidades ao método.
@@ -1309,7 +1309,7 @@ DEMAIS ACHADOS:
 - Rins: dimensões normais e espessura do parênquima preservada. Não há cálculos ou hidronefrose.
 - Adrenais: sem nódulos.
 - Alças intestinais: alças do intestino delgado e grosso sem particularidades ao método.
-- Peritôneo e retroperitôneo: ausência de linfonodomegalias.
+- Peritônio e retroperitônio: ausência de linfonodomegalias.
 - Vasos: aorta e veia cava inferior de calibre e morfologia habitual.
 - Bexiga: sem particularidades ao método.
 - Demais estruturas pélvicas: sem particularidades ao método.
@@ -1347,7 +1347,7 @@ ACHADOS ADICIONAIS:
 - Baço: normal.
 - Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
 - Adrenais: sem nódulos.
-- Peritôneo e retroperitôneo: ausência de linfonodomegalias ou líquido livre.
+- Peritônio e retroperitônio: ausência de linfonodomegalias ou líquido livre.
 - Vasos: aorta, veia cava inferior e veia porta de calibre e morfologia habitual.
 - Bexiga: sem particularidades ao método.
 - Demais estruturas pélvicas: sem particularidades ao método.
@@ -1495,7 +1495,7 @@ Análise:
 - Bexiga: boa repleção, paredes regulares e conteúdo homogêneo.
 - Útero: dimensões e contornos preservados.
 - Ovários: de dimensões e contornos preservados.
-- Peritôneo e retroperitôneo: ausência de linfonodomegalias ou líquido livre.
+- Peritônio e retroperitônio: ausência de linfonodomegalias ou líquido livre.
 - Demais estruturas pélvicas: sem particularidades.
 - Partes moles e estruturas ósseas: sem alterações significativas.
 
@@ -1515,7 +1515,7 @@ Análise:
 - Bexiga: boa repleção, paredes regulares e conteúdo homogêneo.
 - Próstata: dimensões e contornos preservados.
 - Vesículas seminais: sem particularidades.
-- Peritôneo e retroperitôneo: ausência de linfonodomegalias ou líquido livre.
+- Peritônio e retroperitônio: ausência de linfonodomegalias ou líquido livre.
 - Demais estruturas pélvicas: sem particularidades.
 - Partes moles e estruturas ósseas: sem alterações significativas.
 
@@ -1689,7 +1689,7 @@ ACHADOS ADICIONAIS — ABDOME:
 - Baço: normal.
 - Rins: tópicos, de dimensões normais, sem cálculos ou hidronefrose.
 - Adrenais: sem nódulos.
-- Peritôneo e retroperitôneo: ausência de linfonodomegalias ou líquido livre.
+- Peritônio e retroperitônio: ausência de linfonodomegalias ou líquido livre.
 - Vasos: aorta, veia cava inferior e veia porta de calibre e morfologia habitual.
 - Bexiga: sem particularidades ao método.
 - Demais estruturas pélvicas: sem particularidades ao método.

@@ -262,8 +262,8 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de líquido livre ou coleções detectáveis.",
 "dash": true,
 "opts": [],
@@ -321,7 +321,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
@@ -938,8 +938,8 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de líquido livre ou coleções detectáveis.",
 "dash": true,
 "opts": [],
@@ -1029,7 +1029,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
@@ -1398,8 +1398,8 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de líquido livre ou coleções detectáveis na cavidade pélvica.",
 "dash": true,
 "opts": [],
@@ -1437,7 +1437,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -1516,8 +1516,8 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de líquido livre ou coleções detectáveis na cavidade pélvica.",
 "dash": true,
 "opts": [],
@@ -1551,7 +1551,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -1630,8 +1630,8 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de líquido livre ou coleções detectáveis na cavidade pélvica.",
 "dash": true,
 "opts": [],
@@ -1669,7 +1669,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -1740,8 +1740,8 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de líquido livre ou coleções detectáveis na cavidade pélvica.",
 "dash": true,
 "opts": [],
@@ -1775,7 +1775,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 }
 ],
 "concTitulo": "Conclusão e comparação:",
@@ -2004,8 +2004,8 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de líquido livre ou coleções detectáveis na cavidade pélvica.\nNão há sinais de endometriose profunda no septo retovaginal, fórnice vaginal ou nas regiões retrocervical, paracervical, recesso vésico-uterino e alças intestinais avaliadas.\nNão há sinais de endometriose profunda no ceco.\n- ligamento uterossacro direito XX esquerdo XX ligamentos uterossacros.\n- ligamento largo direito XX esquerdo XX ligamentos largos.\n- cúpula vaginal posterior.\n- cápsula ovariana direita XX esquerda XX cápsulas ovarianas.\n- parede anterior do reto XX retossigmoide XX sigmoide, infiltrando a camada muscular própria, numa extensão aproximada de XX cm (acometendo XX% da circunferência) e distando cerca de XX cm da borda anal.\n- serosa da parede anterior do reto, medindo XXX cm e distando cerca de XXX cm da borda anal (sem sinais de infiltração profunda).",
 "dash": true,
 "opts": [
@@ -2059,7 +2059,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
@@ -4449,8 +4449,8 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de líquido livre ou coleções detectáveis.",
 "dash": true,
 "opts": [],
@@ -4504,7 +4504,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
@@ -4539,8 +4539,8 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "não há coleções significativas junto ao enxerto.",
 "dash": true,
 "opts": [],
@@ -4578,7 +4578,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "line",
@@ -5065,8 +5065,8 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de líquido livre ou coleções detectáveis na cavidade pélvica.",
 "dash": true,
 "opts": [],
@@ -5104,7 +5104,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -7859,8 +7859,8 @@ const LAU_US_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de líquido livre ou coleções detectáveis na cavidade abdominal e pélvica.",
 "dash": true,
 "opts": [],
@@ -7930,7 +7930,7 @@ const LAU_US_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 }
 ],
 "concTitulo": "Conclusão:",
@@ -8887,8 +8887,8 @@ null,
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de líquido livre ou coleções detectáveis na cavidade abdominal e pélvica.",
 "dash": true,
 "opts": [],
@@ -9002,7 +9002,7 @@ null,
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "line",
@@ -15500,8 +15500,8 @@ const LAU_TC_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "não há linfonodomegalias ou líquido livre.",
 "dash": true,
 "opts": [],
@@ -15578,7 +15578,7 @@ const LAU_TC_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
@@ -15688,8 +15688,8 @@ const LAU_TC_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de linfonodomegalias ou líquido livre.",
 "dash": true,
 "opts": [],
@@ -15766,7 +15766,7 @@ const LAU_TC_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
@@ -15880,8 +15880,8 @@ const LAU_TC_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de linfonodomegalias ou líquido livre.",
 "dash": true,
 "opts": [],
@@ -15965,7 +15965,7 @@ const LAU_TC_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
@@ -17380,8 +17380,8 @@ const LAU_TC_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "não há linfonodomegalias ou líquido livre.",
 "dash": true,
 "opts": [],
@@ -17474,7 +17474,7 @@ const LAU_TC_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
@@ -17871,8 +17871,8 @@ const LAU_TC_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de linfonodomegalias.",
 "dash": true,
 "opts": [],
@@ -17980,7 +17980,7 @@ const LAU_TC_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
@@ -18143,8 +18143,8 @@ const LAU_TC_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de linfonodomegalias.",
 "dash": true,
 "opts": [],
@@ -18252,7 +18252,7 @@ const LAU_TC_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
@@ -18431,8 +18431,8 @@ const LAU_TC_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de linfonodomegalias ou líquido livre.",
 "dash": true,
 "opts": [],
@@ -18560,7 +18560,7 @@ const LAU_TC_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
@@ -19504,8 +19504,8 @@ const LAU_TC_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de linfonodomegalias ou líquido livre.",
 "dash": true,
 "opts": [],
@@ -19562,7 +19562,7 @@ const LAU_TC_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
@@ -19632,8 +19632,8 @@ const LAU_TC_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de linfonodomegalias ou líquido livre.",
 "dash": true,
 "opts": [],
@@ -19690,7 +19690,7 @@ const LAU_TC_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
@@ -20777,8 +20777,8 @@ const LAU_TC_MASKS = [
 "grp": ""
 },
 {
-"k": "peritoneo-e-retroperitoneo",
-"label": "Peritôneo e retroperitôneo",
+"k": "peritonio-e-retroperitonio",
+"label": "Peritônio e retroperitônio",
 "text": "ausência de linfonodomegalias ou líquido livre.",
 "dash": true,
 "opts": [],
@@ -20927,7 +20927,7 @@ const LAU_TC_MASKS = [
 },
 {
 "t": "item",
-"k": "peritoneo-e-retroperitoneo"
+"k": "peritonio-e-retroperitonio"
 },
 {
 "t": "item",
